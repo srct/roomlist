@@ -17,10 +17,18 @@ class Class(models.Model):
                                       choices=YEAR_IN_SCHOOL_CHOICES,
                                       default=FRESHMAN)
 
+    def __str__(self):              # __unicode__ on Python 2
+        return self.year_int
+
 
 class Building(models.Model):
     name = models.CharField(max_length=100)
     address = models.ForeignKey('Address')
+
+    def __str__(self):              # __unicode__ on Python 2
+        return self.name
+    def __unicode__(self):              # __unicode__ on Python 2
+        return unicode(self.name)
 
 
 class Room(models.Model):
@@ -32,8 +40,14 @@ class Room(models.Model):
     bedD = models.CharField(max_length=80)
     building = models.ForeignKey('Building')
 
+    def __str__(self):              # __unicode__ on Python 2
+        return self.building.__str__()+" "+self.number.__str__()
+
 
 class Address(models.Model):
     street = models.CharField(max_length=100)
     zip_code = models.IntegerField(max_length=5)
     state = models.CharField(max_length=2)
+
+    def __str__(self):              # __unicode__ on Python 2
+        return self.street
