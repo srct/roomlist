@@ -35,9 +35,9 @@ class Room(models.Model):
     number = models.IntegerField()
     floor = models.IntegerField()
     bedA = models.CharField(max_length=80)
-    bedB = models.CharField(max_length=80)
-    bedC = models.CharField(max_length=80)
-    bedD = models.CharField(max_length=80)
+    bedB = models.CharField(max_length=80, blank=True)
+    bedC = models.CharField(max_length=80, blank=True)
+    bedD = models.CharField(max_length=80, blank=True)
     building = models.ForeignKey('Building')
 
     def __str__(self):              # __unicode__ on Python 2

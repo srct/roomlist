@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 
-from api.models import Building
+from api.models import Building, Room
 # Create your views here.
 
 def index(request):
@@ -14,8 +14,21 @@ def buildings_list(request):
     json = json[:-1]+']}'
     return HttpResponse(json)
 
-def building(request, building):
-    return HttpResponse("You are looking up building %s" % building)
+def building(request, buildingName):
+    room_list = Room.objects.filter(building__name=""+buildingName)
+    json = '{"'+buildingName+'":['
+    for p in room_list:
+        json += '"'+p.number.__str__()+'":['
+        json += '"floor":'+p.floor.__str__()+',"bedA":"'+p.bedA.__str__()+'"'
+        if p.bedB.__str__() is not '':
+            json += ',"bedB":"'+p.bedB.__str__()+'"'
+        if p.bedC.__str__() is not '':
+            json += ',"bedC":"'+p.bedC.__str__()+'"'
+        if p.bedD.__str__() is not '':
+            json += ',"bedD":"'+p.bedD.__str__()+'"'
+        json += '],'
+    json = json[:-1]+']}'
+    return HttpResponse(json)
 
 def room(request, building, room_number):
     return HttpResponse("You are looking up room number %s in %s" % (room_number, building))
