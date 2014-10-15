@@ -23,6 +23,20 @@ class Class(models.Model):
 
 class Building(models.Model):
     name = models.CharField(max_length=100)
+
+    NONE = 'na'
+    AQUIA = 'aq'
+    RAPPAHANNOCK = 'ra'
+    SHENANDOAH = 'sh'
+    NEIGHBOURHOOD_CHOICES = (
+        (NONE, 'None'),
+        (AQUIA, 'Aquia'),
+        (RAPPAHANNOCK, 'Rappahannock'),
+        (SHENANDOAH, 'Shenandoah'),
+    )
+
+    neighbourhood = models.CharField(max_length=100, choices=NEIGHBOURHOOD_CHOICES,
+    default=NONE)
     address = models.ForeignKey('Address')
 
     def __str__(self):              # __unicode__ on Python 2
