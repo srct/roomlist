@@ -39,9 +39,9 @@ def room(request, building, room_number):
 
     jsons = "This room does not exist or has not been created"
     if room_obj:
-        jsons = '{"building":"'+building+'","number":"'+room_number+'","residents":['
+        jsons = '{"building":"'+building+'","number":'+room_number+','
         for p in room_obj:
-            jsons += '"floor":'+p.floor.__str__()+',"bedA":"'+p.bedA.__str__()+'"'
+            jsons += '"floor":'+p.floor.__str__()+',"residents":["bedA":"'+p.bedA.__str__()+'"'
             if p.bedB.__str__() is not '':
                 jsons += ',"bedB":"'+p.bedB.__str__()+'"'
             if p.bedC.__str__() is not '':
