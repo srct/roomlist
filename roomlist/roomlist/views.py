@@ -10,3 +10,9 @@ def index(request):
     context = RequestContext(request, {
     })
     return HttpResponse(template.render(context))
+
+def buildings(request):
+    template = loader.get_template('buildings.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
