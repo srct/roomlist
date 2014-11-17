@@ -12,7 +12,9 @@ def index(request):
     return HttpResponse(template.render(context))
 
 def buildings(request):
+    building_list = Building.objects.order_by('name')[:5]
     template = loader.get_template('buildings.html')
     context = RequestContext(request, {
+        'building_list' : building_list,
     })
     return HttpResponse(template.render(context))
