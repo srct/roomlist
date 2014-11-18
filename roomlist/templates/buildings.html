@@ -16,7 +16,7 @@ GMU RoomList &bull; Homepage
 <ul>
   {% for building in building_list %}
   <li>
-      {{ building.name }} - {{ building.address }} {{ building.address.zip_code }}, {{ building.address.state}}
+      <a href="/building/{{ building.name }}">{{ building.name }}</a> - {{ building.address }} {{ building.address.zip_code }}, {{ building.address.state}}
   </li>
   {% endfor %}
 </ul>
