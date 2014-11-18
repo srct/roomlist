@@ -5,6 +5,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
+    url(r'^login/$', views.login, name='login'),
     url(r'^buildings/$', views.buildings, name='buildings'),
     url(r'^building/(?P<buildingName>[a-zA-Z]+)$', views.building, name='building'),
 )

@@ -28,3 +28,9 @@ def building(request, buildingName):
         'room_list' : room_list,
     })
     return HttpResponse(template.render(context))
+
+def login(request):
+    template = loader.get_template('login.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))

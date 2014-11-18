@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %} {% block title %} GMU RoomList &bull; Homepage {% endblock %} {% block content %}
+
+<link href="/static/css/signin.css" rel="stylesheet" media="screen">
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <h1><strong>GMU</strong>ROOMLIST</h1>
+      <p class="lead">{{ building.name }}</p>
+    </div>
+  </div>
+</div>
+
+<form class="form-signin" role="form">
+  <h2 class="form-signin-heading">Please sign in</h2>
+  <label for="inputEmail" class="sr-only">Username</label>
+  <input type="username" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" value="remember-me"> Remember me
+    </label>
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+</form>
+
+
+{% endblock %}
