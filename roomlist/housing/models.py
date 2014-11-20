@@ -2,27 +2,6 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
-# Create your models here.
-class Class(models.Model):
-    year_int = models.IntegerField()
-    FRESHMAN = 'FR'
-    SOPHOMORE = 'SO'
-    JUNIOR = 'JR'
-    SENIOR = 'SR'
-    YEAR_IN_SCHOOL_CHOICES = (
-        (FRESHMAN, 'Freshman'),
-        (SOPHOMORE, 'Sophomore'),
-        (JUNIOR, 'Junior'),
-        (SENIOR, 'Senior'),
-    )
-    year_in_school = models.CharField(max_length=2,
-                                      choices=YEAR_IN_SCHOOL_CHOICES,
-                                      default=FRESHMAN)
-
-    def __str__(self):              # __unicode__ on Python 2
-        return self.year_int
-
-
 class Building(models.Model):
     name = models.CharField(max_length=100)
 
@@ -67,3 +46,28 @@ class Address(models.Model):
 
     def __str__(self):              # __unicode__ on Python 2
         return self.street
+
+class Class(models.Model):
+    year_int = models.IntegerField()
+    FRESHMAN = 'FR'
+    SOPHOMORE = 'SO'
+    JUNIOR = 'JR'
+    SENIOR = 'SR'
+    YEAR_IN_SCHOOL_CHOICES = (
+        (FRESHMAN, 'Freshman'),
+        (SOPHOMORE, 'Sophomore'),
+        (JUNIOR, 'Junior'),
+        (SENIOR, 'Senior'),
+    )
+    year_in_school = models.CharField(max_length=2,
+                                      choices=YEAR_IN_SCHOOL_CHOICES,
+                                      default=FRESHMAN)
+
+    def __str__(self):              # __unicode__ on Python 2
+        return self.year_int
+
+class Student(models.Student):
+    user = models.OneToOneField(User)
+    # Django user includes a username, password, email, first name, and last name
+    room = models.OneToOneField(Room)
+    # class = models.OneToOneField(Class)
