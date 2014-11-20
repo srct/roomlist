@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import Class, Building, Address, Room
+from housing.models import Class, Building, Address, Room
 
 # Register your models here.
 admin.site.register(Class)

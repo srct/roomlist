@@ -2,7 +2,7 @@ from django.http import HttpResponse
 
 import json
 
-from api.models import Building, Room
+from housing.models import Building, Room
 # Create your views here.
 
 def index(request):

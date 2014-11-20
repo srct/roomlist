@@ -4,7 +4,7 @@ from django.template import RequestContext, loader
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, logout
 
-from api.models import Building, Room
+from housing.models import Building, Room
 
 # Create your views here.
 def index(request):
