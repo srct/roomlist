@@ -35,11 +35,10 @@ def login(request):
      # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = AuthenticationForm(data = request.POST)
         # check whether it's valid:
-        form.is_valid()
-        form_data = form.clean()
-        user = form.get_user()
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
         if user is not None:
             # the password verified for the user
             if user.is_active:
