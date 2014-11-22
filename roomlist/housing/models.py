@@ -47,6 +47,7 @@ class Address(models.Model):
     def __str__(self):              # __unicode__ on Python 2
         return self.street
 
+
 class Class(models.Model):
     year_int = models.IntegerField()
     FRESHMAN = 'FR'
@@ -66,8 +67,11 @@ class Class(models.Model):
     def __str__(self):              # __unicode__ on Python 2
         return self.year_int
 
-class Student(models.Student):
+
+class Student(models.Model):
     user = models.OneToOneField(User)
     # Django user includes a username, password, email, first name, and last name
     room = models.OneToOneField(Room)
     # class = models.OneToOneField(Class)
+    def __str__(self):              # __unicode__ on Python 2
+        return self.user.username

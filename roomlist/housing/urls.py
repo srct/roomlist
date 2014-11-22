@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
-from roomlist import views
+from housing import views
+
 from django.contrib import admin
 admin.autodiscover()
 
