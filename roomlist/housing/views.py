@@ -30,6 +30,6 @@ class DetailRoom(LoginRequiredMixin, ListView):
     login_url = '/'
 
 # details about the student
-class DetailStudent(LoginRequiredMixin, DetailStudent):
+class DetailStudent(LoginRequiredMixin, DetailView):
     model = Student
     login_url = '/'
