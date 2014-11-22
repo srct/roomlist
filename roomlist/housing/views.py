@@ -9,6 +9,7 @@ from braces.views import LoginRequiredMixin
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
 from housing.models import Building, Room, Student
+
 # a list of neighborhoods and their buildings
 class ListBuildings(LoginRequiredMixin, ListView):
     model = Building
@@ -33,6 +34,12 @@ class DetailRoom(LoginRequiredMixin, ListView):
 class DetailStudent(LoginRequiredMixin, DetailStudent):
     model = Student
     login_url = '/'
+
+# update a student
+
+# update a room
+
+# update a building
 
 def index(request):
     template = loader.get_template('index.html')
