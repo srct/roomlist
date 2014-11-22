@@ -65,6 +65,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'api',
     'housing',
+    'crispy_forms',
+    'django_gravatar',
 )
 
 MIDDLEWARE_CLASSES = (
