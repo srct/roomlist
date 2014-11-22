@@ -1,8 +1,11 @@
 from django.db import models
 
+from autoslug import AutoSlugField
+from model_utils.models import TimeStampedModel
+
 from django.contrib.auth.models import User
 
-class Building(models.Model):
+class Building(TimeStampedModel):
     name = models.CharField(max_length=100)
 
     NONE = 'na'
@@ -20,13 +23,14 @@ class Building(models.Model):
     default=NONE)
     address = models.ForeignKey('Address')
 
+    slug = AutoSlugField(populate_from='name', unique=True)
+
     def __str__(self):              # __unicode__ on Python 2
         return self.name
     def __unicode__(self):              # __unicode__ on Python 2
         return unicode(self.name)
 
-
-class Room(models.Model):
+class Room(TimeStampedModel):
     number = models.IntegerField()
     floor = models.IntegerField()
     bedA = models.CharField(max_length=80)
@@ -35,11 +39,13 @@ class Room(models.Model):
     bedD = models.CharField(max_length=80, blank=True)
     building = models.ForeignKey('Building')
 
+    slug = AutoSlugField(populate_from='number', unique=True)
+
     def __str__(self):              # __unicode__ on Python 2
         return self.building.__str__()+" "+self.number.__str__()
 
 
-class Address(models.Model):
+class Address(TimeStampedModel):
     street = models.CharField(max_length=100)
     zip_code = models.IntegerField(max_length=5)
     state = models.CharField(max_length=2)
@@ -48,7 +54,7 @@ class Address(models.Model):
         return self.street
 
 
-class Class(models.Model):
+class Class(TimeStampedModel):
     year_int = models.IntegerField()
     FRESHMAN = 'FR'
     SOPHOMORE = 'SO'
@@ -68,10 +74,13 @@ class Class(models.Model):
         return self.year_int
 
 
-class Student(models.Model):
+class Student(TimeStampedModel):
     user = models.OneToOneField(User)
     # Django user includes a username, password, email, first name, and last name
     room = models.OneToOneField(Room)
     # class = models.OneToOneField(Class)
+
+    slug = AutoSlugField(populate_from='user', unique=True)
+
     def __str__(self):              # __unicode__ on Python 2
         return self.user.username
