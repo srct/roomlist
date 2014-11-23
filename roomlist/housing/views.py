@@ -1,14 +1,8 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
-from django.template import RequestContext, loader
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, logout
-
-from braces.views import LoginRequiredMixin
-
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
 from housing.models import Building, Room, Student
+
+from braces.views import LoginRequiredMixin
 
 # a list of neighborhoods and their buildings
 class ListBuildings(LoginRequiredMixin, ListView):
