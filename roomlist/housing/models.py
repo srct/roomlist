@@ -80,6 +80,10 @@ class Student(TimeStampedModel):
     room = models.OneToOneField(Room)
     # class = models.OneToOneField(Class)
 
+    # major = models.
+
+    # social media accounts
+
     slug = AutoSlugField(populate_from='user', unique=True)
 
     def __str__(self):              # __unicode__ on Python 2
