@@ -11,13 +11,18 @@
   </div>
 </div>
 
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
 <form class="form-signin" role="form" action="/accounts/login/" method="post">
-    {% csrf_token %}
+  {% csrf_token %}
+
   <h2 class="form-signin-heading">Please sign in</h2>
   <label for="username" class="sr-only">Username</label>
-  <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Mason NetID" required autofocus>
+  {{form.username}}
   <label for="inputPassword" class="sr-only">Password</label>
-  <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+  {{form.password}}
   <div class="checkbox">
     <label>
       <input type="checkbox" value="remember-me"> Remember me
