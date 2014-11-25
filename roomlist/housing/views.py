@@ -24,11 +24,6 @@ class DetailRoom(LoginRequiredMixin, ListView):
     model = Room
     login_url = '/'
 
-# details about the student
-class DetailStudent(LoginRequiredMixin, DetailView):
-    model = Student
-    login_url = '/'
-
 # update a student
 
 # update a room
