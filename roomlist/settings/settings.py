@@ -66,6 +66,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'api',
     'housing',
+    'accounts',
     'crispy_forms',
     'django_gravatar',
 )
