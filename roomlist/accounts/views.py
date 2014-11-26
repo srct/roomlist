@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
-from housing.models import Student
+from accounts.models import Student
 
 from braces.views import LoginRequiredMixin
 

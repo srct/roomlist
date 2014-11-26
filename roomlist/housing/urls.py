@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from housing.views import ListBuildings, DetailBuilding, ListRooms, DetailRoom
-from housing.models import Building, Room, Student
+from housing.models import Building, Room
 
 urlpatterns = patterns('',
 

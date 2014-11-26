@@ -20,7 +20,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-        <li><a href="#">{{ user.username }}</a>
+        <li><a href="/accounts/student/{{ user.username }}">{{ user.username }}</a>
         </li>
         <li><a href="/accounts/logout/">Logout</a>
         </li>

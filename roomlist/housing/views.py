@@ -1,6 +1,7 @@
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
-from housing.models import Building, Room, Student
+from housing.models import Building, Room
+from accounts.models import Student
 
 from braces.views import LoginRequiredMixin
 

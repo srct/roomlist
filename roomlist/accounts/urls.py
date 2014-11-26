@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from accounts.views import DetailStudent
-from housing.models import Student
+from accounts.models import Student
 
 from django.contrib import admin
 admin.autodiscover()
