@@ -15,6 +15,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
     os.path.join(BASE_DIR, 'housing/templates'),
+    os.path.join(BASE_DIR, 'accounts/templates'),
 )
 
 STATICFILES_DIRS = (
@@ -65,6 +66,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'api',
     'housing',
+    'accounts',
     'crispy_forms',
     'django_gravatar',
 )

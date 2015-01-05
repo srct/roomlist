@@ -15,12 +15,12 @@
         </li>
         <li><a href="/#about">About</a>
         </li>
-        <li><a href="/buildings">Buildings</a>
+        <li><a href="/housing/buildings">Buildings</a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-        <li><a href="#">{{ user.username }}</a>
+        <li><a href="/accounts/student/{{ user.username }}">{{ user.username }}</a>
         </li>
         <li><a href="/accounts/logout/">Logout</a>
         </li>

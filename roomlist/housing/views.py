@@ -1,6 +1,7 @@
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
-from housing.models import Building, Room, Student
+from housing.models import Building, Room
+from accounts.models import Student
 
 from braces.views import LoginRequiredMixin
 
@@ -22,11 +23,6 @@ class ListRooms(LoginRequiredMixin, ListView):
 # this lists students in a room
 class DetailRoom(LoginRequiredMixin, ListView):
     model = Room
-    login_url = '/'
-
-# details about the student
-class DetailStudent(LoginRequiredMixin, DetailView):
-    model = Student
     login_url = '/'
 
 # update a student

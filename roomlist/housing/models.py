@@ -71,20 +71,4 @@ class Class(TimeStampedModel):
                                       default=FRESHMAN)
 
     def __str__(self):              # __unicode__ on Python 2
-        return self.year_int
-
-
-class Student(TimeStampedModel):
-    user = models.OneToOneField(User)
-    # Django user includes a username, password, email, first name, and last name
-    room = models.OneToOneField(Room)
-    # class = models.OneToOneField(Class)
-
-    # major = models.
-
-    # social media accounts
-
-    slug = AutoSlugField(populate_from='user', unique=True)
-
-    def __str__(self):              # __unicode__ on Python 2
-        return self.user.username
+        return str(self.year_int)
