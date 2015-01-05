@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from accounts.views import DetailStudent
+from accounts.views import DetailStudent, CreateStudent
 from accounts.models import Student
 
 from django.contrib import admin
@@ -16,4 +16,10 @@ urlpatterns = patterns('',
             context_object_name='student',
             template_name='detailStudent.html'),
         name='detailStudent'),
+
+    url(r'^create/$',
+        CreateStudent.as_view(
+            model=Student,
+            template_name="createStudent.html"),
+        name='createStudent'),
 )
