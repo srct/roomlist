@@ -26,7 +26,17 @@ class DetailRoom(LoginRequiredMixin, ListView):
     login_url = '/'
 
 # update a student
+#class UpdateStudent(LoginRequiredMixin, UpdateView):
+#    model = Student
+#    form_class = '/'
+#    success_url = '/' # change the success url to something more interesting
+
+#    login_url = '/'
 
 # update a room
+#class updateroom(loginrequiredmixin, updateview):
+#    model = room
+#    form_class =
+#    success_url = '/' # change the success url to something more interesting
 
-# update a building
+#    login_url = '/'
