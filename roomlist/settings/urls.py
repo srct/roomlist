@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view( template_name="index.html" ), name='index'),
     url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
     # url(r'^contact/$', TemplateView.as_view(template_name='contact.html'), name='contact'),
-    # url(r'^privacy/$', TemplateView.as_view(template_name='privacy.html'), name='privacy'),
+    url(r'^privacy/$', TemplateView.as_view(template_name='privacy.html'), name='privacy'),
 
     # app-level urls
     url(r'^housing/', include('housing.urls')),
