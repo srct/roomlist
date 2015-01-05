@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django',
+        'NAME': 'roomlist',
         'USER': 'django',
         'PASSWORD': 'H0jrp0llTJ',
         'HOST': 'localhost',

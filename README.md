@@ -51,6 +51,9 @@ To set up the PostgreSQL database, open a terminal and type in the following com
 Your PostgreSQL database should now be set up to work with the Roomlist project.
 
 
+Next, run `python manage.py migrate`, then `python manage.py runserver`.
+Have your virtualenvironment running and with the requirements.txt installed.
+
 To-do
 ---
 
