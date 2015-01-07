@@ -71,6 +71,8 @@ INSTALLED_APPS = (
     'django_gravatar',
 )
 
+CRISPY_TEMPLATE_PACK = 'bootstrap'
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
