@@ -24,5 +24,24 @@ class StudentForm( forms.ModelForm ):
         super(StudentForm, self).__init__(*args, **kwargs)
 
     class Meta:
-        model = Student 
+        model = Student
 
+
+class UserSettingsForm( forms.ModelForm ):
+
+    def __init__(self, *args, **kwargs):
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            'user',
+            PrependedText('room', 'Room'),
+            'class',
+            AppendedText('major', 'Major'),
+        )
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Submit'))
+
+        super(StudentForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Student

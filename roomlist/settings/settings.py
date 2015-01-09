@@ -123,6 +123,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+SITE_ID = 2
+
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
