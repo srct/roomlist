@@ -13,6 +13,13 @@ class ListBuildings(LoginRequiredMixin, ListView):
 # building floors, other information
 class DetailBuilding(LoginRequiredMixin, DetailView):
     model = Building
+    context_object_name = 'building_detail'
+    template_name='detailBuilding.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailBuilding, self).get_context_data(**kwargs)
+        context['room_list'] = Room.objects.filter(building__name=''+self.get_object().name).order_by('number')
+        return context
     login_url = '/'
 
 # this lists the rooms on the floor
