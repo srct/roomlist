@@ -1,10 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
         "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Find your on campus neighbors">
-  {% load staticfiles %}
+  <meta name="description" content="Find your on campus neighbors"> {% load staticfiles %}
   <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
   <link href="/static/css/style.css" rel="stylesheet" media="screen">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -13,16 +13,17 @@
   <link rel="icon" href="/static/img/favicon.ico">
   <title> {% block title %} {% endblock %}</title>
 </head>
-  <body>
-    <div id = "wrap">
+
+<body>
+  <div id="wrap">
     {% include 'layouts/navbar.html' %}
-      <div class="container">
-        {% block content %}
-        {% endblock %}
-      </div>
+    <div class="container">
+      {% block content %} {% endblock %}
     </div>
-    <div class="footer">
-      {% include 'layouts/footer.html' %}
-    </div>
-  </body>
+  </div>
+  <div class="footer">
+    {% include 'layouts/footer.html' %}
+  </div>
+</body>
+
 </html>
