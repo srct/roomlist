@@ -13,7 +13,7 @@ class ListBuildings(LoginRequiredMixin, ListView):
 # building floors, other information
 class DetailBuilding(LoginRequiredMixin, DetailView):
     model = Building
-    context_object_name = 'building_detail'
+    context_object_name = 'building'
     template_name='detailBuilding.html'
 
     def get_context_data(self, **kwargs):
