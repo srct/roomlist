@@ -1,9 +1,10 @@
 from django.db import models
-
 from autoslug import AutoSlugField
 from model_utils.models import TimeStampedModel
 
 from django.contrib.auth.models import User
+
+from localflavor.us.models import USStateField
 
 class Building(TimeStampedModel):
     name = models.CharField(max_length=100)
@@ -44,18 +45,16 @@ class Room(TimeStampedModel):
     def __str__(self):              # __unicode__ on Python 2
         return self.building.__str__()+" "+self.number.__str__()
 
-
 class Address(TimeStampedModel):
     street = models.CharField(max_length=100)
     zip_code = models.IntegerField(max_length=5)
-    state = models.CharField(max_length=2)
+    state = USStateField()
 
     class Meta: 
         verbose_name_plural = 'addresses'
 
     def __str__(self):              # __unicode__ on Python 2
         return self.street
-
 
 class Class(TimeStampedModel):
     year_int = models.IntegerField()
@@ -74,7 +73,6 @@ class Class(TimeStampedModel):
                                       default=FRESHMAN)
     class Meta: 
         verbose_name_plural = 'classes'
-
 
     def __str__(self):              # __unicode__ on Python 2
         return str(self.year_int)
