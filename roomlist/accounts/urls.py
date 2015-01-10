@@ -33,13 +33,6 @@ urlpatterns = patterns('',
             template_name="createStudent.html"),
         name='createStudent'),
 
-    url(r'^settings/(?P<slug>[\w-]+)/$',
-        DetailStudentSettings.as_view(
-            model=Student,
-            context_object_name='student',
-            template_name="studentSettings.html"),
-        name='studentSettings'),
-
     url(r'^settings/$',
         DetailCurrentStudentSettings.as_view(
             model=Student,
