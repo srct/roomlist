@@ -1,10 +1,41 @@
+/* Sticky footer styles */
+html,
 body {
-  padding-top: 70px;
   height: 100%;
 }
 
-.footer {
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 80px;
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -40px;
+  /* Pad bottom by footer height */
+  padding: 0 0 40px;
+}
+/* Set the fixed height of the footer here */
+#footer {
+  height: 40px;
+}
+
+.jumbostyle {
+  background: url(/static/img/North_Section_of_Presidents_Park_Dorms.jpg) no-repeat;
+  background-size: cover;
+  background-position: 20%;
+  box-shadow: inset 0px 0px 20px #333;
+  color: white;
+  text-shadow: 
+    2px 2px 4px #000;
+  padding-top: 75px;
+  padding-bottom: 75px;
+}
+
+.license img {
+  position: absolute;
+  bottom: 8px;
+  right: 15px;
+}
+
+.container-padding {
+  padding-top: 75px;
 }
