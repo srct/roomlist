@@ -46,9 +46,11 @@ class Room(TimeStampedModel):
         return self.building.__str__()+" "+self.number.__str__()
 
 class Address(TimeStampedModel):
-    street = models.CharField(max_length=100)
-    zip_code = models.IntegerField(max_length=5)
+    
+    street = models.CharField(max_length=120)
+    city = models.CharField(max_length=120)
     state = USStateField()
+    zip_code = models.IntegerField(max_length=5)
 
     class Meta: 
         verbose_name_plural = 'addresses'
