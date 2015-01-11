@@ -4,8 +4,8 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 admin.autodiscover()
 
-# custom 404
-# custom 500
+handle404 = TemplateView.as_view(template_name="404.html")
+handle500 = TemplateView.as_view(template_name="500.html")
 
 urlpatterns = patterns('',
 
