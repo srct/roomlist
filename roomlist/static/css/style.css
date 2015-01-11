@@ -18,10 +18,22 @@ body {
   height: 40px;
 }
 
-.jumbostyle {
+.jumboindex {
   background: url(/static/img/North_Section_of_Presidents_Park_Dorms.jpg) no-repeat;
   background-size: cover;
-  background-position: 20%;
+  background-position: center;
+  box-shadow: inset 0px 0px 20px #333;
+  color: white;
+  text-shadow: 
+    2px 2px 4px #000;
+  padding-top: 75px;
+  padding-bottom: 75px;
+}
+
+.jumboabout {
+  background: url(/static/img/Campus_Dorms_East_side_of_Campus.jpg) no-repeat;
+  background-size: cover;
+  background-position: bottom;
   box-shadow: inset 0px 0px 20px #333;
   color: white;
   text-shadow: 
