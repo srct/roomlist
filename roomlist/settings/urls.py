@@ -4,15 +4,14 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 admin.autodiscover()
 
-# custom 404
-# custom 500
+handle404 = TemplateView.as_view(template_name="404.html")
+handle500 = TemplateView.as_view(template_name="500.html")
 
 urlpatterns = patterns('',
 
     # project-level urls
     url(r'^$', TemplateView.as_view( template_name="index.html" ), name='index'),
     url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
-    url(r'^contact/$', TemplateView.as_view(template_name='contact.html'), name='contact'),
     url(r'^privacy/$', TemplateView.as_view(template_name='privacy.html'), name='privacy'),
 
     # app-level urls

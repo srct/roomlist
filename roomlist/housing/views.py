@@ -10,10 +10,17 @@ class ListBuildings(LoginRequiredMixin, ListView):
     model = Building
     login_url = '/'
 
+    def get_context_data(self, **kwargs):
+        context = super(ListBuildings, self).get_context_data(**kwargs)
+        context['rappahannock'] = Building.objects.filter(neighbourhood='ra')
+        context['shenandoah'] = Building.objects.filter(neighbourhood='sh')
+        context['aquia'] = Building.objects.filter(neighbourhood='aq')
+        return context
+
 # building floors, other information
 class DetailBuilding(LoginRequiredMixin, DetailView):
     model = Building
-    context_object_name = 'building_detail'
+    context_object_name = 'building'
     template_name='detailBuilding.html'
 
     def get_context_data(self, **kwargs):

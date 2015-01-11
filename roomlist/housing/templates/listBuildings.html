@@ -13,8 +13,20 @@ GMU RoomList &bull; Homepage
   </div>
 </div>
 
+<legend>Rappahannock</legend>
+
 <ul>
-  {% for building in buildings %}
+  {% for building in rappahannock %}
+  <li>
+      <a href="/housing/buildings/{{ building.name }}">{{ building.name }}</a> - {{ building.address }} {{ building.address.zip_code }}, {{ building.address.state}}
+  </li>
+  {% endfor %}
+</ul>
+
+<legend>Shenandoah</legend>
+
+<ul>
+  {% for building in shenandoah %}
   <li>
       <a href="/housing/buildings/{{ building.name }}">{{ building.name }}</a> - {{ building.address }} {{ building.address.zip_code }}, {{ building.address.state}}
   </li>
