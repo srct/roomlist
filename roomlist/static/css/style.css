@@ -4,6 +4,10 @@ body {
   height: 95%;
 }
 
+#contentcontain {
+    padding-top: 45px;
+}
+
 /* Wrapper for page content to push down footer */
 #wrap {
   min-height: 100%;
@@ -24,7 +28,7 @@ body {
   background-position: center;
   box-shadow: inset 0px 0px 20px #333;
   color: white;
-  text-shadow: 
+  text-shadow:
     2px 2px 4px #000;
   padding-top: 75px;
   padding-bottom: 75px;
@@ -36,7 +40,7 @@ body {
   background-position: bottom;
   box-shadow: inset 0px 0px 20px #333;
   color: white;
-  text-shadow: 
+  text-shadow:
     2px 2px 4px #000;
   padding-top: 75px;
   padding-bottom: 75px;
@@ -49,5 +53,5 @@ body {
 }
 
 .container-padding {
-  padding-top: 75px;
+  padding-top: 30px;
 }
