@@ -4,63 +4,63 @@
 {% get_social_accounts student.user as accounts %}
 <div class="page-header" id="banner">
   <div class="row">
-    <div class="col-md-8 col-md-offset-2 text-center">
+    <div class="col-md-2 col-md-offset-1 text-center">
       <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.user.first_name }} Gravatar picture">
-      <h1>{{ student.user.first_name }} {{ student.user.last_name }}</h1>
+    </div>
+    <div class="col-md-6 text-center">
+      <h1><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></h1>
+      <p class="lead"><strong>{{ student.room }}</strong></p>
+      <p><em>shared with</em>: <span class="label label-default">campus</span></p>
     </div>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <table class="table table-hover text-center">
-          <tbody>
-            <tr>
-              <td><strong>Room</strong>: {{ student.room }}</td>
-            </tr>
+  <div class="col-md-5 col-md-offset-1">
+    <table class="table table-hover text-center">
+      <tbody>
+        <tr>
+          <td><h4><strong>Major</strong>: {{ student.major.major_name }}</h4></td>
+        </tr>
 
-            <tr>
-              <td><strong>Major</strong>: {{ student.major.major_name }}</td>
-            </tr>
-
-            <tr>
-              <td><strong>Email</strong>: {{ student.user.email }}</td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-    </div>
+        <tr>
+          <td><h4><strong>Email</strong>: {{ student.user.email }}</h4></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-md-8 col-md-offset-2">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <table class="table table-hover text-center">
-          <tbody>
-            <tr>
-              <td><i class="fa fa-facebook fa-lg"></i>
-              </td>
-              <td>{% if accounts.facebook %} <a href="http://www.facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">Facebook</a> {% endif %}</td>
-            </tr>
-            <tr>
-              <td><i class="fa fa-google fa-lg"></i>
-              </td>
-              <td>{% if accounts.google %} <a href="https://plus.google.com/{{ accounts.google.0.uid }}" target="_blank">Google+</a> {% endif %}</td>
-            </tr>
-            <tr>
-              <td><i class="fa fa-twitter fa-lg"></i>
-              </td>
-              <td>{% if accounts.twitter %} <a href="https://twitter.com/intent/user?user_id={{ accounts.twitter.0.uid }}" target="_blank">Twitter</a> {% endif %}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="col-md-5">
+    <table class="table table-hover text-center">
+      <tbody>
+        <tr>
+          <td>
+           <h4><i class="fa fa-facebook fa-lg"></i></h4>
+          </td>
+          <td>
+            <!-- {% if accounts.facebook %} <h4><a href="http://www.facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">Facebook</a></h4> {% endif %} -->
+            <h4>A Facebook account link</h4>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <h4><i class="fa fa-google fa-lg"></i></h4>
+          </td>
+          <td>{% if accounts.google %} <h4><a href="https://plus.google.com/{{ accounts.google.0.uid }}" target="_blank">Google+</a></h4> {% endif %}
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <h4><i class="fa fa-twitter fa-lg"></i></h4>
+          </td>
+          <td>
+            {% if accounts.twitter %} <h4><a href="https://twitter.com/intent/user?user_id={{ accounts.twitter.0.uid }}" target="_blank">Twitter</a></h4> {% endif %}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
