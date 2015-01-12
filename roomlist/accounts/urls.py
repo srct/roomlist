@@ -7,11 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
-    url(r'', include('allauth.urls')),
-
-    # login and logout
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'index.html'}, name='logout'),
+    #url(r'', include('allauth.urls')),
 
     url(r'^student/(?P<slug>[\w-]+)/$',
         DetailStudent.as_view(
