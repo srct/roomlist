@@ -22,7 +22,19 @@ class Building(TimeStampedModel):
 
     neighbourhood = models.CharField(max_length=100, choices=NEIGHBOURHOOD_CHOICES,
     default=NONE)
-    address = models.ForeignKey('Address')
+    #address = models.ForeignKey('Address')
+
+    PRINCE_WILLIAM = 'pw'
+    MASONVALE = 'mv'
+    FAIRFAX = 'ff'
+    CAMPUS_CHOICES = (
+        (NONE, 'None'),
+        (PRINCE_WILLIAM, 'Prince William'),
+        (MASONVALE, 'mv'),
+        (FAIRFAX, 'Fairfax'),
+    )
+
+    campus = models.CharField(max_length=100, choices=CAMPUS_CHOICES, default=NONE)
 
     slug = AutoSlugField(populate_from='name', unique=True)
 
@@ -45,18 +57,19 @@ class Room(TimeStampedModel):
     def __str__(self):              # __unicode__ on Python 2
         return self.building.__str__()+" "+self.number.__str__()
 
-class Address(TimeStampedModel):
+# buildings on campus don't have separate addresses yet
+#class Address(TimeStampedModel):
     
-    street = models.CharField(max_length=120)
-    city = models.CharField(max_length=120)
-    state = USStateField()
-    zip_code = models.IntegerField(max_length=5)
+#    street = models.CharField(max_length=120)
+#    city = models.CharField(max_length=120)
+#    state = USStateField()
+#    zip_code = models.IntegerField(max_length=5)
 
-    class Meta: 
-        verbose_name_plural = 'addresses'
+#    class Meta: 
+#        verbose_name_plural = 'addresses'
 
-    def __str__(self):              # __unicode__ on Python 2
-        return self.street
+#    def __str__(self):              # __unicode__ on Python 2
+#        return self.street
 
 class Class(TimeStampedModel):
     year_int = models.IntegerField()
