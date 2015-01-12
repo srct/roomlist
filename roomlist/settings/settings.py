@@ -139,3 +139,7 @@ AUTHENTICATION_BACKENDS = (
 CAS_SERVER_URL = 'https://login.gmu.edu'
 CAS_LOGOUT_COMPLETELY = True
 CAS_PROVIDE_URL_TO_LOGOUT = True
+
+CAS_RESPONSE_CALLBACKS = (
+    'accounts.cas_callbacks.create_user',
+)
