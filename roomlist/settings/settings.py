@@ -136,6 +136,6 @@ AUTHENTICATION_BACKENDS = (
     'cas.backends.CASBackend',
 )
 
-CAS_SERVER_URL = 'http://login.gmu.edu'
+CAS_SERVER_URL = 'https://login.gmu.edu'
 CAS_LOGOUT_COMPLETELY = True
 CAS_PROVIDE_URL_TO_LOGOUT = True
