@@ -3,46 +3,72 @@
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-8 col-md-offset-2 text-center">
-      <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 175 %}" alt="{{ student.user.first_name }} Gravatar picture">
+      <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.user.first_name }} Gravatar picture">
       <h1>{{ student.user.first_name }} {{ student.user.last_name }}, {{ student.user.username }}</h1>
     </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-8 col-md-offset-2">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <table class="table table-hover text-center">
-          <tbody>
-            <tr>
-              <td><i class="fa fa-facebook fa-lg"></i>
-              </td>
-              <td>
-                {% load socialaccount %} {% providers_media_js %}
-                <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='/accounts/student/' %}">Facebook Connect</a>
-              </td>
-            </tr>
+{% load socialaccount %} {% providers_media_js %}
 
-            <tr>
-              <td><i class="fa fa-google fa-lg"></i>
-              </td>
-              <td>
-                <a href="{% provider_login_url 'google' process='connect' next='/accounts/student/' %}">Connect to Google</a>
-              </td>
-            </tr>
+<div class="row" style="margin-top: 50px">
+  <div class="col-md-3 text-center">
+    <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='/accounts/student/' %}"><i class="fa fa-facebook fa-5x"></i></a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="{% provider_login_url 'google' process='connect' next='/accounts/student/' %}"><i class="fa fa-google fa-5x"></i></a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="{% provider_login_url 'twitter' process='connect' next='/accounts/student/' %}"><i class="fa fa-twitter fa-5x"></i></a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="{% provider_login_url 'instagram' process='connect' next='/accounts/student/' %}"><i class="fa fa-instagram fa-5x"></i></a>
+  </div>
+</div>
+<div class="row" style="margin-top: 15px; margin-bottom: 50px">
+  <div class="col-md-3 text-center">
+    <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='/accounts/student/' %}">Link a Facebook</a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="{% provider_login_url 'google' process='connect' next='/accounts/student/' %}">Link a Google</a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="{% provider_login_url 'twitter' process='connect' next='/accounts/student/' %}">Link a Twitter</a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="{% provider_login_url 'instagram' process='connect' next='/accounts/student/' %}">Link an Instagram</a>
+  </div>
+</div>
 
-            <tr>
-              <td><i class="fa fa-twitter fa-lg"></i>
-              </td>
-              <td>
-                <a href="{% provider_login_url 'twitter' process='connect' next='/accounts/student/' %}">Connect to Twitter</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+<hr>
+
+<div class="row" style="margin-top: 50px">
+  <div class="col-md-3 text-center">
+    <a href="/accounts/password/change/"><i class="fa fa-key fa-5x"></i></a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="/accounts/email/"><i class="fa fa-envelope fa-5x"></i></a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="/accounts/settings/"><i class="fa fa-lock fa-5x"></i></a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="/accounts/settings/"><i class="fa fa-cog fa-5x"></i></a>
+  </div>
+</div>
+
+<div class="row" style="margin-top: 15px">
+  <div class="col-md-3 text-center">
+    <a href="/accounts/password/change/">Change Password</a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="/accounts/email/">Manage Email</a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="/accounts/settings/">Manage Permissions</a>
+  </div>
+  <div class="col-md-3 text-center">
+    <a href="/accounts/settings/">Other Settings</a>
   </div>
 </div>
 
