@@ -21,7 +21,7 @@ urlpatterns = patterns('',
 
     # login and logout
     url(r'^login/$', 'cas.views.login', name='login'),
-    url(r'login/$', 'cas.views.logout', name='logout'),
+    url(r'^logout/$', 'cas.views.logout', name='logout'),
 
     # alternate interfaces
     url(r'^api/', include('api.urls')),
