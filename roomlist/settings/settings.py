@@ -39,8 +39,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount',
+    #'allauth.account.context_processors.account',
+    #'allauth.socialaccount.context_processors.socialaccount',
 )
 
 # Quick-start development settings - unsuitable for production
@@ -72,12 +72,12 @@ INSTALLED_APPS = (
     'accounts',
     'crispy_forms',
     'django_gravatar',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.twitter',
+    #'allauth',
+    #'allauth.account',
+    #'allauth.socialaccount',
+    #'allauth.socialaccount.providers.facebook',
+    #'allauth.socialaccount.providers.google',
+    #'allauth.socialaccount.providers.twitter',
 )
 
 CRISPY_TEMPLATE_PACK = 'bootstrap'
@@ -86,7 +86,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_gmucas.middleware.CASMiddleware',
+    'cas.middleware.CASMiddleware',
     'django.middleware.doc.XViewMiddleware',
 
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'django_gmucas.backends.CASBackend',
+    'cas.backends.CASBackend',
 )
 
 CAS_SERVER_URL = 'login.gmu.edu'
