@@ -17,12 +17,12 @@ class CreateStudent(LoginRequiredMixin, CreateView):
 # details about the student
 class DetailStudent(LoginRequiredMixin, DetailView):
     model = Student
-    login_url = '/'
+    login_url = '/accounts/login/'
 
 # changeable student settings
 class DetailStudentSettings(LoginRequiredMixin, DetailView):
     model = Student
-    login_url = '/'
+    login_url = '/accounts/login/'
 
 
 class DetailCurrentStudent(LoginRequiredMixin, DetailView):
