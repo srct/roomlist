@@ -22,10 +22,10 @@
         {% if user.is_authenticated %}
         <li><a href="/accounts/student/{{ user.username }}">{{ user.username }}</a>
         </li>
-        <li><a href="/accounts/logout/">Logout</a>
+        <li><a href="{% url 'logout' %}">Logout</a>
         </li>
         {% else %}
-        <li><a href="/accounts/login/">Login</a>
+        <li><a href="{% url 'login' %}">Login</a>
         </li>
         {% endif %}
       </ul>
