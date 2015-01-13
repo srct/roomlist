@@ -12,66 +12,58 @@
 {% load socialaccount %} {% providers_media_js %}
 
 <div class="row" style="margin-top: 50px">
-  <div class="col-md-3 text-center">
-    <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='/accounts/student/' %}"><i class="fa fa-facebook fa-5x"></i></a>
-  </div>
-  <div class="col-md-3 text-center">
-    <a href="{% provider_login_url 'google' process='connect' next='/accounts/student/' %}"><i class="fa fa-google fa-5x"></i></a>
-  </div>
-  <div class="col-md-3 text-center">
-    <a href="{% provider_login_url 'twitter' process='connect' next='/accounts/student/' %}"><i class="fa fa-twitter fa-5x"></i></a>
-  </div>
+  <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='/accounts/student/' %}">
+    <div class="col-md-3 text-center">
+      <h4><i class="fa fa-facebook fa-5x"></i></h4>
+      <h4>Link a Facebook</h4>
+    </div>
+  </a>
+  <a href="{% provider_login_url 'google' process='connect' next='/accounts/student/' %}">
+    <div class="col-md-3 text-center">
+      <h4><i class="fa fa-google fa-5x"></i></h4>
+      <h4>Link a Google</h4>
+    </div>
+  </a>
+  <a href="{% provider_login_url 'twitter' process='connect' next='/accounts/student/' %}">
+    <div class="col-md-3 text-center">
+      <h4><i class="fa fa-twitter fa-5x"></i></h4>
+      <h4>Link a Twitter</h4>
+    </div>
+  </a>
   <div class="col-md-3 text-center">
     <!--<a href="{% provider_login_url 'instagram' process='connect' next='/accounts/student/' %}"><i class="fa fa-instagram fa-5x"></i></a>-->
-    <i class="fa fa-instagram fa-5x"></i>
-  </div>
-</div>
-<div class="row" style="margin-top: 15px; margin-bottom: 50px">
-  <div class="col-md-3 text-center">
-    <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='/accounts/student/' %}">Link a Facebook</a>
-  </div>
-  <div class="col-md-3 text-center">
-    <a href="{% provider_login_url 'google' process='connect' next='/accounts/student/' %}">Link a Google</a>
-  </div>
-  <div class="col-md-3 text-center">
-    <a href="{% provider_login_url 'twitter' process='connect' next='/accounts/student/' %}">Link a Twitter</a>
-  </div>
-  <div class="col-md-3 text-center">
-    <!--<a href="{% provider_login_url 'instagram' process='connect' next='/accounts/student/' %}">Link an Instagram</a>-->
-    Link an Instagram (Soon!)
+    <h4><i class="fa fa-instagram fa-5x"></i></h4>
+    <h4>Link an Instagram (Soon!)</h4>
   </div>
 </div>
 
 <hr>
 
 <div class="row" style="margin-top: 50px">
-  <div class="col-md-3 text-center">
-    <a href="/accounts/password/change/"><i class="fa fa-key fa-5x"></i></a>
-  </div>
-  <div class="col-md-3 text-center">
-    <a href="/accounts/email/"><i class="fa fa-envelope fa-5x"></i></a>
-  </div>
-  <div class="col-md-3 text-center">
-    <a href="/accounts/settings/"><i class="fa fa-lock fa-5x"></i></a>
-  </div>
-  <div class="col-md-3 text-center">
-    <a href="/accounts/settings/"><i class="fa fa-cog fa-5x"></i></a>
-  </div>
-</div>
-
-<div class="row" style="margin-top: 15px">
-  <div class="col-md-3 text-center">
-    <a href="/accounts/password/change/">Change Password</a>
-  </div>
-  <div class="col-md-3 text-center">
-    <a href="/accounts/email/">Manage Email</a>
-  </div>
-  <div class="col-md-3 text-center">
-    <a href="/accounts/settings/">Manage Permissions</a>
-  </div>
-  <div class="col-md-3 text-center">
-    <a href="/accounts/settings/">Other Settings</a>
-  </div>
+  <a href="/accounts/password/change/">
+    <div class="col-md-3 text-center">
+      <h4><i class="fa fa-key fa-5x"></i></h4>
+          <h4>Change Password</h4>
+    </div>
+  </a>
+  <a href="/accounts/email/">
+    <div class="col-md-3 text-center">
+      <h4><i class="fa fa-envelope fa-5x"></i></h4>
+      <h4>Manage Email</h4>
+    </div>
+  </a>
+  <a href="/accounts/settings/">
+    <div class="col-md-3 text-center">
+      <h4><i class="fa fa-lock fa-5x"></i></h4>
+    <h4>Manage Permissions</h4>
+    </div>
+  </a>
+  <a href="/accounts/settings/">
+    <div class="col-md-3 text-center">
+      <h4><i class="fa fa-cog fa-5x"></i></h4>
+    <h4>Other Settings</h4>
+    </div>
+  </a>
 </div>
 
 {% endblock %}
