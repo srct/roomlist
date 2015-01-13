@@ -38,8 +38,7 @@
            <h4><i class="fa fa-facebook fa-lg"></i></h4>
           </td>
           <td>
-            <!-- {% if accounts.facebook %} <h4><a href="http://www.facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">Facebook</a></h4> {% endif %} -->
-            <h4>A Facebook account link</h4>
+            {% if accounts.facebook %} <h4><a href="http://www.facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">Facebook</a></h4> {% endif %}
           </td>
         </tr>
 
