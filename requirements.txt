@@ -4,7 +4,7 @@ django-allauth==0.19.0
 django-autoslug==1.7.2
 django-braces==1.4.0
 django-crispy-forms==1.4.0
-git+http://git.gmu.edu/srct/django-gmucas.git
+git+https://github.com/the-ben-waters/django-cas.git
 django-gravatar2==1.1.4
 django-localflavor==1.0
 django-model-utils==2.2
