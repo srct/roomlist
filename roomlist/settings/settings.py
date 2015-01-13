@@ -78,6 +78,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.instagram',
 )
 
 CRISPY_TEMPLATE_PACK = 'bootstrap'
@@ -124,6 +125,8 @@ USE_L10N = True
 USE_TZ = True
 
 SITE_ID = 2
+
+ACCOUNT_ADAPTER = 'accounts.adapter.AccountAdapter'
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
