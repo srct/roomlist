@@ -36,20 +36,33 @@ Open a terminal window and type in the following commands. (If you're on Windows
 
 To set up the PostgreSQL database, open a terminal and type in the following commands:
 
-``First, we must install some dependencies for PostgreSQL.``
+First, we must install some dependencies for PostgreSQL.
+
 ``$ sudo apt-get install libpq-dev python-dev``
-``Next, we need to install PostgreSQL.``
+
+Next, we need to install PostgreSQL.
+
 ``$ sudo apt-get install postgresql postgresql-contrib``
-``Now, we need to become the postgres user, create our database, and create our user.``
+
+Now, we need to become the postgres user, create our database, and create our user.
+
 ``$ sudo su - postgres``
 ``$ createdb roomlist``
-``$ createuser -P``
-``Now follow the prompts, the username should be "django" (without the qoutes) and the password should be "H0jrp0llTJ" (without the qoutes). Next enter 'n' and press "Enter" for the following three promts.``
-``Finally, we need to enter the PostgreSQL command line interface to grant permissions.``
+
+Choose your username, and execute the next command without the quotes.
+
+``$ createuser -P "your_username"``
+
+You'll then be prompted to twice enter your password. Choose a strong passphrase for production. For local development, password strength is less important.
+
+Finally, we need to enter the PostgreSQL command line interface to grant permissions.
+
 ``$ psql``
 ``postgres=# GRANT ALL PRIVILEGES ON DATABASE roomlist TO django;``
+
 Your PostgreSQL database should now be set up to work with the Roomlist project.
 
+Copy the secret.py.template and config.py.template to secret.py and config.py respectively. For each, follow the comment instruction provided in each file.
 
 Next, run `python manage.py migrate`, then `python manage.py runserver`.
 Have your virtualenvironment running and with the requirements.txt installed.

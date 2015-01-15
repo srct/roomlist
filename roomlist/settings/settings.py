@@ -46,16 +46,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fGTL0pyk8MRq9YLXIOzFKZlneTdg3etdRxXs1FN2FqlVk595Ix'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
-
+import config
+DEBUG = config.DEBUG
+TEMPLATE_DEBUG = config.TEMPLATE_DEBUG
+ALLOWED_HOSTS = config.ALLOWED_HOSTS
 
 # Application definition
 
@@ -96,18 +90,20 @@ ROOT_URLCONF = 'settings.urls'
 
 WSGI_APPLICATION = 'settings.wsgi.application'
 
-
+import secret
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+
+SECRET_KEY = secret.SECRET_KEY
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'roomlist',
-        'USER': 'django',
-        'PASSWORD': 'H0jrp0llTJ',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': secret.DB_NAME,
+        'USER': secret.DB_USER,
+        'PASSWORD': secret.DB_PASSWORD,
+        'HOST': secret.DB_HOST,
+        'PORT': secret.DB_PORT,
     }
 }
 
@@ -116,7 +112,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 

@@ -1,0 +1,12 @@
+# installation configurations
+# copy to config.py
+
+# These configurations are set by default for a local development environment. Turning off debug mode will display 404 and 500 error pages instead of detailed logs.
+# Don't run with debug turned on in production!!!
+
+DEBUG = True
+TEMPLATE_DEBUG = True
+
+# the domains this application will be deployed on, e.g. which
+# domains this app should listen to requests from.
+ALLOWED_HOSTS = ['127.0.0.1']
