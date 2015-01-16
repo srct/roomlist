@@ -2,7 +2,7 @@ from django.db import models
 from autoslug import AutoSlugField
 from model_utils.models import TimeStampedModel
 
-from django.contrib.auth.models import User
+from accounts.models import Student
 
 from localflavor.us.models import USStateField
 
@@ -46,10 +46,7 @@ class Building(TimeStampedModel):
 class Room(TimeStampedModel):
     number = models.IntegerField()
     floor = models.IntegerField()
-    bedA = models.CharField(max_length=80)
-    bedB = models.CharField(max_length=80, blank=True)
-    bedC = models.CharField(max_length=80, blank=True)
-    bedD = models.CharField(max_length=80, blank=True)
+    students = models.ManyToManyField(Student)
     building = models.ForeignKey('Building')
 
     slug = AutoSlugField(populate_from='number', unique=True)
