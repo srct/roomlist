@@ -5,61 +5,25 @@ LICENSE                             # Roomlist is licensed under the GPLv3
 README.md                           # instructions for development setup  
 requirements.txt                    # python packages required  
 roomlist/                           # main project directory  
-   ├── accounts/                    #   
-   │   ├── adapter.py               #   
-   │   ├── admin.py                 #   
-   │   ├── cas_callbacks.py         #   
-   │   ├── forms.py                 #   
-   │   ├── __init__.py              #   
-   │   ├── migrations/              #   
-   │   ├── models.py                #   
-   │   ├── templates/               #   
-   │   │   ├── createStudent.html   #   
-   │   │   ├── detailStudent.html   #   
-   │   │   └── studentSettings.html #   
-   │   ├── tests.py                 #    
-   │   ├── urls.py                  #   
-   │   └── views.py                 #   
-   ├── api/                         #   
-   │   ├── __init__.py              #   
-   │   ├── migrations/              #   
-   │   ├── tests.py                 #   
-   │   ├── urls.py                  #   
-   │   └── views.py                 #   
-   ├── housing/                     #   
-   │   ├── admin.py                 #   
-   │   ├── __init__.py              #   
-   │   ├── migrations/              #   
-   │   ├── models.py                #   
-   │   ├── templates/               #   
-   │   │   ├── detailBuilding.html  #   
-   │   │   └── listBuildings.html   #   
-   │   ├── tests.py                 #   
-   │   ├── urls.py                  #   
-   │   └── views.py                 #   
-   ├── manage.py                    #   
-   ├── settings/                    #   
-   │   ├── __init__.py              #   
-   │   ├── config.py.template       #   
-   │   ├── secret.py.template       #   
-   │   ├── settings.py              #   
-   │   ├── urls.py                  #   
-   │   └── wsgi.py                  #   
-   ├── static/                      #   
-   │   ├── css/                     #   
-   │   ├── fonts/                   #   
-   │   ├── img/                     #   
-   │   ├── js/                      #   
-   │   └── media/                   #   
-   └── templates/                   #   
-       ├── 404.html                 #   
-       ├── 500.html                 #   
-       ├── about.html               #   
-       ├── admin/                   #   
-       │   └── base_site.html       #   
-       ├── index.html               #   
-       ├── layouts/                 #   
-       │   ├── base.html            #   
-       │   ├── footer.html          #   
-       │   └── navbar.html          #   
-       └── privacy.html             #   
+   ├── accounts/                    # app covering students, and later RA/RDs
+   │   ├── adapter.py               # auth configuration for social media
+   │   ├── admin.py                 # register models with django admin interface
+   │   ├── cas_callbacks.py         # create a student on first login through CAS
+   │   ├── models.py                # app database models
+   │   ├── templates/               # app html templates
+   │   ├── tests.py                 # test cases for the app
+   │   ├── urls.py                  # url routing within app
+   │   └── views.py                 # app logic and page configuration
+   ├── api/                         # app for api configuration and 
+   ├── housing/                     # app covering housing-related pages and models
+   │   └── forms.py                 # forms used in the app
+   ├── manage.py                    # run server, open shell, migrate database, and more
+   ├── settings/                    # project settings
+   │   ├── config.py.template       # deployment-specific configurations
+   │   ├── secret.py.template       # template for secret settings-- databases, keys
+   │   ├── settings.py              # project settings
+   │   └── urls.py                  # site-wide url routing
+   ├── static/                      # static file storage
+   └── templates/                   # site-wide html templates
+       ├── admin/                   # templates customizing django admin interface
+       └── layouts/                 # base template and common template components
