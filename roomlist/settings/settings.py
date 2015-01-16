@@ -1,16 +1,18 @@
 """
-Django settings for django_project project.
+Django settings for roomlist project.
 
 For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
+https://docs.djangoproject.com/en/1.7/topics/settings/
 
 For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
+https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+ORGANIZATION_EMAIL_DOMAIN = 'masonlive.gmu.edu'
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
@@ -42,9 +44,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
 )
-
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 import config
 DEBUG = config.DEBUG
@@ -78,10 +79,13 @@ INSTALLED_APPS = (
 CRISPY_TEMPLATE_PACK = 'bootstrap'
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'cas.middleware.CASMiddleware',
+    'django.middleware.doc.XViewMiddleware',
+
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -92,7 +96,7 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 
 import secret
 # Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 SECRET_KEY = secret.SECRET_KEY
 
@@ -108,7 +112,7 @@ DATABASES = {
 }
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
+# https://docs.djangoproject.com/en/1.7/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -120,18 +124,22 @@ USE_L10N = True
 
 USE_TZ = True
 
-SITE_ID = 2
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.7/howto/static-files/
+
+STATIC_URL = '/static/'
 
 ACCOUNT_ADAPTER = 'accounts.adapter.AccountAdapter'
 
 AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    "django.contrib.auth.backends.ModelBackend",
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
+    'django.contrib.auth.backends.ModelBackend',
+    'cas.backends.CASBackend',
 )
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
+CAS_SERVER_URL = 'https://login.gmu.edu'
+CAS_LOGOUT_COMPLETELY = True
+CAS_PROVIDE_URL_TO_LOGOUT = True
 
-STATIC_URL = '/static/'
+CAS_RESPONSE_CALLBACKS = (
+    'accounts.cas_callbacks.create_user',
+)
