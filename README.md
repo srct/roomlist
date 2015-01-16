@@ -69,68 +69,68 @@ Have your virtualenvironment running and with the requirements.txt installed.
 
 ## Application Structure
 
-LICENSE                             # Roomlist is licensed under the GPLv3
-README.md                           # instructions for development setup
-requirements.txt                    # python packages required
-roomlist/                           # main project directory
-   ├── accounts/                    # 
-   │   ├── adapter.py               # 
-   │   ├── admin.py                 # 
-   │   ├── cas_callbacks.py         # 
-   │   ├── forms.py                 # 
-   │   ├── __init__.py              # 
-   │   ├── migrations/              # 
-   │   ├── models.py                # 
-   │   ├── templates/               # 
-   │   │   ├── createStudent.html   # 
-   │   │   ├── detailStudent.html   # 
-   │   │   └── studentSettings.html # 
-   │   ├── tests.py                 #  
-   │   ├── urls.py                  # 
-   │   └── views.py                 # 
-   ├── api/                         # 
-   │   ├── __init__.py              # 
-   │   ├── migrations/              # 
-   │   ├── tests.py                 # 
-   │   ├── urls.py                  # 
-   │   └── views.py                 # 
-   ├── housing/                     # 
-   │   ├── admin.py                 # 
-   │   ├── __init__.py              # 
-   │   ├── migrations/              # 
-   │   ├── models.py                # 
-   │   ├── templates/               # 
-   │   │   ├── detailBuilding.html  # 
-   │   │   └── listBuildings.html   # 
-   │   ├── tests.py                 # 
-   │   ├── urls.py                  # 
-   │   └── views.py                 # 
-   ├── manage.py                    # 
-   ├── settings/                    # 
-   │   ├── __init__.py              # 
-   │   ├── config.py.template       # 
-   │   ├── secret.py.template       # 
-   │   ├── settings.py              # 
-   │   ├── urls.py                  # 
-   │   └── wsgi.py                  # 
-   ├── static/                      # 
-   │   ├── css/                     # 
-   │   ├── fonts/                   # 
-   │   ├── img/                     # 
-   │   ├── js/                      # 
-   │   └── media/                   # 
-   └── templates/                   # 
-       ├── 404.html                 # 
-       ├── 500.html                 # 
-       ├── about.html               # 
-       ├── admin/                   # 
-       │   └── base_site.html       # 
-       ├── index.html               # 
-       ├── layouts/                 # 
-       │   ├── base.html            # 
-       │   ├── footer.html          # 
-       │   └── navbar.html          # 
-       └── privacy.html             # 
+LICENSE                             # Roomlist is licensed under the GPLv3  
+README.md                           # instructions for development setup  
+requirements.txt                    # python packages required  
+roomlist/                           # main project directory  
+   ├── accounts/                    #   
+   │   ├── adapter.py               #   
+   │   ├── admin.py                 #   
+   │   ├── cas\_callbacks.py         #   
+   │   ├── forms.py                 #   
+   │   ├── \_\_init\_\_.py              #   
+   │   ├── migrations/              #   
+   │   ├── models.py                #   
+   │   ├── templates/               #   
+   │   │   ├── createStudent.html   #   
+   │   │   ├── detailStudent.html   #   
+   │   │   └── studentSettings.html #   
+   │   ├── tests.py                 #    
+   │   ├── urls.py                  #   
+   │   └── views.py                 #   
+   ├── api/                         #   
+   │   ├── \_\_init\_\_.py              #   
+   │   ├── migrations/              #   
+   │   ├── tests.py                 #   
+   │   ├── urls.py                  #   
+   │   └── views.py                 #   
+   ├── housing/                     #   
+   │   ├── admin.py                 #   
+   │   ├── \_\_init\_\_.py              #   
+   │   ├── migrations/              #   
+   │   ├── models.py                #   
+   │   ├── templates/               #   
+   │   │   ├── detailBuilding.html  #   
+   │   │   └── listBuildings.html   #   
+   │   ├── tests.py                 #   
+   │   ├── urls.py                  #   
+   │   └── views.py                 #   
+   ├── manage.py                    #   
+   ├── settings/                    #   
+   │   ├── \_\_init\_\_.py              #   
+   │   ├── config.py.template       #   
+   │   ├── secret.py.template       #   
+   │   ├── settings.py              #   
+   │   ├── urls.py                  #   
+   │   └── wsgi.py                  #   
+   ├── static/                      #   
+   │   ├── css/                     #   
+   │   ├── fonts/                   #   
+   │   ├── img/                     #   
+   │   ├── js/                      #   
+   │   └── media/                   #   
+   └── templates/                   #   
+       ├── 404.html                 #   
+       ├── 500.html                 #   
+       ├── about.html               #   
+       ├── admin/                   #   
+       │   └── base_site.html       #   
+       ├── index.html               #   
+       ├── layouts/                 #   
+       │   ├── base.html            #   
+       │   ├── footer.html          #   
+       │   └── navbar.html          #   
+       └── privacy.html             #   
 
 To-do
 ---
