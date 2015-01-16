@@ -9,5 +9,7 @@ def create_user(tree):
     if user_created:
         user.email = "%s@%s" % (username, settings.ORGANIZATION_EMAIL_DOMAIN)
         user.save()
+        new_student = Student.objects.create()
+        new_student.user = user        
 
         print("Created user %s!" % username)
