@@ -2,8 +2,6 @@ from django.db import models
 from autoslug import AutoSlugField
 from model_utils.models import TimeStampedModel
 
-from accounts.models import Student
-
 from localflavor.us.models import USStateField
 
 class Building(TimeStampedModel):
@@ -46,7 +44,6 @@ class Building(TimeStampedModel):
 class Room(TimeStampedModel):
     number = models.IntegerField()
     floor = models.IntegerField()
-    students = models.ManyToManyField(Student)
     building = models.ForeignKey('Building')
 
     slug = AutoSlugField(populate_from='number', unique=True)

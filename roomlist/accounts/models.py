@@ -1,13 +1,18 @@
 from django.db import models
-from housing.models import User, Room, Class
-from autoslug import AutoSlugField
 from model_utils.models import TimeStampedModel
+from django.contrib.auth.models import User
+
+from autoslug import AutoSlugField
+
+from housing.models import Building, Room, Class
+
 from allauth.socialaccount.models import SocialAccount
 import hashlib
 
 # Create your models here.
 class Major(TimeStampedModel):
-    major_name = models.CharField(max_length = 30)
+    name = models.CharField(max_length = 50)
+    # I believe the longest is "Government and International Politics"
 
 class Student(TimeStampedModel):
     user = models.OneToOneField(User)
