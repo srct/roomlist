@@ -11,12 +11,13 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a>
-        </li>
-        <li><a href="{% url 'about' %}">About</a>
-        </li>
+        {% if user.is_authenticated %}
         <li><a href="/housing/buildings">Buildings</a>
         </li>
+        {% else %}
+        <li><a href="{% url 'about' %}">About</a>
+        </li>
+        {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
