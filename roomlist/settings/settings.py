@@ -62,11 +62,14 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    # apps
     'api',
     'housing',
     'accounts',
+    # packages
     'crispy_forms',
     'django_gravatar',
+    'guardian',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -133,8 +136,11 @@ ACCOUNT_ADAPTER = 'accounts.adapter.AccountAdapter'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
     'cas.backends.CASBackend',
 )
+
+ANONYMOUS_USER_ID = None
 
 CAS_SERVER_URL = 'https://login.gmu.edu'
 CAS_LOGOUT_COMPLETELY = True
