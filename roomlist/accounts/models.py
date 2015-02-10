@@ -17,10 +17,22 @@ class Major(TimeStampedModel):
 class Student(TimeStampedModel):
     user = models.OneToOneField(User)
     # Django user includes a username, password, email, first name, and last name
+
+    FLOOR = 'floor'
+    BUILDING = 'building'
+    STUDENTS = 'students'
+
+    PRIVACY_CHOICES = (
+        (FLOOR, 'My Floor'),
+        (BUILDING, 'My Building'),
+        (STUDENTS, 'All Students'),
+    )
+
+    privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
+
     room = models.OneToOneField(Room)
     clas = models.OneToOneField(Class)
     major = models.OneToOneField(Major)
-    # major = models.
 
     # social media accounts
 
