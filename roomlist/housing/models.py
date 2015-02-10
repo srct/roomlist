@@ -36,6 +36,11 @@ class Building(TimeStampedModel):
 
     slug = AutoSlugField(populate_from='name', unique=True)
 
+    class Meta:
+        permissions = (
+            ('view_task', 'View task'),
+        )
+
     def __str__(self):              # __unicode__ on Python 2
         return self.name
     def __unicode__(self):              # __unicode__ on Python 2
@@ -44,6 +49,11 @@ class Building(TimeStampedModel):
 class Floor(TimeStampedModel):
     building = models.ForeignKey('Building')
     number = models.IntegerField()
+
+    class Meta:
+        permissions = (
+            ('view_task', 'View task'),
+        )
 
     def __str__(self):              # __unicode__ on Python 2
         return self.building.__str__()+" "+self.number.__str__()
