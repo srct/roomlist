@@ -38,20 +38,12 @@ class DetailFloor(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailFloor, self):
+        # perhaps change to get the students, and then list by rooms?
         context['rooms'] = Room.objects.filter(floor=self.get_object()).order_by('-number')
         return context
 
     login_url = '/'
 
-# this lists students in a room
-class DetailRoom(LoginRequiredMixin, ListView):
-    model = Room
+# deleted 'DetailRoom' view-- inhabitants will be listed on the floor page
 
-    def get_context_data(self, **kwargs):
-        context = super(DetailRoom, self):
-#        context['students'] = 
-        return context
-
-    login_url = '/'
-
-# deleted 'updateroom' view-- that will be handled on the user's page
+# deleted 'UpdateRoom' view-- that will be handled on the user's page
