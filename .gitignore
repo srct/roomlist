@@ -45,3 +45,6 @@ docs/_build/
 target/
 # Vim files
 *.sw*
+# config, secret settings
+config.py
+secret.py
