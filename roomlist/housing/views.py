@@ -36,14 +36,58 @@ class DetailFloor(LoginRequiredMixin, DetailView):
     context_object_name = 'floor'
     template_name = detail_floor.html
 
+    def onFloor():
+        # if self.request.user is on the floor
+        return False
+
+    def inBuilding():
+        inBuilding = False
+        # if self.request.user is in the building
+        return False
+
+    rooms = Room.objects.filter(floor=self.get_object()).order_by('-number')
+    floor_students = []
+    for room in rooms:
+        if onFloor():
+            floor_students.extend(Student.objects.filter(room=room).floor_building_students())
+        elif inBuilding():
+            floor_students.extend(Student.objects.filter(room=room).building_students())
+        else:
+            floor_students.extend(Student.objects.filter(room=room).students())
+
     def get_context_data(self, **kwargs):
         context = super(DetailFloor, self):
-        # perhaps change to get the students, and then list by rooms?
-        context['rooms'] = Room.objects.filter(floor=self.get_object()).order_by('-number')
+        context['students'] = floor_students
         return context
 
     login_url = '/'
 
-# deleted 'DetailRoom' view-- inhabitants will be listed on the floor page
+class DetailRoom(LoginRequiredMixin, DetailView):
+    model = Room
+    context_object_name = 'room'
+    template_name='detailBuilding.html'
+
+    def onFloor():
+        # if self.request.user is on the floor
+        return False
+
+    def inBuilding():
+        inBuilding = False
+        # if self.request.user is in the building
+        return False
+
+    if onFloor():
+         students = Student.objects.filter(room=self.get_object()).floor_building_students()
+    elif inBuilding():
+         students = Student.objects.filter(room=self.get_object()).building_students()
+    else:
+         students = Student.objects.filter(room=self.get_object()).students()
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailRoom, self):
+        context['students'] = students
+        return context
+
+    login_url = '/'
 
 # deleted 'UpdateRoom' view-- that will be handled on the user's page
