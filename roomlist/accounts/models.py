@@ -24,7 +24,7 @@ class StudentQuerySet(models.query.QuerySet):
         return self.filter(privacy=STUDENTS)
 
 class StudentManager(models.Manager):
-    def get_query_set(self):
+    def get_queryset(self):
         return StudentQuerySet(self.model, using=self._db)
 
     def floor(self):
