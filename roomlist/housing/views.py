@@ -36,14 +36,21 @@ class DetailFloor(LoginRequiredMixin, DetailView):
     context_object_name = 'floor'
     template_name = detail_floor.html
 
-    def onFloor():
-        # if self.request.user is on the floor
-        return False
+    requesting_student = Student.objects.filter(user=self.request.user)
 
+    # if self.request.user is on the floor
+    def onFloor():
+        floor_status = False
+        if requesting_student.get_floor == self.get_object():
+            floor_status = True
+        return floor_status
+
+    # if self.request.user is in the building
     def inBuilding():
-        inBuilding = False
-        # if self.request.user is in the building
-        return False
+        building_status = False
+        if requesting_student.get_building == self.get_object().building:
+            building_status = True
+        return building_status
 
     rooms = Room.objects.filter(floor=self.get_object()).order_by('-number')
     floor_students = []
@@ -67,14 +74,21 @@ class DetailRoom(LoginRequiredMixin, DetailView):
     context_object_name = 'room'
     template_name='detailBuilding.html'
 
-    def onFloor():
-        # if self.request.user is on the floor
-        return False
+    requesting_student = Student.objects.filter(user=self.request.user)
 
+    # if self.request.user is on the floor
+    def onFloor():
+        floor_status = False
+        if requesting_student.get_floor == self.get_object().floor:
+            floor_status = True
+        return floor_status
+
+    # if self.request.user is in the building
     def inBuilding():
-        inBuilding = False
-        # if self.request.user is in the building
-        return False
+        building_status = False
+        if requesting_student.get_building == self.get_object().get_building:
+            building_status = True
+        return building_status
 
     if onFloor():
          students = Student.objects.filter(room=self.get_object()).floor_building_students()
