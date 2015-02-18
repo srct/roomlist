@@ -36,11 +36,6 @@ class StudentManager(models.Manager):
     def students(self):
         return self.get_query_set().students()
 
-    def floor_building(self):
-        floor = self.get_query_set().floor()
-        building = self.get_query_set().building()
-        return floor + list(set(building) - set(floor))
-
     # when a student is not on a floor, but in a building
     def building_students(self):
         building = self.get_query_set().building()
@@ -82,6 +77,14 @@ class Student(TimeStampedModel):
     slug = AutoSlugField(populate_from='user', unique=True)
 
     objects = StudentManager()
+
+    def get_floor(self):
+        floor = self.room.floor
+        return floor
+
+    def get_building(self):
+        building = self.room.floor.building
+        return building
 
     def profile_image_url(self):
         fb_uid = SocialAccount.objects.filter(user=self.user.id, provider='facebook')
