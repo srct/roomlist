@@ -1,6 +1,6 @@
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
-from housing.models import Building, Room
+from housing.models import Building, Floor, Room
 from accounts.models import Student
 
 from braces.views import LoginRequiredMixin
@@ -25,7 +25,7 @@ class DetailBuilding(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailBuilding, self).get_context_data(**kwargs)
-        context['floors'] = Floor.objects.filter(building__name=''+self.get_object().name_.order_by('-number')
+        context['floors'] = Floor.objects.filter(building__name=''+self.get_object().name).order_by('-number')
         return context
 
     login_url = '/'
@@ -34,7 +34,7 @@ class DetailBuilding(LoginRequiredMixin, DetailView):
 class DetailFloor(LoginRequiredMixin, DetailView):
     model = Floor
     context_object_name = 'floor'
-    template_name = detail_floor.html
+    template_name = 'detail_floor.html'
 
     requesting_student = Student.objects.filter(user=self.request.user)
 
@@ -63,7 +63,7 @@ class DetailFloor(LoginRequiredMixin, DetailView):
             floor_students.extend(Student.objects.filter(room=room).students())
 
     def get_context_data(self, **kwargs):
-        context = super(DetailFloor, self):
+        context = super(DetailFloor, self).get_context_data(**kwargs)
         context['students'] = floor_students
         return context
 
@@ -98,7 +98,7 @@ class DetailRoom(LoginRequiredMixin, DetailView):
          students = Student.objects.filter(room=self.get_object()).students()
 
     def get_context_data(self, **kwargs):
-        context = super(DetailRoom, self):
+        context = super(DetailRoom, self).get_context_data(**kwargs)
         context['students'] = students
         return context
 
