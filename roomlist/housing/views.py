@@ -31,74 +31,75 @@ class DetailBuilding(LoginRequiredMixin, DetailView):
     login_url = '/'
 
 # this lists the rooms on the floor
-class DetailFloor(LoginRequiredMixin, DetailView):
+class DetailFloor(LoginRequiredMixin, DetailView): 
     model = Floor
     context_object_name = 'floor'
     template_name = 'detail_floor.html'
-
-    requesting_student = Student.objects.filter(user=self.request.user)
-
-    # if self.request.user is on the floor
-    def onFloor():
-        floor_status = False
-        if requesting_student.get_floor == self.get_object():
-            floor_status = True
-        return floor_status
-
-    # if self.request.user is in the building
-    def inBuilding():
-        building_status = False
-        if requesting_student.get_building == self.get_object().building:
-            building_status = True
-        return building_status
-
-    rooms = Room.objects.filter(floor=self.get_object()).order_by('-number')
-    floor_students = []
-    for room in rooms:
-        if onFloor():
-            floor_students.extend(Student.objects.filter(room=room).floor_building_students())
-        elif inBuilding():
-            floor_students.extend(Student.objects.filter(room=room).building_students())
-        else:
-            floor_students.extend(Student.objects.filter(room=room).students())
-
+    
     def get_context_data(self, **kwargs):
         context = super(DetailFloor, self).get_context_data(**kwargs)
+    
+        requesting_student = Student.objects.filter(user=self.request.user)
+
+        # if self.request.user is on the floor
+        def onFloor():
+            floor_status = False
+            if requesting_student.get_floor == self.get_object():
+                floor_status = True
+            return floor_status
+
+        # if self.request.user is in the building
+        def inBuilding():
+            building_status = False
+            if requesting_student.get_building == self.get_object().building:
+                building_status = True
+            return building_status
+
+        rooms = Room.objects.filter(floor=self.get_object()).order_by('-number')
+        floor_students = []
+        for room in rooms:
+            if onFloor():
+                floor_students.extend(Student.objects.filter(room=room).floor_building_students())
+            elif inBuilding():
+                floor_students.extend(Student.objects.filter(room=room).building_students())
+            else:
+                floor_students.extend(Student.objects.filter(room=room).students())
+
         context['students'] = floor_students
         return context
-
-    login_url = '/'
 
 class DetailRoom(LoginRequiredMixin, DetailView):
     model = Room
     context_object_name = 'room'
     template_name='detailBuilding.html'
 
-    requesting_student = Student.objects.filter(user=self.request.user)
-
-    # if self.request.user is on the floor
-    def onFloor():
-        floor_status = False
-        if requesting_student.get_floor == self.get_object().floor:
-            floor_status = True
-        return floor_status
-
-    # if self.request.user is in the building
-    def inBuilding():
-        building_status = False
-        if requesting_student.get_building == self.get_object().get_building:
-            building_status = True
-        return building_status
-
-    if onFloor():
-         students = Student.objects.filter(room=self.get_object()).floor_building_students()
-    elif inBuilding():
-         students = Student.objects.filter(room=self.get_object()).building_students()
-    else:
-         students = Student.objects.filter(room=self.get_object()).students()
-
     def get_context_data(self, **kwargs):
         context = super(DetailRoom, self).get_context_data(**kwargs)
+
+        requesting_student = Student.objects.filter(user=self.request.user)
+
+
+        # if self.request.user is on the floor
+        def onFloor():
+            floor_status = False
+            if requesting_student.get_floor == self.get_object().floor:
+                floor_status = True
+            return floor_status
+
+        # if self.request.user is in the building
+        def inBuilding():
+            building_status = False
+            if requesting_student.get_building == self.get_object().get_building:
+                building_status = True
+            return building_status
+
+        if onFloor():
+             students = Student.objects.filter(room=self.get_object()).floor_building_students()
+        elif inBuilding():
+             students = Student.objects.filter(room=self.get_object()).building_students()
+        else:
+             students = Student.objects.filter(room=self.get_object()).students()
+
         context['students'] = students
         return context
 
