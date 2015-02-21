@@ -26,7 +26,28 @@ class StudentQuerySet(models.query.QuerySet):
     def students(self):
         return self.filter(privacy='students')
 
+    # when a student is not on a floor, but in a building
+    def building_students(self):
+        building = self.building()
+        students = self.students()
+        return list(building) + list(set(students) - set(building))
+
+    # when a student is on a floor
+    def floor_building_students(self):
+        floor = self.floor()
+        building = self.building()
+        students = self.students()
+
+        # using the function above results in UnboundLocalError excpetion
+        #building_students = building_students()
+        building_students = list(building) + list(set(students) - set(building))
+
+        return list(floor) + list(set(building_students) - set(floor))
+
 class StudentManager(models.Manager):
+
+    # this 'duplication' allows for queryset chaining
+
     def get_queryset(self):
         return StudentQuerySet(self.model, using=self._db)
 
@@ -39,23 +60,11 @@ class StudentManager(models.Manager):
     def students(self):
         return self.get_queryset().students()
 
-    # when a student is not on a floor, but in a building
     def building_students(self):
-        building = self.get_queryset().building()
-        students = self.get_queryset().students()
-        return list(building) + list(set(students) - set(building))
+        return self.get_queryset().building_students()
  
-    # when a student is on a floor
     def floor_building_students(self):
-        floor = self.get_queryset().floor()
-        building = self.get_queryset().building()
-        students = self.get_queryset().students()
-
-        # using the function above results in UnboundLocalError excpetion
-        #building_students = building_students()
-        building_students = list(building) + list(set(students) - set(building))
-
-        return list(floor) + list(set(building_students) - set(floor))
+        return self.get_queryset().floor_building_students()
 
 class Student(TimeStampedModel):
     user = models.OneToOneField(User)
