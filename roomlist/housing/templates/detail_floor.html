@@ -20,9 +20,9 @@
   {% for student in students %}
   <div class="col-sm-3 text-center">
     <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
-    <h4><a href="#"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
+    <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
     <h5><em>{{ student.major.name }}</em></h5>
-    <h5><a href="#">{{ student.room }}</a></h5>
+    <h5><a href="{{ student.room.get_absolute_url }}">{{ student.room }}</a></h5>
   </div>
   {% endfor %}
 </div>
@@ -37,7 +37,7 @@
     {% elif notInBuilding %}
     You don't live in this building. Depending on individual privacy settings, not all students may be displayed.
     {% else %}
-    Don't see someone you know who lives here? Tell about SRCT Roomlist!
+    Don't see someone you know who lives here? Tell them about SRCT Roomlist!
     {% endif %}
     </em></strong></div>
   </div>

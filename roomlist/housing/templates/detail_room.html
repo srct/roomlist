@@ -17,7 +17,7 @@
   {% for student in students %}
   <div class="col-sm-3 text-center">
     <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
-    <h4><a href="#"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
+    <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
     <h5><em>{{ student.major.name }}</em></h5>
   </div>
   {% endfor %}
