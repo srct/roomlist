@@ -12,9 +12,9 @@ class ListBuildings(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ListBuildings, self).get_context_data(**kwargs)
-        context['rappahannock'] = Building.objects.filter(neighbourhood='ra')
-        context['shenandoah'] = Building.objects.filter(neighbourhood='sh')
-        context['aquia'] = Building.objects.filter(neighbourhood='aq')
+        context['rappahannock'] = Building.objects.filter(neighbourhood='ra').order_by('name')
+        context['shenandoah'] = Building.objects.filter(neighbourhood='sh').order_by('name')
+        context['aquia'] = Building.objects.filter(neighbourhood='aq').order_by('name')
         return context
 
 # building floors, other information
