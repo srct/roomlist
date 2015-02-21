@@ -6,7 +6,6 @@ django-braces==1.4.0
 django-crispy-forms==1.4.0
 git+https://github.com/the-ben-waters/django-cas.git
 django-gravatar2==1.1.4
-django-guardian==1.2.5
 django-localflavor==1.0
 django-model-utils==2.2
 oauthlib==0.7.2

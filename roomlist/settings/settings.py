@@ -69,7 +69,6 @@ INSTALLED_APPS = (
     # packages
     'crispy_forms',
     'django_gravatar',
-    'guardian',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -127,6 +126,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+SITE_ID = 2
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
@@ -136,11 +137,8 @@ ACCOUNT_ADAPTER = 'accounts.adapter.AccountAdapter'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'guardian.backends.ObjectPermissionBackend',
     'cas.backends.CASBackend',
 )
-
-ANONYMOUS_USER_ID = None
 
 CAS_SERVER_URL = 'https://login.gmu.edu'
 CAS_LOGOUT_COMPLETELY = True
