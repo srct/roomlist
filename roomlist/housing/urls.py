@@ -22,7 +22,7 @@ urlpatterns = patterns('',
             template_name='detail_building.html'),
         name='detail_building'),
 
-#    url(r'^buildings/whitetop/5/$',
+#    url(r'^buildings/whitetop/(?P<slug>[\w-]+)/$',
 #        DetailFloor.as_view(
 #            model=Floor,
 #            context_object_name='floor',
