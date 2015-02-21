@@ -13,6 +13,9 @@ class Major(TimeStampedModel):
     name = models.CharField(max_length = 50)
     # I believe the longest is "Government and International Politics"
 
+    def __str__(self):
+        return self.name
+
 class StudentQuerySet(models.query.QuerySet):
     def floor(self):
         return self.filter(privacy=FLOOR)
