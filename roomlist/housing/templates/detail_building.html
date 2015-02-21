@@ -6,39 +6,17 @@
   <div class="row">
     <div class="col-lg-12 text-center">
       <h1><strong>GMU</strong>ROOMLIST</h1>
-      <p class="lead">{{ building.name }}</p>
+      <p class="lead"><strong>{{ building.name }}</strong></p>
     </div>
   </div>
 </div>
 
-<ul style="list-style-type: none">
-  {% for room in room_list %}
-  <li>
-    {{ room.number }}
-  </li>
-  <li>
-    <ul>
-      <li>
-        {{ room.bedA }}
-      </li>
-      {% if room.bedB %}
-      <li>
-        {{ room.bedB }}
-      </li>
-      {% endif %}
-      {% if room.bedC %}
-      <li>
-        {{ room.bedC }}
-      </li>
-      {% endif %}
-      {% if room.bedD %}
-      <li>
-        {{ room.bedD }}
-      </li>
-      {% endif %}
-    </ul>
-  </li>
+<div class="row">
+  {% for floor in floors %}
+  <div class="col-sm-3 text-center">
+    <a href="#" class="btn btn-primary btn-lg btn-block">{{ floor.number }}</a>
+  </div>
   {% endfor %}
-</ul>
+</div>
 
 {% endblock %}
