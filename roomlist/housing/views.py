@@ -87,14 +87,14 @@ class DetailRoom(LoginRequiredMixin, DetailView):
         # if self.request.user is on the floor
         def onFloor():
             floor_status = False
-            if requesting_student.get_floor == self.get_object().floor:
+            if requesting_student.get_floor() == self.get_object().floor:
                 floor_status = True
             return floor_status
 
         # if self.request.user is in the building
         def inBuilding():
             building_status = False
-            if requesting_student.get_building == self.get_object().floor.building:
+            if requesting_student.get_building() == self.get_object().floor.building:
                 building_status = True
             return building_status
 
@@ -106,6 +106,9 @@ class DetailRoom(LoginRequiredMixin, DetailView):
              students = Student.objects.filter(room=self.get_object()).students()
 
         context['students'] = students
+        context['notOnFloor'] = not onFloor()
+        context['notInBuilding'] = not inBuilding()
+
         return context
 
     login_url = '/'

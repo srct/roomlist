@@ -5,16 +5,38 @@
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-lg-12 text-center">
-      <h1><strong>GMU</strong>ROOMLIST</h1>
-      <p class="lead"><strong>{{ room.floor.building.name }}{{ room.number }}</strong></p>
+      <h1><strong>SRCT</strong>ROOMLIST</h1>
+      <p class="lead"><strong>{{ room.floor.building.name }} {{ room.number }}</strong></p>
     </div>
   </div>
 </div>
 
+{% load gravatar %}
+
 <div class="row">
   {% for student in students %}
-    {{ student }}
+  <div class="col-sm-3 text-center">
+    <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
+    <h4><a href="#">{{ student.user.first_name }} {{ student.user.last_name }}</a></h4>
+    <h5><em>{{ student.major.name }}</em></h5>
+  </div>
   {% endfor %}
+</div>
+
+<br />
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="alert alert-info text-center"><strong><em>
+    {% if notOnFloor %}
+    You don't live on this floor. Depending on individual privacy settings, not all students may be displayed.
+    {% elif notInBuilding %}
+    You don't live in this building. Depending on individual privacy settings, not all students may be displayed.
+    {% else %}
+    Don't see one of your roommates? Tell them about SRCT Roomlist!
+    {% endif %}
+    </em></strong></div>
+  </div>
 </div>
 
 {% endblock %}
