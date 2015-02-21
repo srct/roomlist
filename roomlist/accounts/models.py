@@ -18,42 +18,44 @@ class Major(TimeStampedModel):
 
 class StudentQuerySet(models.query.QuerySet):
     def floor(self):
-        return self.filter(privacy=FLOOR)
+        return self.filter(privacy='floor')
 
     def building(self):
-        return self.filter(privacy=BUILDING)
+        return self.filter(privacy='building')
 
     def students(self):
-        return self.filter(privacy=STUDENTS)
+        return self.filter(privacy='students')
 
 class StudentManager(models.Manager):
     def get_queryset(self):
         return StudentQuerySet(self.model, using=self._db)
 
     def floor(self):
-        return self.get_query_set().floor()
+        return self.get_queryset().floor()
 
     def building(self):
-        return self.get_query_set().building()
+        return self.get_queryset().building()
 
     def students(self):
-        return self.get_query_set().students()
+        return self.get_queryset().students()
 
     # when a student is not on a floor, but in a building
     def building_students(self):
-        building = self.get_query_set().building()
-        students = self.get_query_set().students()
-        return building + list(set(students) - set(building))
+        building = self.get_queryset().building()
+        students = self.get_queryset().students()
+        return list(building) + list(set(students) - set(building))
  
     # when a student is on a floor
     def floor_building_students(self):
-        floor = self.get_query_set().floor()
-        building = self.get_query_set().building()
-        students = self.get_query_set().students()
+        floor = self.get_queryset().floor()
+        building = self.get_queryset().building()
+        students = self.get_queryset().students()
 
-        building_students = building_students()
+        # using the function above results in UnboundLocalError excpetion
+        #building_students = building_students()
+        building_students = list(building) + list(set(students) - set(building))
 
-        return floor + list(set(building_students) - set(floor))
+        return list(floor) + list(set(building_students) - set(floor))
 
 class Student(TimeStampedModel):
     user = models.OneToOneField(User)
