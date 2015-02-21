@@ -1,0 +1,110 @@
+[
+  {
+    "model": "housing.building",
+    "pk": 1,
+    "fields": {
+      "name": "Adams",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+  {
+    "model": "housing.building",
+    "pk": 2,
+    "fields": {
+      "name": "Harrison",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+  {
+    "model": "housing.building",
+    "pk": 3,
+    "fields": {
+      "name": "Jackson",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+  {
+    "model": "housing.building",
+    "pk": 4,
+    "fields": {
+      "name": "Jefferson",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+  {
+    "model": "housing.building",
+    "pk": 5,
+    "fields": {
+      "name": "Kennedy",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+  {
+    "model": "housing.building",
+    "pk": 6,
+    "fields": {
+      "name": "Lincoln",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+  {
+    "model": "housing.building",
+    "pk": 7,
+    "fields": {
+      "name": "Madison",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+  {
+    "model": "housing.building",
+    "pk": 8,
+    "fields": {
+      "name": "Monroe",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+  {
+    "model": "housing.building",
+    "pk": 9,
+    "fields": {
+      "name": "Roosevelt",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+  {
+    "model": "housing.building",
+    "pk": 10,
+    "fields": {
+      "name": "Truman",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+  {
+    "model": "housing.building",
+    "pk": 11,
+    "fields": {
+      "name": "Madison",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+  {
+    "model": "housing.building",
+    "pk": 12,
+    "fields": {
+      "name": "Monroe",
+      "neighborhood": "sh",
+      "campus": "ff",
+    }
+  },
+]
