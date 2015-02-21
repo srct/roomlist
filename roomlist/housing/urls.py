@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
-from housing.views import ListBuildings, DetailBuilding, ListRooms, DetailRoom
-from housing.models import Building, Room
+from housing.views import ListBuildings, DetailBuilding, DetailFloor, DetailRoom
+from housing.models import Building, Floor, Room
 
 urlpatterns = patterns('',
 
@@ -11,15 +11,28 @@ urlpatterns = patterns('',
             #paginate_by='10',
             queryset=Building.objects.all(),
             context_object_name='buildings',
-            template_name='listBuildings.html'),
-        name='listBuildings'),
+            template_name='list_buildings.html'),
+        name='list_buildings'),
 
     url(r'^buildings/(?P<slug>[\w-]+)/$',
         DetailBuilding.as_view(
             model=Building,
             slug_field='slug__iexact',
             context_object_name='building',
-            template_name='detailBuilding.html'),
-        name='detailBuilding'),
+            template_name='detail_building.html'),
+        name='detail_building'),
 
+#    url(r'^buildings/whitetop/(?P<slug>[\w-]+)/$',
+#        DetailFloor.as_view(
+#            model=Floor,
+#            context_object_name='floor',
+#            template_name='detail_floor.html'),
+#        name='detail_floor'),
+
+#    url(r'^buildings/whitetop/5/5542/$',
+#        DetailRoom.as_view(
+#            model=Room,
+#            context_object_name='room',
+#            template_name='detail_room.html'),
+#        name='detail_room'),
 )

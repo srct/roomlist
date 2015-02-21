@@ -2,7 +2,7 @@ from django.db import models
 from autoslug import AutoSlugField
 from model_utils.models import TimeStampedModel
 
-from localflavor.us.models import USStateField
+#from localflavor.us.models import USStateField
 
 class Building(TimeStampedModel):
     name = models.CharField(max_length=100)
@@ -28,7 +28,7 @@ class Building(TimeStampedModel):
     CAMPUS_CHOICES = (
         (NONE, 'None'),
         (PRINCE_WILLIAM, 'Prince William'),
-        (MASONVALE, 'mv'),
+        (MASONVALE, 'MasonVale'),
         (FAIRFAX, 'Fairfax'),
     )
 
@@ -41,15 +41,23 @@ class Building(TimeStampedModel):
     def __unicode__(self):              # __unicode__ on Python 2
         return unicode(self.name)
 
-class Room(TimeStampedModel):
-    number = models.IntegerField()
-    floor = models.IntegerField()
+class Floor(TimeStampedModel):
     building = models.ForeignKey('Building')
+    number = models.IntegerField()
 
-    slug = AutoSlugField(populate_from='number', unique=True)
+    slug = AutoSlugField(populate_from='number')
 
     def __str__(self):              # __unicode__ on Python 2
         return self.building.__str__()+" "+self.number.__str__()
+
+class Room(TimeStampedModel):
+    number = models.IntegerField()
+    floor = models.ForeignKey('Floor')
+
+    slug = AutoSlugField(populate_from='number')
+
+    def __str__(self):              # __unicode__ on Python 2
+        return self.floor.building.__str__()+" "+self.number.__str__()
 
 # buildings on campus don't have separate addresses yet
 #class Address(TimeStampedModel):

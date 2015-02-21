@@ -62,9 +62,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    # apps
     'api',
     'housing',
     'accounts',
+    # packages
     'crispy_forms',
     'django_gravatar',
     'allauth',
@@ -123,6 +125,9 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# set for social auth
+#SITE_ID = 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
