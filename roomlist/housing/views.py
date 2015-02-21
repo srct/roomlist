@@ -68,6 +68,8 @@ class DetailFloor(LoginRequiredMixin, DetailView):
                 floor_students.extend(Student.objects.filter(room=room).students())
 
         context['students'] = floor_students
+        context['notOnFloor'] = not onFloor()
+        context['notInBuilding'] = not inBuilding()
         return context
 
 class DetailRoom(LoginRequiredMixin, DetailView):
@@ -92,7 +94,7 @@ class DetailRoom(LoginRequiredMixin, DetailView):
         # if self.request.user is in the building
         def inBuilding():
             building_status = False
-            if requesting_student.get_building == self.get_object().get_building:
+            if requesting_student.get_building == self.get_object().floor.building:
                 building_status = True
             return building_status
 
