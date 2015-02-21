@@ -39,23 +39,25 @@ class DetailFloor(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailFloor, self).get_context_data(**kwargs)
     
-        requesting_student = Student.objects.filter(user=self.request.user)
+        requesting_student_filter = Student.objects.filter(user=self.request.user)
+        # querysets are lists; get the only object in the list
+        requesting_student = requesting_student_filter[0]
 
         # if self.request.user is on the floor
         def onFloor():
             floor_status = False
-            if requesting_student.get_floor == self.get_object():
+            if requesting_student.get_floor() == self.get_object():
                 floor_status = True
             return floor_status
 
         # if self.request.user is in the building
         def inBuilding():
             building_status = False
-            if requesting_student.get_building == self.get_object().building:
+            if requesting_student.get_building() == self.get_object().building:
                 building_status = True
             return building_status
 
-        rooms = Room.objects.filter(floor=self.get_object()).order_by('-number')
+        rooms = Room.objects.filter(floor=self.get_object()).order_by('number')
         floor_students = []
         for room in rooms:
             if onFloor():
