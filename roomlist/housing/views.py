@@ -39,8 +39,8 @@ class DetailFloor(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailFloor, self).get_context_data(**kwargs)
     
+        #requesting_student = Student.objects.get(user=self.request.user)
         requesting_student_filter = Student.objects.filter(user=self.request.user)
-        # querysets are lists; get the only object in the list
         requesting_student = requesting_student_filter[0]
 
         # if self.request.user is on the floor
@@ -78,8 +78,9 @@ class DetailRoom(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailRoom, self).get_context_data(**kwargs)
 
-        requesting_student = Student.objects.filter(user=self.request.user)
-
+        #requesting_student = Student.objects.get(user=self.request.user)
+        requesting_student_filter = Student.objects.filter(user=self.request.user)
+        requesting_student = requesting_student_filter[0]
 
         # if self.request.user is on the floor
         def onFloor():
