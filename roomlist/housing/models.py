@@ -67,7 +67,7 @@ class Room(TimeStampedModel):
     slug = AutoSlugField(populate_from='number')
 
     def __str__(self):              # __unicode__ on Python 2
-        return self.building.__str__()+" "+self.number.__str__()
+        return self.floor.building.__str__()+" "+self.number.__str__()
 
 # buildings on campus don't have separate addresses yet
 #class Address(TimeStampedModel):
