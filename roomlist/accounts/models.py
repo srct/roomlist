@@ -3,6 +3,7 @@ from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
 
 from autoslug import AutoSlugField
+from django.core.urlresolvers import reverse
 
 from housing.models import Building, Room, Class
 
@@ -109,6 +110,9 @@ class Student(TimeStampedModel):
 
         return "http://www.gravatar.com/avatar/{}?s=175".format(hashlib.md5(self.user.email).hexdigest())
 
+
+    def get_absolute_url(self):
+        return reverse('detail_student', kwargs={'slug':self.slug})
 
     def __str__(self):              # __unicode__ on Python 2
         return self.user.username

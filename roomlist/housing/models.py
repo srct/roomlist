@@ -3,6 +3,7 @@ from autoslug import AutoSlugField
 from model_utils.models import TimeStampedModel
 
 #from localflavor.us.models import USStateField
+from django.core.urlresolvers import reverse
 
 class Building(TimeStampedModel):
     name = models.CharField(max_length=100)
@@ -36,10 +37,16 @@ class Building(TimeStampedModel):
 
     slug = AutoSlugField(populate_from='name', unique=True)
 
+    def get_absolute_url(self):
+        return reverse('detail_building', kwargs={'slug':self.slug})
+
     def __str__(self):              # __unicode__ on Python 2
         return self.name
     def __unicode__(self):              # __unicode__ on Python 2
         return unicode(self.name)
+    
+    class Meta:
+        ordering = ['name']
 
 class Floor(TimeStampedModel):
     building = models.ForeignKey('Building')
@@ -47,8 +54,17 @@ class Floor(TimeStampedModel):
 
     slug = AutoSlugField(populate_from='number')
 
+    def get_absolute_url(self):
+        return reverse('detail_floor', kwargs={
+            'slug':self.slug,
+            'building':self.building.slug,
+        })
+
     def __str__(self):              # __unicode__ on Python 2
         return self.building.__str__()+" "+self.number.__str__()
+
+    class Meta:
+        ordering = ['number']
 
 class Room(TimeStampedModel):
     number = models.IntegerField()
@@ -56,8 +72,18 @@ class Room(TimeStampedModel):
 
     slug = AutoSlugField(populate_from='number')
 
+    def get_absolute_url(self):
+        return reverse('detail_room', kwargs={
+            'slug':self.slug,
+            'floor':self.floor.slug,
+            'building':self.floor.building.slug,
+        })
+
     def __str__(self):              # __unicode__ on Python 2
         return self.floor.building.__str__()+" "+self.number.__str__()
+
+    class Meta:
+        ordering = ['number']
 
 # buildings on campus don't have separate addresses yet
 #class Address(TimeStampedModel):

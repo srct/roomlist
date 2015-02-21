@@ -12,9 +12,9 @@ class ListBuildings(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ListBuildings, self).get_context_data(**kwargs)
-        context['rappahannock'] = Building.objects.filter(neighbourhood='ra')
-        context['shenandoah'] = Building.objects.filter(neighbourhood='sh')
-        context['aquia'] = Building.objects.filter(neighbourhood='aq')
+        context['rappahannock'] = Building.objects.filter(neighbourhood='ra').order_by('name')
+        context['shenandoah'] = Building.objects.filter(neighbourhood='sh').order_by('name')
+        context['aquia'] = Building.objects.filter(neighbourhood='aq').order_by('name')
         return context
 
 # building floors, other information
@@ -68,6 +68,8 @@ class DetailFloor(LoginRequiredMixin, DetailView):
                 floor_students.extend(Student.objects.filter(room=room).students())
 
         context['students'] = floor_students
+        context['notOnFloor'] = not onFloor()
+        context['notInBuilding'] = not inBuilding()
         return context
 
 class DetailRoom(LoginRequiredMixin, DetailView):
@@ -85,14 +87,14 @@ class DetailRoom(LoginRequiredMixin, DetailView):
         # if self.request.user is on the floor
         def onFloor():
             floor_status = False
-            if requesting_student.get_floor == self.get_object().floor:
+            if requesting_student.get_floor() == self.get_object().floor:
                 floor_status = True
             return floor_status
 
         # if self.request.user is in the building
         def inBuilding():
             building_status = False
-            if requesting_student.get_building == self.get_object().get_building:
+            if requesting_student.get_building() == self.get_object().floor.building:
                 building_status = True
             return building_status
 
@@ -104,6 +106,9 @@ class DetailRoom(LoginRequiredMixin, DetailView):
              students = Student.objects.filter(room=self.get_object()).students()
 
         context['students'] = students
+        context['notOnFloor'] = not onFloor()
+        context['notInBuilding'] = not inBuilding()
+
         return context
 
     login_url = '/'

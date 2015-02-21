@@ -8,29 +8,35 @@ SRCT RoomList &bull; Homepage
   <div class="row">
     <div class="col-lg-12 text-center">
       <h1><strong>GMU</strong>ROOMLIST</h1>
-      <p class="lead">Building List</p>
+      <p class="lead"><strong>Buildings</strong></p>
     </div>
   </div>
 </div>
 
-<legend>Rappahannock</legend>
+<legend><strong>Rappahannock</strong></legend>
 
-<ul>
+<div class="row">
   {% for building in rappahannock %}
-  <li>
-      <a href="/housing/buildings/{{ building.name }}">{{ building.name }}</a> - {{ building.address }} {{ building.address.zip_code }}, {{ building.address.state}}
-  </li>
+    <div class="col-sm-3 text-center">
+      <a href="{{ building.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ building.name }}</a>
+    </div>
   {% endfor %}
-</ul>
+</div>
 
-<legend>Shenandoah</legend>
+<br />
 
-<ul>
+<legend><strong>Shenandoah</strong></legend>
+
+<div class="row">
   {% for building in shenandoah %}
-  <li>
-      <a href="/housing/buildings/{{ building.name }}">{{ building.name }}</a> - {{ building.address }} {{ building.address.zip_code }}, {{ building.address.state}}
-  </li>
+    <div class="col-sm-3 text-center">
+      <a href="{{ building.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ building.name }}</a>
+    </div>
   {% endfor %}
-</ul>
+</div>
+
+<br />
+
+<legend><strong>Aquia</strong></legend>
 
 {% endblock %}

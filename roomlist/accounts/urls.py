@@ -11,7 +11,7 @@ urlpatterns = patterns('',
             model=Student,
             context_object_name='student',
             template_name='detailStudent.html'),
-        name='detailStudent'),
+        name='detail_student'),
 
     url(r'^student/$',
         DetailCurrentStudent.as_view(
