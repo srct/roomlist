@@ -1,110 +1,162 @@
-[
-  {
-    "model": "housing.building",
-    "pk": 1,
-    "fields": {
-      "name": "Adams",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+[{
+  "fields": {
+    "name": "Adams",
+    "slug": "adams",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
-  {
-    "model": "housing.building",
-    "pk": 2,
-    "fields": {
-      "name": "Harrison",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+  "model": "housing.building",
+  "pk": 1
+}, {
+  "fields": {
+    "name": "Harrison",
+    "slug": "harrison",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
-  {
-    "model": "housing.building",
-    "pk": 3,
-    "fields": {
-      "name": "Jackson",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+  "model": "housing.building",
+  "pk": 2
+}, {
+  "fields": {
+    "name": "Jackson",
+    "slug": "jackson",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
-  {
-    "model": "housing.building",
-    "pk": 4,
-    "fields": {
-      "name": "Jefferson",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+  "model": "housing.building",
+  "pk": 3
+}, {"fields": {
+  "name": "Jefferson",
+  "slug": "jefferson",
+  "campus": "ff",
+  "neighbourhood": "sh"
   },
-  {
-    "model": "housing.building",
-    "pk": 5,
-    "fields": {
-      "name": "Kennedy",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+  "model": "housing.building",
+  "pk": 4
+}, {
+  "fields": {
+    "name": "Kennedy",
+    "slug": "kennedy",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
-  {
-    "model": "housing.building",
-    "pk": 6,
-    "fields": {
-      "name": "Lincoln",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+  "model": "housing.building",
+  "pk": 5
+}, {"fields": {
+  "name": "Lincoln",
+  "slug": "lincoln",
+  "campus": "ff",
+  "neighbourhood": "sh"
   },
-  {
-    "model": "housing.building",
-    "pk": 7,
-    "fields": {
-      "name": "Madison",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+  "model": "housing.building",
+  "pk": 6
+}, {
+  "fields": {
+    "name": "Madison",
+    "slug": "madison",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
-  {
-    "model": "housing.building",
-    "pk": 8,
-    "fields": {
-      "name": "Monroe",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+  "model": "housing.building",
+  "pk": 7
+}, {
+  "fields": {
+    "name": "Monroe",
+    "slug": "monroe",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
-  {
-    "model": "housing.building",
-    "pk": 9,
-    "fields": {
-      "name": "Roosevelt",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+  "model": "housing.building",
+  "pk": 8
+}, {"fields": {
+  "name": "Roosevelt",
+  "slug": "roosevelt",
+  "campus": "ff",
+  "neighbourhood": "sh"
   },
-  {
-    "model": "housing.building",
-    "pk": 10,
-    "fields": {
-      "name": "Truman",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+  "model": "housing.building",
+  "pk": 9
+}, {
+  "fields": {
+    "name": "Truman",
+    "slug": "truman",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
-  {
-    "model": "housing.building",
-    "pk": 11,
-    "fields": {
-      "name": "Madison",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+  "model": "housing.building",
+  "pk": 10
+}, {"fields": {
+  "name": "Wilson",
+  "slug": "wilson",
+  "campus": "ff",
+  "neighbourhood": "sh"
   },
-  {
-    "model": "housing.building",
-    "pk": 12,
-    "fields": {
-      "name": "Monroe",
-      "neighborhood": "sh",
-      "campus": "ff",
-    }
+  "model": "housing.building",
+  "pk": 11
+}, {"fields": {
+  "name": "Washingon",
+  "slug": "washingon",
+  "campus": "ff",
+  "neighbourhood": "sh"
   },
-]
+  "model": "housing.building",
+  "pk": 12
+}, {
+  "fields": {
+    "name": "Amherst",
+    "slug": "amherst",
+    "campus": "ff",
+    "neighbourhood": "ra"
+  },
+  "model": "housing.building",
+  "pk": 13
+}, {"fields": {
+  "name": "Brunswick",
+  "slug": "brunswick",
+  "campus": "ff",
+  "neighbourhood": "ra"
+  },
+  "model": "housing.building",
+  "pk": 14
+}, {"fields": {
+  "name": "Carroll",
+  "slug": "carroll",
+  "campus": "ff",
+  "neighbourhood": "ra"
+  },
+  "model": "housing.building",
+  "pk": 15
+}, {
+  "fields": {
+    "name": "Dickenson",
+    "slug": "dickenson",
+    "campus": "ff",
+    "neighbourhood": "ra"
+  },
+  "model": "housing.building",
+  "pk": 16
+}, {"fields": {
+  "name": "Essex",
+  "slug": "essex",
+  "campus": "ff",
+  "neighbourhood": "ra"
+  },
+  "model": "housing.building",
+  "pk": 17
+}, {"fields": {
+  "name": "Franklin",
+  "slug": "franklin",
+  "campus": "ff",
+  "neighbourhood": "ra"
+  },
+  "model": "housing.building",
+  "pk": 18
+}, {"fields": {
+  "name": "Grayson",
+  "slug": "grayson",
+  "campus": "ff",
+  "neighbourhood": "ra"
+  },
+  "model": "housing.building",
+  "pk": 19
+}]
