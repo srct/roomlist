@@ -7,36 +7,48 @@ SRCT RoomList &bull; Homepage
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-lg-12 text-center">
-      <h1><strong>GMU</strong>ROOMLIST</h1>
+      <h1><strong>SRCT</strong>ROOMLIST</h1>
       <p class="lead"><strong>Buildings</strong></p>
     </div>
   </div>
 </div>
 
-<legend><strong>Rappahannock</strong></legend>
+<legend><strong><a name="Rappahannock" href="#Rappahannock">Rappahannock</a></strong></legend>
 
 <div class="row">
   {% for building in rappahannock %}
-    <div class="col-sm-3 text-center">
-      <a href="{{ building.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ building.name }}</a>
-    </div>
+  <div class="col-sm-3 text-center">
+    <a href="{{ building.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ building.name }}</a>
+  </div>
+  {% if forloop.counter|divisibleby:4 %}
+</div>
+<br />
+<div class="row">
+  {% endif %}  
   {% endfor %}
 </div>
 
 <br />
 
-<legend><strong>Shenandoah</strong></legend>
+<legend><strong><a name ="Shenandoah" href="#Shenandoah">Shenandoah</a></strong></legend>
 
 <div class="row">
   {% for building in shenandoah %}
-    <div class="col-sm-3 text-center">
-      <a href="{{ building.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ building.name }}</a>
-    </div>
+  <div class="col-sm-3 text-center">
+    <a href="{{ building.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ building.name }}</a>
+  </div>
+  {% if forloop.counter|divisibleby:4 %}
+</div>
+<br />
+<div class="row">
+  {% endif %}  
   {% endfor %}
 </div>
 
 <br />
 
-<legend><strong>Aquia</strong></legend>
+<legend><strong><a name="Aquia" href="#Aquia">Aquia</a></strong></legend>
+<div class="row">
+</div>
 
 {% endblock %}
