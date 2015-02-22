@@ -52,7 +52,8 @@ class Floor(TimeStampedModel):
     building = models.ForeignKey('Building')
     number = models.IntegerField()
 
-    slug = AutoSlugField(populate_from='number')
+    slug = AutoSlugField(populate_from='number',# unique_with='building')
+        unique=True)
 
     def get_absolute_url(self):
         return reverse('detail_floor', kwargs={
@@ -64,13 +65,14 @@ class Floor(TimeStampedModel):
         return self.building.__str__()+" "+self.number.__str__()
 
     class Meta:
-        ordering = ['number']
+        ordering = ['building', 'number']
 
 class Room(TimeStampedModel):
     number = models.IntegerField()
     floor = models.ForeignKey('Floor')
 
-    slug = AutoSlugField(populate_from='number')
+    slug = AutoSlugField(populate_from='number',# unique_with='floor')
+        unique=True)
 
     def get_absolute_url(self):
         return reverse('detail_room', kwargs={
