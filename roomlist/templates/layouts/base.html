@@ -14,6 +14,7 @@
 </head>
 
 <body>
+  {% load piwik %}
   <div id="wrap" style="display: flex;">
     {% include 'layouts/navbar.html' %}
     <div id="contentcontain" class="container">
@@ -23,6 +24,7 @@
   <div id="footer">
     {% include 'layouts/footer.html' %}
   </div>
+  {% piwik %}
 </body>
 
 </html>

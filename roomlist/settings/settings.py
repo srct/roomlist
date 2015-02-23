@@ -52,6 +52,9 @@ DEBUG = config.DEBUG
 TEMPLATE_DEBUG = config.TEMPLATE_DEBUG
 ALLOWED_HOSTS = config.ALLOWED_HOSTS
 
+PIWIK_DOMAIN_PATH = config.PIWIK_DOMAIN_PATH
+PIWIK_SITE_ID = config.PIWIK_SITE_ID
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -70,6 +73,7 @@ INSTALLED_APPS = (
     # packages
     'crispy_forms',
     'django_gravatar',
+    'analytical',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
