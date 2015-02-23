@@ -107,11 +107,13 @@ class Class(TimeStampedModel):
     SOPHOMORE = 'SO'
     JUNIOR = 'JR'
     SENIOR = 'SR'
+    OTHER = 'OR'
     YEAR_IN_SCHOOL_CHOICES = (
         (FRESHMAN, 'Freshman'),
         (SOPHOMORE, 'Sophomore'),
         (JUNIOR, 'Junior'),
         (SENIOR, 'Senior'),
+        (OTHER, 'Other'),
     )
     year_in_school = models.CharField(max_length=2,
                                       choices=YEAR_IN_SCHOOL_CHOICES,
