@@ -1,162 +1,723 @@
 [{
   "fields": {
     "name": "Adams",
-    "slug": "adams",
+    "building_name": "adams",
+    "slug": "0skh5s",
     "campus": "ff",
     "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 1
+
+}, {
+  "fields": {
+    "building": 1,
+    "number": 1,
+    "slug": "rxcziV",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":1
+}, {
+  "fields": {
+    "building": 1,
+    "number": 2,
+    "slug": "nUZJE4",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":2
+}, {
+  "fields": {
+    "building": 1,
+    "number": 3,
+    "slug": "wYHWvW",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":3
+
 }, {
   "fields": {
     "name": "Harrison",
-    "slug": "harrison",
+    "building_name": "harrison",
+    "slug": "cxKpwi",
     "campus": "ff",
     "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 2
+
+}, {
+  "fields": {
+    "building": 2,
+    "number": 1,
+    "slug": "gRU76r",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":4
+}, {
+  "fields": {
+    "building": 2,
+    "number": 2,
+    "slug": "QbjvUV",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":5
+}, {
+  "fields": {
+    "building": 2,
+    "number": 3,
+    "slug": "jx5DvV",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":6
+
 }, {
   "fields": {
     "name": "Jackson",
-    "slug": "jackson",
+    "building_name": "jackson",
+    "slug": "KSFMlV",
     "campus": "ff",
     "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 3
-}, {"fields": {
-  "name": "Jefferson",
-  "slug": "jefferson",
-  "campus": "ff",
-  "neighbourhood": "sh"
+
+}, {
+  "fields": {
+    "building": 3,
+    "number": 1,
+    "slug": "WjkTko",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":7
+}, {
+  "fields": {
+    "building": 3,
+    "number": 2,
+    "slug": "g7KNQR",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":8
+}, {
+  "fields": {
+    "building": 3,
+    "number": 3,
+    "slug": "UX6uNZ",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":9
+
+}, {
+  "fields": {
+    "name": "Jefferson",
+    "building_name": "jefferson",
+    "slug": "THuNuC",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 4
+
+}, {
+  "fields": {
+    "building": 4,
+    "number": 1,
+    "slug": "jfEtMr",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":10
+}, {
+  "fields": {
+    "building": 4,
+    "number": 2,
+    "slug": "fVne6S",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":11
+}, {
+  "fields": {
+    "building": 4,
+    "number": 3,
+    "slug": "Nj8ZE9",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":12
+
 }, {
   "fields": {
     "name": "Kennedy",
-    "slug": "kennedy",
+    "building_name": "kennedy",
+    "slug": "HeEQws",
     "campus": "ff",
     "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 5
+
+}, {
+  "fields": {
+    "building": 5,
+    "number": 1,
+    "slug": "8S5ypu",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":13
+}, {
+  "fields": {
+    "building": 5,
+    "number": 2,
+    "slug": "VEl3hp",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":14
+}, {
+  "fields": {
+    "building": 5,
+    "number": 3,
+    "slug": "Nkv6Ir",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":15
+
 }, {"fields": {
-  "name": "Lincoln",
-  "slug": "lincoln",
-  "campus": "ff",
-  "neighbourhood": "sh"
+    "name": "Lincoln",
+    "building_name": "lincoln",
+    "slug": "VMzC5Z",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 6
+
+}, {
+  "fields": {
+    "building": 6,
+    "number": 1,
+    "slug": "lBzMZ0",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":16
+}, {
+  "fields": {
+    "building": 6,
+    "number": 2,
+    "slug": "z2rkNb",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":17
+}, {
+  "fields": {
+    "building": 6,
+    "number": 3,
+    "slug": "qJs1Um",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":18
+
 }, {
   "fields": {
     "name": "Madison",
-    "slug": "madison",
+    "building_name": "madison",
+    "slug": "EqX3rD",
     "campus": "ff",
     "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 7
+
+}, {
+  "fields": {
+    "building": 7,
+    "number": 1,
+    "slug": "pF0mNK",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":19
+}, {
+  "fields": {
+    "building": 7,
+    "number": 2,
+    "slug": "b253Iy",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":20
+}, {
+  "fields": {
+    "building": 7,
+    "number": 3,
+    "slug": "TrouAj",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":21
+
 }, {
   "fields": {
     "name": "Monroe",
-    "slug": "monroe",
+    "building_name": "monroe",
+    "slug": "FGYDfG",
     "campus": "ff",
     "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 8
-}, {"fields": {
-  "name": "Roosevelt",
-  "slug": "roosevelt",
-  "campus": "ff",
-  "neighbourhood": "sh"
+
+}, {
+  "fields": {
+    "building": 8,
+    "number": 1,
+    "slug": "8h09ty",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":22
+}, {
+  "fields": {
+    "building": 8,
+    "number": 2,
+    "slug": "gmlsOo",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":23
+}, {
+  "fields": {
+    "building": 8,
+    "number": 3,
+    "slug": "5blUnk",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":24
+
+}, {
+  "fields": {
+    "name": "Roosevelt",
+    "building_name": "roosevelt",
+    "slug": "z2CfHh",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 9
+
+}, {
+  "fields": {
+    "building": 9,
+    "number": 1,
+    "slug": "L4TiBd",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":25
+}, {
+  "fields": {
+    "building": 9,
+    "number": 2,
+    "slug": "r3dO25",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":26
+}, {
+  "fields": {
+    "building": 9,
+    "number": 3,
+    "slug": "KPNv5H",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":27
+
 }, {
   "fields": {
     "name": "Truman",
-    "slug": "truman",
+    "building_name": "truman",
+    "slug": "YAgLwL",
     "campus": "ff",
     "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 10
-}, {"fields": {
-  "name": "Wilson",
-  "slug": "wilson",
-  "campus": "ff",
-  "neighbourhood": "sh"
+
+}, {
+  "fields": {
+    "building": 10,
+    "number": 1,
+    "slug": "SyYUwN",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":28
+}, {
+  "fields": {
+    "building": 10,
+    "number": 2,
+    "slug": "7cB5dx",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":29
+}, {
+  "fields": {
+    "building": 10,
+    "number": 3,
+    "slug": "npMwxP",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":30
+
+}, {
+  "fields": {
+    "name": "Wilson",
+    "building_name": "wilson",
+    "slug": "emchOM",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 11
-}, {"fields": {
-  "name": "Washingon",
-  "slug": "washingon",
-  "campus": "ff",
-  "neighbourhood": "sh"
+
+}, {
+  "fields": {
+    "building": 11,
+    "number": 1,
+    "slug": "UAke5l",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":31
+}, {
+  "fields": {
+    "building": 11,
+    "number": 2,
+    "slug": "4spsx6",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":32
+}, {
+  "fields": {
+    "building": 11,
+    "number": 3,
+    "slug": "sc2Tg1",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":33
+
+}, {
+  "fields": {
+    "name": "Washingon",
+    "building_name": "washingon",
+    "slug": "psyZ6h",
+    "campus": "ff",
+    "neighbourhood": "sh"
   },
   "model": "housing.building",
   "pk": 12
+
+}, {
+  "fields": {
+    "building": 12,
+    "number": 1,
+    "slug": "u4BUHi",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":34
+}, {
+  "fields": {
+    "building": 12,
+    "number": 2,
+    "slug": "F4OQUG",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":35
+}, {
+  "fields": {
+    "building": 12,
+    "number": 3,
+    "slug": "iyMocE",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":36
+
 }, {
   "fields": {
     "name": "Amherst",
-    "slug": "amherst",
+    "building_name": "amherst",
+    "slug": "QdKxQh",
     "campus": "ff",
     "neighbourhood": "ra"
   },
   "model": "housing.building",
   "pk": 13
-}, {"fields": {
-  "name": "Brunswick",
-  "slug": "brunswick",
-  "campus": "ff",
-  "neighbourhood": "ra"
+
+}, {
+  "fields": {
+    "building": 13,
+    "number": 1,
+    "slug": "DFVmql",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":37
+}, {
+  "fields": {
+    "building": 13,
+    "number": 2,
+    "slug": "zuzd2F",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":38
+}, {
+  "fields": {
+    "building": 13,
+    "number": 3,
+    "slug": "MtTq1z",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":39
+
+}, {
+  "fields": {
+    "name": "Brunswick",
+    "building_name": "brunswick",
+    "slug": "39P5De",
+    "campus": "ff",
+    "neighbourhood": "ra"
   },
   "model": "housing.building",
   "pk": 14
-}, {"fields": {
-  "name": "Carroll",
-  "slug": "carroll",
-  "campus": "ff",
-  "neighbourhood": "ra"
+
+}, {
+  "fields": {
+    "building": 14,
+    "number": 1,
+    "slug": "VICTbg",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":40
+}, {
+  "fields": {
+    "building": 14,
+    "number": 2,
+    "slug": "cMG2KG",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":41
+}, {
+  "fields": {
+    "building": 14,
+    "number": 3,
+    "slug": "47eIVT",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":42
+
+}, {
+  "fields": {
+    "name": "Carroll",
+    "building_name": "carroll",
+    "slug": "b73fkm",
+    "campus": "ff",
+    "neighbourhood": "ra"
   },
   "model": "housing.building",
   "pk": 15
+
+}, {
+  "fields": {
+    "building": 15,
+    "number": 1,
+    "slug": "6Aja6j",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":43
+}, {
+  "fields": {
+    "building": 15,
+    "number": 2,
+    "slug": "pHGDC0",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":44
+}, {
+  "fields": {
+    "building": 15,
+    "number": 3,
+    "slug": "hSKZiG",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":45
+
 }, {
   "fields": {
     "name": "Dickenson",
-    "slug": "dickenson",
+    "building_name": "dickenson",
+    "slug": "pIuiW9",
     "campus": "ff",
     "neighbourhood": "ra"
   },
   "model": "housing.building",
   "pk": 16
-}, {"fields": {
-  "name": "Essex",
-  "slug": "essex",
-  "campus": "ff",
-  "neighbourhood": "ra"
+
+}, {
+  "fields": {
+    "building": 16,
+    "number": 1,
+    "slug": "8IlAkt",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":46
+}, {
+  "fields": {
+    "building": 16,
+    "number": 2,
+    "slug": "jhf51U",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":47
+}, {
+  "fields": {
+    "building": 16,
+    "number": 3,
+    "slug": "cELY0M",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":48
+
+}, {
+  "fields": {
+    "name": "Essex",
+    "building_name": "essex",
+    "slug": "MfzRIu",
+    "campus": "ff",
+    "neighbourhood": "ra"
   },
   "model": "housing.building",
   "pk": 17
-}, {"fields": {
-  "name": "Franklin",
-  "slug": "franklin",
-  "campus": "ff",
-  "neighbourhood": "ra"
+
+}, {
+  "fields": {
+    "building": 17,
+    "number": 1,
+    "slug": "6SHdag",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":49
+}, {
+  "fields": {
+    "building": 17,
+    "number": 2,
+    "slug": "5FuGr2",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":50
+}, {
+  "fields": {
+    "building": 17,
+    "number": 3,
+    "slug": "37YzLw",
+    "floor_num": "3"
+  },
+  "model":"housing.floor",
+  "pk":51
+
+}, {
+  "fields": {
+    "name": "Franklin",
+    "building_name": "franklin",
+    "slug": "YJxXMD",
+    "campus": "ff",
+    "neighbourhood": "ra"
   },
   "model": "housing.building",
   "pk": 18
-}, {"fields": {
-  "name": "Grayson",
-  "slug": "grayson",
-  "campus": "ff",
-  "neighbourhood": "ra"
+
+}, {
+  "fields": {
+    "building": 18,
+    "number": 1,
+    "slug": "BzpXtO",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":52
+}, {
+  "fields": {
+    "building": 18,
+    "number": 2,
+    "slug": "VUQ5F8",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":53
+
+}, {
+  "fields": {
+    "name": "Grayson",
+    "building_name": "grayson",
+    "slug": "6h9v7g",
+    "campus": "ff",
+    "neighbourhood": "ra"
   },
   "model": "housing.building",
   "pk": 19
+
+}, {
+  "fields": {
+    "building": 19,
+    "number": 1,
+    "slug": "CPh2hM",
+    "floor_num": "1"
+  },
+  "model":"housing.floor",
+  "pk":54
+}, {
+  "fields": {
+    "building": 19,
+    "number": 2,
+    "slug": "BkWAwN",
+    "floor_num": "2"
+  },
+  "model":"housing.floor",
+  "pk":55
+
 }]
