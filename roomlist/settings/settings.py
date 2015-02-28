@@ -74,6 +74,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'django_gravatar',
     'analytical',
+    'randomslugfield',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

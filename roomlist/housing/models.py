@@ -1,6 +1,7 @@
 from django.db import models
 from autoslug import AutoSlugField
 from model_utils.models import TimeStampedModel
+from randomslugfield import RandomSlugField
 
 #from localflavor.us.models import USStateField
 from django.core.urlresolvers import reverse
@@ -33,12 +34,16 @@ class Building(TimeStampedModel):
         (FAIRFAX, 'Fairfax'),
     )
 
-    campus = models.CharField(max_length=100, choices=CAMPUS_CHOICES, default=NONE)
+    campus = models.CharField(max_length=100, choices=CAMPUS_CHOICES, default='ff')
 
-    slug = AutoSlugField(populate_from='name', unique=True)
+    slug = RandomSlugField(length=6)
+    building_name = AutoSlugField(populate_from='name')
 
     def get_absolute_url(self):
-        return reverse('detail_building', kwargs={'slug':self.slug})
+        return reverse('detail_building', kwargs={
+            'building':self.building_name,
+            'slug':self.slug,
+        })
 
     def __str__(self):              # __unicode__ on Python 2
         return self.name
@@ -52,13 +57,16 @@ class Floor(TimeStampedModel):
     building = models.ForeignKey('Building')
     number = models.IntegerField()
 
-    slug = AutoSlugField(populate_from='number',# unique_with='building')
-        unique=True)
+    slug = RandomSlugField(length=6)
+
+    floor_num = AutoSlugField(populate_from='number',# unique_with='building')
+        )
 
     def get_absolute_url(self):
         return reverse('detail_floor', kwargs={
+            'building':self.building.building_name,
+            'floor':self.floor_num,
             'slug':self.slug,
-            'building':self.building.slug,
         })
 
     def __str__(self):              # __unicode__ on Python 2
@@ -71,14 +79,17 @@ class Room(TimeStampedModel):
     number = models.IntegerField()
     floor = models.ForeignKey('Floor')
 
-    slug = AutoSlugField(populate_from='number',# unique_with='floor')
-        unique=True)
+    slug = RandomSlugField(length=6)
+
+    room_num = AutoSlugField(populate_from='number',# unique_with='floor')
+        )
 
     def get_absolute_url(self):
         return reverse('detail_room', kwargs={
+            'floor':self.floor.floor_num,
+            'building':self.floor.building.building_name,
+            'room':self.room_num,
             'slug':self.slug,
-            'floor':self.floor.slug,
-            'building':self.floor.building.slug,
         })
 
     def __str__(self):              # __unicode__ on Python 2

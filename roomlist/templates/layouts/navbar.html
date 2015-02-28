@@ -12,7 +12,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         {% if user.is_authenticated %}
-        <li><a href="/housing/buildings">Buildings</a>
+        <li><a href="/housing">Buildings</a>
         </li>
         {% else %}
         <li><a href="{% url 'about' %}">About</a>
