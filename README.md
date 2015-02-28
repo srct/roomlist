@@ -64,8 +64,13 @@ Your PostgreSQL database should now be set up to work with the Roomlist project.
 
 Copy the secret.py.template and config.py.template to secret.py and config.py respectively. For each, follow the comment instruction provided in each file.
 
-Next, run `python manage.py migrate`, then `python manage.py runserver`.
+Run `python manage.py syncdb` to set up the empty database tables. When you're prompted, say 'y' to setting up the superuser, but use your mason username and full mason email address (@masonlive.gmu.edu) for the account. This is because we use Mason's Central Authentication for our user signin, and your admin account needs to manage your CAS account.
+
 Have your virtualenvironment running and with the requirements.txt installed.
+
+Next, run `python manage.py makemigrations`, `python manage.py migrate`, then `python manage.py runserver`.
+
+Head over to localhost:8000 and see the site!
 
 To-do
 ---
