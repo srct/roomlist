@@ -45,6 +45,10 @@ docs/_build/
 target/
 # Vim files
 *.sw*
+# gedit files
+*~
 # config, secret settings
 config.py
 secret.py
+# migrations
+*migrations*
