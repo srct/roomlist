@@ -16,6 +16,11 @@ class Major(TimeStampedModel):
 
     def __str__(self):
         return self.name
+    def __unicode__(self):
+        return unicode(self.name)
+
+    class Meta:
+        ordering = ['name']
 
 class StudentQuerySet(models.query.QuerySet):
     def floor(self):
@@ -114,5 +119,10 @@ class Student(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('detail_student', kwargs={'slug':self.slug})
 
+    class Meta:
+        ordering = ['user']
+
     def __str__(self):              # __unicode__ on Python 2
         return self.user.username
+    def __unicode__(self):
+        return unicode(self.user.username)
