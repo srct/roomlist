@@ -1,0 +1,475 @@
+[{
+  "fields": {
+    "name": "Accounting, BS"
+  },
+  "model": "accounts.major",
+  "pk": 1
+}, {
+  "fields": {
+    "name": "Anthropology, BA"
+  },
+  "model": "accounts.major",
+  "pk": 2
+}, {
+  "fields": {
+    "name": "Applied Computer Science, BS"
+  },
+  "model": "accounts.major",
+  "pk": 3
+}, {
+  "fields": {
+    "name": "Applied Information Technology, BS"
+  },
+  "model": "accounts.major",
+  "pk": 4
+}, {
+  "fields": {
+    "name": "Applied Science, BAS"
+  },
+  "model": "accounts.major",
+  "pk": 5
+}, {
+  "fields": {
+    "name": "Art and Visual Technology, BA"
+  },
+  "model": "accounts.major",
+  "pk": 6
+}, {
+  "fields": {
+    "name": "Art and Visual Technology, BFA"
+  },
+  "model": "accounts.major",
+  "pk": 7
+}, {
+  "fields": {
+    "name": "Art History, BA"
+  },
+  "model": "accounts.major",
+  "pk": 8
+}, {
+  "fields": {
+    "name": "Astronomy, BS"
+  },
+  "model": "accounts.major",
+  "pk": 9
+}, {
+  "fields": {
+    "name": "Athletic Training, BS"
+  },
+  "model": "accounts.major",
+  "pk": 10
+}, {
+  "fields": {
+    "name": "Bioengineering, BS"
+  },
+  "model": "accounts.major",
+  "pk": 11
+}, {
+  "fields": {
+    "name": "Biology, BA"
+  },
+  "model": "accounts.major",
+  "pk": 12
+}, {
+  "fields": {
+    "name": "Biology, BS"
+  },
+  "model": "accounts.major",
+  "pk": 13
+}, {
+  "fields": {
+    "name": "Business Administration, MBA"
+  },
+  "model": "accounts.major",
+  "pk": 14
+}, {
+  "fields": {
+    "name": "Chemistry, BA"
+  },
+  "model": "accounts.major",
+  "pk": 15
+}, {
+  "fields": {
+    "name": "Chemistry, BS"
+  },
+  "model": "accounts.major",
+  "pk": 16
+}, {
+  "fields": {
+    "name": "Civil and Infrastructure Engineering, BS"
+  },
+  "model": "accounts.major",
+  "pk": 17
+}, {
+  "fields": {
+    "name": "Communication, BA"
+  },
+  "model": "accounts.major",
+  "pk": 18
+}, {
+  "fields": {
+    "name": "Community Health, BS"
+  },
+  "model": "accounts.major",
+  "pk": 19
+}, {
+  "fields": {
+    "name": "Computer Engineering, BS"
+  },
+  "model": "accounts.major",
+  "pk": 20
+}, {
+  "fields": {
+    "name": "Computer Game Design, BFA"
+  },
+  "model": "accounts.major",
+  "pk": 21
+}, {
+  "fields": {
+    "name": "Computer Science, BS"
+  },
+  "model": "accounts.major",
+  "pk": 22
+}, {
+  "fields": {
+    "name": "Conflict Analysis and Resolution, BA"
+  },
+  "model": "accounts.major",
+  "pk": 23
+}, {
+  "fields": {
+    "name": "Conflict Analysis and Resolution, BS"
+  },
+  "model": "accounts.major",
+  "pk": 24
+}, {
+  "fields": {
+    "name": "Creative Writing, BFA"
+  },
+  "model": "accounts.major",
+  "pk": 25
+}, {
+  "fields": {
+    "name": "Criminology, Law and Society, BA"
+  },
+  "model": "accounts.major",
+  "pk": 26
+}, {
+  "fields": {
+    "name": "Criminology, Law and Society, BS"
+  },
+  "model": "accounts.major",
+  "pk": 27
+}, {
+  "fields": {
+    "name": "Dance, BA"
+  },
+  "model": "accounts.major",
+  "pk": 28
+}, {
+  "fields": {
+    "name": "Dance, BFA"
+  },
+  "model": "accounts.major",
+  "pk": 29
+}, {
+  "fields": {
+    "name": "Earth Science, BS"
+  },
+  "model": "accounts.major",
+  "pk": 30
+}, {
+  "fields": {
+    "name": "Economics, BA"
+  },
+  "model": "accounts.major",
+  "pk": 31
+}, {
+  "fields": {
+    "name": "Economics, BS"
+  },
+  "model": "accounts.major",
+  "pk": 32
+}, {
+  "fields": {
+    "name": "Electrical Engineering, BS"
+  },
+  "model": "accounts.major",
+  "pk": 33
+}, {
+  "fields": {
+    "name": "English, BA"
+  },
+  "model": "accounts.major",
+  "pk": 34
+}, {
+  "fields": {
+    "name": "Environmental and Sustainability Studies, BA"
+  },
+  "model": "accounts.major",
+  "pk": 35
+}, {
+  "fields": {
+    "name": "Environmental Science, BS"
+  },
+  "model": "accounts.major",
+  "pk": 36
+}, {
+  "fields": {
+    "name": "Executive MBA"
+  },
+  "model": "accounts.major",
+  "pk": 37
+}, {
+  "fields": {
+    "name": "Film and Video Studies, BA"
+  },
+  "model": "accounts.major",
+  "pk": 38
+}, {
+  "fields": {
+    "name": "Finance, BS"
+  },
+  "model": "accounts.major",
+  "pk": 39
+}, {
+  "fields": {
+    "name": "Foreign Languages, BA"
+  },
+  "model": "accounts.major",
+  "pk": 40
+}, {
+  "fields": {
+    "name": "Forensic Science, BS"
+  },
+  "model": "accounts.major",
+  "pk": 41
+}, {
+  "fields": {
+    "name": "Geography, BA"
+  },
+  "model": "accounts.major",
+  "pk": 42
+}, {
+  "fields": {
+    "name": "Geography, BS"
+  },
+  "model": "accounts.major",
+  "pk": 43
+}, {
+  "fields": {
+    "name": "Geology, BA"
+  },
+  "model": "accounts.major",
+  "pk": 44
+}, {
+  "fields": {
+    "name": "Global Affairs, BA"
+  },
+  "model": "accounts.major",
+  "pk": 45
+}, {
+  "fields": {
+    "name": "Global and Environmental Change, BS"
+  },
+  "model": "accounts.major",
+  "pk": 46
+}, {
+  "fields": {
+    "name": "Government and International Politics, BA"
+  },
+  "model": "accounts.major",
+  "pk": 47
+}, {
+  "fields": {
+    "name": "Health Administration, BS"
+  },
+  "model": "accounts.major",
+  "pk": 48
+}, {
+  "fields": {
+    "name": "Health, Fitness, and Recreation Resources, BS"
+  },
+  "model": "accounts.major",
+  "pk": 49
+}, {
+  "fields": {
+    "name": "History, BA"
+  },
+  "model": "accounts.major",
+  "pk": 50
+}, {
+  "fields": {
+    "name": "Human Development and Family Science, BA"
+  },
+  "model": "accounts.major",
+  "pk": 51
+}, {
+  "fields": {
+    "name": "Individualized Study, BIS"
+  },
+  "model": "accounts.major",
+  "pk": 52
+}, {
+  "fields": {
+    "name": "Information Systems and Operations Management, BS"
+  },
+  "model": "accounts.major",
+  "pk": 53
+}, {
+  "fields": {
+    "name": "Integrative Studies, BA"
+  },
+  "model": "accounts.major",
+  "pk": 54
+}, {
+  "fields": {
+    "name": "Integrative Studies, BS"
+  },
+  "model": "accounts.major",
+  "pk": 55
+}, {
+  "fields": {
+    "name": "Latin American Studies, BA"
+  },
+  "model": "accounts.major",
+  "pk": 56
+}, {
+  "fields": {
+    "name": "Management, BS"
+  },
+  "model": "accounts.major",
+  "pk": 57
+}, {
+  "fields": {
+    "name": "Marketing, BS"
+  },
+  "model": "accounts.major",
+  "pk": 58
+}, {
+  "fields": {
+    "name": "Mathematics, BA"
+  },
+  "model": "accounts.major",
+  "pk": 59
+}, {
+  "fields": {
+    "name": "Mathematics, BS"
+  },
+  "model": "accounts.major",
+  "pk": 60
+}, {
+  "fields": {
+    "name": "Medical Laboratory Science, BS"
+  },
+  "model": "accounts.major",
+  "pk": 61
+}, {
+  "fields": {
+    "name": "Music, BA"
+  },
+  "model": "accounts.major",
+  "pk": 62
+}, {
+  "fields": {
+    "name": "Music, BM"
+  },
+  "model": "accounts.major",
+  "pk": 63
+}, {
+  "fields": {
+    "name": "Neuroscience, BS"
+  },
+  "model": "accounts.major",
+  "pk": 64
+}, {
+  "fields": {
+    "name": "Nursing, BSN"
+  },
+  "model": "accounts.major",
+  "pk": 65
+}, {
+  "fields": {
+    "name": "Philosophy, BA"
+  },
+  "model": "accounts.major",
+  "pk": 66
+}, {
+  "fields": {
+    "name": "Physical Education, BSEd"
+  },
+  "model": "accounts.major",
+  "pk": 67
+}, {
+  "fields": {
+    "name": "Physics, BS"
+  },
+  "model": "accounts.major",
+  "pk": 68
+}, {
+  "fields": {
+    "name": "Psychology, BA"
+  },
+  "model": "accounts.major",
+  "pk": 69
+}, {
+  "fields": {
+    "name": "Psychology, BS"
+  },
+  "model": "accounts.major",
+  "pk": 70
+}, {
+  "fields": {
+    "name": "Public Administration, BS"
+  },
+  "model": "accounts.major",
+  "pk": 71
+}, {
+  "fields": {
+    "name": "Religious Studies, BA"
+  },
+  "model": "accounts.major",
+  "pk": 72
+}, {
+  "fields": {
+    "name": "Russian and Eurasian Studies, BA"
+  },
+  "model": "accounts.major",
+  "pk": 73
+}, {
+  "fields": {
+    "name": "Social Work, BSW"
+  },
+  "model": "accounts.major",
+  "pk": 74
+}, {
+  "fields": {
+    "name": "Sociology, BA"
+  },
+  "model": "accounts.major",
+  "pk": 75
+}, {
+  "fields": {
+    "name": "Systems Engineering, BS"
+  },
+  "model": "accounts.major",
+  "pk": 76
+}, {
+  "fields": {
+    "name": "Theater, BA"
+  },
+  "model": "accounts.major",
+  "pk": 77
+}, {
+  "fields": {
+    "name": "Theater, BFA"
+  },
+  "model": "accounts.major",
+  "pk": 78
+}, {
+  "fields": {
+    "name": "Tourism and Events Management, BS"
+  },
+  "model": "accounts.major",
+  "pk": 79
+}]
