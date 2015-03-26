@@ -1,18 +1,21 @@
 from django.shortcuts import render, get_object_or_404
 
-from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import DetailView, ListView, UpdateView, UpdateView, DeleteView
 
 from accounts.models import Student
-from accounts.forms import StudentForm
 
 from braces.views import LoginRequiredMixin
 
-# create a student
-class CreateStudent(LoginRequiredMixin, CreateView):
+# update a student (students are *created* on first login via CAS)
+class UpdateStudent(LoginRequiredMixin, UpdateView):
     model = Student
-    form_class = StudentForm
-    success_url = '/' #redirect location tba
+    fields = ['room', 'privacy',]
+
     login_url = '/'
+
+    # copied from below
+    def get_object(self):
+        return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
 
 # details about the student
 class DetailStudent(LoginRequiredMixin, DetailView):
