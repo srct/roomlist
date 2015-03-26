@@ -1,4 +1,13 @@
-{% extends 'layouts/base.html' %} {% block title %} SRCT RoomList | {{ student.user.first_name }} {{ student.user.last_name }} {% endblock %} {% block content %} {% load socialaccount %} {% load gravatar %}
+{% extends 'layouts/base.html' %}
+
+{% block title %} SRCT RoomList | {{ student.user.first_name }} {{ student.user.last_name }} {% endblock %}
+
+{% block reminder %}
+{% endblock %}
+
+{% block content %}
+
+{% load socialaccount %} {% load gravatar %}
 
 <div class="page-header" id="banner">
   <div class="row">
@@ -11,53 +20,52 @@
 
 {% load socialaccount %} {% providers_media_js %}
 
+<legend>Account Settings</legend>
+
+<div class="row">
+  {% comment %}
+  <a href="/accounts/email/">
+    <div class="col-md-4 col-md-offset-2 text-center">
+      <h4><i class="fa fa-envelope fa-5x"></i></h4>
+      <h4>Add Additional Email Addresses</h4>
+    </div>
+  </a>
+  {% endcomment %}
+  {{ student.user }} penis {{ request.user }}
+  <a href="#">
+    <div class="col-md-3 text-center">
+      <h4><i class="fa fa-lock fa-5x"></i></h4>
+    <h4>Set Your Room and Privacy</h4>
+    </div>
+  </a>
+</div>
+
+<legend style="margin-top: 50px">Social Media Settings</legend>
+
 <div class="row" style="margin-top: 50px">
   <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='/accounts/student/' %}">
     <div class="col-md-3 text-center">
       <h4><i class="fa fa-facebook fa-5x"></i></h4>
-      <h4>Link a Facebook</h4>
+      <h4>Link to you Facebook</h4>
     </div>
   </a>
   <a href="{% provider_login_url 'google' process='connect' next='/accounts/student/' %}">
     <div class="col-md-3 text-center">
       <h4><i class="fa fa-google fa-5x"></i></h4>
-      <h4>Link a Google</h4>
+      <h4>Link to your Google</h4>
     </div>
   </a>
   <a href="{% provider_login_url 'twitter' process='connect' next='/accounts/student/' %}">
     <div class="col-md-3 text-center">
       <h4><i class="fa fa-twitter fa-5x"></i></h4>
-      <h4>Link a Twitter</h4>
+      <h4>Link to your Twitter</h4>
     </div>
   </a>
   <div class="col-md-3 text-center">
     <!--<a href="{% provider_login_url 'instagram' process='connect' next='/accounts/student/' %}"><i class="fa fa-instagram fa-5x"></i></a>-->
     <h4><i class="fa fa-instagram fa-5x"></i></h4>
-    <h4>Link an Instagram (Soon!)</h4>
+    <h4>Link to your Instagram (Soon!)</h4>
   </div>
-</div>
-
-<legend></legend>
-
-<div class="row" style="margin-top: 50px">
-  <a href="/accounts/email/">
-    <div class="col-md-3 text-center">
-      <h4><i class="fa fa-envelope fa-5x"></i></h4>
-      <h4>Manage Email</h4>
-    </div>
-  </a>
-  <a href="/accounts/settings/">
-    <div class="col-md-3 text-center">
-      <h4><i class="fa fa-lock fa-5x"></i></h4>
-    <h4>Manage Permissions</h4>
-    </div>
-  </a>
-  <a href="/accounts/settings/">
-    <div class="col-md-3 text-center">
-      <h4><i class="fa fa-cog fa-5x"></i></h4>
-    <h4>Other Settings</h4>
-    </div>
-  </a>
 </div>
 
 {% endblock %}
