@@ -75,6 +75,7 @@ INSTALLED_APPS = (
     'django_gravatar',
     'analytical',
     'randomslugfield',
+    'haystack',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -133,7 +134,7 @@ USE_L10N = True
 USE_TZ = True
 
 # set for social auth
-#SITE_ID = 1
+SITE_ID = 1
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -154,3 +155,17 @@ CAS_PROVIDE_URL_TO_LOGOUT = True
 CAS_RESPONSE_CALLBACKS = (
     'accounts.cas_callbacks.create_user',
 )
+
+HAYSTACK_CONNECTIONS = {
+    'default' : {
+        'ENGINE' : 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH' : os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
+
+# Haystack Signal Processor
+# The RealtimeSignalProcessor allows for objects to indexed as soon as
+# they are created -- in real time.
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+
