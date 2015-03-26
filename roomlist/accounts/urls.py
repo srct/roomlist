@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from accounts.views import DetailStudent, CreateStudent, DetailStudentSettings, DetailCurrentStudent, DetailCurrentStudentSettings
+from accounts.views import DetailStudent, UpdateStudent, DetailStudentSettings, DetailCurrentStudent, DetailCurrentStudentSettings
 from accounts.models import Student
 
 urlpatterns = patterns('',
@@ -20,11 +20,11 @@ urlpatterns = patterns('',
             template_name='detailStudent.html'),
         name='detailCurrentStudent'),
 
-    url(r'^create/$',
-        CreateStudent.as_view(
+    url(r'^(?P<slug>[\w-]+)/welcome/$',
+        UpdateStudent.as_view(
             model=Student,
-            template_name="createStudent.html"),
-        name='createStudent'),
+            template_name="updateStudent.html"),
+        name='updateStudent'),
 
     url(r'^settings/$',
         DetailCurrentStudentSettings.as_view(
