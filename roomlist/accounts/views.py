@@ -58,20 +58,18 @@ class DetailStudent(LoginRequiredMixin, DetailView):
 
     login_url = '/'
 
-# changeable student settings
-class DetailStudentSettings(LoginRequiredMixin, DetailView):
-    model = Student
-    login_url = '/'
-
 class DetailCurrentStudent(LoginRequiredMixin, DetailView):
-
     #model = Student
 
     def get_object(self):
         return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
 
-class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
+# changeable student settings
+class DetailStudentSettings(LoginRequiredMixin, DetailView):
+    model = Student
+    login_url = '/'
 
+class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
     #model = Student
 
     def get_object(self):
