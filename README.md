@@ -1,10 +1,8 @@
-ROOMLIST
-===
+# ROOMLIST
 
-Project Description
+Roomlist is a secure, privacy-oriented service for Mason studens to find their on-campus neighbors.
 
-On Contributing
----
+## On Contributing
 
 RoomList welcomes all the help it can get. Even if you don't feel like you can be helpful the more technical aspects, we definitely need designers, technical writers, and testers.
 
@@ -12,27 +10,75 @@ There are many things that can be done with this project (see the "To Do" sectio
 
 If you need help at all please contact a SRCT member. We want people to contribute, so if you are struggling, or just want to learn we are more than willing to help.
 
-The project lead for this project is [Jason Yeomans](jyeoman2@gmu.edu).
+The project manager for this project is [Jason Yeomans](jyeoman2@gmu.edu), and a lead developer is [Daniel Bond](dbond2@gmu.edu).
 
 Please visit the [SRCT Wiki](http://wiki.srct.gmu.edu/) for more information on this and other SRCT projects, along with other helpful links and tutorials.
 
-Setup
----
+## Setting everything up for development
 
-To get started, you'll need the following installed:
-* [Git](http://git-scm.com/book/en/Getting-Started-Installing-Git)
-* Python
-* Django 1.7
-* PostgreSQL
-* Psycopg2
-* Other language or framework-specific items
+These instructions are for Ubuntu and Debian, or related Linux distributions. (If you'd like to help write the instructions for Mac's OSX, please do!)
 
-Open a terminal window and type in the following commands. (If you're on Windows, use [Cygwin](http://www.cygwin.com/). This will create a local, workable copy of the project.
+### Prerequisities
 
-``bash``
-``git clone git@git.gmu.edu:srct/roomlist.git``
-``cd roomlist/``
-``A Django project, for example, would include setting up virtual environment, installing from requirements file, setting up south, syncing the database, and runserver``
+### Package Installation
+
+First, install python, pip, and git on your system. Python is the programming language used for Django, the web framework used by Roomlist. 'Pip' is the python package manager. Git is the version control system used for SRCT projects.
+
+Open a terminal and run the following commands.
+
+`sudo apt-get update`
+
+This retrieves links to the most up-to-date and secure versions of your packages. Next, with
+
+`sudo apt-get install python python-dev python-pip git`
+
+you install python and git.
+
+We're using Postgres for our database, so run
+
+`sudo apt-get install postgresql postgresql-contrib python-psycopg2`.
+
+### Copying Down the Source Code
+
+Now, we're going to copy down a copy of the roomlist codebase from git.gmu.edu, the SRCT code respository.
+
+Configure your ssh keys by following the directions at git.gmu.edu/help/ssh/README.
+
+Now, on your computer, navigate to the directory in which you want to download the project (perhaps one called development/ or something similar), and run
+
+`git clone git@git.gmu.edu:srct/roomlist.git`
+
+### The Virtual Environment
+
+Virtual environments are used to keep separate project packages from the main computer, so you can use different versions of packacages across different projects and also ease deployment server setup.
+
+It's often recommended to create a special directory to store all of your virtual environments together, but some prefer keeping their virtual environment in the top level of their project's director. If you choose the latter, make sure to keep the virtual environment folders out of version control.
+
+(For example, `mkdir ~/venv`, `cd ~/venv`)
+
+Run `sudo pip install virtualenv`
+
+to install virtualenv system-wide, and then run
+
+`virtualenv roomlist`
+
+in your virtual environment directory to create your virtual environment. Activate it by typing
+
+`source roomlist/vin/activate`
+
+If you ever need to exit your virtual environment, simply run
+
+`deactivate`
+
+Now, the packages you need to install for roomlist are in in the top level of the project's directory structure. Run
+
+`pip install -r requirements.txt`
+
+to in install all of the packages needed for the project.
+
+Next, run `python manage.py makemigrations`, `python manage.py migrate`, then `python manage.py runserver`.
+
+### Creating the Database
 
 To set up the PostgreSQL database, open a terminal and type in the following commands:
 
@@ -66,18 +112,28 @@ Copy the secret.py.template and config.py.template to secret.py and config.py re
 
 Run `python manage.py syncdb` to set up the empty database tables. When you're prompted, say 'y' to setting up the superuser, but use your mason username and full mason email address (@masonlive.gmu.edu) for the account. This is because we use Mason's Central Authentication for our user signin, and your admin account needs to manage your CAS account.
 
-Have your virtualenvironment running and with the requirements.txt installed.
+## Starting up the test server
 
-Next, run `python manage.py makemigrations`, `python manage.py migrate`, then `python manage.py runserver`.
+With your virtual environment active, run
+
+`python manage.py runserver` in the directory with `manage.py`
 
 Head over to localhost:8000 and see the site!
 
-To-do
----
+## Deployment
 
-The list of to-do items is kept track of on the gitlab roomlist issues page. https://git.gmu.edu/srct/roomlist
+### Docker
 
-About GMU SRCT
----
+For server deployment, not for most local work
+
+## To-do
+
+The list of to-do items is kept track of on the gitlab roomlist issues page. https://git.gmu.edu/srct/roomlist/issues
+
+Each issue includes details about the bugs and features, and links to documentation and tutorials to help with fixing that specific issue.
+
+Contact the project manager or any of its developers if you'd like help picking an unassigned issue.
+
+## About Mason SRCT
 
 **S**tudent - **R**un **C**omputing and **T**echnology (*SRCT*, pronounced "circuit") is a student organization at George Mason University which enhances student computing at Mason. SRCT establishes and maintains systems which provide specific services for Mason's community.
