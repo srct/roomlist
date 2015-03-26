@@ -1,0 +1,104 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}
+SRCT Roomlist &bull; Search Students
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="text-center"><strong>SRCT</strong>&#8203;ROOMLIST</h1>
+      <p class="lead text-center"><strong>Search</strong></p>
+    </div>
+  </div>
+</div>
+
+<form class="form-horizontal" method="get" action=".">
+  <div class="form-group"> 
+    <label for="id_q" class="col-md-1 col-md-offset-4 control-label"><strong>Name</strong> or <strong>Username</strong></label>
+    <div class="col-md-2">
+      {{ form.q }}
+    </div>
+    <button type="submit" class="btn btn-default"><i class="fa fa-search fa-fw fa-lg"></i></button>
+  </div>
+</form>
+
+{% if query %}
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+
+    {% if page.object_list %}
+      <table class="table table-hover">
+        <thead>
+          <th class="col-md-2"><h3><small>Username</small></h3></th>
+          <th class="col-md-6"><h3><small>Name</small></h3></th>
+          <th class="col-md-4"><h3><small>Major</small></h3></th>
+        </thead>
+    {% endif %}
+
+    {% for result in page.object_list %}
+      <tr>
+        <td>
+          <h4>{{ result.object.user.username }}</h4>
+        </td>
+        <td>
+          <a href="{{ result.object.get_absolute_url }}"><h4><strong>{{ result.object.user.get_full_name }}</strong></h4></a>
+        </td>
+        <td>
+          <h4>{{ result.object.major }}</h4>
+        </td>
+      </tr>
+    {% empty %}
+      <h3 class="text-center">No results found.</h3>
+    {% endfor %}
+
+    {% if page.object_list %}
+      </table>
+    {% endif %}
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-4 col-lg-offset-4">
+
+    <ul class="pager">
+
+      {% if page.has_previous %}
+        <li class="previous">
+          <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">
+            <h4>&larr; Previous</h4>
+          </a>
+        </li>
+      {% else %}
+        <li class="previous disabled">
+          <a>
+            <h4>&larr; Previous</h4>
+          </a>
+        </li>
+      {% endif %}
+
+      {% if page.has_next %}
+        <li class="next">
+          <a href="?q={{ query }}&amp;page={{ page.next_page_number }}">
+            <h4>Next &rarr;</h4>
+          </a>
+        </li>
+      {% else %}
+        <li class="next disabled">
+          <a>
+            <h4>Next &rarr;</h4>
+          </a>
+        </li>
+      {% endif %}
+
+    </ul>
+
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

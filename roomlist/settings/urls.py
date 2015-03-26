@@ -21,6 +21,9 @@ urlpatterns = patterns('',
     url(r'^housing/', include('housing.urls')),
     url(r'^accounts/', include('accounts.urls')),
 
+    # search
+    url(r'^search/', include('haystack.urls'), name='search'),
+
     # login and logout
     #url(r'^login/', 'cas.views.login', name='login'),
     #url(r'^logout/', 'cas.views.logout', name='logout'),

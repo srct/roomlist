@@ -21,10 +21,12 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
+        <li>
+          <a href="/search"><i class="fa fa-search fa-fw fa-lg"></i></a>
         <li><a href="/accounts/student/{{ user.username }}">{{ user.username }}</a>
         </li>
         <li>
-          <a href="/accounts/settings/"><i class="fa fa-cog fa-fw"></i></a>
+          <a href="/accounts/settings/"><i class="fa fa-cog fa-fw fa-lg"></i></a>
         </li>
         <li><a href="{% url 'logout' %}">Logout</a>
         </li>
