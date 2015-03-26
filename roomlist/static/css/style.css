@@ -85,3 +85,7 @@ outline-offset: none;
     outline: none;
     outline-offset: 0px;
 }
+
+.navbar-brand img {
+  margin-top: -5px;
+}
