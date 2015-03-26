@@ -31,8 +31,8 @@
     </div>
   </a>
   {% endcomment %}
-  {{ student.user }} penis {{ request.user }}
-  <a href="#">
+  {{ object.user }} text text text {{ request.user }}
+  <a href="{% url 'updateStudent' request.user.student.slug %}">
     <div class="col-md-3 text-center">
       <h4><i class="fa fa-lock fa-5x"></i></h4>
     <h4>Set Your Room and Privacy</h4>
@@ -46,7 +46,7 @@
   <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='/accounts/student/' %}">
     <div class="col-md-3 text-center">
       <h4><i class="fa fa-facebook fa-5x"></i></h4>
-      <h4>Link to you Facebook</h4>
+      <h4>Link to your Facebook</h4>
     </div>
   </a>
   <a href="{% provider_login_url 'google' process='connect' next='/accounts/student/' %}">
