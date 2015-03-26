@@ -88,7 +88,7 @@ class Student(TimeStampedModel):
 
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
 
-    room = models.ForeignKey(Room)
+    room = models.ForeignKey(Room, null=True, blank=True)
     clas = models.ForeignKey(Class)
     major = models.ForeignKey('Major')
 
@@ -99,12 +99,18 @@ class Student(TimeStampedModel):
     objects = StudentManager()
 
     def get_floor(self):
-        floor = self.room.floor
-        return floor
+        try:
+            floor = self.room.floor
+            return floor
+        except AttributeError:
+            return None
 
     def get_building(self):
-        building = self.room.floor.building
-        return building
+        try:
+            building = self.room.floor.building
+            return building
+        except AttributeError:
+            return None
 
     def profile_image_url(self):
         fb_uid = SocialAccount.objects.filter(user=self.user.id, provider='facebook')
