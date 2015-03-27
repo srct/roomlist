@@ -16,8 +16,8 @@
     "slug": "rxcziV",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":1
+  "model": "housing.floor",
+  "pk": 1
 }, {
   "fields": {
     "building": 1,
@@ -25,8 +25,8 @@
     "slug": "nUZJE4",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":2
+  "model": "housing.floor",
+  "pk": 2
 }, {
   "fields": {
     "building": 1,
@@ -34,8 +34,8 @@
     "slug": "wYHWvW",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":3
+  "model": "housing.floor",
+  "pk": 3
 
 }, {
   "fields": {
@@ -55,8 +55,8 @@
     "slug": "gRU76r",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":4
+  "model": "housing.floor",
+  "pk": 4
 }, {
   "fields": {
     "building": 2,
@@ -64,8 +64,8 @@
     "slug": "QbjvUV",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":5
+  "model": "housing.floor",
+  "pk": 5
 }, {
   "fields": {
     "building": 2,
@@ -73,8 +73,8 @@
     "slug": "jx5DvV",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":6
+  "model": "housing.floor",
+  "pk": 6
 
 }, {
   "fields": {
@@ -94,8 +94,8 @@
     "slug": "WjkTko",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":7
+  "model": "housing.floor",
+  "pk": 7
 }, {
   "fields": {
     "building": 3,
@@ -103,8 +103,8 @@
     "slug": "g7KNQR",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":8
+  "model": "housing.floor",
+  "pk": 8
 }, {
   "fields": {
     "building": 3,
@@ -112,8 +112,8 @@
     "slug": "UX6uNZ",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":9
+  "model": "housing.floor",
+  "pk": 9
 
 }, {
   "fields": {
@@ -133,8 +133,8 @@
     "slug": "jfEtMr",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":10
+  "model": "housing.floor",
+  "pk": 10
 }, {
   "fields": {
     "building": 4,
@@ -142,8 +142,8 @@
     "slug": "fVne6S",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":11
+  "model": "housing.floor",
+  "pk": 11
 }, {
   "fields": {
     "building": 4,
@@ -151,8 +151,8 @@
     "slug": "Nj8ZE9",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":12
+  "model": "housing.floor",
+  "pk": 12
 
 }, {
   "fields": {
@@ -172,8 +172,8 @@
     "slug": "8S5ypu",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":13
+  "model": "housing.floor",
+  "pk": 13
 }, {
   "fields": {
     "building": 5,
@@ -181,8 +181,8 @@
     "slug": "VEl3hp",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":14
+  "model": "housing.floor",
+  "pk": 14
 }, {
   "fields": {
     "building": 5,
@@ -190,10 +190,11 @@
     "slug": "Nkv6Ir",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":15
+  "model": "housing.floor",
+  "pk": 15
 
-}, {"fields": {
+}, {
+  "fields": {
     "name": "Lincoln",
     "building_name": "lincoln",
     "slug": "VMzC5Z",
@@ -210,8 +211,8 @@
     "slug": "lBzMZ0",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":16
+  "model": "housing.floor",
+  "pk": 16
 }, {
   "fields": {
     "building": 6,
@@ -219,8 +220,8 @@
     "slug": "z2rkNb",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":17
+  "model": "housing.floor",
+  "pk": 17
 }, {
   "fields": {
     "building": 6,
@@ -228,8 +229,8 @@
     "slug": "qJs1Um",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":18
+  "model": "housing.floor",
+  "pk": 18
 
 }, {
   "fields": {
@@ -249,8 +250,8 @@
     "slug": "pF0mNK",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":19
+  "model": "housing.floor",
+  "pk": 19
 }, {
   "fields": {
     "building": 7,
@@ -258,8 +259,8 @@
     "slug": "b253Iy",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":20
+  "model": "housing.floor",
+  "pk": 20
 }, {
   "fields": {
     "building": 7,
@@ -267,8 +268,8 @@
     "slug": "TrouAj",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":21
+  "model": "housing.floor",
+  "pk": 21
 
 }, {
   "fields": {
@@ -288,8 +289,8 @@
     "slug": "8h09ty",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":22
+  "model": "housing.floor",
+  "pk": 22
 }, {
   "fields": {
     "building": 8,
@@ -297,8 +298,8 @@
     "slug": "gmlsOo",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":23
+  "model": "housing.floor",
+  "pk": 23
 }, {
   "fields": {
     "building": 8,
@@ -306,8 +307,8 @@
     "slug": "5blUnk",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":24
+  "model": "housing.floor",
+  "pk": 24
 
 }, {
   "fields": {
@@ -327,8 +328,8 @@
     "slug": "L4TiBd",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":25
+  "model": "housing.floor",
+  "pk": 25
 }, {
   "fields": {
     "building": 9,
@@ -336,8 +337,8 @@
     "slug": "r3dO25",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":26
+  "model": "housing.floor",
+  "pk": 26
 }, {
   "fields": {
     "building": 9,
@@ -345,8 +346,8 @@
     "slug": "KPNv5H",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":27
+  "model": "housing.floor",
+  "pk": 27
 
 }, {
   "fields": {
@@ -366,8 +367,8 @@
     "slug": "SyYUwN",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":28
+  "model": "housing.floor",
+  "pk": 28
 }, {
   "fields": {
     "building": 10,
@@ -375,8 +376,8 @@
     "slug": "7cB5dx",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":29
+  "model": "housing.floor",
+  "pk": 29
 }, {
   "fields": {
     "building": 10,
@@ -384,8 +385,8 @@
     "slug": "npMwxP",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":30
+  "model": "housing.floor",
+  "pk": 30
 
 }, {
   "fields": {
@@ -405,8 +406,8 @@
     "slug": "UAke5l",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":31
+  "model": "housing.floor",
+  "pk": 31
 }, {
   "fields": {
     "building": 11,
@@ -414,8 +415,8 @@
     "slug": "4spsx6",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":32
+  "model": "housing.floor",
+  "pk": 32
 }, {
   "fields": {
     "building": 11,
@@ -423,8 +424,8 @@
     "slug": "sc2Tg1",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":33
+  "model": "housing.floor",
+  "pk": 33
 
 }, {
   "fields": {
@@ -444,8 +445,8 @@
     "slug": "u4BUHi",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":34
+  "model": "housing.floor",
+  "pk": 34
 }, {
   "fields": {
     "building": 12,
@@ -453,8 +454,8 @@
     "slug": "F4OQUG",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":35
+  "model": "housing.floor",
+  "pk": 35
 }, {
   "fields": {
     "building": 12,
@@ -462,8 +463,8 @@
     "slug": "iyMocE",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":36
+  "model": "housing.floor",
+  "pk": 36
 
 }, {
   "fields": {
@@ -483,8 +484,8 @@
     "slug": "DFVmql",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":37
+  "model": "housing.floor",
+  "pk": 37
 }, {
   "fields": {
     "building": 13,
@@ -492,8 +493,8 @@
     "slug": "zuzd2F",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":38
+  "model": "housing.floor",
+  "pk": 38
 }, {
   "fields": {
     "building": 13,
@@ -501,8 +502,8 @@
     "slug": "MtTq1z",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":39
+  "model": "housing.floor",
+  "pk": 39
 
 }, {
   "fields": {
@@ -522,8 +523,8 @@
     "slug": "VICTbg",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":40
+  "model": "housing.floor",
+  "pk": 40
 }, {
   "fields": {
     "building": 14,
@@ -531,8 +532,8 @@
     "slug": "cMG2KG",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":41
+  "model": "housing.floor",
+  "pk": 41
 }, {
   "fields": {
     "building": 14,
@@ -540,8 +541,8 @@
     "slug": "47eIVT",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":42
+  "model": "housing.floor",
+  "pk": 42
 
 }, {
   "fields": {
@@ -561,8 +562,8 @@
     "slug": "6Aja6j",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":43
+  "model": "housing.floor",
+  "pk": 43
 }, {
   "fields": {
     "building": 15,
@@ -570,8 +571,8 @@
     "slug": "pHGDC0",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":44
+  "model": "housing.floor",
+  "pk": 44
 }, {
   "fields": {
     "building": 15,
@@ -579,8 +580,8 @@
     "slug": "hSKZiG",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":45
+  "model": "housing.floor",
+  "pk": 45
 
 }, {
   "fields": {
@@ -600,8 +601,8 @@
     "slug": "8IlAkt",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":46
+  "model": "housing.floor",
+  "pk": 46
 }, {
   "fields": {
     "building": 16,
@@ -609,8 +610,8 @@
     "slug": "jhf51U",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":47
+  "model": "housing.floor",
+  "pk": 47
 }, {
   "fields": {
     "building": 16,
@@ -618,8 +619,8 @@
     "slug": "cELY0M",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":48
+  "model": "housing.floor",
+  "pk": 48
 
 }, {
   "fields": {
@@ -639,8 +640,8 @@
     "slug": "6SHdag",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":49
+  "model": "housing.floor",
+  "pk": 49
 }, {
   "fields": {
     "building": 17,
@@ -648,8 +649,8 @@
     "slug": "5FuGr2",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":50
+  "model": "housing.floor",
+  "pk": 50
 }, {
   "fields": {
     "building": 17,
@@ -657,8 +658,8 @@
     "slug": "37YzLw",
     "floor_num": "3"
   },
-  "model":"housing.floor",
-  "pk":51
+  "model": "housing.floor",
+  "pk": 51
 
 }, {
   "fields": {
@@ -678,8 +679,8 @@
     "slug": "BzpXtO",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":52
+  "model": "housing.floor",
+  "pk": 52
 }, {
   "fields": {
     "building": 18,
@@ -687,8 +688,8 @@
     "slug": "VUQ5F8",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":53
+  "model": "housing.floor",
+  "pk": 53
 
 }, {
   "fields": {
@@ -708,8 +709,8 @@
     "slug": "CPh2hM",
     "floor_num": "1"
   },
-  "model":"housing.floor",
-  "pk":54
+  "model": "housing.floor",
+  "pk": 54
 }, {
   "fields": {
     "building": 19,
@@ -717,7 +718,119 @@
     "slug": "BkWAwN",
     "floor_num": "2"
   },
-  "model":"housing.floor",
-  "pk":55
+  "model": "housing.floor",
+  "pk": 55
 
+}, {
+  "fields": {
+    "name": "Commonwealth",
+    "created": "2015-03-27T00:14:43.443Z",
+    "modified": "2015-03-27T00:14:43.444Z",
+    "slug": "Zyt3sw",
+    "campus": "ff",
+    "neighbourhood": "ra",
+    "building_name": "commonwealth"
+  },
+  "model": "housing.building",
+  "pk": 20
+}, {
+  "fields": {
+    "building": 20,
+    "created": "2015-03-27T00:15:38.987Z",
+    "floor_num": "2",
+    "number": 2,
+    "modified": "2015-03-27T00:15:38.989Z",
+    "slug": "WZFybl"
+  },
+  "model": "housing.floor",
+  "pk": 57
+}, {
+  "fields": {
+    "building": 20,
+    "created": "2015-03-27T00:15:45.887Z",
+    "floor_num": "3",
+    "number": 3,
+    "modified": "2015-03-27T00:15:45.889Z",
+    "slug": "zCleC9"
+  },
+  "model": "housing.floor",
+  "pk": 58
+}, {
+  "fields": {
+    "building": 20,
+    "created": "2015-03-27T00:16:04.106Z",
+    "floor_num": "4",
+    "number": 4,
+    "modified": "2015-03-27T00:16:04.108Z",
+    "slug": "6STWZk"
+  },
+  "model": "housing.floor",
+  "pk": 59
+}, {
+  "fields": {
+    "building": 20,
+    "created": "2015-03-27T00:16:18.911Z",
+    "floor_num": "5",
+    "number": 5,
+    "modified": "2015-03-27T00:16:18.916Z",
+    "slug": "6tfatE"
+  },
+  "model": "housing.floor",
+  "pk": 60
+}, {
+  "fields": {
+    "name": "Dominion",
+    "created": "2015-03-27T00:14:57.577Z",
+    "modified": "2015-03-27T00:14:57.577Z",
+    "slug": "JSikx1",
+    "campus": "ff",
+    "neighbourhood": "ra",
+    "building_name": "dominion"
+  },
+  "model": "housing.building",
+  "pk": 21
+}, {
+  "fields": {
+    "building": 21,
+    "created": "2015-03-27T00:16:26.909Z",
+    "floor_num": "2",
+    "number": 2,
+    "modified": "2015-03-27T00:16:26.913Z",
+    "slug": "XegO7g"
+  },
+  "model": "housing.floor",
+  "pk": 61
+}, {
+  "fields": {
+    "building": 21,
+    "created": "2015-03-27T00:16:34.264Z",
+    "floor_num": "3",
+    "number": 3,
+    "modified": "2015-03-27T00:16:34.266Z",
+    "slug": "1lzwIU"
+  },
+  "model": "housing.floor",
+  "pk": 62
+}, {
+  "fields": {
+    "building": 21,
+    "created": "2015-03-27T00:16:41.953Z",
+    "floor_num": "4",
+    "number": 4,
+    "modified": "2015-03-27T00:16:41.957Z",
+    "slug": "47etf1"
+  },
+  "model": "housing.floor",
+  "pk": 63
+}, {
+  "fields": {
+    "building": 21,
+    "created": "2015-03-27T00:16:53.409Z",
+    "floor_num": "5",
+    "number": 5,
+    "modified": "2015-03-27T00:16:53.411Z",
+    "slug": "qcoQRx"
+  },
+  "model": "housing.floor",
+  "pk": 64
 }]
