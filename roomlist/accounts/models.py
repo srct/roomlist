@@ -89,8 +89,8 @@ class Student(TimeStampedModel):
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
 
     room = models.ForeignKey(Room, null=True, blank=True)
-    clas = models.ForeignKey(Class)
-    major = models.ForeignKey('Major')
+    clas = models.ForeignKey(Class, null=True, blank=True)
+    major = models.ForeignKey('Major', null=True, blank=True)
 
     # social media accounts
 

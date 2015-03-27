@@ -113,7 +113,7 @@ class Room(TimeStampedModel):
 #        return self.street
 
 class Class(TimeStampedModel):
-    year_int = models.IntegerField()
+    grad_year = models.PositiveIntegerField()
     FRESHMAN = 'FR'
     SOPHOMORE = 'SO'
     JUNIOR = 'JR'
