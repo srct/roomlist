@@ -17,6 +17,16 @@ class UpdateStudent(LoginRequiredMixin, UpdateView):
     def get_object(self):
         return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
 
+class UpdateStudentMajor(LoginRequiredMixin, UpdateView):
+    models = Student
+    fields = ['major',]
+
+    login_url = '/'
+
+    # copied from below
+#    def get_object(self):
+#        return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
+
 # details about the student
 class DetailStudent(LoginRequiredMixin, DetailView):
     model = Student
@@ -70,7 +80,7 @@ class DetailStudentSettings(LoginRequiredMixin, DetailView):
     login_url = '/'
 
 class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
-    #model = Student
+    model = Student
 
     def get_object(self):
         return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
