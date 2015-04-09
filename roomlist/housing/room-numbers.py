@@ -18,29 +18,43 @@ def get_floor_num(line):
 
 roomNumbers = open('room-numbers', 'r')
 
-print "[{"
+print("[{")
 # for line in file
 
-for line in roomNumbers:
+pk = 1
+curFloor = 0
+curFloorInBuilding = 1
 
-    print "}, {\n"
-    print "    \"floor\": " + + ",\n"
-    print "    \"number\": " + + ",\n"
-    print "    \"slug\": \"" + slug_generator() + "\",\n"
-    print "    \"room_num\": \"" + + "\",\n"
-    print "  },"
-    print "  \"model\":\"housing.room\",\n"
-    print "  \"pk\":\n"
-print "}]"
+for line in roomNumbers:
+    line = line.rstrip('\n')
+    if re.match('[a-zA-Z]',line):
+        curFloor += 1
+        curFloorInBuilding = 1
+    else:
+        if int(float(get_floor_num(line))) > curFloorInBuilding:
+            curFloor += 1
+            curFloorInBuilding += 1
+        print("}, {\"fields\": {")
+        print("    \"floor\": " + str(curFloor) + ",")
+        print("    \"number\": " + str(line) + ",")
+        print("    \"room_num\": \"" + str(line) + "\",")
+        print("    \"slug\": \"" + slug_generator() + "\"")
+        print("  },")
+        print("  \"model\":\"housing.room\",")
+        print("  \"pk\":" + str(pk))
+        pk = pk + 1
+print("}]")
 
 """
-}, {
   "fields": {
-    "floor": 8,
-    "number": 204,
-    "slug": "8J6yWD",
-    "floor_num": "2"
+    "floor": 1,
+    "created": "2015-04-09T19:56:59.594Z",
+    "number": 101,
+    "modified": "2015-04-09T19:56:59.598Z",
+    "room_num": "101",
+    "slug": "G4xTdX"
   },
-  "model":"housing.floor",
-  "pk":44
+  "model": "housing.room",
+  "pk": 1
+}, {
 """
