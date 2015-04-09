@@ -21,26 +21,33 @@ roomNumbers = open('room-numbers', 'r')
 print "[{"
 # for line in file
 
-for line in roomNumbers:
+pk = 1
+curFloorInBuilding = 1
+curFloor = 1
 
-    print "}, {\n"
-    print "    \"floor\": " + + ",\n"
-    print "    \"number\": " + + ",\n"
-    print "    \"slug\": \"" + slug_generator() + "\",\n"
-    print "    \"room_num\": \"" + + "\",\n"
-    print "  },"
-    print "  \"model\":\"housing.room\",\n"
-    print "  \"pk\":\n"
+for line in roomNumbers:
+    if not prog.match('[a-zA-Z]',line):
+        print "}, {\n"
+        print "    \"floor\": " + curFloor + ",\n"
+        print "    \"number\": " + line + ",\n"
+        print "    \"room_num\": \"" + line + "\",\n"
+        print "    \"slug\": \"" + slug_generator() + "\",\n"
+        print "  },"
+        print "  \"model\":\"housing.room\",\n"
+        print "  \"pk\":\n"
+        pk++
 print "}]"
 
 """
-}, {
   "fields": {
-    "floor": 8,
-    "number": 204,
-    "slug": "8J6yWD",
-    "floor_num": "2"
+    "floor": 1,
+    "created": "2015-04-09T19:56:59.594Z",
+    "number": 101,
+    "modified": "2015-04-09T19:56:59.598Z",
+    "room_num": "101",
+    "slug": "G4xTdX"
   },
-  "model":"housing.floor",
-  "pk":44
+  "model": "housing.room",
+  "pk": 1
+}, {
 """
