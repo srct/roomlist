@@ -1,4 +1,7 @@
 from django.contrib.auth.models import User
+
+from accounts.models import Student
+
 from django.conf import settings
 
 def create_user(tree):
