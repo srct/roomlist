@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseForbidden
 
 from django.views.generic import DetailView, ListView, UpdateView, UpdateView, DeleteView
 
@@ -11,11 +12,20 @@ class UpdateStudent(LoginRequiredMixin, UpdateView):
     model = Student
     fields = ['room', 'privacy',]
 
-    login_url = '/'
+    login_url = 'login'
 
-    # copied from below
-    def get_object(self):
-        return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
+    def get(self, request, *args, **kwargs):
+
+        current_url = self.request.get_full_path()
+        url_uname = current_url.split('/')[3]
+
+        print url_uname, self.request.user.username
+
+        if not(url_uname == self.request.user.username):
+            print "I'm sorry, what now?"
+            return HttpResponseForbidden()
+        else:
+            return super(UpdateStudent, self).get(request, *args, **kwargs)
 
 class UpdateStudentMajor(LoginRequiredMixin, UpdateView):
     models = Student

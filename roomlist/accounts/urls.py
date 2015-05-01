@@ -20,7 +20,7 @@ urlpatterns = patterns('',
             template_name='detailStudent.html'),
         name='detailCurrentStudent'),
 
-    url(r'^(?P<slug>[\w-]+)/welcome/$',
+    url(r'^student/(?P<slug>[\w-]+)/welcome/$',
         UpdateStudent.as_view(
             model=Student,
             template_name="updateStudent.html"),
