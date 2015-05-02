@@ -11,7 +11,12 @@ from accounts.models import Student
 # a list of neighborhoods and their buildings
 class ListBuildings(LoginRequiredMixin, ListView):
     model = Building
-    login_url = '/'
+    queryset = Building.objects.all()
+    # paginate_by = 
+    context_object_name = 'buildings'
+    template_name = 'list_buildings.html'
+
+    login_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super(ListBuildings, self).get_context_data(**kwargs)
@@ -23,15 +28,16 @@ class ListBuildings(LoginRequiredMixin, ListView):
 # building floors, other information
 class DetailBuilding(LoginRequiredMixin, DetailView):
     model = Building
+    slug_field = 'slug__iexact'
     context_object_name = 'building'
-    template_name='detailBuilding.html'
+    template_name='detail_building.html'
+
+    login_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super(DetailBuilding, self).get_context_data(**kwargs)
         context['floors'] = Floor.objects.filter(building__name=''+self.get_object().name).order_by('number')
         return context
-
-    login_url = '/'
 
 # this lists the rooms on the floor
 class DetailFloor(LoginRequiredMixin, DetailView): 
@@ -78,7 +84,7 @@ class DetailFloor(LoginRequiredMixin, DetailView):
 class DetailRoom(LoginRequiredMixin, DetailView):
     model = Room
     context_object_name = 'room'
-    template_name='detailBuilding.html'
+    template_name='detail_room.html'
 
     def get_context_data(self, **kwargs):
         context = super(DetailRoom, self).get_context_data(**kwargs)
