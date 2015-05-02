@@ -1,7 +1,11 @@
-from allauth.account.adapter import DefaultAccountAdapter
+# standard library imports
+from datetime import datetime, timedelta
+# core django imports 
 from django.conf import settings
 from django.shortcuts import resolve_url
-from datetime import datetime, timedelta
+# third party imports
+from allauth.account.adapter import DefaultAccountAdapter
+
 
 class AccountAdapter(DefaultAccountAdapter):
 

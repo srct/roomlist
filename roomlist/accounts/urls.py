@@ -1,6 +1,9 @@
+# core django imports
 from django.conf.urls import patterns, include, url
-from accounts.views import DetailStudent, UpdateStudent, DetailStudentSettings, DetailCurrentStudent, DetailCurrentStudentSettings, UpdateStudentMajor
-from accounts.models import Student
+# imports from your apps
+from .views import DetailStudent, UpdateStudent, DetailStudentSettings,\
+     DetailCurrentStudent, DetailCurrentStudentSettings, UpdateStudentMajor
+from .models import Student
 
 urlpatterns = patterns('',
 

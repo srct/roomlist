@@ -1,14 +1,16 @@
+# standard library imports
+import hashlib
+# core django imports
 from django.db import models
 from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
-
-from autoslug import AutoSlugField
 from django.core.urlresolvers import reverse
-
+# third party imports
+from autoslug import AutoSlugField
+from allauth.socialaccount.models import SocialAccount
+# imports from your apps
 from housing.models import Building, Room, Class
 
-from allauth.socialaccount.models import SocialAccount
-import hashlib
 
 class Major(TimeStampedModel):
     name = models.CharField(max_length = 50)

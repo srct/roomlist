@@ -1,6 +1,10 @@
+# standard libary imports
 import datetime
+# third party imports
 from haystack import indexes
+# imports from your apps
 from .models import Student
+
 
 class StudentIndex(indexes.SearchIndex, indexes.Indexable):
 

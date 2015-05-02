@@ -1,7 +1,8 @@
+# standard library imports
+import re
+# third party imports
 import requests
 from bs4 import BeautifulSoup
-import re
-#import io
 
 try:
     page = requests.get('http://catalog.gmu.edu/content.php?catoid=25&navoid=4959')

@@ -1,11 +1,12 @@
+# core django imports
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseForbidden
-
 from django.views.generic import DetailView, ListView, UpdateView, UpdateView, DeleteView
-
-from accounts.models import Student
-
+# third party imports
 from braces.views import LoginRequiredMixin
+# imports from your apps
+from .models import Student
+
 
 # update a student (students are *created* on first login via CAS)
 class UpdateStudent(LoginRequiredMixin, UpdateView):

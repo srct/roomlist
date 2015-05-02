@@ -1,10 +1,11 @@
+# core django imports
 from django.contrib.auth.models import User
-
-from accounts.models import Student
-
 from django.conf import settings
-
+# third party imports
 import requests
+# imports from your apps
+from .models import Student
+
 
 def pfinfo(uname):
     base_url = "http://peoplefinder.b1.akshaykarthik.com/"

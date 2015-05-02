@@ -1,6 +1,7 @@
+# core django imports
 from django.contrib import admin
-from accounts.models import Student, Major
+# imports from your apps
+from .models import Student, Major
 
-# Register your models here.
 admin.site.register(Major)
 admin.site.register(Student)
