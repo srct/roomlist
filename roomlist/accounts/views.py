@@ -12,6 +12,8 @@ from .models import Student
 class UpdateStudent(LoginRequiredMixin, UpdateView):
     model = Student
     fields = ['room', 'privacy',]
+    context_object_name = 'student'
+    template_name = 'updateStudent.html'
 
     login_url = 'login'
 
@@ -31,8 +33,9 @@ class UpdateStudent(LoginRequiredMixin, UpdateView):
 class UpdateStudentMajor(LoginRequiredMixin, UpdateView):
     models = Student
     fields = ['major',]
+    template_name = 'updateStudentMajor.html'
 
-    login_url = '/'
+    login_url = 'login'
 
     # copied from below
 #    def get_object(self):
@@ -41,6 +44,10 @@ class UpdateStudentMajor(LoginRequiredMixin, UpdateView):
 # details about the student
 class DetailStudent(LoginRequiredMixin, DetailView):
     model = Student
+    context_object_name = 'student'
+    template_name = 'detailStudent.html'
+
+    login_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super(DetailStudent, self).get_context_data(**kwargs)
@@ -77,10 +84,12 @@ class DetailStudent(LoginRequiredMixin, DetailView):
         context['shares'] = shares()
         return context
 
-    login_url = '/'
-
 class DetailCurrentStudent(LoginRequiredMixin, DetailView):
-    #model = Student
+    model = Student
+    context_object_name = 'student'
+    template_name = 'detailStudent.html'
+
+    login_url = 'login'
 
     def get_object(self):
         return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
@@ -88,10 +97,17 @@ class DetailCurrentStudent(LoginRequiredMixin, DetailView):
 # changeable student settings
 class DetailStudentSettings(LoginRequiredMixin, DetailView):
     model = Student
-    login_url = '/'
+    context_object_name = 'student'
+    template_name = 'studentSettings.html'
+
+    login_url = 'login'
 
 class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
     model = Student
+    context_object_name = 'student'
+    template_name = 'studentSettings.html'
+
+    login_url = 'login'
 
     def get_object(self):
         return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
