@@ -1,7 +1,9 @@
+# core django imports
 from django.contrib import admin
-from housing.models import Class, Building, Floor, Room
+# imports from your apps
+from .models import Class, Building, Floor, Room
 
-# Register your models here.
+
 admin.site.register(Class)
 admin.site.register(Building)
 admin.site.register(Floor)

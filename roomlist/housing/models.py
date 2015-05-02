@@ -1,10 +1,11 @@
+# core django imports
 from django.db import models
-from autoslug import AutoSlugField
+from django.core.urlresolvers import reverse
+# third party imports
 from model_utils.models import TimeStampedModel
 from randomslugfield import RandomSlugField
+from autoslug import AutoSlugField
 
-#from localflavor.us.models import USStateField
-from django.core.urlresolvers import reverse
 
 class Building(TimeStampedModel):
     name = models.CharField(max_length=100)

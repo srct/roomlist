@@ -1,9 +1,12 @@
-from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
-
-from housing.models import Building, Floor, Room
+# core django imports
+from django.views.generic import DetailView, ListView, CreateView, UpdateView,\
+    DeleteView
+# third party imports
+from braces.views import LoginRequiredMixin
+# imports from your apps 
+from .models import Building, Floor, Room
 from accounts.models import Student
 
-from braces.views import LoginRequiredMixin
 
 # a list of neighborhoods and their buildings
 class ListBuildings(LoginRequiredMixin, ListView):
