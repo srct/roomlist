@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 # imports from your apps
 from .views import DetailStudent, UpdateStudent, DetailStudentSettings,\
-     DetailCurrentStudent, DetailCurrentStudentSettings, UpdateStudentMajor
+    DetailCurrentStudent, DetailCurrentStudentSettings, UpdateStudentMajor
 
 
 urlpatterns = patterns('',
