@@ -16,6 +16,9 @@ class Major(TimeStampedModel):
     name = models.CharField(max_length=50)
     # I believe the longest is "Government and International Politics"
 
+    def first_letter(self):
+        return self.name and self.name[0] or ''
+
     def __str__(self):
         return self.name
 

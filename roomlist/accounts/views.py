@@ -1,11 +1,11 @@
 # core django imports
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import ListView, DetailView, UpdateView
 # third party imports
 from braces.views import LoginRequiredMixin
 # imports from your apps
-from .models import Student
+from .models import Student, Major
 
 
 # update a student (students are *created* on first login via CAS)
@@ -117,3 +117,11 @@ class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
+
+class ListMajors(LoginRequiredMixin, ListView):
+    model = Major
+    queryset = Major.objects.all().order_by('name')
+    context_object_name = 'majors'
+    template_name = 'list_majors.html'
+
+    login_url = 'majors'
