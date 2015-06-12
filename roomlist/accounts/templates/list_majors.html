@@ -1,0 +1,40 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} SRCT RoomList | Majors {% endblock title %}
+
+{% block content %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1><strong>SRCT</strong>ROOMLIST</h1>
+      <p class="lead"><strong>Majors</strong></p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    {% regroup majors by first_letter as majors_by_letter %}
+    {% for letter in majors_by_letter %}
+    <legend><a name="{{ letter.grouper }}" href="#{{ letter.grouper }}">{{ letter.grouper }}</a></legend>
+      <div class="row">
+      {% for major in letter.list %}
+          <div class="col-md-6 text-center">
+            <a href="#" class="btn btn-primary btn-lg btn-block">{{ major.name }}</a>
+          </div>
+        {% if forloop.counter|divisibleby:2 %}
+        </div>
+        <br />
+      <div class="row">
+      {% endif %}
+      {% endfor %}
+    </div>
+    <br />
+    {% empty %}
+    No majors in the database. :'-(
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}
