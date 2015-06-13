@@ -1,474 +1,553 @@
 [{
   "fields": {
-    "name": "Accounting, BS"
+    "name": "Accounting, BS",
+    "slug": "3Ojvqb"
   },
   "model": "accounts.major",
   "pk": 1
 }, {
   "fields": {
-    "name": "Anthropology, BA"
+    "name": "Anthropology, BA",
+    "slug": "ICOAZD"
   },
   "model": "accounts.major",
   "pk": 2
 }, {
   "fields": {
-    "name": "Applied Computer Science, BS"
+    "name": "Applied Computer Science, BS",
+    "slug": "h3Avvg"
   },
   "model": "accounts.major",
   "pk": 3
 }, {
   "fields": {
-    "name": "Applied Information Technology, BS"
+    "name": "Applied Information Technology, BS",
+    "slug": "BvOIfT"
   },
   "model": "accounts.major",
   "pk": 4
 }, {
   "fields": {
-    "name": "Applied Science, BAS"
+    "name": "Applied Science, BAS",
+    "slug": "CD9ZvL"
   },
   "model": "accounts.major",
   "pk": 5
 }, {
   "fields": {
-    "name": "Art and Visual Technology, BA"
+    "name": "Art and Visual Technology, BA",
+    "slug": "DJcPIU"
   },
   "model": "accounts.major",
   "pk": 6
 }, {
   "fields": {
-    "name": "Art and Visual Technology, BFA"
+    "name": "Art and Visual Technology, BFA",
+    "slug": "2Vcqh0"
   },
   "model": "accounts.major",
   "pk": 7
 }, {
   "fields": {
-    "name": "Art History, BA"
+    "name": "Art History, BA",
+    "slug": "uQlpMT"
   },
   "model": "accounts.major",
   "pk": 8
 }, {
   "fields": {
-    "name": "Astronomy, BS"
+    "name": "Astronomy, BS",
+    "slug": "53iV6H"
   },
   "model": "accounts.major",
   "pk": 9
 }, {
   "fields": {
-    "name": "Athletic Training, BS"
+    "name": "Athletic Training, BS",
+    "slug": "Ezl2Pt"
   },
   "model": "accounts.major",
   "pk": 10
 }, {
   "fields": {
-    "name": "Bioengineering, BS"
+    "name": "Bioengineering, BS",
+    "slug": "8qooXn"
   },
   "model": "accounts.major",
   "pk": 11
 }, {
   "fields": {
-    "name": "Biology, BA"
+    "name": "Biology, BA",
+    "slug": "HUg2V7"
   },
   "model": "accounts.major",
   "pk": 12
 }, {
   "fields": {
-    "name": "Biology, BS"
+    "name": "Biology, BS",
+    "slug": "g7lRg8"
   },
   "model": "accounts.major",
   "pk": 13
 }, {
   "fields": {
-    "name": "Business Administration, MBA"
+    "name": "Business Administration, MBA",
+    "slug": "wtPyVa"
   },
   "model": "accounts.major",
   "pk": 14
 }, {
   "fields": {
-    "name": "Chemistry, BA"
+    "name": "Chemistry, BA",
+    "slug": "JSzv6K"
   },
   "model": "accounts.major",
   "pk": 15
 }, {
   "fields": {
-    "name": "Chemistry, BS"
+    "name": "Chemistry, BS",
+    "slug": "rVhDX1"
   },
   "model": "accounts.major",
   "pk": 16
 }, {
   "fields": {
-    "name": "Civil and Infrastructure Engineering, BS"
+    "name": "Civil and Infrastructure Engineering, BS",
+    "slug": "YmGwjE"
   },
   "model": "accounts.major",
   "pk": 17
 }, {
   "fields": {
-    "name": "Communication, BA"
+    "name": "Communication, BA",
+    "slug": "yzHRO4"
   },
   "model": "accounts.major",
   "pk": 18
 }, {
   "fields": {
-    "name": "Community Health, BS"
+    "name": "Community Health, BS",
+    "slug": "tAVHya"
   },
   "model": "accounts.major",
   "pk": 19
 }, {
   "fields": {
-    "name": "Computer Engineering, BS"
+    "name": "Computer Engineering, BS",
+    "slug": "DibaB0"
   },
   "model": "accounts.major",
   "pk": 20
 }, {
   "fields": {
-    "name": "Computer Game Design, BFA"
+    "name": "Computer Game Design, BFA",
+    "slug": "76BLn2"
   },
   "model": "accounts.major",
   "pk": 21
 }, {
   "fields": {
-    "name": "Computer Science, BS"
+    "name": "Computer Science, BS",
+    "slug": "R5H7ZR"
   },
   "model": "accounts.major",
   "pk": 22
 }, {
   "fields": {
-    "name": "Conflict Analysis and Resolution, BA"
+    "name": "Conflict Analysis and Resolution, BA",
+    "slug": "RD5tZ6"
   },
   "model": "accounts.major",
   "pk": 23
 }, {
   "fields": {
-    "name": "Conflict Analysis and Resolution, BS"
+    "name": "Conflict Analysis and Resolution, BS",
+    "slug": "K0gaQi"
   },
   "model": "accounts.major",
   "pk": 24
 }, {
   "fields": {
-    "name": "Creative Writing, BFA"
+    "name": "Creative Writing, BFA",
+    "slug": "49RqIR"
   },
   "model": "accounts.major",
   "pk": 25
 }, {
   "fields": {
-    "name": "Criminology, Law and Society, BA"
+    "name": "Criminology, Law and Society, BA",
+    "slug": "fakWkr"
   },
   "model": "accounts.major",
   "pk": 26
 }, {
   "fields": {
-    "name": "Criminology, Law and Society, BS"
+    "name": "Criminology, Law and Society, BS",
+    "slug": "kzvy90"
   },
   "model": "accounts.major",
   "pk": 27
 }, {
   "fields": {
-    "name": "Dance, BA"
+    "name": "Dance, BA",
+    "slug": "RHc32j"
   },
   "model": "accounts.major",
   "pk": 28
 }, {
   "fields": {
-    "name": "Dance, BFA"
+    "name": "Dance, BFA",
+    "slug": "azV9UO"
   },
   "model": "accounts.major",
   "pk": 29
 }, {
   "fields": {
-    "name": "Earth Science, BS"
+    "name": "Earth Science, BS",
+    "slug": "UazNq5"
   },
   "model": "accounts.major",
   "pk": 30
 }, {
   "fields": {
-    "name": "Economics, BA"
+    "name": "Economics, BA",
+    "slug": "8TZgnb"
   },
   "model": "accounts.major",
   "pk": 31
 }, {
   "fields": {
-    "name": "Economics, BS"
+    "name": "Economics, BS",
+    "slug": "Pmhjsw"
   },
   "model": "accounts.major",
   "pk": 32
 }, {
   "fields": {
-    "name": "Electrical Engineering, BS"
+    "name": "Electrical Engineering, BS",
+    "slug": "SXf9qN"
   },
   "model": "accounts.major",
   "pk": 33
 }, {
   "fields": {
-    "name": "English, BA"
+    "name": "English, BA",
+    "slug": "nXLnuM"
   },
   "model": "accounts.major",
   "pk": 34
 }, {
   "fields": {
-    "name": "Environmental and Sustainability Studies, BA"
+    "name": "Environmental and Sustainability Studies, BA",
+    "slug": "gxRb1A"
   },
   "model": "accounts.major",
   "pk": 35
 }, {
   "fields": {
-    "name": "Environmental Science, BS"
+    "name": "Environmental Science, BS",
+    "slug": "2pjQ5F"
   },
   "model": "accounts.major",
   "pk": 36
 }, {
   "fields": {
-    "name": "Executive MBA"
+    "name": "Executive MBA",
+    "slug": "Rl8GrX"
   },
   "model": "accounts.major",
   "pk": 37
 }, {
   "fields": {
-    "name": "Film and Video Studies, BA"
+    "name": "Film and Video Studies, BA",
+    "slug": "Olv1nj"
   },
   "model": "accounts.major",
   "pk": 38
 }, {
   "fields": {
-    "name": "Finance, BS"
+    "name": "Finance, BS",
+    "slug": "jMm31Y"
   },
   "model": "accounts.major",
   "pk": 39
 }, {
   "fields": {
-    "name": "Foreign Languages, BA"
+    "name": "Foreign Languages, BA",
+    "slug": "XSmNtX"
   },
   "model": "accounts.major",
   "pk": 40
 }, {
   "fields": {
-    "name": "Forensic Science, BS"
+    "name": "Forensic Science, BS",
+    "slug": "mwWUg4"
   },
   "model": "accounts.major",
   "pk": 41
 }, {
   "fields": {
-    "name": "Geography, BA"
+    "name": "Geography, BA",
+    "slug": "5wfT8v"
   },
   "model": "accounts.major",
   "pk": 42
 }, {
   "fields": {
-    "name": "Geography, BS"
+    "name": "Geography, BS",
+    "slug": "UGFpPU"
   },
   "model": "accounts.major",
   "pk": 43
 }, {
   "fields": {
-    "name": "Geology, BA"
+    "name": "Geology, BA",
+    "slug": "hxK6hS"
   },
   "model": "accounts.major",
   "pk": 44
 }, {
   "fields": {
-    "name": "Global Affairs, BA"
+    "name": "Global Affairs, BA",
+    "slug": "MqJKF9"
   },
   "model": "accounts.major",
   "pk": 45
 }, {
   "fields": {
-    "name": "Global and Environmental Change, BS"
+    "name": "Global and Environmental Change, BS",
+    "slug": "c7Xv2j"
   },
   "model": "accounts.major",
   "pk": 46
 }, {
   "fields": {
-    "name": "Government and International Politics, BA"
+    "name": "Government and International Politics, BA",
+    "slug": "1XCKnm"
   },
   "model": "accounts.major",
   "pk": 47
 }, {
   "fields": {
-    "name": "Health Administration, BS"
+    "name": "Health Administration, BS",
+    "slug": "HRhQCa"
   },
   "model": "accounts.major",
   "pk": 48
 }, {
   "fields": {
-    "name": "Health, Fitness, and Recreation Resources, BS"
+    "name": "Health, Fitness, and Recreation Resources, BS",
+    "slug": "mrGa3W"
   },
   "model": "accounts.major",
   "pk": 49
 }, {
   "fields": {
-    "name": "History, BA"
+    "name": "History, BA",
+    "slug": "Zlp7uS"
   },
   "model": "accounts.major",
   "pk": 50
 }, {
   "fields": {
-    "name": "Human Development and Family Science, BA"
+    "name": "Human Development and Family Science, BA",
+    "slug": "TAbfB2"
   },
   "model": "accounts.major",
   "pk": 51
 }, {
   "fields": {
-    "name": "Individualized Study, BIS"
+    "name": "Individualized Study, BIS",
+    "slug": "kDcawl"
   },
   "model": "accounts.major",
   "pk": 52
 }, {
   "fields": {
-    "name": "Information Systems and Operations Management, BS"
+    "name": "Information Systems and Operations Management, BS",
+    "slug": "W2EYwc"
   },
   "model": "accounts.major",
   "pk": 53
 }, {
   "fields": {
-    "name": "Integrative Studies, BA"
+    "name": "Integrative Studies, BA",
+    "slug": "xj4jaO"
   },
   "model": "accounts.major",
   "pk": 54
 }, {
   "fields": {
-    "name": "Integrative Studies, BS"
+    "name": "Integrative Studies, BS",
+    "slug": "YCwQaY"
   },
   "model": "accounts.major",
   "pk": 55
 }, {
   "fields": {
-    "name": "Latin American Studies, BA"
+    "name": "Latin American Studies, BA",
+    "slug": "ERVUGN"
   },
   "model": "accounts.major",
   "pk": 56
 }, {
   "fields": {
-    "name": "Management, BS"
+    "name": "Management, BS",
+    "slug": "UcX9w0"
   },
   "model": "accounts.major",
   "pk": 57
 }, {
   "fields": {
-    "name": "Marketing, BS"
+    "name": "Marketing, BS",
+    "slug": "2SknxA"
   },
   "model": "accounts.major",
   "pk": 58
 }, {
   "fields": {
-    "name": "Mathematics, BA"
+    "name": "Mathematics, BA",
+    "slug": "6m2cK8"
   },
   "model": "accounts.major",
   "pk": 59
 }, {
   "fields": {
-    "name": "Mathematics, BS"
+    "name": "Mathematics, BS",
+    "slug": "ogptw0"
   },
   "model": "accounts.major",
   "pk": 60
 }, {
   "fields": {
-    "name": "Medical Laboratory Science, BS"
+    "name": "Medical Laboratory Science, BS",
+    "slug": "RHEauD"
   },
   "model": "accounts.major",
   "pk": 61
 }, {
   "fields": {
-    "name": "Music, BA"
+    "name": "Music, BA",
+    "slug": "ZJeuwF"
   },
   "model": "accounts.major",
   "pk": 62
 }, {
   "fields": {
-    "name": "Music, BM"
+    "name": "Music, BM",
+    "slug": "eyFmCU"
   },
   "model": "accounts.major",
   "pk": 63
 }, {
   "fields": {
-    "name": "Neuroscience, BS"
+    "name": "Neuroscience, BS",
+    "slug": "Vktals"
   },
   "model": "accounts.major",
   "pk": 64
 }, {
   "fields": {
-    "name": "Nursing, BSN"
+    "name": "Nursing, BSN",
+    "slug": "TKmRZu"
   },
   "model": "accounts.major",
   "pk": 65
 }, {
   "fields": {
-    "name": "Philosophy, BA"
+    "name": "Philosophy, BA",
+    "slug": "zbVDSC"
   },
   "model": "accounts.major",
   "pk": 66
 }, {
   "fields": {
-    "name": "Physical Education, BSEd"
+    "name": "Physical Education, BSEd",
+    "slug": "86LqyJ"
   },
   "model": "accounts.major",
   "pk": 67
 }, {
   "fields": {
-    "name": "Physics, BS"
+    "name": "Physics, BS",
+    "slug": "vzPn6C"
   },
   "model": "accounts.major",
   "pk": 68
 }, {
   "fields": {
-    "name": "Psychology, BA"
+    "name": "Psychology, BA",
+    "slug": "KJNd1l"
   },
   "model": "accounts.major",
   "pk": 69
 }, {
   "fields": {
-    "name": "Psychology, BS"
+    "name": "Psychology, BS",
+    "slug": "vUIL9F"
   },
   "model": "accounts.major",
   "pk": 70
 }, {
   "fields": {
-    "name": "Public Administration, BS"
+    "name": "Public Administration, BS",
+    "slug": "L6bqxu"
   },
   "model": "accounts.major",
   "pk": 71
 }, {
   "fields": {
-    "name": "Religious Studies, BA"
+    "name": "Religious Studies, BA",
+    "slug": "2JukjK"
   },
   "model": "accounts.major",
   "pk": 72
 }, {
   "fields": {
-    "name": "Russian and Eurasian Studies, BA"
+    "name": "Russian and Eurasian Studies, BA",
+    "slug": "KLFf3Q"
   },
   "model": "accounts.major",
   "pk": 73
 }, {
   "fields": {
-    "name": "Social Work, BSW"
+    "name": "Social Work, BSW",
+    "slug": "dmmGXm"
   },
   "model": "accounts.major",
   "pk": 74
 }, {
   "fields": {
-    "name": "Sociology, BA"
+    "name": "Sociology, BA",
+    "slug": "zULM7A"
   },
   "model": "accounts.major",
   "pk": 75
 }, {
   "fields": {
-    "name": "Systems Engineering, BS"
+    "name": "Systems Engineering, BS",
+    "slug": "0zFNWW"
   },
   "model": "accounts.major",
   "pk": 76
 }, {
   "fields": {
-    "name": "Theater, BA"
+    "name": "Theater, BA",
+    "slug": "LeRmDp"
   },
   "model": "accounts.major",
   "pk": 77
 }, {
   "fields": {
-    "name": "Theater, BFA"
+    "name": "Theater, BFA",
+    "slug": "Vh2AEo"
   },
   "model": "accounts.major",
   "pk": 78
 }, {
   "fields": {
-    "name": "Tourism and Events Management, BS"
+    "name": "Tourism and Events Management, BS",
+    "slug": "NrdAFI"
   },
   "model": "accounts.major",
   "pk": 79

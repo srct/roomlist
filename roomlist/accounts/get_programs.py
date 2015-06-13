@@ -1,8 +1,14 @@
 # standard library imports
 import re
+import random
+import string
 # third party imports
 import requests
 from bs4 import BeautifulSoup
+
+# from stackoverflow https://stackoverflow.com/questions/2257441/
+def slug_generator(size=6, chars=string.ascii_letters + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size)) 
 
 try:
     page = requests.get('http://catalog.gmu.edu/content.php?catoid=25&navoid=4959')
@@ -30,12 +36,14 @@ else:
     # the last item is an edge case the way the brackets work
     for place in range(len(program_names)-1):
 
-        fixtures.write('  "fields": {\n    "name": "' + program_names[place] + '"\n')
+        fixtures.write('  "fields": {\n    "name": "' + program_names[place] + '",\n')
+        fixtures.write('    "slug": "' + slug_generator() + '"\n')
         fixtures.write('  },\n  "model": "accounts.major",\n')
         fixtures.write('  "pk": ' + str(place + 1) + '\n}, {\n')
 
     # the last item in the list
-    fixtures.write('  "fields": {\n    "name": "' + program_names[-1] + '"\n')
+    fixtures.write('  "fields": {\n    "name": "' + program_names[-1] + '",\n')
+    fixtures.write('    "slug": "' + slug_generator() + '"\n')
     fixtures.write('  },\n  "model": "accounts.major",\n')
     fixtures.write('  "pk": ' + str(len(program_names)) + '\n')
 

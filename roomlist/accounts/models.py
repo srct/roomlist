@@ -16,6 +16,8 @@ class Major(TimeStampedModel):
     name = models.CharField(max_length=50)
     # I believe the longest is "Government and International Politics"
 
+    slug = AutoSlugField(populate_from='name', unique=True)
+
     def first_letter(self):
         return self.name and self.name[0] or ''
 
@@ -24,6 +26,9 @@ class Major(TimeStampedModel):
 
     def __unicode__(self):
         return unicode(self.name)
+
+    def get_absolute_url(self):
+        return reverse('detail_major', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['name']
