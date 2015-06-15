@@ -5,6 +5,7 @@ from django.db import models
 from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.utils.text import slugify
 # third party imports
 from autoslug import AutoSlugField
 from allauth.socialaccount.models import SocialAccount
@@ -28,7 +29,10 @@ class Major(TimeStampedModel):
         return unicode(self.name)
 
     def get_absolute_url(self):
-        return reverse('detail_major', kwargs={'slug': self.slug})
+        return reverse('detail_major', kwargs={
+            'slug': self.slug,
+            'major': slugify(self.name),
+        })
 
     class Meta:
         ordering = ['name']

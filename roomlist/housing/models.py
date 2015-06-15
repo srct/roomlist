@@ -1,6 +1,7 @@
 # core django imports
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.utils.text import slugify
 # third party imports
 from model_utils.models import TimeStampedModel
 from randomslugfield import RandomSlugField
@@ -43,7 +44,7 @@ class Building(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse('detail_building', kwargs={
-            'building': self.building_name,
+            'building': slugify(self.building_name),
             'slug': self.slug,
         })
 
@@ -67,7 +68,7 @@ class Floor(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse('detail_floor', kwargs={
-            'building': self.building.building_name,
+            'building': slugify(self.building.building_name),
             'floor': self.floor_num,
             'slug': self.slug,
         })
@@ -90,7 +91,7 @@ class Room(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('detail_room', kwargs={
             'floor': self.floor.floor_num,
-            'building': self.floor.building.building_name,
+            'building': slugify(self.floor.building.building_name),
             'room': self.room_num,
             'slug': self.slug,
         })
@@ -118,7 +119,7 @@ class Room(TimeStampedModel):
 
 
 class Class(TimeStampedModel):
-    grad_year = models.PositiveIntegerField()
+    grad_year = models.PositiveIntegerField(null=True, blank=True)
     FRESHMAN = 'FR'
     SOPHOMORE = 'SO'
     JUNIOR = 'JR'
@@ -139,4 +140,4 @@ class Class(TimeStampedModel):
         verbose_name_plural = 'classes'
 
     def __str__(self):              # __unicode__ on Python 2
-        return str(self.year_int)
+        return str(self.year_in_school)
