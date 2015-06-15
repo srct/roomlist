@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 # imports from your apps
 from .views import DetailStudent, UpdateStudent, DetailStudentSettings,\
     DetailCurrentStudent, DetailCurrentStudentSettings, UpdateStudentMajor,\
-    ListMajors
+    ListMajors, DetailMajor
 
 
 urlpatterns = patterns('',
@@ -11,6 +11,9 @@ urlpatterns = patterns('',
     url(r'', include('allauth.urls')),
 
     url(r'^majors/$', ListMajors.as_view(), name='list_majors'),
+
+    url(r'^majors/(?P<slug>[\w-]+)/(?P<major>[\w-]+)/$', DetailMajor.as_view(),
+        name='detail_major'),
 
     url(r'^student/(?P<slug>[\w-]+)/$',
         DetailStudent.as_view(), name='detail_student'),

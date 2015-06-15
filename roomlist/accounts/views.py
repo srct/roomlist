@@ -124,4 +124,78 @@ class ListMajors(LoginRequiredMixin, ListView):
     context_object_name = 'majors'
     template_name = 'list_majors.html'
 
-    login_url = 'majors'
+    login_url = 'login'
+
+
+class DetailMajor(LoginRequiredMixin, DetailView):
+    model = Major
+    context_object_name = 'major'
+    template_name = 'detail_major.html'
+
+    login_url = 'login'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailMajor, self).get_context_data(**kwargs)
+        me = Student.objects.get(user=self.request.user)
+
+        students = Student.objects.filter(major=self.get_object()).order_by('room__floor__building__name', 'user__last_name', 'user__first_name')
+
+        def onFloor(me, student):
+            floor_status = False
+            if me.get_floor() == student.get_floor():
+                floor_status = True
+            return floor_status
+
+        def inBuilding(me, student):
+            floor_status = False
+            if me.get_building() == student.get_building():
+                floor_status = True
+            return floor_status
+
+        aq_location_visible = []
+        ra_location_visible = []
+        sh_location_visible = []
+        location_hidden = []
+
+        aq_students = students.filter(room__floor__building__neighbourhood='aq')
+
+        for student in aq_students:
+            if student.privacy == u'students':
+                aq_location_visible.append(student)
+            elif (student.privacy == u'building') and inBuilding(me, student):
+                aq_location_visible.append(student)
+            elif (student.privacy == u'floor') and onFloor(me, student):
+                aq_location_visible.append(student)
+            else:
+                location_hidden.append(student)
+
+        ra_students = students.filter(room__floor__building__neighbourhood='ra')
+
+        for student in ra_students:
+            if student.privacy == u'students':
+                ra_location_visible.append(student)
+            elif (student.privacy == u'building') and inBuilding(me, student):
+                ra_location_visible.append(student)
+            elif (student.privacy == u'floor') and onFloor(me, student):
+                ra_location_visible.append(student)
+            else:
+                location_hidden.append(student)
+
+        sh_students = students.filter(room__floor__building__neighbourhood='sh')
+
+        for student in sh_students:
+            if student.privacy == u'students':
+                sh_location_visible.append(student)
+            elif (student.privacy == u'building') and inBuilding(me, student):
+                sh_location_visible.append(student)
+            elif (student.privacy == u'floor') and onFloor(me, student):
+                sh_location_visible.append(student)
+            else:
+                location_hidden.append(student)
+
+        context['aq_location_visible'] = aq_location_visible
+        context['ra_location_visible'] = ra_location_visible
+        context['sh_location_visible'] = sh_location_visible
+        context['location_hidden'] = location_hidden
+
+        return context
