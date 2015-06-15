@@ -1,0 +1,102 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} SRCT RoomList | Majors | {{ major.name }} {% endblock title %}
+
+{% block content %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1><strong>SRCT</strong>ROOMLIST</h1>
+      <p class="lead"><strong>{{ major.name }}</strong></p>
+    </div>
+  </div>
+</div>
+
+{% load gravatar %}
+
+{% comment %} Sigh... three sections of largely duplicated code. {% endcomment %}
+
+<legend><strong><a href="{% url 'list_buildings' %}#Aquia">Aquia</a></strong></legend>
+
+<div class="row">
+  <div class="col-md-12">
+    {% regroup aq_location_visible by get_building as aq_students_by_building %}
+    {% for building in aq_students_by_building %}
+    <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
+    <div class="row">
+      {% for student in building.list %}
+        <div class="col-sm-3 text-center">
+          <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
+          <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
+        </div>
+     {% endfor %}
+   </div>
+   {% empty %}
+   No visible students in the database. :'-(
+   {% endfor %}
+  </div>
+</div>
+
+<br />
+
+<legend><strong><a href="{% url 'list_buildings' %}#Rappahannock">Rappahannock</a></strong></legend>
+
+<div class="row">
+  <div class="col-md-12">
+    {% regroup ra_location_visible by get_building as ra_students_by_building %}
+    {% for building in ra_students_by_building %}
+    <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
+    <div class="row">
+      {% for student in building.list %}
+        <div class="col-sm-3 text-center">
+          <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
+          <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
+        </div>
+     {% endfor %}
+   </div>
+   {% empty %}
+   No visible students in the database. :'-(
+   {% endfor %}
+  </div>
+</div>
+
+<br />
+
+<legend><strong><a href="{% url 'list_buildings' %}#Shenandoah">Shenandoah</a></strong></legend>
+
+<div class="row">
+  <div class="col-md-12">
+    {% regroup sh_location_visible by get_building as sh_students_by_building %}
+    {% for building in sh_students_by_building %}
+    <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
+    <div class="row">
+      {% for student in building.list %}
+        <div class="col-sm-3 text-center">
+          <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
+          <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
+        </div>
+     {% endfor %}
+   </div>
+   {% empty %}
+   No visible students in the database. :'-(
+   {% endfor %}
+  </div>
+</div>
+
+<br />
+
+<legend class="text-center">Location not visible because of student <a href="{% url 'currentStudentSettings' %}">privacy settings</a></legend>
+<div class="row">
+  <div class="col-md-12">
+    {% for student in location_hidden %}
+      <div class="col-sm-3 text-center">
+        <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
+        <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
+      </div>
+
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}
