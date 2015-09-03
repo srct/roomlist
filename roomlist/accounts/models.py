@@ -9,20 +9,22 @@ from django.core.urlresolvers import reverse
 from autoslug import AutoSlugField
 from allauth.socialaccount.models import SocialAccount
 # imports from your apps
-from housing.models import Building, Room, Class
+from housing.models import Room, Class
 
 
 class Major(TimeStampedModel):
-    name = models.CharField(max_length = 50)
+    name = models.CharField(max_length=50)
     # I believe the longest is "Government and International Politics"
 
     def __str__(self):
         return self.name
+
     def __unicode__(self):
         return unicode(self.name)
 
     class Meta:
         ordering = ['name']
+
 
 class StudentQuerySet(models.query.QuerySet):
     def floor(self):
@@ -47,10 +49,10 @@ class StudentQuerySet(models.query.QuerySet):
         students = self.students()
 
         # using the function above results in UnboundLocalError excpetion
-        #building_students = building_students()
         building_students = list(building) + list(set(students) - set(building))
 
         return list(floor) + list(set(building_students) - set(floor))
+
 
 class StudentManager(models.Manager):
 
@@ -70,9 +72,10 @@ class StudentManager(models.Manager):
 
     def building_students(self):
         return self.get_queryset().building_students()
- 
+
     def floor_building_students(self):
         return self.get_queryset().floor_building_students()
+
 
 class Student(TimeStampedModel):
     user = models.OneToOneField(User)
@@ -118,19 +121,19 @@ class Student(TimeStampedModel):
         fb_uid = SocialAccount.objects.filter(user=self.user.id, provider='facebook')
         print("profile_image")
 
-        if len(fb_uid)>0:
+        if len(fb_uid) > 0:
             return "http://graph.facebook.com/{}/picture?width=175&height=175".format(fb_uid[0].uid)
 
         return "http://www.gravatar.com/avatar/{}?s=175".format(hashlib.md5(self.user.email).hexdigest())
 
-
     def get_absolute_url(self):
-        return reverse('detail_student', kwargs={'slug':self.slug})
+        return reverse('detail_student', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['user']
 
     def __str__(self):              # __unicode__ on Python 2
         return self.user.username
+
     def __unicode__(self):
         return unicode(self.user.username)

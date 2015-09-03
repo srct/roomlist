@@ -1,7 +1,7 @@
 # core django imports
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
-from django.views.generic import DetailView, ListView, UpdateView, UpdateView, DeleteView
+from django.views.generic import DetailView, UpdateView
 # third party imports
 from braces.views import LoginRequiredMixin
 # imports from your apps
@@ -11,7 +11,7 @@ from .models import Student
 # update a student (students are *created* on first login via CAS)
 class UpdateStudent(LoginRequiredMixin, UpdateView):
     model = Student
-    fields = ['room', 'privacy',]
+    fields = ['room', 'privacy', ]
     context_object_name = 'student'
     template_name = 'updateStudent.html'
 
@@ -30,9 +30,10 @@ class UpdateStudent(LoginRequiredMixin, UpdateView):
         else:
             return super(UpdateStudent, self).get(request, *args, **kwargs)
 
+
 class UpdateStudentMajor(LoginRequiredMixin, UpdateView):
     models = Student
-    fields = ['major',]
+    fields = ['major', ]
     template_name = 'updateStudentMajor.html'
 
     login_url = 'login'
@@ -40,6 +41,7 @@ class UpdateStudentMajor(LoginRequiredMixin, UpdateView):
     # copied from below
 #    def get_object(self):
 #        return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
+
 
 # details about the student
 class DetailStudent(LoginRequiredMixin, DetailView):
@@ -73,16 +75,18 @@ class DetailStudent(LoginRequiredMixin, DetailView):
             # if the student's privacy is floor and the requesting user is on their floor
             if(self.get_object().privacy == 'floor') and onFloor():
                 student_shares = True
-            # if the student's privacy is building and the requesting users is on their floor or in their building
+            # if the student's privacy is building and the requesting users is
+            # on their floor or in their building
             elif(self.get_object().privacy == 'building') and inBuilding():
                 student_shares = True
             # if the student's privacy is set to 'student'
             elif(self.get_object().privacy == 'students'):
                 student_shares = True
             return student_shares
-           
+
         context['shares'] = shares()
         return context
+
 
 class DetailCurrentStudent(LoginRequiredMixin, DetailView):
     model = Student
@@ -94,6 +98,7 @@ class DetailCurrentStudent(LoginRequiredMixin, DetailView):
     def get_object(self):
         return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
 
+
 # changeable student settings
 class DetailStudentSettings(LoginRequiredMixin, DetailView):
     model = Student
@@ -101,6 +106,7 @@ class DetailStudentSettings(LoginRequiredMixin, DetailView):
     template_name = 'studentSettings.html'
 
     login_url = 'login'
+
 
 class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
     model = Student

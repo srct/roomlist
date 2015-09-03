@@ -22,8 +22,9 @@ class Building(TimeStampedModel):
     )
 
     neighbourhood = models.CharField(max_length=100, choices=NEIGHBOURHOOD_CHOICES,
-    default=NONE)
-    #address = models.ForeignKey('Address')
+                                     default=NONE)
+
+    # address = models.ForeignKey('Address')
 
     PRINCE_WILLIAM = 'pw'
     MASONVALE = 'mv'
@@ -42,17 +43,19 @@ class Building(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse('detail_building', kwargs={
-            'building':self.building_name,
-            'slug':self.slug,
+            'building': self.building_name,
+            'slug': self.slug,
         })
 
-    def __str__(self):              # __unicode__ on Python 2
+    def __str__(self):  # __unicode__ on Python 2
         return self.name
-    def __unicode__(self):              # __unicode__ on Python 2
+
+    def __unicode__(self):  # __unicode__ on Python 2
         return unicode(self.name)
-    
+
     class Meta:
         ordering = ['name']
+
 
 class Floor(TimeStampedModel):
     building = models.ForeignKey('Building')
@@ -60,21 +63,21 @@ class Floor(TimeStampedModel):
 
     slug = RandomSlugField(length=6)
 
-    floor_num = AutoSlugField(populate_from='number',# unique_with='building')
-        )
+    floor_num = AutoSlugField(populate_from='number',)  # unique_with='building')
 
     def get_absolute_url(self):
         return reverse('detail_floor', kwargs={
-            'building':self.building.building_name,
-            'floor':self.floor_num,
-            'slug':self.slug,
+            'building': self.building.building_name,
+            'floor': self.floor_num,
+            'slug': self.slug,
         })
 
-    def __str__(self):              # __unicode__ on Python 2
+    def __str__(self):  # __unicode__ on Python 2
         return self.building.__str__()+" "+self.number.__str__()
 
     class Meta:
         ordering = ['building', 'number']
+
 
 class Room(TimeStampedModel):
     number = models.IntegerField()
@@ -82,36 +85,37 @@ class Room(TimeStampedModel):
 
     slug = RandomSlugField(length=6)
 
-    room_num = AutoSlugField(populate_from='number',# unique_with='floor')
-        )
+    room_num = AutoSlugField(populate_from='number',)  # unique_with='floor')
 
     def get_absolute_url(self):
         return reverse('detail_room', kwargs={
-            'floor':self.floor.floor_num,
-            'building':self.floor.building.building_name,
-            'room':self.room_num,
-            'slug':self.slug,
+            'floor': self.floor.floor_num,
+            'building': self.floor.building.building_name,
+            'room': self.room_num,
+            'slug': self.slug,
         })
 
-    def __str__(self):              # __unicode__ on Python 2
+    def __str__(self):  # __unicode__ on Python 2
         return self.floor.building.__str__()+" "+self.number.__str__()
 
     class Meta:
         ordering = ['number']
 
+
 # buildings on campus don't have separate addresses yet
 #class Address(TimeStampedModel):
-    
+
 #    street = models.CharField(max_length=120)
 #    city = models.CharField(max_length=120)
 #    state = USStateField()
 #    zip_code = models.IntegerField(max_length=5)
 
-#    class Meta: 
+#    class Meta:
 #        verbose_name_plural = 'addresses'
 
 #    def __str__(self):              # __unicode__ on Python 2
 #        return self.street
+
 
 class Class(TimeStampedModel):
     grad_year = models.PositiveIntegerField()
@@ -130,7 +134,8 @@ class Class(TimeStampedModel):
     year_in_school = models.CharField(max_length=2,
                                       choices=YEAR_IN_SCHOOL_CHOICES,
                                       default=FRESHMAN)
-    class Meta: 
+
+    class Meta:
         verbose_name_plural = 'classes'
 
     def __str__(self):              # __unicode__ on Python 2

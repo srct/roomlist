@@ -2,13 +2,14 @@
 from django import forms
 # third party imports
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Field, HTML
-from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
+from crispy_forms.layout import Submit, Layout
+from crispy_forms.bootstrap import PrependedText, AppendedText
 # imports from your apps
 from .models import Student
 
+
 # form to create student
-class StudentForm( forms.ModelForm ):
+class StudentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
 
@@ -28,7 +29,7 @@ class StudentForm( forms.ModelForm ):
         model = Student
 
 
-class UserSettingsForm( forms.ModelForm ):
+class UserSettingsForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
 

@@ -1,5 +1,3 @@
-# standard libary imports
-import datetime
 # third party imports
 from haystack import indexes
 # imports from your apps
@@ -15,11 +13,11 @@ class StudentIndex(indexes.SearchIndex, indexes.Indexable):
     # with the fields that we want to display when returning results
 
     # search filtering
-    user = indexes.CharField( model_attr = 'user' )
+    user = indexes.CharField(model_attr='user')
 
     def get_model(self):
         return Student
 
     def index_queryset(self, using=None):
         """When the entire index for model is updated."""
-	return self.get_model().objects.all()
+        return self.get_model().objects.all()

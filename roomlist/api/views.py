@@ -1,12 +1,14 @@
+# core django imports
 from django.http import HttpResponse
-
+# third party imports
 import json
-
+# imports from your apps
 from housing.models import Building, Room
-# Create your views here.
+
 
 def index(request):
     return HttpResponse("Hello, world. You're at the RoomList index.")
+
 
 def buildings_list(request):
     building_list = Building.objects.order_by('name')[:5]
@@ -15,6 +17,7 @@ def buildings_list(request):
         jsons += '"'+p.__str__()+'":"'+p.address.__str__()+'",'
     jsons = jsons[:-1]+']}'
     return HttpResponse(jsons)
+
 
 def building(request, buildingName):
     room_list = Room.objects.filter(building__name=''+buildingName).order_by('number')
@@ -34,6 +37,7 @@ def building(request, buildingName):
         jsons = jsons[:-1] + ']}'
     return HttpResponse(jsons)
 
+
 def room(request, building, room_number):
     room_obj = Room.objects.filter(building__name=''+building, number=room_number)
 
@@ -52,6 +56,7 @@ def room(request, building, room_number):
         jsons += ']}'
     return HttpResponse(jsons)
 
+
 ###################JASON trying to JSON in python, so confuzed:
 #    if room_obj:
 #        jsons = {'building':building, 'number':room_number, 'residents': []}
@@ -64,6 +69,7 @@ def room(request, building, room_number):
 #            if p.bedD.__str__() is not '':
 #                jsons.residents[3] = 'bedD':p.bedD.__str__()
 #    return HttpResponse(json.dumps(jsons))
+
 
 def neighbourhood(request, nhood):
     building_list = Building.objects.filter(neighbourhood=''+nhood).order_by('name')

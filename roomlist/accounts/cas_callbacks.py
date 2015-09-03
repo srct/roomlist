@@ -20,6 +20,7 @@ def pfinfo(uname):
         name = pfjson['results'][0]['name']
         return name.split(',')
 
+
 def create_user(tree):
 
     username = tree[0][0].text

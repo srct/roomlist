@@ -1,8 +1,7 @@
 # core django imports
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 # imports from your apps
 from .views import ListBuildings, DetailBuilding, DetailFloor, DetailRoom
-from .models import Building, Floor, Room
 
 
 urlpatterns = patterns('',
