@@ -52,3 +52,4 @@ config.py
 secret.py
 # migrations
 *migrations*
+/migrations
