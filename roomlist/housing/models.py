@@ -140,4 +140,4 @@ class Class(TimeStampedModel):
         verbose_name_plural = 'classes'
 
     def __str__(self):              # __unicode__ on Python 2
-        return str(self.year_in_school)
+        return str(self.grad_year)

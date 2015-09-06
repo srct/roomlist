@@ -108,6 +108,8 @@ Finally, we need to enter the PostgreSQL command line interface to grant permiss
 
 Your PostgreSQL database should now be set up to work with the Roomlist project.
 
+Type ``\q`` and hit enter to exit the PostgreSQL shell.
+
 Copy the secret.py.template and config.py.template to secret.py and config.py respectively. For each, follow the comment instruction provided in each file.
 
 Run `python manage.py syncdb` to set up the empty database tables. When you're prompted, say 'y' to setting up the superuser, but use your mason username and full mason email address (@masonlive.gmu.edu) for the account. This is because we use Mason's Central Authentication for our user signin, and your admin account needs to manage your CAS account.
