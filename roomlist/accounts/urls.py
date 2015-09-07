@@ -2,8 +2,8 @@
 from django.conf.urls import patterns, include, url
 # imports from your apps
 from .views import DetailStudent, UpdateStudent, DetailStudentSettings,\
-    DetailCurrentStudent, DetailCurrentStudentSettings, UpdateStudentMajor,\
-    ListMajors, DetailMajor
+    DetailCurrentStudent, DetailCurrentStudentSettings, ListMajors,\
+    DetailMajor, WelcomeName, WelcomePrivacy, WelcomeMajor, WelcomeSocial
 
 
 urlpatterns = patterns('',
@@ -21,13 +21,30 @@ urlpatterns = patterns('',
     url(r'^student/$',
         DetailCurrentStudent.as_view(), name='detailCurrentStudent'),
 
-    url(r'^student/(?P<slug>[\w-]+)/welcome/$',
-        UpdateStudent.as_view(), name='updateStudent'),
-
-    url(r'^(?P<slug>[\w-]+)/major/$',
-        UpdateStudentMajor.as_view(), name='updateStudentMajor'),
-
     url(r'^settings/$',
         DetailCurrentStudentSettings.as_view(), name='currentStudentSettings'),
+
+    url(r'^student/(?P<slug>[\w-]+)/update/$',
+        UpdateStudent.as_view(), name='updateStudent'),
+
+    # first welcome page
+    # let's verify your name and optionally select a gender
+    url(r'^(?P<slug>[\w-]+)/welcome/1/$',
+        WelcomeName.as_view(), name='welcomeName'),
+
+    # second welcome page
+    # let's set your room and privacy
+    url(r'^(?P<slug>[\w-]+)/welcome/2/$',
+        WelcomePrivacy.as_view(), name='welcomePrivacy'),
+
+    # third welcome page
+    # let's verify your major
+    url(r'^(?P<slug>[\w-]+)/welcome/3/$',
+        WelcomeMajor.as_view(), name='welcomeMajor'),
+
+    # fourth welcome page
+    # set your social media links
+    url(r'^(?P<slug>[\w-]+)/welcome/4/$',
+        WelcomeSocial.as_view(), name='welcomeSocial'),
 
 )
