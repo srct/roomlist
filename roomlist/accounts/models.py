@@ -129,9 +129,21 @@ class Student(TimeStampedModel):
 
     # social media accounts
 
+    # welcome walkthrough completion
+    completedName = False
+    completedPrivacy = False
+    completedMajor = False
+    completedSocial = False
+
     slug = AutoSlugField(populate_from='user', unique=True)
 
     objects = StudentManager()
+
+    def get_percent_welcomed():
+        # True is 1
+        doneness = sum(completedName, completedPrivacy,
+                       completedMajor, completedSocial)
+        return (doneness/4)
 
     def get_floor(self):
         try:
