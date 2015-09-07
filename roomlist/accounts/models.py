@@ -103,11 +103,29 @@ class Student(TimeStampedModel):
         (STUDENTS, 'All Students'),
     )
 
+    FEMALE = 'female'
+    MALE = 'male'
+    TRANS = 'trans'
+    OTHER = 'other'
+
+    GENDER_CHOICES = (
+        (FEMALE, 'female'),
+        (MALE, 'male'),
+        (TRANS, 'trans'),
+        (OTHER, 'other'),
+    )
+
+    # selectmultiple in forms
+    gender = models.CharField(max_length=25, choices=GENDER_CHOICES, blank=True)
+
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
 
     room = models.ForeignKey(Room, null=True, blank=True)
     clas = models.ForeignKey(Class, null=True, blank=True)
     major = models.ForeignKey('Major', null=True, blank=True)
+
+    # from when first logged in through peoplefinder, stored for later
+    original_major = models.CharField(max_length=50, blank=True)
 
     # social media accounts
 
