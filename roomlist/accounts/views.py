@@ -118,6 +118,14 @@ class WelcomeName(LoginRequiredMixin, FormView):
     form_class = WelcomeNameForm
     login_url = 'login'
 
+    def form_valid(self, form):
+        self.obj = self.get_object()
+
+        self.obj.completedName = True
+        self.obj.save()
+
+        return super(WelcomeName, self).form_valid(form)
+
     def get_success_url(self):
         return reverse('welcomePrivacy',
                        kwargs={'slug':self.request.user.username})
@@ -130,6 +138,14 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
     template_name = 'welcome_privacy.html'
 
     login_url = 'login'
+
+    def form_valid(self, form):
+        self.obj = self.get_object()
+
+        self.obj.completedPrivacy = True
+        self.obj.save()
+
+        return super(WelcomePrivacy, self).form_valid(form)
 
     def get_success_url(self):
         return reverse('welcomeMajor',
@@ -144,6 +160,15 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
 
     login_url = 'login'
 
+    def form_valid(self, form):
+
+        self.obj = self.get_object()
+
+        self.obj.completedMajor = True
+        self.obj.save()
+
+        return super(WelcomeMajor, self).form_valid(form)
+
     def get_success_url(self):
         return reverse('welcomeSocial',
                        kwargs={'slug':self.request.user.username})
@@ -157,6 +182,14 @@ class WelcomeSocial(LoginRequiredMixin, DetailView):
     login_url = 'login'
 
     # push to the message queue
+
+    def form_valid(self, form):
+        self.obj = self.get_object()
+
+        self.obj.completedSocial = True
+        self.obj.save()
+
+        return super(WelcomeSocial, self).form_valid(form)
 
     def get_success_url(self):
         return reverse('detail_student',
