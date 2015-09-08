@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.utils.text import slugify
 # third party imports
 from autoslug import AutoSlugField
+from multiselectfield import MultiSelectField
 from allauth.socialaccount.models import SocialAccount
 # imports from your apps
 from housing.models import Room, Class
@@ -116,7 +117,7 @@ class Student(TimeStampedModel):
     )
 
     # selectmultiple in forms
-    gender = models.CharField(max_length=25, choices=GENDER_CHOICES, blank=True)
+    gender = MultiSelectField(max_length=25, choices=GENDER_CHOICES, blank=True)
 
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
 

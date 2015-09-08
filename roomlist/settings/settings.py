@@ -76,6 +76,7 @@ INSTALLED_APPS = (
     'analytical',
     'randomslugfield',
     'haystack',
+    'multiselectfield',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
