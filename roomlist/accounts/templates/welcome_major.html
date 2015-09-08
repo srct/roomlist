@@ -1,0 +1,47 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} SRCT RoomList | Welcome | Step 3 of 4 {% endblock %}
+
+{% block reminder %}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1><strong>SRCT</strong>ROOMLIST</a></strong> Student Major</h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title text-center"><strong>Now, let's verify your major.</strong></h1>
+      </div>
+
+      <div class="panel-body">
+        <form action="" method="post">{% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" value="Save" class="btn btn-primary"/>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 text-center">
+    <div class="alert alert-danger" role="alert">
+      <p><i class="fa fa-exclamation-circle fa-fw fa-lg"></i> <strong>Changing your major here serves only to make it easier for others to find you on this site.</strong></p>
+      <p>Talk with your academic advisor and file all necessary paperwork to officially change your major with the registrar.</p>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} SRCT RoomList | Welcome | Step 1 of 4 {% endblock %}
+
+{% block reminder %}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1><strong>SRCT</strong>ROOMLIST</a></strong> Welcome</h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title text-center">Welcome to Roomlist! Let's get started by verifying your name and then optionally selecting a gender!</h1>
+      </div>
+
+      <div class="panel-body">
+        <form action="" method="post">{% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" value="Save" class="btn btn-primary"/>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 text-center">
+    <div class="alert alert-danger" role="alert">
+      <p><i class="fa fa-exclamation-circle fa-fw fa-lg"></i> <strong>Changing your name here serves only to make it easier for others to find you on this particular site.</strong></p>
+      <p>Talk with the Registrar's Office to handle the paperwork necessary to change your name officially with the university.</p>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
