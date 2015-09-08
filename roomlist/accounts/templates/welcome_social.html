@@ -10,24 +10,52 @@
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12 text-center">
-      <h1><strong>SRCT</strong>ROOMLIST</a></strong> Student Major</h1>
+      <h1>Welcome to <strong>SRCT</strong>ROOMLIST! <small>Step 4 of 4</small></h1>
     </div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
+    <p class="text-center">We're not trying to recreate Facebook here. On this final step, you can choose point people to a variety of your social media accounts from your user page.</p> 
+    <p class="text-center">You'll be asked to sign in, but that's just to verify the account actually belongs to you. With the exception of your choice to use your Facebook profile picture as your profile picture here, we don't see or use any information on these third-party sites.</p>
+  </div>
+</div>
+
+{% load socialaccount %} {% providers_media_js %}
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h1 class="panel-title text-center"><strong>Now, finally, you can optionally point people to your various social media accounts. (We're not trying to replicate Facebook here. Note we can't see anything from them; the signin is just to verify it's actually your account.)</strong></h1>
+        <h1 class="panel-title text-center"><strong>Social Media Accounts</strong></h1>
       </div>
 
       <div class="panel-body">
-        <form action="" method="post">{% csrf_token %}
-          {{ form.as_p }}
-          <input type="submit" value="Save" class="btn btn-primary"/>
-        </form>
+        <div class="row text-center">
+          <div class="col-md-3">
+            <a href="{% provider_login_url 'facebook' method=js_sdk' process='connect' next='/welcome/{{ user.username }}/welcome/4/' %}">
+              <h4><i class="fa fa-facebook fa-3x"></i></h4>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% provider_login_url 'google' method=js_sdk' process='connect' next='/welcome/{{ user.username }}/welcome/4/' %}">
+              <h4><i class="fa fa-google fa-3x"></i></h4>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% provider_login_url 'twitter' method=js_sdk' process='connect' next='/welcome/{{ user.username }}/welcome/4/' %}">
+              <h4><i class="fa fa-twitter fa-3x"></i></h4>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% provider_login_url 'instagram' method=js_sdk' process='connect' next='/welcome/{{ user.username }}/welcome/4/' %}">
+              <h4><i class="fa fa-instagram fa-3x"></i></h4>
+            </a>
+          </div>
+        </div>
+        <input type="submit" value="Finish" class="btn btn-primary"/>
       </div>
     </div>
 

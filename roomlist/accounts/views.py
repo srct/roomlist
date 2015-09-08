@@ -2,6 +2,7 @@
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
 from django.views.generic import ListView, DetailView, UpdateView, FormView
+from django.core.urlresolvers import reverse
 # third party imports
 from braces.views import LoginRequiredMixin
 # imports from your apps
@@ -113,35 +114,53 @@ class UpdateStudent(LoginRequiredMixin, UpdateView):
 
 # welcome pages
 class WelcomeName(LoginRequiredMixin, FormView):
-    template_name = 'welcomeName.html'
+    template_name = 'welcome_name.html'
     form_class = WelcomeNameForm
     login_url = 'login'
+
+    def get_success_url(self):
+        return reverse('welcomePrivacy',
+                       kwargs={'slug':self.request.user.username})
 
 
 class WelcomePrivacy(LoginRequiredMixin, UpdateView):
     model = Student
     fields = ['room', 'privacy', ]
     context_object_name = 'student'
-    template_name = 'welcomePrivacy.html'
+    template_name = 'welcome_privacy.html'
 
     login_url = 'login'
+
+    def get_success_url(self):
+        return reverse('welcomeMajor',
+                       kwargs={'slug':self.request.user.username})
 
 
 class WelcomeMajor(LoginRequiredMixin, UpdateView):
     model = Student
     fields = ['major', ]
     context_object_name = 'student'
-    template_name = 'welcomeMajor.html'
+    template_name = 'welcome_major.html'
 
     login_url = 'login'
+
+    def get_success_url(self):
+        return reverse('welcomeSocial',
+                       kwargs={'slug':self.request.user.username})
 
 
 class WelcomeSocial(LoginRequiredMixin, DetailView):
     model = Student
     context_object_name = 'student'
-    template_name = 'welcomeSocial.html'
+    template_name = 'welcome_social.html'
 
     login_url = 'login'
+
+    # push to the message queue
+
+    def get_success_url(self):
+        return reverse('detail_student',
+                       kwargs={'slug':self.request.user.username})
 
 
 # majors pages
