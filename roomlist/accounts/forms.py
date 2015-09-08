@@ -4,6 +4,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout
 from crispy_forms.bootstrap import PrependedText, AppendedText
+from multiselectfield import MultiSelectFormField
 # imports from your apps
 from .models import Student
 
@@ -47,3 +48,11 @@ class UserSettingsForm(forms.ModelForm):
 
     class Meta:
         model = Student
+
+class WelcomeNameForm(forms.Form):
+
+    first_name = forms.CharField(label='First Name')
+
+    last_name = forms.CharField(label='Last Name')
+
+    gender = MultiSelectFormField(choices=Student.GENDER_CHOICES, label='Gender Identity (please choose all that apply)')

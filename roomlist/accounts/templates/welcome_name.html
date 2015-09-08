@@ -27,12 +27,12 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h1 class="panel-title text-center">Name &  Gender</h1>
+        <h1 class="panel-title text-center"><strong>Name & Gender</strong></h1>
       </div>
 
       <div class="panel-body">
         <form action="" method="post">{% csrf_token %}
-          {{ form.as_p }}
+          {{ my_form.as_p }}
           <input type="submit" value="Save" class="btn btn-primary"/>
         </form>
       </div>

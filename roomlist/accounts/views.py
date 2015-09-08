@@ -118,11 +118,32 @@ class WelcomeName(LoginRequiredMixin, FormView):
     form_class = WelcomeNameForm
     login_url = 'login'
 
-    def form_valid(self, form):
-        self.obj = self.get_object()
+    def get_context_data(self, **kwargs):
+        context = super(WelcomeName, self).get_context_data(**kwargs)
 
-        self.obj.completedName = True
-        self.obj.save()
+        me = Student.objects.get(user=self.request.user)
+
+        form = WelcomeNameForm(initial={'first_name': me.user.first_name,
+                                        'last_name': me.user.last_name,
+                                        'gender': me.gender, })
+        context['my_form'] = form
+        return context
+        
+
+    def form_valid(self, form):
+        me = Student.objects.get(user=self.request.user)
+
+        me.user.first_name = form.data['first_name']
+        me.user.last_name = form.data['last_name']
+
+        #for identity in form.data['gender']
+            
+        me.gender = form.data.getlist('gender')
+
+        me.completedName = True
+
+        me.user.save()
+        me.save()
 
         return super(WelcomeName, self).form_valid(form)
 
