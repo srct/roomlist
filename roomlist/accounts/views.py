@@ -6,8 +6,8 @@ from django.core.urlresolvers import reverse
 # third party imports
 from braces.views import LoginRequiredMixin
 # imports from your apps
-from .models import Student, Major
-from .forms import WelcomeNameForm
+from .models import Student, Major, Room
+from .forms import StudentUpdateForm, WelcomeNameForm
 
 
 # details about the student
@@ -86,16 +86,11 @@ class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
         return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
 
 
-# update a student (students are *created* on first login via CAS)
-class UpdateStudent(LoginRequiredMixin, UpdateView):
-    model = Student
-    fields = ['room', 'privacy', 'major', 'gender', ]
-    context_object_name = 'student'
+# update a student, but FormView to allow name update on same page
+class UpdateStudent(LoginRequiredMixin, FormView):
     template_name = 'updateStudent.html'
-
+    form_class = StudentUpdateForm
     login_url = 'login'
-
-    # change to formview to support changing name
 
     def get(self, request, *args, **kwargs):
 
@@ -105,18 +100,72 @@ class UpdateStudent(LoginRequiredMixin, UpdateView):
         print url_uname, self.request.user.username
 
         if not(url_uname == self.request.user.username):
-            print "I'm sorry, what now?"
             return HttpResponseForbidden()
         else:
             return super(UpdateStudent, self).get(request, *args, **kwargs)
 
-# use the same forms with different templates, views, and urls
+    def get_context_data(self, **kwargs):
+        context = super(UpdateStudent, self).get_context_data(**kwargs)
+
+        me = Student.objects.get(user=self.request.user)
+
+        print me.room
+        print me.major
+
+        def pk_or_none(me, obj):
+            if obj is None:
+                return None
+            else:
+                return obj.pk
+
+        form = StudentUpdateForm(initial={'first_name': me.user.first_name,
+                                        'last_name': me.user.last_name,
+                                        'gender': me.gender,
+                                        'room': pk_or_none(me, me.room),
+                                        'privacy': me.privacy,
+                                        'major': pk_or_none(me, me.major),})
+        context['my_form'] = form
+        return context
+
+    def form_valid(self, form):
+        me = Student.objects.get(user=self.request.user)
+
+        print form.data['room']
+        print form.data['major']
+
+        me.user.first_name = form.data['first_name']
+        me.user.last_name = form.data['last_name']
+        me.gender = form.data.getlist('gender')
+        me.room = Room.objects.get(pk=form.data['room'])
+        me.privacy = form.data['privacy']
+        me.major = Major.objects.get(pk=form.data['major'])
+
+        me.user.save()
+        me.save()
+
+        return super(UpdateStudent, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('detail_student',
+                       kwargs={'slug':self.request.user.username})
 
 # welcome pages
 class WelcomeName(LoginRequiredMixin, FormView):
     template_name = 'welcome_name.html'
     form_class = WelcomeNameForm
     login_url = 'login'
+
+    def get(self, request, *args, **kwargs):
+
+        current_url = self.request.get_full_path()
+        url_uname = current_url.split('/')[3]
+
+        print url_uname, self.request.user.username
+
+        if not(url_uname == self.request.user.username):
+            return HttpResponseForbidden()
+        else:
+            return super(WelcomeName, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(WelcomeName, self).get_context_data(**kwargs)
@@ -129,15 +178,12 @@ class WelcomeName(LoginRequiredMixin, FormView):
         context['my_form'] = form
         return context
         
-
     def form_valid(self, form):
         me = Student.objects.get(user=self.request.user)
 
         me.user.first_name = form.data['first_name']
         me.user.last_name = form.data['last_name']
 
-        #for identity in form.data['gender']
-            
         me.gender = form.data.getlist('gender')
 
         me.completedName = True
@@ -160,6 +206,18 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
 
     login_url = 'login'
 
+    def get(self, request, *args, **kwargs):
+
+        current_url = self.request.get_full_path()
+        url_uname = current_url.split('/')[3]
+
+        print url_uname, self.request.user.username
+
+        if not(url_uname == self.request.user.username):
+            return HttpResponseForbidden()
+        else:
+            return super(WelcomePrivacy, self).get(request, *args, **kwargs)
+
     def form_valid(self, form):
         self.obj = self.get_object()
 
@@ -180,6 +238,18 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
     template_name = 'welcome_major.html'
 
     login_url = 'login'
+
+    def get(self, request, *args, **kwargs):
+
+        current_url = self.request.get_full_path()
+        url_uname = current_url.split('/')[3]
+
+        print url_uname, self.request.user.username
+
+        if not(url_uname == self.request.user.username):
+            return HttpResponseForbidden()
+        else:
+            return super(WelcomeMajor, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
 
@@ -203,6 +273,18 @@ class WelcomeSocial(LoginRequiredMixin, DetailView):
     login_url = 'login'
 
     # push to the message queue
+
+    def get(self, request, *args, **kwargs):
+
+        current_url = self.request.get_full_path()
+        url_uname = current_url.split('/')[3]
+
+        print url_uname, self.request.user.username
+
+        if not(url_uname == self.request.user.username):
+            return HttpResponseForbidden()
+        else:
+            return super(WelcomeSocial, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
         self.obj = self.get_object()
