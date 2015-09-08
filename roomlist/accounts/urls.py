@@ -29,22 +29,22 @@ urlpatterns = patterns('',
 
     # first welcome page
     # let's verify your name and optionally select a gender
-    url(r'^(?P<slug>[\w-]+)/welcome/1/$',
+    url(r'^welcome/(?P<slug>[\w-]+)/1/$',
         WelcomeName.as_view(), name='welcomeName'),
 
     # second welcome page
     # let's set your room and privacy
-    url(r'^(?P<slug>[\w-]+)/welcome/2/$',
+    url(r'^welcome/(?P<slug>[\w-]+)/2/$',
         WelcomePrivacy.as_view(), name='welcomePrivacy'),
 
     # third welcome page
     # let's verify your major
-    url(r'^(?P<slug>[\w-]+)/welcome/3/$',
+    url(r'^welcome/(?P<slug>[\w-]+)/3/$',
         WelcomeMajor.as_view(), name='welcomeMajor'),
 
     # fourth welcome page
     # set your social media links
-    url(r'^(?P<slug>[\w-]+)/welcome/4/$',
+    url(r'^welcome/(?P<slug>[\w-]+)/4/$',
         WelcomeSocial.as_view(), name='welcomeSocial'),
 
 )
