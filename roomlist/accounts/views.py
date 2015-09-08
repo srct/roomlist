@@ -1,46 +1,12 @@
 # core django imports
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView, UpdateView, FormView
 # third party imports
 from braces.views import LoginRequiredMixin
 # imports from your apps
 from .models import Student, Major
-
-
-# update a student (students are *created* on first login via CAS)
-class UpdateStudent(LoginRequiredMixin, UpdateView):
-    model = Student
-    fields = ['room', 'privacy', ]
-    context_object_name = 'student'
-    template_name = 'updateStudent.html'
-
-    login_url = 'login'
-
-    def get(self, request, *args, **kwargs):
-
-        current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
-
-        print url_uname, self.request.user.username
-
-        if not(url_uname == self.request.user.username):
-            print "I'm sorry, what now?"
-            return HttpResponseForbidden()
-        else:
-            return super(UpdateStudent, self).get(request, *args, **kwargs)
-
-
-class UpdateStudentMajor(LoginRequiredMixin, UpdateView):
-    models = Student
-    fields = ['major', ]
-    template_name = 'updateStudentMajor.html'
-
-    login_url = 'login'
-
-    # copied from below
-#    def get_object(self):
-#        return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
+from .forms import WelcomeNameForm
 
 
 # details about the student
@@ -118,6 +84,67 @@ class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
     def get_object(self):
         return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
 
+
+# update a student (students are *created* on first login via CAS)
+class UpdateStudent(LoginRequiredMixin, UpdateView):
+    model = Student
+    fields = ['room', 'privacy', 'major', 'gender', ]
+    context_object_name = 'student'
+    template_name = 'updateStudent.html'
+
+    login_url = 'login'
+
+    # change to formview to support changing name
+
+    def get(self, request, *args, **kwargs):
+
+        current_url = self.request.get_full_path()
+        url_uname = current_url.split('/')[3]
+
+        print url_uname, self.request.user.username
+
+        if not(url_uname == self.request.user.username):
+            print "I'm sorry, what now?"
+            return HttpResponseForbidden()
+        else:
+            return super(UpdateStudent, self).get(request, *args, **kwargs)
+
+# use the same forms with different templates, views, and urls
+
+# welcome pages
+class WelcomeName(LoginRequiredMixin, FormView):
+    template_name = 'welcomeName.html'
+    form_class = WelcomeNameForm
+    login_url = 'login'
+
+
+class WelcomePrivacy(LoginRequiredMixin, UpdateView):
+    model = Student
+    fields = ['room', 'privacy', ]
+    context_object_name = 'student'
+    template_name = 'welcomePrivacy.html'
+
+    login_url = 'login'
+
+
+class WelcomeMajor(LoginRequiredMixin, UpdateView):
+    model = Student
+    fields = ['major', ]
+    context_object_name = 'student'
+    template_name = 'welcomeMajor.html'
+
+    login_url = 'login'
+
+
+class WelcomeSocial(LoginRequiredMixin, DetailView):
+    model = Student
+    context_object_name = 'student'
+    template_name = 'welcomeSocial.html'
+
+    login_url = 'login'
+
+
+# majors pages
 class ListMajors(LoginRequiredMixin, ListView):
     model = Major
     queryset = Major.objects.all().order_by('name')
