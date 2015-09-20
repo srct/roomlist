@@ -1,7 +1,8 @@
 {% extends 'layouts/base.html' %}
-{% block title %}
-SRCT Roomlist &bull; Homepage
-{% endblock %}
+
+{% block title %} SRCT RoomList &bull; {{ room.floor.building.name }} {{ room.number }}
+{% endblock title %}
+
 {% block content %}
 
 <div class="page-header" id="banner">
