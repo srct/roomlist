@@ -64,7 +64,7 @@ to install virtualenv system-wide, and then run
 
 in your virtual environment directory to create your virtual environment. Activate it by typing
 
-`source roomlist/vin/activate`
+`source roomlist/bin/activate`
 
 If you ever need to exit your virtual environment, simply run
 
