@@ -4,7 +4,7 @@ Roomlist is a secure, privacy-oriented service for Mason studens to find their o
 
 ## On Contributing
 
-RoomList welcomes all the help it can get. Even if you don't feel like you can be helpful the more technical aspects, we definitely need designers, technical writers, and testers.
+Roomlist welcomes all the help it can get. Even if you don't feel like you can be helpful the more technical aspects, we definitely need designers, technical writers, and testers.
 
 There are many things that can be done with this project (see the "To Do" section), but sometimes it's the small things that count, so don't be afraid of contributing just a small spelling mistake.
 
@@ -40,7 +40,7 @@ We're using Postgres for our database, so run
 
 ### Copying Down the Source Code
 
-Now, we're going to copy down a copy of the roomlist codebase from git.gmu.edu, the SRCT code respository.
+Now, we're going to copy down a copy of the Roomlist codebase from git.gmu.edu, the SRCT code respository.
 
 Configure your ssh keys by following the directions at git.gmu.edu/help/ssh/README.
 
@@ -70,7 +70,7 @@ If you ever need to exit your virtual environment, simply run
 
 `deactivate`
 
-Now, the packages you need to install for roomlist are in in the top level of the project's directory structure. Run
+Now, the packages you need to install for Roomlist are in in the top level of the project's directory structure. Run
 
 `pip install -r requirements.txt`
 
@@ -130,7 +130,7 @@ For server deployment, not for most local work
 
 ## To-do
 
-The list of to-do items is kept track of on the gitlab roomlist issues page. https://git.gmu.edu/srct/roomlist/issues
+The list of to-do items is kept track of on the gitlab Roomlist issues page. https://git.gmu.edu/srct/roomlist/issues
 
 Each issue includes details about the bugs and features, and links to documentation and tutorials to help with fixing that specific issue.
 
