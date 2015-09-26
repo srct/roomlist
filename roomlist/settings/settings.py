@@ -111,7 +111,7 @@ SECRET_KEY = secret.SECRET_KEY
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': config.DB_ENGINE,
         'NAME': secret.DB_NAME,
         'USER': secret.DB_USER,
         'PASSWORD': secret.DB_PASSWORD,
@@ -167,5 +167,3 @@ HAYSTACK_CONNECTIONS = {
 # The RealtimeSignalProcessor allows for objects to indexed as soon as
 # they are created -- in real time.
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-
-
