@@ -122,6 +122,20 @@ With your virtual environment active, run
 
 Head over to localhost:8000 and see the site!
 
+## Configuring the Social Media Applications
+
+Head over to localhost:8000/admin. Under 'Social Accounts', click on 'Social Applications'. Click 'Add social application' in the upper right hand corner. Start off by adding Facebook.
+
+To generate the name, id, key, and site for Facebook, you'll need to become a Facebook Developer and create a name.
+
+Let's add localhost to our Available sites.
+
+Now, to Instagram.
+
+Next, to Twitter.
+
+Finally, to Google.
+
 ## Deployment
 
 ### Docker
