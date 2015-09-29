@@ -169,4 +169,13 @@ HAYSTACK_CONNECTIONS = {
 # they are created -- in real time.
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
-
+# Use redis cache when not in local development
+if DEBUG:
+    pass
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': '/var/run/redis/redis.sock',
+        },
+    }
