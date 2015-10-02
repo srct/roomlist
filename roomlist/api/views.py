@@ -7,7 +7,7 @@ from housing.models import Building, Room
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the RoomList index.")
+    return HttpResponse("Hello, world. You're at the Roomlist index.")
 
 
 def buildings_list(request):

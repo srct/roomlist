@@ -17,3 +17,6 @@ PIWIK_DOMAIN_PATH = 'piwik.example.com'
 
 # set piwik server site id (piwik can track multiple websites)
 PIWIK_SITE_ID = '4'
+
+# If you want to change the database engine you are free to do so here.
+DB_ENGINE = 'django.db.backends.mysql'
