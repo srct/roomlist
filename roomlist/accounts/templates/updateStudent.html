@@ -16,11 +16,73 @@
 </div>
 
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-12 text-center">
+    <h2><strong>Welcome, {{ request.user.first_name }}!</strong></h2>
+  </div>
+</div>
+
+<br />
+
+{% load socialaccount %} {% providers_media_js %}
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title text-center"><strong>Social Media Settings</strong></h1>
+      </div>
+      <div class="panel-body">
+        <p class="text-center">Verify your social media accounts to link them to other students.</p>
+        <div class="row text-center">
+          <div class="col-md-6">
+          {% if accounts.facebook %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          {% endif %}
+          <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='#' %}">
+            <h4><i class="fa fa-facebook fa-2x"></i></h4>
+            <h4>Facebook</h4>
+          </a>
+          </div>
+          <div class="col-md-6">
+          {% if accounts.google %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          {% endif %}
+          <a href="{% provider_login_url 'google' method='js_sdk' process='connect' next='#' %}">
+            <h4><i class="fa fa-google fa-2x"></i></h4>
+            <h4>Google</h4>
+          </a>
+          </div>
+        </div>
+        <br />
+        <div class="row text-center">
+          <div class="col-md-6">
+          {% if accounts.twitter %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          {% endif %}
+          <a href="{% provider_login_url 'twitter' method='js_sdk' process='connect' next='#' %}">
+            <h4><i class="fa fa-twitter fa-2x"></i></h4>
+            <h4>Twitter</h4>
+          </a>
+          </div>
+          <div class="col-md-6">
+          {% if accounts.instagram %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          {% endif %}
+          <a href="{% provider_login_url 'instagram' method='js_sdk' process='connect' next='#' %}">
+            <h4><i class="fa fa-instagram fa-2x"></i></h4>
+            <h4>Instagram</h4>
+          </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h1 class="panel-title text-center"><strong>Welcome, {{ request.user.first_name }}!</strong></h1>
+        <h1 class="panel-title text-center"><strong>Student Settings</strong></h1>
       </div>
 
       <div class="panel-body">
