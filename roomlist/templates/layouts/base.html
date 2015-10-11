@@ -18,17 +18,8 @@
   <div id="wrap" style="display: flex;">
     {% include 'layouts/navbar.html' %}
     <div id="contentcontain" class="container">
-      {% block reminder %}
-      {% if request.user.is_authenticated and request.user.student.room == None %}
-      <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-          <div class="alert alert-info alert-dismissible text-center" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h5>Looks like you haven't yet selected what room you're in. <a href="{% url 'updateStudent' request.user.student.slug %}" class="alert-link">Click here to get set up!</a></h5>
-          </div>
-        </div>
-      </div>
-      {% endif %}
+      {% block message_queue %}
+        {% include 'messages.html' %}
       {% endblock %}
       {% block content %} {% endblock %}
     </div>
