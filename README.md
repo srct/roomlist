@@ -112,7 +112,7 @@ The .\* is to grant access all tables in the database, and 'flush privileges' re
 
 Exit the mysql shell by typing `exit`.
 
-Now, to configure your newly created database with the project settings, copy the secret.py.template in settings/ to secret.py. Follow the comment instructions provided in each file to set your secret key and database info.
+Now, to configure your newly created database with the project settings, and set up your project's cryptographic key, copy the secret.py.template in settings/ to secret.py. Follow the comment instructions provided in each file to set your secret key and database info.
 
 Run `python manage.py makemigrations` and `python manage.py migrate` to configure something called 'migrations', which allow you to make changes to the tables in your database without screwing up existing information.
 
@@ -147,6 +147,8 @@ Finally, to Google.
 Roomlist's urls are set to be cached for periods of time set so that ordinary user experience will not be impacted, but a substantial load will be lifted from a deployment server. However, this can be annoying when you're making and want to check small changes rapidly on development. You can edit the respective apps' urls.py files and remove the cacheing configurations, but make sure that you do not include such edits in any pushes!
 
 ## Deployment
+
+A number of deployment-related settings have been moved from settings.py to config.py in settings/ for ease of use. Make sure to never have DEBUG mode on when running your project in deployment.
 
 ### Docker
 
