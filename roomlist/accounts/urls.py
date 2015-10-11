@@ -27,8 +27,8 @@ urlpatterns = patterns('',
         cache_page(60 * 2)(DetailStudent.as_view()),
         name='detail_student'),
 
-    url(r'^student/(?P<slug>[\w-]+)/welcome/$',
-        cache_page(60 * 15)(UpdateStudent.as_view()),
+    url(r'^student/(?P<slug>[\w-]+)/settings/$',
+        cache_page(4)(UpdateStudent.as_view()),
         name='updateStudent'),
 
     url(r'^settings/$',
