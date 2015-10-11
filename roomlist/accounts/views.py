@@ -3,11 +3,67 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
 from django.views.generic import ListView, DetailView, UpdateView, FormView
 from django.core.urlresolvers import reverse
+from django.contrib import messages
+from django.utils.safestring import mark_safe
 # third party imports
 from braces.views import LoginRequiredMixin
+from cas.views import login as cas_login
 # imports from your apps
 from .models import Student, Major, Room
 from .forms import StudentUpdateForm, WelcomeNameForm
+
+
+not_started = """Welcome to SRCT Roomlist! <a href="%s">Click here</a> to walk through
+                 your profile setup."""
+
+# 1 or 2
+started = """Welcome back to SRCT Roomlist! It looks like you're not quite finished with
+             setting up your profile. <a href="%s">Click here</a> to return to your
+             welcome walkthrough."""
+
+# 3
+almost = """Welcome back to SRCT Roomlist! It looks like you're almost finished
+            with setting up your profile. <a href="%s">Click here</a> to return
+            to the last page of your welcome walkthrough."""
+
+# walkthrough finished but Room is None
+no_room = """It looks like you haven't set your room yet. Head to <a href="%s"> your
+             settings page</a> to get that taken care of."""
+
+
+def custom_cas_login(request, *args, **kwargs):
+    response = cas_login(request, *args, **kwargs)
+    # returns HttpResponseRedirect
+    if request.user.is_authenticated():
+
+        if request.user.student.completedName is False:
+            rendered_url = reverse('welcomeName', args=[request.user.username])
+            add_url = not_started % rendered_url
+            messages.add_message(request, messages.INFO, mark_safe(add_url))
+
+        elif request.user.student.completedPrivacy is False:
+            rendered_url = reverse('welcomePrivacy', args=[request.user.username])
+            add_url = started % rendered_url
+            messages.add_message(request, messages.INFO, mark_safe(add_url))
+
+        elif request.user.student.completedMajor is False:
+            rendered_url = reverse('welcomeMajor', args=[request.user.username])
+            add_url = started % rendered_url
+            messages.add_message(request, messages.INFO, mark_safe(add_url))
+
+        elif request.user.student.completedName is False:
+            rendered_url = reverse('welcomeSocial', args=[request.user.username])
+            add_url = started % rendered_url
+            messages.add_message(request, messages.INFO, mark_safe(add_url))
+
+        elif request.user.student.room is None:
+            rendered_url = reverse('updateStudent', args=[request.user.username])
+            add_url = started % rendered_url
+            messages.add_message(request, messages.INFO, mark_safe(add_url))
+        # eventually add a reminder if the privacy is set to students
+        # one in ten change will display a reminder and link to change
+
+    return response
 
 
 # details about the student
@@ -252,7 +308,6 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
             return super(WelcomeMajor, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
-
         self.obj = self.get_object()
 
         self.obj.completedMajor = True
