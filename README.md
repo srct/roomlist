@@ -114,11 +114,19 @@ Exit the mysql shell by typing `exit`.
 
 Now, to configure your newly created database with the project settings, and set up your project's cryptographic key, copy the secret.py.template in settings/ to secret.py. Follow the comment instructions provided in each file to set your secret key and database info.
 
-Run `python manage.py makemigrations` and `python manage.py migrate` to configure something called 'migrations', which allow you to make changes to the tables in your database without screwing up existing information.
+Also copy config.py.template to config.py. You won't need to make any changes here off the bat. See more information about this file under the 'Deployment' section.
 
-Then run `python manage.py createsuperuser` to create an admin account, using the same username and email as you'll access through CAS.
+Run `python manage.py makemigrations` to create the tables and rows and columns for your database. This command generates sql code based on your database models. If you don't see output noting the creation of a number of models, add the app name to the end of the command, e.g. `python manage.py makemigrations housing`.
 
-Finally, run `python manage.py syncdb` to set up all the tables in your empty database.
+Then run `python manage.py migrate` to execute that sql code and set up your database. Migrations also track how you've changed your models over the life of your database, which allows you to make changes to your tables without screwing up existing information.
+
+Finally, run `python manage.py createsuperuser` to create an admin account, using the same username and email as you'll access through CAS. This means your 'full' email address, for instance gmason@masonlive.gmu.edu. Your password will be handled through CAS, so you can just use 'password' here.
+
+(If you accidentally skip this step, you can run `python manage.py shell` and edit your user from there.)
+
+## Loading in demo data
+
+The project includes a number of json files with demo data to load into the database, for Majors and also for all freshman housing. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly. Follow this with `python manage.py loaddata housing/initial_data.json` and a sizeable number of housing objects should be 'installed'.
 
 ## Starting up the test server
 
