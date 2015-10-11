@@ -1,6 +1,6 @@
 # ROOMLIST
 
-Roomlist is a secure, privacy-oriented service for Mason studens to find their on-campus neighbors.
+Roomlist is a secure, privacy-oriented service for Mason students to find their on-campus neighbors.
 
 ## On Contributing
 
@@ -16,11 +16,9 @@ Please visit the [SRCT Wiki](http://wiki.srct.gmu.edu/) for more information on 
 
 ## Setting everything up for development
 
-These instructions are for Ubuntu and Debian, or related Linux distributions. (If you'd like to help write the instructions for Mac's OSX, please do!)
+These instructions are for Ubuntu and Debian, or related Linux distributions. (If you'd like to help write the instructions for Mac OSX, please do!)
 
 ### Prerequisities
-
-### Package Installation
 
 First, install python, pip, and git on your system. Python is the programming language used for Django, the web framework used by Roomlist. 'Pip' is the python package manager. Git is the version control system used for SRCT projects.
 
@@ -34,13 +32,7 @@ This retrieves links to the most up-to-date and secure versions of your packages
 
 you install python and git.
 
-We're using Postgres for our database, so run
-
-`sudo apt-get install postgresql postgresql-contrib python-psycopg2`.
-
-### Copying Down the Source Code
-
-Now, we're going to copy down a copy of the Roomlist codebase from git.gmu.edu, the SRCT code respository.
+Now, we're going to clone down a copy of the Roomlist codebase from git.gmu.edu, the SRCT code respository.
 
 Configure your ssh keys by following the directions at git.gmu.edu/help/ssh/README.
 
@@ -48,9 +40,19 @@ Now, on your computer, navigate to the directory in which you want to download t
 
 `git clone git@git.gmu.edu:srct/roomlist.git`
 
+### Package Installation
+
+Next, install these packages from the standard repositories
+
+`$ sudo apt-get install libldap2-dev mysql-server mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev libjpeg-dev redis-server`
+
+If prompted to install additional required packages, install those as well.
+
+When prompted to set your mysql password, it's advisable to set it as the same as your normal superuser password.
+
 ### The Virtual Environment
 
-Virtual environments are used to keep separate project packages from the main computer, so you can use different versions of packacages across different projects and also ease deployment server setup.
+Virtual environments are used to keep separate project packages from the main computer, so you can use different versions of packages across different projects and also ease deployment server setup.
 
 It's often recommended to create a special directory to store all of your virtual environments together, but some prefer keeping their virtual environment in the top level of their project's director. If you choose the latter, make sure to keep the virtual environment folders out of version control.
 
@@ -76,43 +78,47 @@ Now, the packages you need to install for Roomlist are in in the top level of th
 
 to in install all of the packages needed for the project.
 
-Next, run `python manage.py makemigrations`, `python manage.py migrate`, then `python manage.py runserver`.
-
 ### Creating the Database
 
-To set up the PostgreSQL database, open a terminal and type in the following commands:
+Roomlist is configured for using a mysql database, (though you can change this in config.py)
+By default, the database is called 'roomlist' in the configurations, and the user, 'roommate'.
 
-First, we must install some dependencies for PostgreSQL.
+Load up the mysql shell by running
 
-``$ sudo apt-get install libpq-dev python-dev``
+``mysql -u root -p``
 
-Next, we need to install PostgreSQL.
+and putting in your mysql password.
 
-``$ sudo apt-get install postgresql postgresql-contrib``
+Create the database by running
 
-Now, we need to become the postgres user, create our database, and create our user.
+``CREATE DATABASE roomlist;``
 
-``$ sudo su - postgres``
-``$ createdb roomlist``
+You can choose a different name for your database. Double check your database was created
 
-Choose your username, and execute the next command without the quotes.
+``SHOW DATABASES;``
 
-``$ createuser -P "your_username"``
+Though you can use an existing user to access this database, here's how to create a new user and give them the necessary permissions to your newly created database.
 
-You'll then be prompted to twice enter your password. Choose a strong passphrase for production. For local development, password strength is less important.
+``CREATE USER 'roommate'@'localhost' IDENTIFIED BY 'password';``
+For local development, password strength is less important, but use a strong passphrase for deployment. You can choose a different username.
 
-Finally, we need to enter the PostgreSQL command line interface to grant permissions.
+``GRANT ALL ON roomlist.* TO 'roommate'@'localhost';``
+This allows your database user to create all the tables it needs on the bookshare database. (Each model in each app's models.py is a separate table, and each attribute a column, and each instance a row.)
 
-``$ psql``
-``postgres=# GRANT ALL PRIVILEGES ON DATABASE roomlist TO django;``
+``GRANT ALL ON test_roomlist.* TO 'roommate'@'localhost';`` ``FLUSH PRIVILEGES;``
+When running test cases, django creates a test database so your 'real' database doesn't get screwed up. This database is called 'test_' + whatever your normal database is named. Note that for permissions it doesn't matter that this database hasn't yet been created.
 
-Your PostgreSQL database should now be set up to work with the Roomlist project.
+The .\* is to grant access all tables in the database, and 'flush privileges' reloads privileges to ensure that your user is ready to go.
 
-Type ``\q`` and hit enter to exit the PostgreSQL shell.
+Exit the mysql shell by typing `exit`.
 
-Copy the secret.py.template and config.py.template to secret.py and config.py respectively. For each, follow the comment instruction provided in each file.
+Now, to configure your newly created database with the project settings, copy the secret.py.template in settings/ to secret.py. Follow the comment instructions provided in each file to set your secret key and database info.
 
-Run `python manage.py syncdb` to set up the empty database tables. When you're prompted, say 'y' to setting up the superuser, but use your mason username and full mason email address (@masonlive.gmu.edu) for the account. This is because we use Mason's Central Authentication for our user signin, and your admin account needs to manage your CAS account.
+Run `python manage.py makemigrations` and `python manage.py migrate` to configure something called 'migrations', which allow you to make changes to the tables in your database without screwing up existing information.
+
+Then run `python manage.py createsuperuser` to create an admin account, using the same username and email as you'll access through CAS.
+
+Finally, run `python manage.py syncdb` to set up all the tables in your empty database.
 
 ## Starting up the test server
 
@@ -135,6 +141,10 @@ Now, to Instagram.
 Next, to Twitter.
 
 Finally, to Google.
+
+### Notes on Cacheing
+
+Roomlist's urls are set to be cached for periods of time set so that ordinary user experience will not be impacted, but a substantial load will be lifted from a deployment server. However, this can be annoying when you're making and want to check small changes rapidly on development. You can edit the respective apps' urls.py files and remove the cacheing configurations, but make sure that you do not include such edits in any pushes!
 
 ## Deployment
 

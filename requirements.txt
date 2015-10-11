@@ -17,9 +17,9 @@ django-randomslugfield==0.3.0
 django-redis-cache==0.13.0
 flake8==2.4.0
 mccabe==0.3
+MySQL-python==1.2.5
 oauthlib==0.7.2
 pep8==1.5.7
-psycopg2==2.5.4
 pyflakes==0.8.1
 python-openid==2.2.5
 redis==2.10.3
