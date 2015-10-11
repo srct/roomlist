@@ -42,7 +42,7 @@
         <div class="row text-center">
           {% comment %} is it not possible to redirect the login failure? {% endcomment %}
           <div class="col-md-3">
-            {% if verified %}
+            {% if accounts.facebook %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
             {% endif %}
             <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='#' %}">
@@ -50,7 +50,7 @@
             </a>
           </div>
           <div class="col-md-3">
-            {% if verified %}
+            {% if accounts.google %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
             {% endif %}
             <a href="{% provider_login_url 'google' method='js_sdk' process='connect' next='#' %}">
@@ -58,7 +58,7 @@
             </a>
           </div>
           <div class="col-md-3">
-            {% if verified %}
+            {% if accounts.twitter %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
             {% endif %}
             <a href="{% provider_login_url 'twitter' method='js_sdk' process='connect' next='#' %}">
@@ -66,7 +66,7 @@
             </a>
           </div>
           <div class="col-md-3">
-            {% if verified %}
+            {% if accounts.instagram %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
             {% endif %}
             <a href="{% provider_login_url 'instagram' method='js_sdk' process='connect' next='#' %}">

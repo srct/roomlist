@@ -26,7 +26,7 @@
         <li><a href="/accounts/student/{{ user.username }}">{{ user.username }}</a>
         </li>
         <li>
-          <a href="/accounts/settings/"><i class="fa fa-cog fa-fw fa-lg"></i></a>
+          <a href="{% url 'updateStudent' request.user.username %}"><i class="fa fa-cog fa-fw fa-lg"></i></a>
         </li>
         <li><a href="{% url 'logout' %}">Logout</a>
         </li>
