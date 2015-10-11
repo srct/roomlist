@@ -128,6 +128,20 @@ With your virtual environment active, run
 
 Head over to localhost:8000 and see the site!
 
+## Configuring the Social Media Applications
+
+Head over to localhost:8000/admin. Under 'Social Accounts', click on 'Social Applications'. Click 'Add social application' in the upper right hand corner. Start off by adding Facebook.
+
+To generate the name, id, key, and site for Facebook, you'll need to become a Facebook Developer and create a name.
+
+Let's add localhost to our Available sites.
+
+Now, to Instagram.
+
+Next, to Twitter.
+
+Finally, to Google.
+
 ### Notes on Cacheing
 
 Roomlist's urls are set to be cached for periods of time set so that ordinary user experience will not be impacted, but a substantial load will be lifted from a deployment server. However, this can be annoying when you're making and want to check small changes rapidly on development. You can edit the respective apps' urls.py files and remove the cacheing configurations, but make sure that you do not include such edits in any pushes!

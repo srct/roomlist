@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 from django.views.decorators.cache import cache_page
 
+
 admin.autodiscover()
 admin.site.login = login_required(admin.site.login)
 
@@ -32,11 +33,11 @@ urlpatterns = patterns('',
     url(r'^search/', include('haystack.urls'), name='search'),
 
     # login and logout
-    # url(r'^login/', 'cas.views.login', name='login'),
-    # url(r'^logout/', 'cas.views.logout', name='logout'),
+    url(r'^login/', 'accounts.views.custom_cas_login', name='login'),
+    url(r'^logout/', 'cas.views.logout', name='logout'),
 
-    url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
+    # url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
+    # url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
 
     # alternate interfaces
     url(r'^api/', include('api.urls')),

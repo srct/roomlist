@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.utils.text import slugify
 # third party imports
 from autoslug import AutoSlugField
+from multiselectfield import MultiSelectField
 from allauth.socialaccount.models import SocialAccount
 # imports from your apps
 from housing.models import Room, Class
@@ -103,13 +104,37 @@ class Student(TimeStampedModel):
         (STUDENTS, 'All Students'),
     )
 
+    FEMALE = 'female'
+    MALE = 'male'
+    TRANS = 'trans'
+    OTHER = 'other'
+
+    GENDER_CHOICES = (
+        (FEMALE, 'female'),
+        (MALE, 'male'),
+        (TRANS, 'trans'),
+        (OTHER, 'other'),
+    )
+
+    # selectmultiple in forms
+    gender = MultiSelectField(max_length=25, choices=GENDER_CHOICES, blank=True)
+
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
 
     room = models.ForeignKey(Room, null=True, blank=True)
     clas = models.ForeignKey(Class, null=True, blank=True)
     major = models.ForeignKey('Major', null=True, blank=True)
 
+    # from when first logged in through peoplefinder, stored for later
+    original_major = models.CharField(max_length=50, blank=True)
+
     # social media accounts
+
+    # welcome walkthrough completion
+    completedName = models.BooleanField(default=False)
+    completedPrivacy = models.BooleanField(default=False)
+    completedMajor = models.BooleanField(default=False)
+    completedSocial = models.BooleanField(default=False)
 
     slug = AutoSlugField(populate_from='user', unique=True)
 

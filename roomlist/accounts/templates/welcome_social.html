@@ -1,0 +1,85 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} SRCT RoomList | Welcome | Step 4 of 4 {% endblock %}
+
+{% block message_queue %}
+{% endblock %}
+
+{% block content %}
+
+<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+    <span class="sr-only">100% complete</span>
+  </div>
+</div>
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1>Welcome to <strong>SRCT</strong>ROOMLIST! <small>Step 4 of 4</small></h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <p class="text-center">We're not trying to recreate Facebook here. On this final step, you can choose point people to a variety of your social media accounts from your user page.</p> 
+    <p class="text-center">You'll be asked to sign in, but that's just to verify the account actually belongs to you. With the exception of your choice to use your Facebook profile picture as your profile picture here, we don't see or use any information on these third-party sites.</p>
+  </div>
+</div>
+
+{% load socialaccount %} {% providers_media_js %}
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title text-center"><strong>Social Media Accounts</strong></h1>
+      </div>
+
+      <div class="panel-body">
+        <div class="row text-center">
+          {% comment %} is it not possible to redirect the login failure? {% endcomment %}
+          <div class="col-md-3">
+            {% if verified %}
+              <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            {% endif %}
+            <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='#' %}">
+              <h4><i class="fa fa-facebook fa-3x"></i></h4>
+            </a>
+          </div>
+          <div class="col-md-3">
+            {% if verified %}
+              <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            {% endif %}
+            <a href="{% provider_login_url 'google' method='js_sdk' process='connect' next='#' %}">
+              <h4><i class="fa fa-google fa-3x"></i></h4>
+            </a>
+          </div>
+          <div class="col-md-3">
+            {% if verified %}
+              <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            {% endif %}
+            <a href="{% provider_login_url 'twitter' method='js_sdk' process='connect' next='#' %}">
+              <h4><i class="fa fa-twitter fa-3x"></i></h4>
+            </a>
+          </div>
+          <div class="col-md-3">
+            {% if verified %}
+              <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            {% endif %}
+            <a href="{% provider_login_url 'instagram' method='js_sdk' process='connect' next='#' %}">
+              <h4><i class="fa fa-instagram fa-3x"></i></h4>
+            </a>
+          </div>
+        </div>
+        <input type="submit" value="Finish" class="btn btn-primary"/>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+{% endblock %}

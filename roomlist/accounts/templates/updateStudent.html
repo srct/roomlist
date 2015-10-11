@@ -1,8 +1,8 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} SRCT Roomlist | New Student Setup {% endblock %}
+{% block title %} SRCT Roomlist | Student | Update {% endblock %}
 
-{% block reminder %}
+{% block message_queue %}
 {% endblock %}
 
 {% block content %}
@@ -10,7 +10,7 @@
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12 text-center">
-      <h1><strong>SRCT</strong>ROOMLIST</a></strong> Student Setup</h1>
+      <h1><strong>SRCT</strong>ROOMLIST</a></strong> Student Update</h1>
     </div>
   </div>
 </div>
@@ -20,12 +20,12 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h1 class="panel-title text-center"><strong>Welcome, {{ student.user.first_name }}!</strong></h1>
+        <h1 class="panel-title text-center"><strong>Welcome, {{ request.user.first_name }}!</strong></h1>
       </div>
 
       <div class="panel-body">
         <form action="" method="post">{% csrf_token %}
-          {{ form.as_p }}
+          {{ my_form.as_p }}
           <input type="submit" value="Save" class="btn btn-primary"/>
         </form>
       </div>
