@@ -165,9 +165,6 @@ class UpdateStudent(LoginRequiredMixin, FormView):
 
         me = Student.objects.get(user=self.request.user)
 
-        print me.room
-        print me.major
-
         def pk_or_none(me, obj):
             if obj is None:
                 return None
@@ -179,7 +176,8 @@ class UpdateStudent(LoginRequiredMixin, FormView):
                                         'gender': me.gender,
                                         'room': pk_or_none(me, me.room),
                                         'privacy': me.privacy,
-                                        'major': pk_or_none(me, me.major),})
+                                        'major': pk_or_none(me, me.major),
+                                        'graduating_year' : me.graduating_year,})
         context['my_form'] = form
         return context
 
@@ -195,6 +193,8 @@ class UpdateStudent(LoginRequiredMixin, FormView):
         me.room = Room.objects.get(pk=form.data['room'])
         me.privacy = form.data['privacy']
         me.major = Major.objects.get(pk=form.data['major'])
+        me.graduating_year = form.data['graduating_year']
+
 
         me.user.save()
         me.save()
@@ -289,7 +289,7 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
 
 class WelcomeMajor(LoginRequiredMixin, UpdateView):
     model = Student
-    fields = ['major', ]
+    fields = ['major', 'graduating_year', ]
     context_object_name = 'student'
     template_name = 'welcome_major.html'
 
