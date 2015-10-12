@@ -143,6 +143,21 @@ class Student(TimeStampedModel):
 
     objects = StudentManager()
 
+    # this doesn't take into account superseniors or graduate students or negative values
+    # hence private method
+    def _get_class(self):
+        time_to_graduate = self.graduating_year - self.current_year
+        if time_to_graduate >= 4:
+            return "freshman"
+        elif time_to_graduate == 3:
+            return "sophomore"
+        elif time_to_graduate == 2:
+            return "junior"
+        elif time_to_graduate == 1:
+            return "freshman"
+        else:
+            return "magic"
+
     def get_floor(self):
         try:
             floor = self.room.floor
