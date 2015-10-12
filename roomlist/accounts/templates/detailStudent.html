@@ -23,12 +23,23 @@
   </div>
 </div>
 
+{% load accounts_extras %}
+
 <div class="row">
   <div class="col-md-5 col-md-offset-1">
     <table class="table table-hover text-center">
       <tbody>
         <tr>
           <td><h4><strong>Major</strong>: {{ student.major.name }}</h4></td>
+        </tr>
+
+        <tr>
+          <td><h4><strong>Class of</strong>:
+          {% if student.graduating_year == None %}
+              &nbsp;&mdash;
+          {% else %}
+             {{ student.graduating_year|bc }}
+          {% endif %}</h4></td>
         </tr>
 
         <tr>
@@ -42,11 +53,11 @@
     <table class="table table-hover text-center">
       <tbody>
         <tr>
-          <td>
+          <td class="col-md-4">
            <h4><i class="fa fa-facebook fa-lg"></i></h4>
           </td>
-          <td>
-            {% if accounts.facebook %} <h4><a href="http://www.facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">Facebook</a></h4> {% endif %}
+          <td class="col-md-8">
+            {% if accounts.facebook %} <h4><a href="http://www.facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">Facebook</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
           </td>
         </tr>
 
@@ -54,7 +65,7 @@
           <td>
             <h4><i class="fa fa-google fa-lg"></i></h4>
           </td>
-          <td>{% if accounts.google %} <h4><a href="https://plus.google.com/{{ accounts.google.0.uid }}" target="_blank">Google+</a></h4> {% endif %}
+          <td>{% if accounts.google %} <h4><a href="https://plus.google.com/{{ accounts.google.0.uid }}" target="_blank">Google+</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
           </td>
         </tr>
 
@@ -63,7 +74,16 @@
             <h4><i class="fa fa-twitter fa-lg"></i></h4>
           </td>
           <td>
-            {% if accounts.twitter %} <h4><a href="https://twitter.com/intent/user?user_id={{ accounts.twitter.0.uid }}" target="_blank">Twitter</a></h4> {% endif %}
+            {% if accounts.twitter %} <h4><a href="https://twitter.com/intent/user?user_id={{ accounts.twitter.0.uid }}" target="_blank">Twitter</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <h4><i class="fa fa-instagram fa-lg"></i></h4>
+          </td>
+          <td>
+            {% if accounts.instagram %} <h4><a href="https://instagram/{{ accounts.instagram.0.uid }}" target="_blank">Instagram</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
           </td>
         </tr>
       </tbody>
