@@ -128,6 +128,10 @@ Finally, run `python manage.py createsuperuser` to create an admin account, usin
 
 The project includes a number of json files with demo data to load into the database, for Majors and also for all freshman housing. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly. Follow this with `python manage.py loaddata housing/initial_data.json` and a sizeable number of housing objects should be 'installed'.
 
+## Starting search
+
+To start off indexing your models for searching, run `python manage.py update_index`.
+
 ## Starting up the test server
 
 With your virtual environment active, run

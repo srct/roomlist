@@ -8,7 +8,7 @@ class StudentIndex(indexes.SearchIndex, indexes.Indexable):
 
     # search results
     # there can BE ONLY ONE document=True per model
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.EdgeNgramField(document=True, use_template=True)
     # the use_template is in the app directory, just a text file
     # with the fields that we want to display when returning results
 
