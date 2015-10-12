@@ -1,5 +1,6 @@
 # standard library imports
 import hashlib
+from datetime import date
 # core django imports
 from django.db import models
 from model_utils.models import TimeStampedModel
@@ -11,7 +12,7 @@ from autoslug import AutoSlugField
 from multiselectfield import MultiSelectField
 from allauth.socialaccount.models import SocialAccount
 # imports from your apps
-from housing.models import Room, Class
+from housing.models import Room
 
 
 class Major(TimeStampedModel):
@@ -122,8 +123,10 @@ class Student(TimeStampedModel):
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
 
     room = models.ForeignKey(Room, null=True, blank=True)
-    clas = models.ForeignKey(Class, null=True, blank=True)
     major = models.ForeignKey('Major', null=True, blank=True)
+
+    current_year = date.today().year
+    graduating_year = models.IntegerField(default=current_year, blank=True)
 
     # from when first logged in through peoplefinder, stored for later
     original_major = models.CharField(max_length=50, blank=True)

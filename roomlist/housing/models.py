@@ -116,28 +116,3 @@ class Room(TimeStampedModel):
 
 #    def __str__(self):              # __unicode__ on Python 2
 #        return self.street
-
-
-class Class(TimeStampedModel):
-    grad_year = models.PositiveIntegerField(null=True, blank=True)
-    FRESHMAN = 'FR'
-    SOPHOMORE = 'SO'
-    JUNIOR = 'JR'
-    SENIOR = 'SR'
-    OTHER = 'OR'
-    YEAR_IN_SCHOOL_CHOICES = (
-        (FRESHMAN, 'Freshman'),
-        (SOPHOMORE, 'Sophomore'),
-        (JUNIOR, 'Junior'),
-        (SENIOR, 'Senior'),
-        (OTHER, 'Other'),
-    )
-    year_in_school = models.CharField(max_length=2,
-                                      choices=YEAR_IN_SCHOOL_CHOICES,
-                                      default=FRESHMAN)
-
-    class Meta:
-        verbose_name_plural = 'classes'
-
-    def __str__(self):              # __unicode__ on Python 2
-        return str(self.grad_year)
