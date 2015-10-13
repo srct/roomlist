@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.utils.text import slugify
 # third party imports
 from autoslug import AutoSlugField
+from randomslugfield import RandomSlugField
 from multiselectfield import MultiSelectField
 from allauth.socialaccount.models import SocialAccount
 # imports from your apps
@@ -192,3 +193,16 @@ class Student(TimeStampedModel):
 
     def __unicode__(self):
         return unicode(self.user.username)
+
+class Confirmation(TimeStampedModel):
+
+    confirmer = models.ForeignKey(Student, related_name='confirmer_set')
+    student = models.ForeignKey(Student, related_name='student_set')
+
+    lives_there = models.BooleanField(default=False)
+    # is RA?
+
+    slug = RandomSlugField(length=6)
+
+    def __unicode__(self):
+        return "%s Flagged %s" % (self.confirmer.user.username, self.student.user.username)
