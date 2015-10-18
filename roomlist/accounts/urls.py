@@ -4,13 +4,16 @@ from django.views.decorators.cache import cache_page
 # imports from your apps
 from .views import DetailStudent, UpdateStudent, DetailStudentSettings,\
     DetailCurrentStudent, DetailCurrentStudentSettings, ListMajors,\
-    DetailMajor, WelcomeName, WelcomePrivacy, WelcomeMajor, WelcomeSocial
+    DetailMajor, WelcomeName, WelcomePrivacy, WelcomeMajor, WelcomeSocial,\
+    CreateConfirmation, DeleteConfirmation
 
 
 urlpatterns = patterns('',
 
+    # social media confirmation
     url(r'', include('allauth.urls')),
 
+    # majors pages
     url(r'^majors/$',
         cache_page(60 * 15)(ListMajors.as_view()),
         name='list_majors'),
@@ -19,21 +22,31 @@ urlpatterns = patterns('',
         cache_page(60 * 2)(DetailMajor.as_view()),
         name='detail_major'),
 
-    url(r'^student/$',
-        cache_page(60 * 2)(DetailCurrentStudent.as_view()),
-        name='detailCurrentStudent'),
-
+    # student profile pages
     url(r'^student/(?P<slug>[\w-]+)/$',
-        cache_page(60 * 2)(DetailStudent.as_view()),
+        cache_page(4)(DetailStudent.as_view()),
         name='detail_student'),
 
+    #url(r'^student/$',
+        #cache_page(60 * 2)(DetailCurrentStudent.as_view()),
+        #name='detailCurrentStudent'),
+
+    # student settings
     url(r'^student/(?P<slug>[\w-]+)/settings/$',
         cache_page(4)(UpdateStudent.as_view()),
         name='updateStudent'),
 
-    url(r'^settings/$',
-        cache_page(4)(DetailCurrentStudentSettings.as_view()),
-        name='currentStudentSettings'),
+    #url(r'^settings/$',
+        #cache_page(4)(DetailCurrentStudentSettings.as_view()),
+        #name='currentStudentSettings'),
+
+    # student confirmation pages
+    url(r'^student/(?P<student_slug>[\w-]+)/flag/$',
+        CreateConfirmation.as_view(), name='createConfirmation'),
+
+    # delete
+    url(r'^student/(?P<student_slug>[\w-]+)/flag/(?P<slug>[\w-]+)/$',
+        DeleteConfirmation.as_view(), name='deleteConfirmation'),
 
     # first welcome page
     # let's verify your name and optionally select a gender

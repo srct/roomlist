@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.utils.text import slugify
 # third party imports
 from autoslug import AutoSlugField
+from randomslugfield import RandomSlugField
 from multiselectfield import MultiSelectField
 from allauth.socialaccount.models import SocialAccount
 # imports from your apps
@@ -184,6 +185,10 @@ class Student(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('detail_student', kwargs={'slug': self.slug})
 
+    def get_flag_count(self):
+        my_flag_num = Confirmation.objects.filter(student=self, lives_there=False).count()
+        return my_flag_num
+
     class Meta:
         ordering = ['user']
 
@@ -192,3 +197,20 @@ class Student(TimeStampedModel):
 
     def __unicode__(self):
         return unicode(self.user.username)
+
+
+class Confirmation(TimeStampedModel):
+
+    confirmer = models.ForeignKey(Student, related_name='confirmer_set')
+    student = models.ForeignKey(Student, related_name='student_set')
+
+    lives_there = models.BooleanField(default=False)
+    # is RA? -- for later
+
+    slug = RandomSlugField(length=6)
+
+    def __unicode__(self):
+        if self.lives_there:  # implicitly is True
+            return "%s Confirmed %s" % (self.confirmer.user.username, self.student.user.username)
+        else:  # implicitly is False
+            return "%s Flagged %s" % (self.confirmer.user.username, self.student.user.username)

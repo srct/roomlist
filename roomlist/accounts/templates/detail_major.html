@@ -29,6 +29,9 @@
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
           <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
+          {% if student.get_flag_count > 4 %}
+            <p><em>* a number of other floormates say this info is incorrect</em></p>
+          {% endif %}
         </div>
      {% endfor %}
    </div>
@@ -52,6 +55,9 @@
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
           <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
+          {% if student.get_flag_count > 4 %}
+            <p><em>* a number of other floormates say this info is incorrect</em></p>
+          {% endif %}
         </div>
      {% endfor %}
    </div>
@@ -75,6 +81,9 @@
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
           <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
+          {% if student.get_flag_count > 4 %}
+            <p><em>* a number of other floormates say this info is incorrect</em></p>
+          {% endif %}
         </div>
      {% endfor %}
    </div>
@@ -86,17 +95,18 @@
 
 <br />
 
-<legend class="text-center">Location not visible because of student <a href="{% url 'currentStudentSettings' %}">privacy settings</a></legend>
-<div class="row">
-  <div class="col-md-12">
-    {% for student in location_hidden %}
-      <div class="col-sm-3 text-center">
-        <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
-        <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
-      </div>
-
-    {% endfor %}
+{% if location_hidden %}
+  <legend class="text-center">Location not visible because of student <a href="{% url 'updateStudent' request.user.username %}">privacy settings</a></legend>
+  <div class="row">
+    <div class="col-md-12">
+      {% for student in location_hidden %}
+        <div class="col-sm-3 text-center">
+          <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
+          <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
+        </div>
+      {% endfor %}
+    </div>
   </div>
-</div>
+{% endif %}
 
 {% endblock content %}

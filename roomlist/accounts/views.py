@@ -1,15 +1,16 @@
 # core django imports
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
-from django.views.generic import ListView, DetailView, UpdateView, FormView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, FormView, DeleteView
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 # third party imports
 from braces.views import LoginRequiredMixin
 from cas.views import login as cas_login
+from ratelimit.decorators import ratelimit
 # imports from your apps
-from .models import Student, Major, Room
+from .models import Student, Major, Room, Confirmation
 from .forms import StudentUpdateForm, WelcomeNameForm
 
 
@@ -66,6 +67,24 @@ def custom_cas_login(request, *args, **kwargs):
     return response
 
 
+def on_the_same_floor(student, confirmer):
+    if student == confirmer:
+        print "Student is confirmer"
+        return False
+    student_floor = student.get_floor()
+    confirmer_floor = confirmer.get_floor()
+    print student_floor, confirmer_floor
+    # room hasn't been set yet
+    if (student_floor is None) or (confirmer_floor is None):
+        print "One student is None"
+        return False
+    elif not(student_floor == confirmer_floor):
+        print "not the same floor"
+        return False
+    else:
+        return True
+
+
 # details about the student
 class DetailStudent(LoginRequiredMixin, DetailView):
     model = Student
@@ -80,6 +99,19 @@ class DetailStudent(LoginRequiredMixin, DetailView):
         # requesting_student = Student.objects.get(user=self.request.user)
         requesting_student_filter = Student.objects.filter(user=self.request.user)
         requesting_student = requesting_student_filter[0]
+
+        same_floor = on_the_same_floor(self.get_object(), requesting_student)
+
+        flags = Confirmation.objects.filter(confirmer=requesting_student,
+                                            student=self.get_object()).count()
+
+        if flags:
+            try:
+                my_flag = Confirmation.objects.get(confirmer=requesting_student,
+                                                   student=self.get_object())
+            except Exception as e:
+                print "Students are not supposed to be able to make more than one flag per student."
+                print e
 
         def onFloor():
             floor_status = False
@@ -108,6 +140,10 @@ class DetailStudent(LoginRequiredMixin, DetailView):
             return student_shares
 
         context['shares'] = shares()
+        context['same_floor'] = same_floor
+        context['has_flagged'] = bool(flags)
+        if flags:
+            context['my_flag'] = my_flag
         return context
 
 
@@ -436,3 +472,95 @@ class DetailMajor(LoginRequiredMixin, DetailView):
         context['location_hidden'] = location_hidden
 
         return context
+
+
+class CreateConfirmation(LoginRequiredMixin, CreateView):
+    model = Confirmation
+    fields = []
+    template_name = 'create_confirmation.html'
+
+    login_url = 'login'
+
+    def get(self, request, *args, **kwargs):
+
+        current_url = self.request.get_full_path()
+        # [u'', u'accounts', u'student', u'gmason', u'flag', u'']
+        url_uname = current_url.split('/')[3]
+
+        confirmer = Student.objects.get(user=self.request.user)
+        student = Student.objects.get(slug=url_uname)
+
+        flags = Confirmation.objects.filter(confirmer=confirmer,
+                                            student=student).count()
+
+        # you can't flag yourself
+        if confirmer == student:
+            return HttpResponseForbidden()
+
+        # check that the confirmer is on the floor of the student
+        if not on_the_same_floor(student, confirmer):
+            return HttpResponseForbidden()
+
+        # check if the confirmer has already flagged the student
+        if flags >= 1:
+            return HttpResponseForbidden()
+
+        return super(CreateConfirmation, self).get(request, *args, **kwargs)
+
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateConfirmation, self).get_context_data(**kwargs)
+
+        # duplicated code
+        current_url = self.request.get_full_path()
+        url_uname = current_url.split('/')[3]
+
+        student = Student.objects.get(slug=url_uname)
+
+        context['student'] = student
+
+        return context
+
+    def form_valid(self, form):
+
+        # duplicated code
+        current_url = self.request.get_full_path()
+        url_uname = current_url.split('/')[3]
+
+        confirmer = Student.objects.get(user=self.request.user)
+        student = Student.objects.get(slug=url_uname)
+
+        form.instance.confirmer = confirmer
+        form.instance.student = student
+
+        return super(CreateConfirmation, self).form_valid(form)
+
+    @ratelimit(key='user', rate='10/m', method='POST', block=True)
+    @ratelimit(key='user', rate='50/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        return super(CreateConfirmation, self).post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        # redirect to the flagged student page when saving
+        return reverse('detail_student',
+                       kwargs={'slug':self.object.student.slug})
+
+
+class DeleteConfirmation(LoginRequiredMixin, DeleteView):
+    model = Confirmation
+    template_name = 'delete_confirmation.html'
+
+    login_url = 'login'
+
+    def get(self, request, *args, **kwargs):
+        requester = Student.objects.get(user=self.request.user)
+        confirmer = self.get_object().confirmer
+
+        if not(requester == confirmer):
+            return HttpResponseForbidden()
+        else:
+            return super(DeleteConfirmation, self).get(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('detail_student',
+                       kwargs={'slug':self.object.student.slug})
