@@ -24,7 +24,7 @@ urlpatterns = patterns('',
 
     # student profile pages
     url(r'^student/(?P<slug>[\w-]+)/$',
-        cache_page(60 * 2)(DetailStudent.as_view()),
+        cache_page(4)(DetailStudent.as_view()),
         name='detail_student'),
 
     #url(r'^student/$',
