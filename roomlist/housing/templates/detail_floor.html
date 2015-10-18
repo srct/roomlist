@@ -23,6 +23,9 @@
     <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
     <h5><em>{{ student.major.name }}</em></h5>
     <h5><a href="{{ student.room.get_absolute_url }}">{{ student.room }}</a></h5>
+    {% if student.get_flag_count %}
+      <p><em>*a number of other floormates say this info is incorrect</em></p>
+    {% endif %}
   </div>
   {% endfor %}
 </div>

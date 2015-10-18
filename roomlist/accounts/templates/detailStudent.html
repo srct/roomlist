@@ -32,6 +32,9 @@
           {% endif %}
         {% endif %}
         </strong></p>
+        {% if student.get_flag_count > 4 %}
+        <p><em>* a number of other floormates say this room info is incorrect</em></p>
+        {% endif %}
       {% endif %}
       <p><em>shares room with</em>: <span class="label label-default"><strong>{{ student.privacy }}</strong></span></p>
     </div>
