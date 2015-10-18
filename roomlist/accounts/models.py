@@ -185,6 +185,10 @@ class Student(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('detail_student', kwargs={'slug': self.slug})
 
+    def get_flag_count(self):
+        my_flag_num = Confirmation.objects.filter(student=self, lives_there=False).count()
+        return my_flag_num
+
     class Meta:
         ordering = ['user']
 
