@@ -105,7 +105,13 @@ class DetailStudent(LoginRequiredMixin, DetailView):
         flags = Confirmation.objects.filter(confirmer=requesting_student,
                                             student=self.get_object()).count()
 
-        print flags, bool(flags)
+        if flags:
+            try:
+                my_flag = Confirmation.objects.get(confirmer=requesting_student,
+                                                   student=self.get_object())
+            except Exception as e:
+                print "Students are not supposed to be able to make more than one flag per student."
+                print e
 
         def onFloor():
             floor_status = False
@@ -136,6 +142,8 @@ class DetailStudent(LoginRequiredMixin, DetailView):
         context['shares'] = shares()
         context['same_floor'] = same_floor
         context['has_flagged'] = bool(flags)
+        if flags:
+            context['my_flag'] = my_flag
         return context
 
 
@@ -540,18 +548,19 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
 
 class DeleteConfirmation(LoginRequiredMixin, DeleteView):
     model = Confirmation
-    context_object_name = None
-    fields = None
-    template_name = None
+    template_name = 'delete_confirmation.html'
 
     login_url = 'login'
 
-    def get(self):
-        return True
+    def get(self, request, *args, **kwargs):
+        requester = Student.objects.get(user=self.request.user)
+        confirmer = self.get_object().confirmer
 
-    def form_valid(self):
-        return True
+        if not(requester == confirmer):
+            return HttpResponseForbidden()
+        else:
+            return super(DeleteConfirmation, self).get(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse('detail_student',
-                       kwargs={'slug':self.request.user.username})
+                       kwargs={'slug':self.object.student.slug})
