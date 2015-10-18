@@ -194,15 +194,19 @@ class Student(TimeStampedModel):
     def __unicode__(self):
         return unicode(self.user.username)
 
+
 class Confirmation(TimeStampedModel):
 
     confirmer = models.ForeignKey(Student, related_name='confirmer_set')
     student = models.ForeignKey(Student, related_name='student_set')
 
     lives_there = models.BooleanField(default=False)
-    # is RA?
+    # is RA? -- for later
 
     slug = RandomSlugField(length=6)
 
     def __unicode__(self):
-        return "%s Flagged %s" % (self.confirmer.user.username, self.student.user.username)
+        if self.lives_there:  # implicitly is True
+            return "%s Confirmed %s" % (self.confirmer.user.username, self.student.user.username)
+        else:  # implicitly is False
+            return "%s Flagged %s" % (self.confirmer.user.username, self.student.user.username)
