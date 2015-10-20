@@ -1,5 +1,6 @@
 # core django imports
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.contrib import messages
 # third party imports
@@ -29,9 +30,10 @@ def pfinfo(uname):
     url = base_url + "basic/all/" + str(uname)
     try:
         metadata = requests.get(url)
+        print "Retrieving information from the peoplefinder api."
         metadata.raise_for_status()
     except requests.exceptions.RequestException as e:
-        print e
+        print "Cannot resolve to peoplefinder api:", e
     else:
         pfjson = metadata.json()
         try:
@@ -51,55 +53,76 @@ def pfinfo(uname):
                 return final_tuple
         # if the name is not in peoplefinder, return empty first and last name
         except IndexError:
+            print "Name not found in peoplefinder."
             name = [u'', u'']
             major = u''
             final_tuple = (name, major)
             return final_tuple
         # if there's no major, just return that as an empty string
         except KeyError:
+            print "Major not found in peoplefinder."
             final_tuple = (name, u'')
             return final_tuple
+        except Exception as e:
+            print "Unknown peoplefinder error:", e
 
 
 def create_user(tree):
 
     print "Parsing CAS information."
-    username = tree[0][0].text
-    user, user_created = User.objects.get_or_create(username=username)
-
-    if user_created:
-        print "Created user object %s." % username
- 
-        # set and save the user's email
-        email_str = "%s@%s" % (username, settings.ORGANIZATION_EMAIL_DOMAIN)
-        user.email = email_str
-        user.save()
-        print "Added user's email, %s." % email_str
-
+    try:
+        username = tree[0][0].text
+        user, user_created = User.objects.get_or_create(username=username)
         info_tuple = pfinfo(username)
-        info_name = info_tuple[0]
-        # a list of empty strings is False
-        if not info_name:
-            user.first_name = info_name[0]
-            user.last_name = info_name[1]
+
+        if user_created:
+            print "Created user object %s." % username
+
+            # set and save the user's email
+            email_str = "%s@%s" % (username, settings.ORGANIZATION_EMAIL_DOMAIN)
+            user.email = email_str
             user.save()
-            print "Added user's name, %s %s." % (info_name[0], info_name[1])
+            print "Added user's email, %s." % email_str
 
-        new_student = Student.objects.create(user=user)
-        new_student.save()
-        print "Created student object."
+            info_name = info_tuple[0]
+            # a list of empty strings is False
+            if not info_name:
+                user.first_name = info_name[0]
+                user.last_name = info_name[1]
+                user.save()
+                print "Added user's name, %s %s." % (info_name[0], info_name[1])
+            else:
+                print "Unable to add user's name."
 
-        major_name = info_tuple[1]
+            print "User object creation process completed."
+
+        else:
+            print "User object already exists."
+
         try:
-            major_obj = Major.objects.get(name__contains=major_name)
-            new_student.major = major_obj
-            new_student.save()
-            print "Added student's major, %s." % major_name
-        # ironically, 'Computer Science' returns a MultipleObjectsReturned exception
-        # also Major.DoesNotExist Error, but the handling for both is the same...
-        except:
-            pass
-            
-        print "User creation process completed."
+            Student.objects.get(user=user)
+            print "Student object already exists."
 
-    print "CAS callback successful."
+        except ObjectDoesNotExist:
+            new_student = Student.objects.create(user=user)
+            new_student.save()
+            print "Created student object."
+
+            major_name = info_tuple[1]
+            try:
+                major_obj = Major.objects.get(name__contains=major_name)
+                new_student.major = major_obj
+                new_student.save()
+                print "Added student's major, %s." % major_name
+            # ironically, 'Computer Science' returns a MultipleObjectsReturned exception
+            # also Major.DoesNotExist Error, but the handling for both is the same...
+            except:
+                print "Unable to add student's major."
+
+            print "Student object creation process completed."
+
+        print "CAS callback successful."
+
+    # if all else fails...
+    except Exception as e:
+        print "CAS callback unsuccessful:", e
