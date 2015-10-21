@@ -243,7 +243,7 @@ class UpdateStudent(LoginRequiredMixin, FormView):
 
 
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/day', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
         return super(UpdateStudent, self).post(request, *args, **kwargs)
 
@@ -297,7 +297,7 @@ class WelcomeName(LoginRequiredMixin, FormView):
                        kwargs={'slug':self.request.user.username})
 
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/day', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
         return super(WelcomeName, self).post(request, *args, **kwargs)
 
@@ -335,7 +335,7 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
                        kwargs={'slug':self.request.user.username})
 
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/day', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
         return super(WelcomePrivacy, self).post(request, *args, **kwargs)
 
@@ -373,7 +373,7 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
                        kwargs={'slug':self.request.user.username})
 
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/day', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
         return super(WelcomeMajor, self).post(request, *args, **kwargs)
 
@@ -412,7 +412,7 @@ class WelcomeSocial(LoginRequiredMixin, DetailView):
                        kwargs={'slug':self.request.user.username})
 
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/day', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
         return super(UpdateStudent, self).post(request, *args, **kwargs)
 
