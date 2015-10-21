@@ -1,7 +1,10 @@
+# standard library imports
+from __future__ import absolute_import, print_function
 # core django imports
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
-from django.views.generic import CreateView, ListView, DetailView, UpdateView, FormView, DeleteView
+from django.views.generic import (CreateView, ListView, DetailView, UpdateView,
+                                  FormView, DeleteView)
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.safestring import mark_safe
@@ -69,17 +72,16 @@ def custom_cas_login(request, *args, **kwargs):
 
 def on_the_same_floor(student, confirmer):
     if student == confirmer:
-        print "Student is confirmer"
+        # Student is confirmer
         return False
     student_floor = student.get_floor()
     confirmer_floor = confirmer.get_floor()
-    print student_floor, confirmer_floor
     # room hasn't been set yet
     if (student_floor is None) or (confirmer_floor is None):
-        print "One student is None"
+        # one Student is None
         return False
     elif not(student_floor == confirmer_floor):
-        print "not the same floor"
+        # not the same floor
         return False
     else:
         return True
@@ -110,8 +112,8 @@ class DetailStudent(LoginRequiredMixin, DetailView):
                 my_flag = Confirmation.objects.get(confirmer=requesting_student,
                                                    student=self.get_object())
             except Exception as e:
-                print "Students are not supposed to be able to make more than one flag per student."
-                print e
+                print("Students are not supposed to be able to make more than one flag per student.")
+                print(e)
 
         def onFloor():
             floor_status = False
@@ -189,8 +191,6 @@ class UpdateStudent(LoginRequiredMixin, FormView):
         current_url = self.request.get_full_path()
         url_uname = current_url.split('/')[3]
 
-        print url_uname, self.request.user.username
-
         if not(url_uname == self.request.user.username):
             return HttpResponseForbidden()
         else:
@@ -220,9 +220,6 @@ class UpdateStudent(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         me = Student.objects.get(user=self.request.user)
 
-        print form.data['room']
-        print form.data['major']
-
         me.user.first_name = form.data['first_name']
         me.user.last_name = form.data['last_name']
         me.gender = form.data.getlist('gender')
@@ -251,8 +248,6 @@ class WelcomeName(LoginRequiredMixin, FormView):
 
         current_url = self.request.get_full_path()
         url_uname = current_url.split('/')[3]
-
-        print url_uname, self.request.user.username
 
         if not(url_uname == self.request.user.username):
             return HttpResponseForbidden()
@@ -303,8 +298,6 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
         current_url = self.request.get_full_path()
         url_uname = current_url.split('/')[3]
 
-        print url_uname, self.request.user.username
-
         if not(url_uname == self.request.user.username):
             return HttpResponseForbidden()
         else:
@@ -335,8 +328,6 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
 
         current_url = self.request.get_full_path()
         url_uname = current_url.split('/')[3]
-
-        print url_uname, self.request.user.username
 
         if not(url_uname == self.request.user.username):
             return HttpResponseForbidden()
@@ -369,8 +360,6 @@ class WelcomeSocial(LoginRequiredMixin, DetailView):
 
         current_url = self.request.get_full_path()
         url_uname = current_url.split('/')[3]
-
-        print url_uname, self.request.user.username
 
         if not(url_uname == self.request.user.username):
             return HttpResponseForbidden()

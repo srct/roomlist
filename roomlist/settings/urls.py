@@ -1,3 +1,5 @@
+# standard library imports
+from __future__ import absolute_import, print_function
 # core django imports
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required

@@ -1,3 +1,5 @@
+# standard library imports
+from __future__ import absolute_import, print_function
 # third party imports
 from haystack import indexes
 # imports from your apps

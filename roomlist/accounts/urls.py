@@ -1,11 +1,13 @@
+# standard library imports
+from __future__ import absolute_import, print_function
 # core django imports
 from django.conf.urls import patterns, include, url
 from django.views.decorators.cache import cache_page
 # imports from your apps
-from .views import DetailStudent, UpdateStudent, DetailStudentSettings,\
-    DetailCurrentStudent, DetailCurrentStudentSettings, ListMajors,\
-    DetailMajor, WelcomeName, WelcomePrivacy, WelcomeMajor, WelcomeSocial,\
-    CreateConfirmation, DeleteConfirmation
+from .views import (DetailStudent, UpdateStudent, DetailStudentSettings,
+                    DetailCurrentStudent, DetailCurrentStudentSettings, ListMajors,
+                    DetailMajor, WelcomeName, WelcomePrivacy, WelcomeMajor,
+                    WelcomeSocial, CreateConfirmation, DeleteConfirmation)
 
 
 urlpatterns = patterns('',

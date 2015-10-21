@@ -1,3 +1,5 @@
+# standard library imports
+from __future__ import absolute_import, print_function
 # core django imports
 from django.views.generic import DetailView, ListView
 # third party imports

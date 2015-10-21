@@ -1,3 +1,5 @@
+# standard library imports
+from __future__ import absolute_import, print_function
 # core django imports
 from django.db import models
 from django.core.urlresolvers import reverse

@@ -1,4 +1,5 @@
 # standard library imports
+from __future__ import absolute_import, print_function
 import re
 import random
 import string
@@ -15,7 +16,7 @@ try:
     page.raise_for_status()
 
 except requests.exceptions.RequestException as e:
-    print e
+    print(e)
 
 else:
     programs = BeautifulSoup(page.content)
