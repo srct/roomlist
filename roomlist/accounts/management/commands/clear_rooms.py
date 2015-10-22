@@ -10,4 +10,5 @@ class Command(BaseCommand):
         for student in Student.objects.all():
             student.room = None
 	    count += 1
+
         self.stdout.write("Successfully overwrote %d student room(s)." % count)
