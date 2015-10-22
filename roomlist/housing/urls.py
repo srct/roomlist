@@ -1,3 +1,5 @@
+# standard library imports
+from __future__ import absolute_import, print_function
 # core django imports
 from django.conf.urls import patterns, url
 from django.views.decorators.cache import cache_page

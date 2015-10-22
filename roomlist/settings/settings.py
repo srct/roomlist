@@ -8,6 +8,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
+from __future__ import absolute_import, print_function
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -24,7 +26,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-print TEMPLATE_DIRS
+print(TEMPLATE_DIRS)
 
 TEMPLATE_LOADERS = (
 
@@ -47,7 +49,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-import config
+from . import config
 DEBUG = config.DEBUG
 TEMPLATE_DEBUG = config.TEMPLATE_DEBUG
 ALLOWED_HOSTS = config.ALLOWED_HOSTS
@@ -104,7 +106,7 @@ ROOT_URLCONF = 'settings.urls'
 
 WSGI_APPLICATION = 'settings.wsgi.application'
 
-import secret
+from . import secret
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
