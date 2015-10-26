@@ -13,9 +13,19 @@
   </div>
 </div>
 
+{% regroup majors by first_letter as majors_by_letter %}
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1 text-center"><h3>
+    &middot;
+    {% for letter in majors_by_letter %}
+      <a href="#{{ letter.grouper }}">{{ letter.grouper }}</a> &middot;
+    {% endfor %}
+  </h3></div>
+</div>
+
 <div class="row">
   <div class="col-md-10 col-md-offset-1">
-    {% regroup majors by first_letter as majors_by_letter %}
     {% for letter in majors_by_letter %}
     <legend><a name="{{ letter.grouper }}" href="#{{ letter.grouper }}">{{ letter.grouper }}</a></legend>
       <div class="row">
