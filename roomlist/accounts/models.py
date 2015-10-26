@@ -4,6 +4,7 @@ import hashlib
 from datetime import date
 # core django imports
 from django.db import models
+from django.utils import timezone
 from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -127,6 +128,8 @@ class Student(TimeStampedModel):
     room = models.ForeignKey(Room, null=True, blank=True)
     major = models.ForeignKey('Major', null=True, blank=True)
 
+    times_changed_room = models.IntegerField(default=0)
+
     current_year = date.today().year
     graduating_year = models.IntegerField(default=current_year, blank=True)
 
@@ -159,6 +162,23 @@ class Student(TimeStampedModel):
             return "freshman"
         else:
             return "magic"
+
+    def can_change_floor(self):
+        # part of TimeStampedModel
+        now = timezone.now()
+        created = self.created
+
+        # could make this more formal with dateutil, but...
+        days = (now - created).days
+
+        half_years = days / float(30 * 6)
+
+        # we want you to be able to change your room at most
+        # twice in a six month period before blocking you
+        if (self.times_changed_room / half_years) <= 2:
+            return True
+        else:
+            return False
 
     def get_floor(self):
         try:
