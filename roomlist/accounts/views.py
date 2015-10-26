@@ -238,6 +238,13 @@ class UpdateStudent(LoginRequiredMixin, FormView):
         return reverse('detail_student',
                        kwargs={'slug':self.request.user.username})
 
+
+    @ratelimit(key='user', rate='5/m', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        return super(UpdateStudent, self).post(request, *args, **kwargs)
+
+
 # welcome pages
 class WelcomeName(LoginRequiredMixin, FormView):
     template_name = 'welcome_name.html'
@@ -264,7 +271,7 @@ class WelcomeName(LoginRequiredMixin, FormView):
                                         'gender': me.gender, })
         context['my_form'] = form
         return context
-        
+
     def form_valid(self, form):
         me = Student.objects.get(user=self.request.user)
 
@@ -283,6 +290,11 @@ class WelcomeName(LoginRequiredMixin, FormView):
     def get_success_url(self):
         return reverse('welcomePrivacy',
                        kwargs={'slug':self.request.user.username})
+
+    @ratelimit(key='user', rate='5/m', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        return super(WelcomeName, self).post(request, *args, **kwargs)
 
 
 class WelcomePrivacy(LoginRequiredMixin, UpdateView):
@@ -315,6 +327,11 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
         return reverse('welcomeMajor',
                        kwargs={'slug':self.request.user.username})
 
+    @ratelimit(key='user', rate='5/m', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        return super(WelcomePrivacy, self).post(request, *args, **kwargs)
+
 
 class WelcomeMajor(LoginRequiredMixin, UpdateView):
     model = Student
@@ -345,6 +362,11 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('welcomeSocial',
                        kwargs={'slug':self.request.user.username})
+
+    @ratelimit(key='user', rate='5/m', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        return super(WelcomeMajor, self).post(request, *args, **kwargs)
 
 
 class WelcomeSocial(LoginRequiredMixin, DetailView):
@@ -377,6 +399,11 @@ class WelcomeSocial(LoginRequiredMixin, DetailView):
     def get_success_url(self):
         return reverse('detail_student',
                        kwargs={'slug':self.request.user.username})
+
+    @ratelimit(key='user', rate='5/m', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        return super(UpdateStudent, self).post(request, *args, **kwargs)
 
 
 # majors pages
