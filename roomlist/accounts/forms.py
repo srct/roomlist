@@ -35,3 +35,10 @@ class WelcomePrivacyForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ['room', 'privacy', ]
+
+
+class WelcomeSocialForm(forms.ModelForm):
+
+    class Meta:
+        model = Student
+        fields = ['completedSocial', ]

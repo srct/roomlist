@@ -15,7 +15,8 @@ from cas.views import login as cas_login
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from .models import Student, Major, Room, Confirmation
-from .forms import StudentUpdateForm, WelcomeNameForm, WelcomePrivacyForm
+from .forms import (StudentUpdateForm, WelcomeNameForm, WelcomePrivacyForm,
+                    WelcomeSocialForm)
 
 
 not_started = """Welcome to SRCT Roomlist! <a href="%s">Click here</a> to walk through
@@ -347,17 +348,35 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         # except that for some reason these fields no longer fill with their existant values
         self.obj = self.get_object()
+        print(self.obj)
+        print(type(self.obj))
+        print(self.obj.room)
+        print(self.obj.times_changed_room)
+
+        print((self.obj == Student.objects.get(user=self.request.user)), 'the same?')
+
+        #print(form)
+        #print(type(form.data['room']))
+        print(form.data['room'])
 
         current_room = self.obj.room
         try:
             form_room = Room.objects.get(pk=form.data['room'])
+            print(form_room, 'try block')
         except:
             form_room = None
+            print(form_room, 'except block')
 
+        # this doesn't work for some magical reason
         if current_room != form_room:
+            print('nope! the\'re not the same!')
             self.obj.times_changed_room += 1
+            print(self.obj.times_changed_room, 'updated times changed')
 
+        print(self.obj.completedPrivacy)
         self.obj.completedPrivacy = True
+        print(self.obj.completedPrivacy)
+
         # this doesn't work for some magical reason
         self.obj.save()
 
@@ -367,9 +386,13 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
         return reverse('welcomeMajor',
                        kwargs={'slug':self.request.user.username})
 
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
+    # ratelimiting apparently wasn't working, so there's *more* fuckery...
+    #@ratelimit(key='user', rate='5/m', method='POST', block=True)
+    #@ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
+        print('in post method')
+        print(self.get_object().completedPrivacy)
+        print(self.get_object().times_changed_room)
         return super(WelcomePrivacy, self).post(request, *args, **kwargs)
 
 
@@ -413,10 +436,9 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
 # this is a work-in-progress catastrophuck
 class WelcomeSocial(LoginRequiredMixin, FormValidMessageMixin, UpdateView):
     model = Student
+    fields = ['completedSocial', ]
     context_object_name = 'student'
-    fields = ['completedSocial']
     template_name = 'welcome_social.html'
-
     login_url = 'login'
 
     form_valid_message = "You successfully finished the welcome walkthrough!"
@@ -430,6 +452,16 @@ class WelcomeSocial(LoginRequiredMixin, FormValidMessageMixin, UpdateView):
             return HttpResponseForbidden()
         else:
             return super(WelcomeSocial, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(WelcomeSocial, self).get_context_data(**kwargs)
+
+        form = WelcomeSocialForm()
+
+        form.fields['completedSocial'].widget = HiddenInput()
+
+        context['my_form'] = form
+        return context
 
     def form_valid(self, form):
         self.obj = self.get_object()
@@ -447,7 +479,7 @@ class WelcomeSocial(LoginRequiredMixin, FormValidMessageMixin, UpdateView):
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
-        return super(UpdateStudent, self).post(request, *args, **kwargs)
+        return super(WelcomeSocial, self).post(request, *args, **kwargs)
 
 
 # majors pages
