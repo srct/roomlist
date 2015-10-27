@@ -348,10 +348,10 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         # except that for some reason these fields no longer fill with their existant values
         self.obj = self.get_object()
-        print(self.obj)
-        print(type(self.obj))
-        print(self.obj.room)
-        print(self.obj.times_changed_room)
+        print(self.obj, 'our object')
+        print(type(self.obj), 'our object type')
+        print(self.obj.room, 'our object\'s room')
+        print(self.obj.times_changed_room, 'our object\'s times changed int')
 
         print((self.obj == Student.objects.get(user=self.request.user)), 'the same?')
 
