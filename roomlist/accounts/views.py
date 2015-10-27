@@ -346,43 +346,50 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
         return context
 
     def form_valid(self, form):
-        # except that for some reason these fields no longer fill with their existant values
-        self.obj = self.get_object()
-        print(self.obj, 'our object')
-        print(type(self.obj), 'our object type')
-        print(self.obj.room, 'our object\'s room')
-        print(self.obj.times_changed_room, 'our object\'s times changed int')
+#        # except that for some reason the form no longer fills with their existant values
+#        self.obj = self.get_object()
+#        print(self.obj, 'our object')
+#        print(type(self.obj), 'our object type')
+#        print(self.obj.room, 'our object\'s room')
+#        print(self.obj.times_changed_room, 'our object\'s times changed int')
+#
+#        print((self.obj == Student.objects.get(user=self.request.user)), 'the same?')
+#
+#        #print(form)
+#        #print(type(form.data['room']))
+#        print(form.data['room'])
+#
+#        current_room = self.obj.room
+#        try:
+#            form_room = Room.objects.get(pk=form.data['room'])
+#            print(form_room, 'try block')
+#        except:
+#            form_room = None
+#            print(form_room, 'except block')
+#
+#        if current_room != form_room:
+#            print('nope! the\'re not the same!')
+#            self.obj.times_changed_room += 1
+#            print(self.obj.times_changed_room, 'updated times changed')
+#
+#        print(self.obj.completedPrivacy)
+#        self.obj.completedPrivacy = True
+#        print(self.obj.completedPrivacy)
+#
+#        # this doesn't work for some magical reason
+#        self.obj.save()
 
-        print((self.obj == Student.objects.get(user=self.request.user)), 'the same?')
-
-        #print(form)
-        #print(type(form.data['room']))
-        print(form.data['room'])
-
-        current_room = self.obj.room
-        try:
-            form_room = Room.objects.get(pk=form.data['room'])
-            print(form_room, 'try block')
-        except:
-            form_room = None
-            print(form_room, 'except block')
-
-        # this doesn't work for some magical reason
-        if current_room != form_room:
-            print('nope! the\'re not the same!')
-            self.obj.times_changed_room += 1
-            print(self.obj.times_changed_room, 'updated times changed')
-
-        print(self.obj.completedPrivacy)
-        self.obj.completedPrivacy = True
-        print(self.obj.completedPrivacy)
-
-        # this doesn't work for some magical reason
-        self.obj.save()
+        me = Student.objects.get(user=self.request.user)
+        me.completedPrivacy = True
+        me.times_changed_room += 1
+        me.save()
 
         return super(WelcomePrivacy, self).form_valid(form)
 
     def get_success_url(self):
+        print('in get_success_url method')
+        print(self.request.user.student.times_changed_room)
+        print(self.request.user.student.completedPrivacy)
         return reverse('welcomeMajor',
                        kwargs={'slug':self.request.user.username})
 
