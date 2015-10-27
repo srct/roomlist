@@ -1,0 +1,14 @@
+{% if request.user.student.recent_changes %}
+<div class="row">
+  <div class="col-md-12">
+    {% if request.user.student.recent_changes == 1 %}
+      <div class="alert alert-warning text-center" role="alert">
+        <strong>To safeguard everyone's privacy, the number of times you can change your room in a semester is limited.</strong>
+    {% else %}
+      <div class="alert alert-danger text-center" role="alert">
+        <strong>To safeguard everyone's privacy, the number of times you can change your room in a semester is limited. Email roomlist@lists.srct.gmu.edu to have your room changed.</strong>
+    {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
