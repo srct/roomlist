@@ -128,7 +128,7 @@ class Student(TimeStampedModel):
     room = models.ForeignKey(Room, null=True, blank=True)
     major = models.ForeignKey('Major', null=True, blank=True)
 
-    times_changed_room = models.IntegerField(default=0)
+    times_changed_room = models.PositiveIntegerField(default=0)
 
     current_year = date.today().year
     graduating_year = models.IntegerField(default=current_year, blank=True)
@@ -163,7 +163,7 @@ class Student(TimeStampedModel):
         else:
             return "magic"
 
-    def can_change_floor(self):
+    def recent_changes(self):
         # part of TimeStampedModel
         now = timezone.now()
         created = self.created
@@ -171,14 +171,10 @@ class Student(TimeStampedModel):
         # could make this more formal with dateutil, but...
         days = (now - created).days
 
-        half_years = days / float(30 * 6)
+        # must be int-- floor function
+        third_years = (days / (30 * 4)) + 1
 
-        # we want you to be able to change your room at most
-        # twice in a six month period before blocking you
-        if (self.times_changed_room / half_years) <= 2:
-            return True
-        else:
-            return False
+        return (self.times_changed_room / third_years)
 
     def get_floor(self):
         try:
