@@ -28,3 +28,10 @@ class WelcomeNameForm(forms.Form):
     first_name = forms.CharField(label='First Name')
     last_name = forms.CharField(label='Last Name')
     gender = MultiSelectFormField(choices=Student.GENDER_CHOICES, label='Gender Identity (please choose all that apply)')
+
+
+class WelcomePrivacyForm(forms.ModelForm):
+
+    class Meta:
+        model = Student
+        fields = ['room', 'privacy', ]

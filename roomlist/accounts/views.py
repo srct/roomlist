@@ -8,13 +8,14 @@ from django.views.generic import (CreateView, ListView, DetailView, UpdateView,
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.safestring import mark_safe
+from django.forms.widgets import HiddenInput
 # third party imports
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormValidMessageMixin
 from cas.views import login as cas_login
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from .models import Student, Major, Room, Confirmation
-from .forms import StudentUpdateForm, WelcomeNameForm
+from .forms import StudentUpdateForm, WelcomeNameForm, WelcomePrivacyForm
 
 
 not_started = """Welcome to SRCT Roomlist! <a href="%s">Click here</a> to walk through
@@ -181,10 +182,12 @@ class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
 
 
 # update a student, but FormView to allow name update on same page
-class UpdateStudent(LoginRequiredMixin, FormView):
+class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
     template_name = 'updateStudent.html'
     form_class = StudentUpdateForm
     login_url = 'login'
+
+    form_valid_message = "Your profile was successfully updated!"
 
     def get(self, request, *args, **kwargs):
 
@@ -214,20 +217,32 @@ class UpdateStudent(LoginRequiredMixin, FormView):
                                         'privacy': me.privacy,
                                         'major': pk_or_none(me, me.major),
                                         'graduating_year' : me.graduating_year,})
+
+        if me.recent_changes() >= 2:
+            form.fields['room'].widget = HiddenInput()
+
         context['my_form'] = form
         return context
 
     def form_valid(self, form):
         me = Student.objects.get(user=self.request.user)
 
+        current_room = me.room
+        try:
+            form_room = Room.objects.get(pk=form.data['room'])
+        except:
+            form_room = None
+
+        if current_room != form_room:
+            me.times_changed_room += 1
+
         me.user.first_name = form.data['first_name']
         me.user.last_name = form.data['last_name']
         me.gender = form.data.getlist('gender')
-        me.room = Room.objects.get(pk=form.data['room'])
+        me.room = form_room
         me.privacy = form.data['privacy']
         me.major = Major.objects.get(pk=form.data['major'])
         me.graduating_year = form.data['graduating_year']
-
 
         me.user.save()
         me.save()
@@ -282,6 +297,7 @@ class WelcomeName(LoginRequiredMixin, FormView):
 
         me.completedName = True
 
+        # wow... these calls actually work... >_______>
         me.user.save()
         me.save()
 
@@ -315,10 +331,34 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
         else:
             return super(WelcomePrivacy, self).get(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super(WelcomePrivacy, self).get_context_data(**kwargs)
+
+        me = Student.objects.get(user=self.request.user)
+
+        form = WelcomePrivacyForm()
+
+        if me.recent_changes() >= 2:
+            form.fields['room'].widget = HiddenInput()
+
+        context['my_form'] = form
+        return context
+
     def form_valid(self, form):
+        # except that for some reason these fields no longer fill with their existant values
         self.obj = self.get_object()
 
+        current_room = self.obj.room
+        try:
+            form_room = Room.objects.get(pk=form.data['room'])
+        except:
+            form_room = None
+
+        if current_room != form_room:
+            self.obj.times_changed_room += 1
+
         self.obj.completedPrivacy = True
+        # this doesn't work for some magical reason
         self.obj.save()
 
         return super(WelcomePrivacy, self).form_valid(form)
@@ -354,6 +394,7 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         self.obj = self.get_object()
 
+        # this doesn't work for some reason
         self.obj.completedMajor = True
         self.obj.save()
 
@@ -369,14 +410,16 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
         return super(WelcomeMajor, self).post(request, *args, **kwargs)
 
 
-class WelcomeSocial(LoginRequiredMixin, DetailView):
+# this is a work-in-progress catastrophuck
+class WelcomeSocial(LoginRequiredMixin, FormValidMessageMixin, UpdateView):
     model = Student
     context_object_name = 'student'
+    fields = ['completedSocial']
     template_name = 'welcome_social.html'
 
     login_url = 'login'
 
-    # push to the message queue
+    form_valid_message = "You successfully finished the welcome walkthrough!"
 
     def get(self, request, *args, **kwargs):
 
@@ -396,6 +439,7 @@ class WelcomeSocial(LoginRequiredMixin, DetailView):
 
         return super(WelcomeSocial, self).form_valid(form)
 
+    # doesn't get called because it's not actually a form...
     def get_success_url(self):
         return reverse('detail_student',
                        kwargs={'slug':self.request.user.username})
