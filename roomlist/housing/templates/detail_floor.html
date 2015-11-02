@@ -10,6 +10,14 @@
       <h1><strong>SRCT</strong>ROOMLIST</h1>
       <p class="lead"><strong>{{ floor.building.name }} {{ floor.number|ordinal }}</strong></p>
     </div>
+    <div class="col-md-12">
+      <ol id="breadcrumbs" class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="{% url 'list_buildings' %}">Buildings</a></li>
+        <li><a href="{{ floor.building.get_absolute_url }}">{{ floor.building.name }}</a></li>
+        <li class="active">{{ floor.number|ordinal }} Floor</li>
+      </ol>
+    </div>
   </div>
 </div>
 

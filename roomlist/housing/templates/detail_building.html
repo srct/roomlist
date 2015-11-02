@@ -9,6 +9,11 @@
       <p class="lead"><strong>{{ building.name }}</strong></p>
     </div>
   </div>
+  <ol id="breadcrumb" class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li><a href="{% url 'list_buildings' %}">Buildings</a></li>
+    <li class="active">{{ building.name }}</li>
+  </ol>
 </div>
 
 <div class="row">
