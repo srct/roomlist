@@ -53,3 +53,7 @@ secret.py
 # migrations
 *migrations*
 /migrations
+# search files
+/whoosh_index
+*.seg
+*.toc
