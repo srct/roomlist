@@ -390,6 +390,13 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
         print('in get_success_url method')
         print(self.request.user.student.times_changed_room)
         print(self.request.user.student.completedPrivacy)
+        me = Student.objects.get(user=self.request.user)
+        me.completedPrivacy = True
+        me.times_changed_room += 1
+        me.save()
+
+        print(self.request.user.student.times_changed_room)
+        print(self.request.user.student.completedPrivacy)
         return reverse('welcomeMajor',
                        kwargs={'slug':self.request.user.username})
 
