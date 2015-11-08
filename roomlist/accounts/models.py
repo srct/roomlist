@@ -215,12 +215,12 @@ class Student(TimeStampedModel):
     def __unicode__(self):
         return unicode(self.user.username)
 
-    def save(self, *args, **kwargs):
-        print('we be savin\'!')
-        from django.db.models.signals import pre_save, post_save
-        for signal in [pre_save, post_save]:
-            print(signal, signal.receivers)
-        super(Student, self).save(*args, **kwargs)
+    #def save(self, *args, **kwargs):
+        #print('we be savin\'!')
+        #from django.db.models.signals import pre_save, post_save
+        #for signal in [pre_save, post_save]:
+            #print(signal, signal.receivers)
+        #super(Student, self).save(*args, **kwargs)
 
 
 class Confirmation(TimeStampedModel):
