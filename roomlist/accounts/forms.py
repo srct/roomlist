@@ -9,6 +9,7 @@ from crispy_forms.bootstrap import PrependedText, AppendedText
 from multiselectfield import MultiSelectFormField
 # imports from your apps
 from .models import Student, Room, Major
+from housing.models import Building
 
 
 class StudentUpdateForm(forms.Form):
@@ -17,7 +18,12 @@ class StudentUpdateForm(forms.Form):
     last_name = forms.CharField(label='Last Name')
     gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
                                   label='Gender Identity (please choose all that apply)')
-    room = forms.ModelChoiceField(queryset=Room.objects.all())
+
+    neighborhood = forms.ChoiceField(choices=Building.NEIGHBOURHOOD_CHOICES)
+    building = forms.ModelChoiceField(queryset=Building.objects.filter(neighbourhood='')
+    floor = forms.ModelChoiceField(queryset=Floor.objects.filter(building='')
+    room = forms.ModelChoiceField(queryset=Room.objects.filter(floor=''))
+
     privacy = forms.ChoiceField(choices=Student.PRIVACY_CHOICES)
     major = forms.ModelChoiceField(queryset=Major.objects.all())
     graduating_year = forms.IntegerField(label='Graduating Year')
