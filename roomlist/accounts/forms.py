@@ -32,13 +32,22 @@ class WelcomeNameForm(forms.Form):
 
 class WelcomePrivacyForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(WelcomePrivacyForm, self).__init__(*args, **kwargs)
+        if self.instance.recent_changes() >= 2:
+            self.fields['room'].widget = forms.widgets.HiddenInput()
+
     class Meta:
         model = Student
-        fields = ['room', 'privacy', ]
+        fields = ('room', 'privacy', )
 
 
 class WelcomeSocialForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(WelcomeSocialForm, self).__init__(*args, **kwargs)
+        self.fields['completedSocial'].widget = forms.widgets.HiddenInput()
+
     class Meta:
         model = Student
-        fields = ['completedSocial', ]
+        fields = ('completedSocial', )

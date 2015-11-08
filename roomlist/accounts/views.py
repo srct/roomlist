@@ -316,7 +316,7 @@ class WelcomeName(LoginRequiredMixin, FormView):
 
 class WelcomePrivacy(LoginRequiredMixin, UpdateView):
     model = Student
-    fields = ['room', 'privacy', ]
+    form_class = WelcomePrivacyForm
     context_object_name = 'student'
     template_name = 'welcome_privacy.html'
 
@@ -332,81 +332,30 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
         else:
             return super(WelcomePrivacy, self).get(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super(WelcomePrivacy, self).get_context_data(**kwargs)
-
-        me = Student.objects.get(user=self.request.user)
-
-        form = WelcomePrivacyForm()
-
-        if me.recent_changes() >= 2:
-            form.fields['room'].widget = HiddenInput()
-
-        context['my_form'] = form
-        return context
-
     def form_valid(self, form):
-#        # except that for some reason the form no longer fills with their existant values
-#        self.obj = self.get_object()
-#        print(self.obj, 'our object')
-#        print(type(self.obj), 'our object type')
-#        print(self.obj.room, 'our object\'s room')
-#        print(self.obj.times_changed_room, 'our object\'s times changed int')
-#
-#        print((self.obj == Student.objects.get(user=self.request.user)), 'the same?')
-#
-#        #print(form)
-#        #print(type(form.data['room']))
-#        print(form.data['room'])
-#
-#        current_room = self.obj.room
-#        try:
-#            form_room = Room.objects.get(pk=form.data['room'])
-#            print(form_room, 'try block')
-#        except:
-#            form_room = None
-#            print(form_room, 'except block')
-#
-#        if current_room != form_room:
-#            print('nope! the\'re not the same!')
-#            self.obj.times_changed_room += 1
-#            print(self.obj.times_changed_room, 'updated times changed')
-#
-#        print(self.obj.completedPrivacy)
-#        self.obj.completedPrivacy = True
-#        print(self.obj.completedPrivacy)
-#
-#        # this doesn't work for some magical reason
-#        self.obj.save()
+        me = self.get_object()
 
-        me = Student.objects.get(user=self.request.user)
-        me.completedPrivacy = True
-        me.times_changed_room += 1
-        me.save()
+        current_room = me.room
+
+        try:
+            form_room = Room.objects.get(pk=form.data['room'])
+        except:
+            form_room = None
+
+        if current_room != form_room:
+            form.instance.times_changed_room += 1
+
+        form.instance.completedPrivacy = True
 
         return super(WelcomePrivacy, self).form_valid(form)
 
     def get_success_url(self):
-        print('in get_success_url method')
-        print(self.request.user.student.times_changed_room)
-        print(self.request.user.student.completedPrivacy)
-        me = Student.objects.get(user=self.request.user)
-        me.completedPrivacy = True
-        me.times_changed_room += 1
-        me.save()
-
-        print(self.request.user.student.times_changed_room)
-        print(self.request.user.student.completedPrivacy)
         return reverse('welcomeMajor',
                        kwargs={'slug':self.request.user.username})
 
-    # ratelimiting apparently wasn't working, so there's *more* fuckery...
-    #@ratelimit(key='user', rate='5/m', method='POST', block=True)
-    #@ratelimit(key='user', rate='10/d', method='POST', block=True)
+    @ratelimit(key='user', rate='5/m', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
-        print('in post method')
-        print(self.get_object().completedPrivacy)
-        print(self.get_object().times_changed_room)
         return super(WelcomePrivacy, self).post(request, *args, **kwargs)
 
 
@@ -429,11 +378,8 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
             return super(WelcomeMajor, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
-        self.obj = self.get_object()
 
-        # this doesn't work for some reason
-        self.obj.completedMajor = True
-        self.obj.save()
+        form.instance.completedMajor = True
 
         return super(WelcomeMajor, self).form_valid(form)
 
@@ -450,7 +396,7 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
 # this is a work-in-progress catastrophuck
 class WelcomeSocial(LoginRequiredMixin, FormValidMessageMixin, UpdateView):
     model = Student
-    fields = ['completedSocial', ]
+    form_class = WelcomeSocialForm
     context_object_name = 'student'
     template_name = 'welcome_social.html'
     login_url = 'login'
@@ -467,25 +413,12 @@ class WelcomeSocial(LoginRequiredMixin, FormValidMessageMixin, UpdateView):
         else:
             return super(WelcomeSocial, self).get(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super(WelcomeSocial, self).get_context_data(**kwargs)
-
-        form = WelcomeSocialForm()
-
-        form.fields['completedSocial'].widget = HiddenInput()
-
-        context['my_form'] = form
-        return context
-
     def form_valid(self, form):
-        self.obj = self.get_object()
 
-        self.obj.completedSocial = True
-        self.obj.save()
+        form.instance.completedSocial = True
 
         return super(WelcomeSocial, self).form_valid(form)
 
-    # doesn't get called because it's not actually a form...
     def get_success_url(self):
         return reverse('detail_student',
                        kwargs={'slug':self.request.user.username})
