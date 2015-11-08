@@ -236,6 +236,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
 
         if current_room != form_room:
             me.times_changed_room += 1
+            Confirmation.objects.filter(student=me).delete()
 
         me.user.first_name = form.data['first_name']
         me.user.last_name = form.data['last_name']
@@ -344,6 +345,7 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
 
         if current_room != form_room:
             form.instance.times_changed_room += 1
+            Confirmation.objects.filter(student=me).delete()
 
         form.instance.completedPrivacy = True
 
