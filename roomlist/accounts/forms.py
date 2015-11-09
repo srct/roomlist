@@ -18,18 +18,30 @@ class SelectRoomWidget(forms.widgets.Select):
 
     template_name = 'room_select_widget.html'
 
-    def __init__(self, rooms=Room.objects.all(), floors=Floor.objects.all(),
-                 buildings=Building.objects.all(), neighborhoods=Building.NEIGHBOURHOOD_CHOICES):
+    def __init__(self, attrs=None, choices=None, floors=None, buildings=None, neighborhoods=None):
+        super(SelectRoomWidget, self).__init__(attrs)
+        # attrs to be implemented later (allows specifying css class, for example)
+        if attrs:
+            print("Sorry about that, but we're currently ignoring your fancy attrs.")
         # should probably type check the other fields too
-        if not all(isinstance(thing, Room) for thing in rooms):
-            raise TypeError("Rooms in a SelectRoomWidget must all be Rooms!")
+        if choices is None:
+            self.rooms = Room.objects.all()
+        else:
+            if not all(isinstance(thing, Room) for thing in rooms):
+                raise TypeError("Rooms in a SelectRoomWidget must all be Rooms!")
+        if floors is None:
+            self.floors = Floor.objects.all()
+        if buildings is None:
+            self.buildings = Building.objects.all()
+        if neighborhoods is None:
+            self.neighborhoods = Building.NEIGHBOURHOOD_CHOICES
 
-    def render(self, rooms, floors, buildings, neighborhoods):
+    def render(self, name, value, attrs=None):
         context = {
-            'neighborhoods': neighborhoods,
-            'buildings': buildings,
-            'floors': floors,
-            'rooms': rooms,
+            'neighborhoods': self.neighborhoods,
+            'buildings': self.buildings,
+            'floors': self.floors,
+            'rooms': self.rooms,
         }
         return mark_safe(render_to_string(self.template_name, context))
 
@@ -41,7 +53,8 @@ class StudentUpdateForm(forms.Form):
     gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
                                   label='Gender Identity (please choose all that apply)')
 
-    room = forms.ModelChoiceField(widget=SelectRoomWidget())
+    room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=SelectRoomWidget(),
+                                  label='')
 
     privacy = forms.ChoiceField(choices=Student.PRIVACY_CHOICES)
     major = forms.ModelChoiceField(queryset=Major.objects.all())
