@@ -90,6 +90,12 @@ def on_the_same_floor(student, confirmer):
         return True
 
 
+def pk_or_none(me, obj):
+    if obj is None:
+        return None
+    else:
+        return obj.pk
+
 # details about the student
 class DetailStudent(LoginRequiredMixin, DetailView):
     model = Student
@@ -206,22 +212,18 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
 
         me = Student.objects.get(user=self.request.user)
 
-        def pk_or_none(me, obj):
-            if obj is None:
-                return None
-            else:
-                return obj.pk
-
         form = StudentUpdateForm(initial={'first_name': me.user.first_name,
-                                        'last_name': me.user.last_name,
-                                        'gender': me.gender,
-                                        'room': pk_or_none(me, me.room),
-                                        'privacy': me.privacy,
-                                        'major': pk_or_none(me, me.major),
-                                        'graduating_year' : me.graduating_year,})
+                                          'last_name': me.user.last_name,
+                                          'gender': me.gender,
+                                          'room': pk_or_none(me, me.room),
+                                          'privacy': me.privacy,
+                                          'major': pk_or_none(me, me.major),
+                                          'graduating_year' : me.graduating_year,})
 
         if me.recent_changes() >= 2:
             form.fields['room'].widget = HiddenInput()
+        else:
+            form.fields['room'].widget.user = self.request.user
 
         context['my_form'] = form
 
@@ -242,12 +244,9 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         for key, value in form.data.iteritems():
             print(key, value)
 
-        print(form.data['room'])
-
         current_room = me.room
         try:
             form_room = Room.objects.get(pk=form.data['room'])
-            print(form_room)
         except:
             form_room = None
 
@@ -255,12 +254,17 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
             me.times_changed_room += 1
             Confirmation.objects.filter(student=me).delete()
 
+        me.room = form_room
+
+        try:
+            me.major = Major.objects.get(pk=form.data['major'])
+        except:
+            me.major = None
+
         me.user.first_name = form.data['first_name']
         me.user.last_name = form.data['last_name']
         me.gender = form.data.getlist('gender')
-        me.room = form_room
         me.privacy = form.data['privacy']
-        me.major = Major.objects.get(pk=form.data['major'])
         me.graduating_year = form.data['graduating_year']
 
         me.user.save()
@@ -300,6 +304,11 @@ class WelcomeName(LoginRequiredMixin, FormView):
         context['my_form'] = form
         return context
 
+    @ratelimit(key='user', rate='5/m', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        return super(WelcomeName, self).post(request, *args, **kwargs)
+
     def form_valid(self, form):
         me = Student.objects.get(user=self.request.user)
 
@@ -310,7 +319,6 @@ class WelcomeName(LoginRequiredMixin, FormView):
 
         me.completedName = True
 
-        # wow... these calls actually work... >_______>
         me.user.save()
         me.save()
 
@@ -319,11 +327,6 @@ class WelcomeName(LoginRequiredMixin, FormView):
     def get_success_url(self):
         return reverse('welcomePrivacy',
                        kwargs={'slug':self.request.user.username})
-
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomeName, self).post(request, *args, **kwargs)
 
 
 class WelcomePrivacy(LoginRequiredMixin, UpdateView):
@@ -343,6 +346,24 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
             return HttpResponseForbidden()
         else:
             return super(WelcomePrivacy, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(WelcomePrivacy, self).get_context_data(**kwargs)
+
+        me = Student.objects.get(user=self.request.user)
+
+        form = WelcomePrivacyForm()
+
+        form.fields['room'].widget.user = self.request.user
+
+        context['my_form'] = form
+
+        return context
+
+    @ratelimit(key='user', rate='5/m', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        return super(WelcomePrivacy, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
         me = self.get_object()
@@ -366,11 +387,6 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
         return reverse('welcomeMajor',
                        kwargs={'slug':self.request.user.username})
 
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomePrivacy, self).post(request, *args, **kwargs)
-
 
 class WelcomeMajor(LoginRequiredMixin, UpdateView):
     model = Student
@@ -390,6 +406,11 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
         else:
             return super(WelcomeMajor, self).get(request, *args, **kwargs)
 
+    @ratelimit(key='user', rate='5/m', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        return super(WelcomeMajor, self).post(request, *args, **kwargs)
+
     def form_valid(self, form):
 
         form.instance.completedMajor = True
@@ -399,11 +420,6 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('welcomeSocial',
                        kwargs={'slug':self.request.user.username})
-
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomeMajor, self).post(request, *args, **kwargs)
 
 
 # this is a work-in-progress catastrophuck
@@ -426,6 +442,11 @@ class WelcomeSocial(LoginRequiredMixin, FormValidMessageMixin, UpdateView):
         else:
             return super(WelcomeSocial, self).get(request, *args, **kwargs)
 
+    @ratelimit(key='user', rate='5/m', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        return super(WelcomeSocial, self).post(request, *args, **kwargs)
+
     def form_valid(self, form):
 
         form.instance.completedSocial = True
@@ -435,11 +456,6 @@ class WelcomeSocial(LoginRequiredMixin, FormValidMessageMixin, UpdateView):
     def get_success_url(self):
         return reverse('detail_student',
                        kwargs={'slug':self.request.user.username})
-
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomeSocial, self).post(request, *args, **kwargs)
 
 
 # majors pages
@@ -573,6 +589,11 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
 
         return context
 
+    @ratelimit(key='user', rate='10/m', method='POST', block=True)
+    @ratelimit(key='user', rate='50/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        return super(CreateConfirmation, self).post(request, *args, **kwargs)
+
     def form_valid(self, form):
 
         # duplicated code
@@ -586,11 +607,6 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
         form.instance.student = student
 
         return super(CreateConfirmation, self).form_valid(form)
-
-    @ratelimit(key='user', rate='10/m', method='POST', block=True)
-    @ratelimit(key='user', rate='50/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(CreateConfirmation, self).post(request, *args, **kwargs)
 
     def get_success_url(self):
         # redirect to the flagged student page when saving
