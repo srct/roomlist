@@ -40,8 +40,8 @@
       </div>
 
       <div class="panel-body">
-        <form action="" method="post">{% csrf_token %}
-          {{ form.as_p }}
+        <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
+          {{ my_form.as_p }}
           <input type="submit" value="Save" class="btn btn-primary"/>
         </form>
       </div>
@@ -60,4 +60,13 @@
 </div>
 
 
-{% endblock %}
+{% endblock content %}
+
+{% block javascript %}
+  <script type="text/javascript" src="/static/js/jquery.chained.min.js"></script>
+  <script>
+    $("#building").chained("#neighborhood");
+    $("#floor").chained("#building");
+    $("#room").chained("#floor");
+  </script>
+{% endblock javascript %}
