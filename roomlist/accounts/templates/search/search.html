@@ -48,7 +48,11 @@ SRCT Roomlist &bull; Search Students
           <a href="{{ result.object.get_absolute_url }}"><h4><strong>{{ result.object.user.get_full_name }}</strong></h4></a>
         </td>
         <td>
-          <a href="{{ result.object.major.get_absolute_url }}"><h4>{{ result.object.major }}</h4></a>
+          {% if result.object.major %}
+            <a href="{{ result.object.major.get_absolute_url }}"><h4>{{ result.object.major }}</h4></a>
+          {% else %}
+            &nbsp;&mdash;
+          {% endif %}
         </td>
       </tr>
     {% empty %}
@@ -100,5 +104,9 @@ SRCT Roomlist &bull; Search Students
   </div>
 </div>
 {% endif %}
+
+<br />
+<legend></legend>
+{% include 'disclaimer.html' %}
 
 {% endblock %}
