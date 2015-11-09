@@ -227,12 +227,27 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
 
         return context
 
+    @ratelimit(key='user', rate='5/m', method='POST', block=True)
+    @ratelimit(key='user', rate='10/d', method='POST', block=True)
+    def post(self, request, *args, **kwargs):
+        for key, value in request.POST.iteritems():
+            print(key, value)
+        return super(UpdateStudent, self).post(request, *args, **kwargs)
+
     def form_valid(self, form):
         me = Student.objects.get(user=self.request.user)
+
+        print("In form valid method!")
+
+        for key, value in form.data.iteritems():
+            print(key, value)
+
+        print(form.data['room'])
 
         current_room = me.room
         try:
             form_room = Room.objects.get(pk=form.data['room'])
+            print(form_room)
         except:
             form_room = None
 
@@ -256,12 +271,6 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
     def get_success_url(self):
         return reverse('detail_student',
                        kwargs={'slug':self.request.user.username})
-
-
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(UpdateStudent, self).post(request, *args, **kwargs)
 
 
 # welcome pages

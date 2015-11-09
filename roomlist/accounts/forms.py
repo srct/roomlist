@@ -4,6 +4,8 @@ from __future__ import absolute_import, print_function
 from django import forms
 from django.utils.safestring import mark_safe
 from django.template.loader import render_to_string
+from django.utils.encoding import force_text
+from django.core.exceptions import ValidationError
 # third party imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout
@@ -25,7 +27,7 @@ class SelectRoomWidget(forms.widgets.Select):
             print("Sorry about that, but we're currently ignoring your fancy attrs.")
         # should probably type check the other fields too
         if choices is None:
-            self.rooms = Room.objects.all()
+            self.choices = Room.objects.all()
         else:
             if not all(isinstance(thing, Room) for thing in rooms):
                 raise TypeError("Rooms in a SelectRoomWidget must all be Rooms!")
@@ -41,9 +43,13 @@ class SelectRoomWidget(forms.widgets.Select):
             'neighborhoods': self.neighborhoods,
             'buildings': self.buildings,
             'floors': self.floors,
-            'rooms': self.rooms,
+            'rooms': self.choices,
         }
         return mark_safe(render_to_string(self.template_name, context))
+
+
+class SelectRoomField(forms.models.ModelChoiceField):
+    widget = SelectRoomWidget
 
 
 class StudentUpdateForm(forms.Form):
@@ -53,13 +59,29 @@ class StudentUpdateForm(forms.Form):
     gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
                                   label='Gender Identity (please choose all that apply)')
 
-    room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=SelectRoomWidget(),
-                                  label='')
+    room = SelectRoomField(queryset=Room.objects.all(), label='')
 
     privacy = forms.ChoiceField(choices=Student.PRIVACY_CHOICES)
     major = forms.ModelChoiceField(queryset=Major.objects.all())
     graduating_year = forms.IntegerField(label='Graduating Year')
 
+
+    def errors(self):
+        print("In errors.")
+        errors = super(StudentUpdateForm, self).errors()
+        print(errors)
+        return errors
+
+    def full_clean(self):
+        full_clean = super(StudentUpdateForm, self).full_clean()
+        print(full_clean)
+        return full_clean 
+
+    def is_valid(self):
+        print("In is_valid.")
+        valid = super(StudentUpdateForm, self).is_valid()
+        print(valid)
+        return valid
 
 class WelcomeNameForm(forms.Form):
 
