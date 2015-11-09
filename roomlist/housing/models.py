@@ -18,7 +18,7 @@ class Building(TimeStampedModel):
     RAPPAHANNOCK = 'ra'
     SHENANDOAH = 'sh'
     NEIGHBOURHOOD_CHOICES = (
-        (NONE, 'None'),
+        (NONE, '---'),
         (AQUIA, 'Aquia'),
         (RAPPAHANNOCK, 'Rappahannock'),
         (SHENANDOAH, 'Shenandoah'),
@@ -33,7 +33,7 @@ class Building(TimeStampedModel):
     MASONVALE = 'mv'
     FAIRFAX = 'ff'
     CAMPUS_CHOICES = (
-        (NONE, 'None'),
+        (NONE, '---'),
         (PRINCE_WILLIAM, 'Prince William'),
         (MASONVALE, 'MasonVale'),
         (FAIRFAX, 'Fairfax'),

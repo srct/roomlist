@@ -19,10 +19,10 @@ class StudentUpdateForm(forms.Form):
     gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
                                   label='Gender Identity (please choose all that apply)')
 
-    neighborhood = forms.ChoiceField(choices=Building.NEIGHBOURHOOD_CHOICES)
-    building = forms.ModelChoiceField(queryset=Building.objects.filter(neighbourhood='')
-    floor = forms.ModelChoiceField(queryset=Floor.objects.filter(building='')
-    room = forms.ModelChoiceField(queryset=Room.objects.filter(floor=''))
+    #neighborhood = forms.ChoiceField(choices=Building.NEIGHBOURHOOD_CHOICES)
+    #building = forms.ModelChoiceField(queryset=Building.objects.filter(neighbourhood=neighborhood)
+    #floor = forms.ModelChoiceField(queryset=Floor.objects.filter(building=building)
+    #room = forms.ModelChoiceField(queryset=Room.objects.filter(floor=floor))
 
     privacy = forms.ChoiceField(choices=Student.PRIVACY_CHOICES)
     major = forms.ModelChoiceField(queryset=Major.objects.all())
