@@ -1,0 +1,30 @@
+{% load humanize %}
+<div class="form-group">
+  <label>Neighborhood</label>
+  <select id="neighborhood" name="neighborhood">
+    {% for neighborhood in neighborhoods %}
+        <option value="{{ neighborhood.0  }}">{{ neighborhood.1 }}</option>
+      {% endfor %}
+  </select>
+  <label>Building</label>
+  <select id="building" name="building">
+    <option value="">---</option>
+    {% for building in buildings %}
+      <option value="{{ building.name }}" class="{{ building.neighbourhood }}">{{ building.name }}</option>
+    {% endfor %}
+  </select>
+  <label>Floor</label>
+  <select id="floor" name="floor">
+    <option value="">---</option>
+    {% for floor in floors %}
+      <option value="{{ floor.slug }}" class="{{ floor.building.name }}">{{ floor.number|ordinal }}</option>
+    {% endfor %}
+  </select>
+  <label>Room</label>
+  <select id="room" name="room" class="roompicker">
+    <option value="">---</option>
+    {% for room in rooms %}
+      <option value="{{ room.number }}" class="{{ room.floor.slug }}">{{ room.number }}</option>
+    {% endfor %}
+  </select>
+</div>

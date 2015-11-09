@@ -2,14 +2,36 @@
 from __future__ import absolute_import, print_function
 # core django imports
 from django import forms
+from django.utils.safestring import mark_safe
+from django.template.loader import render_to_string
 # third party imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout
 from crispy_forms.bootstrap import PrependedText, AppendedText
 from multiselectfield import MultiSelectFormField
 # imports from your apps
-from .models import Student, Room, Major
-from housing.models import Building
+from .models import Student, Major
+from housing.models import Building, Floor, Room
+
+
+class SelectRoomWidget(forms.widgets.Select):
+
+    template_name = 'room_select_widget.html'
+
+    def __init__(self, rooms=Room.objects.all(), floors=Floor.objects.all(),
+                 buildings=Building.objects.all(), neighborhoods=Building.NEIGHBOURHOOD_CHOICES):
+        # should probably type check the other fields too
+        if not all(isinstance(thing, Room) for thing in rooms):
+            raise TypeError("Rooms in a SelectRoomWidget must all be Rooms!")
+
+    def render(self, rooms, floors, buildings, neighborhoods):
+        context = {
+            'neighborhoods': neighborhoods,
+            'buildings': buildings,
+            'floors': floors,
+            'rooms': rooms,
+        }
+        return mark_safe(render_to_string(self.template_name, context))
 
 
 class StudentUpdateForm(forms.Form):
@@ -19,10 +41,7 @@ class StudentUpdateForm(forms.Form):
     gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
                                   label='Gender Identity (please choose all that apply)')
 
-    #neighborhood = forms.ChoiceField(choices=Building.NEIGHBOURHOOD_CHOICES)
-    #building = forms.ModelChoiceField(queryset=Building.objects.filter(neighbourhood=neighborhood)
-    #floor = forms.ModelChoiceField(queryset=Floor.objects.filter(building=building)
-    #room = forms.ModelChoiceField(queryset=Room.objects.filter(floor=floor))
+    room = forms.ModelChoiceField(widget=SelectRoomWidget())
 
     privacy = forms.ChoiceField(choices=Student.PRIVACY_CHOICES)
     major = forms.ModelChoiceField(queryset=Major.objects.all())
@@ -33,7 +52,8 @@ class WelcomeNameForm(forms.Form):
 
     first_name = forms.CharField(label='First Name')
     last_name = forms.CharField(label='Last Name')
-    gender = MultiSelectFormField(choices=Student.GENDER_CHOICES, label='Gender Identity (please choose all that apply)')
+    gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
+                                  label='Gender Identity (please choose all that apply)')
 
 
 class WelcomePrivacyForm(forms.ModelForm):

@@ -225,10 +225,6 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
 
         context['my_form'] = form
 
-        context['neighborhoods'] = Building.NEIGHBOURHOOD_CHOICES
-        context['buildings'] = Building.objects.all()
-        context['floors'] = Floor.objects.all()
-        context['rooms'] = Room.objects.all()
         return context
 
     def form_valid(self, form):
