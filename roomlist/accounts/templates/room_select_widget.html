@@ -1,30 +1,44 @@
 {% load humanize %}
-<div class="form-group">
-  <label>Neighborhood</label>
-  <select id="neighborhood" name="neighborhood">
-    {% for neighborhood in neighborhoods %}
-        <option value="{{ neighborhood.0  }}">{{ neighborhood.1 }}</option>
-      {% endfor %}
-  </select>
-  <label>Building</label>
-  <select id="building" name="building">
-    <option value="">---</option>
-    {% for building in buildings %}
+<label>Neighborhood</label>
+<select id="neighborhood" name="neighborhood">
+  {% for neighborhood in neighborhoods %}
+    {% if user.student.get_building.neighbourhood == neighborhood.0 %}
+      <option value="{{ neighborhood.0  }}" selected="selected">{{ neighborhood.1 }}</option>
+    {% else %}
+      <option value="{{ neighborhood.0  }}">{{ neighborhood.1 }}</option>
+    {% endif %}
+  {% endfor %}
+</select>
+<label>Building</label>
+<select id="building" name="building">
+  <option value="">---</option>
+  {% for building in buildings %}
+    {% if user.student.get_building == building %}
+      <option value="{{ building.name }}" class="{{ building.neighbourhood }}" selected="selected">{{ building.name }}</option>
+    {% else %}
       <option value="{{ building.name }}" class="{{ building.neighbourhood }}">{{ building.name }}</option>
-    {% endfor %}
-  </select>
-  <label>Floor</label>
-  <select id="floor" name="floor">
-    <option value="">---</option>
-    {% for floor in floors %}
-      <option value="{{ floor.slug }}" class="{{ floor.building.name }}">{{ floor.number|ordinal }}</option>
-    {% endfor %}
-  </select>
-  <label>Room</label>
-  <select id="room" name="room" class="roompicker">
-    <option value="">---</option>
-    {% for room in rooms %}
-      <option value="{{ room.number }}" class="{{ room.floor.slug }}">{{ room.number }}</option>
-    {% endfor %}
-  </select>
-</div>
+    {% endif %}
+  {% endfor %}
+</select>
+<label>Floor</label>
+<select id="floor" name="floor">
+  <option value="">---</option>
+  {% for floor in floors %}
+    {% if user.student.get_floor.pk == floor.pk %}
+      <option value="{{ floor.pk }}" class="{{ floor.building.name }}" selected="selected">{{ floor.number|ordinal }}</option>
+    {% else %}
+      <option value="{{ floor.pk }}" class="{{ floor.building.name }}">{{ floor.number|ordinal }}</option>
+    {% endif %}
+  {% endfor %}
+</select>
+<label>Room</label>
+<select id="room" name="room" class="roompicker">
+  <option value="">---</option>
+  {% for room in rooms %}
+    {% if user.student.room.pk == room.pk %}
+      <option value="{{ room.pk }}" class="{{ room.floor.pk }}" selected="selected">{{ room.number }}</option>
+    {% else %}
+      <option value="{{ room.pk }}" class="{{ room.floor.pk }}">{{ room.number }}</option>
+    {% endif %}
+  {% endfor %}
+</select>
