@@ -14,7 +14,8 @@ from braces.views import LoginRequiredMixin, FormValidMessageMixin
 from cas.views import login as cas_login
 from ratelimit.decorators import ratelimit
 # imports from your apps
-from .models import Student, Major, Room, Confirmation
+from .models import Student, Major, Confirmation
+from housing.models import Building, Floor, Room
 from .forms import (StudentUpdateForm, WelcomeNameForm, WelcomePrivacyForm,
                     WelcomeSocialForm)
 
@@ -223,6 +224,11 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
             form.fields['room'].widget = HiddenInput()
 
         context['my_form'] = form
+
+        context['neighborhoods'] = Building.NEIGHBOURHOOD_CHOICES
+        context['buildings'] = Building.objects.all()
+        context['floors'] = Floor.objects.all()
+        context['rooms'] = Room.objects.all()
         return context
 
     def form_valid(self, form):
