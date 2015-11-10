@@ -111,12 +111,16 @@ class Student(TimeStampedModel):
     FEMALE = 'female'
     MALE = 'male'
     TRANS = 'trans'
+    INTERSEX = 'intersex'
+    GENDERLESS = 'genderless'
     OTHER = 'other'
 
     GENDER_CHOICES = (
         (FEMALE, 'female'),
         (MALE, 'male'),
         (TRANS, 'trans'),
+        (INTERSEX, 'intersex'),
+        (GENDERLESS, 'genderless'),
         (OTHER, 'other'),
     )
 
