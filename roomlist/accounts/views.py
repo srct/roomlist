@@ -215,6 +215,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         form = StudentUpdateForm(initial={'first_name': me.user.first_name,
                                           'last_name': me.user.last_name,
                                           'gender': me.gender,
+                                          'show_gender': me.show_gender,
                                           'room': pk_or_none(me, me.room),
                                           'privacy': me.privacy,
                                           'major': pk_or_none(me, me.major),
@@ -264,6 +265,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         me.user.first_name = form.data['first_name']
         me.user.last_name = form.data['last_name']
         me.gender = form.data.getlist('gender')
+        me.show_gender = form.data.get('show_gender', False)
         me.privacy = form.data['privacy']
         me.graduating_year = form.data['graduating_year']
 
@@ -300,7 +302,8 @@ class WelcomeName(LoginRequiredMixin, FormView):
 
         form = WelcomeNameForm(initial={'first_name': me.user.first_name,
                                         'last_name': me.user.last_name,
-                                        'gender': me.gender, })
+                                        'gender': me.gender,
+                                        'show_gender': me.show_gender, })
         context['my_form'] = form
         return context
 
@@ -316,6 +319,7 @@ class WelcomeName(LoginRequiredMixin, FormView):
         me.user.last_name = form.data['last_name']
 
         me.gender = form.data.getlist('gender')
+        me.show_gender = form.data.get('show_gender', False)
 
         me.completedName = True
 

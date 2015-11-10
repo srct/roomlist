@@ -69,6 +69,23 @@
         <tr>
           <td><h4><strong>Email</strong>: {{ student.user.email }}</h4></td>
         </tr>
+        {% if student.show_gender %}
+          <tr>
+            <td><h4><strong>Gender</strong>:
+              {% for gender in student.gender %}
+                {% if gender == 'female' %}
+                  <i class="fa fa-venus"></i>
+                {% elif gender == 'male' %}
+                  <i class="fa fa-mars"></i>
+                {% elif gender == 'trans' %}
+                  <i class="fa fa-transgender"></i>
+                {% elif gender == 'other' %}
+                  <i class="fa fa-transgender-alt"></i>
+                {% endif %}
+              {% endfor %}
+            </h4></td>
+          </tr>
+        {% endif %}
       </tbody>
     </table>
   </div>

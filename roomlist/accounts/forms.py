@@ -63,6 +63,8 @@ class StudentUpdateForm(forms.Form):
     gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
                                   label='Gender Identity (please choose all that apply)',
                                   required=False)
+    show_gender = forms.BooleanField(label='Show your gender on your profile?',
+                                     required=False)
 
     room = SelectRoomField(queryset=Room.objects.all(), label='', required=False)
 
@@ -82,10 +84,13 @@ class StudentUpdateForm(forms.Form):
 
 class WelcomeNameForm(forms.Form):
 
-    first_name = forms.CharField(label='First Name')
-    last_name = forms.CharField(label='Last Name')
+    first_name = forms.CharField(label='First Name', required=False)
+    last_name = forms.CharField(label='Last Name', required=False)
     gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
-                                  label='Gender Identity (please choose all that apply)')
+                                  label='Gender Identity (please choose all that apply)',
+                                  required=False)
+    show_gender = forms.BooleanField(label='Show your gender on your profile?',
+                                     required=False)
 
 
 class WelcomePrivacyForm(forms.ModelForm):
