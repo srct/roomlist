@@ -1,5 +1,6 @@
 # standard library imports
 from __future__ import absolute_import, print_function
+import random
 # core django imports
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
@@ -37,6 +38,43 @@ almost = """Welcome back to SRCT Roomlist! It looks like you're almost finished
 no_room = """It looks like you haven't set your room yet. Head to <a href="%s"> your
              settings page</a> to get that taken care of."""
 
+#########
+
+bug_reporting = """Welcome back to SRCT Roomlist. This project is the
+                   <a href="https://srct.gmu.edu/projects/">collaborative work
+                   of students like you</a>. If you see anything amiss, or have ideas for
+                   features or a better user experience, please send an email to
+                   roomlist@lists.srct.gmu.edu, tweet
+                   <a href="https://twitter.com/MasonSRCT/">@MasonSRCT</a>, or, for the
+                   more technically experienced, review our
+                   <a href="https://git.gmu.edu/srct/roomlist/issues">issues page</a>."""
+
+privacy_reminder = """Welcome back to SRCT Roomlist. A friendly reminder you can change
+                      your privacy settings at any time on your settings page by
+                      clicking the cog in the upper right of your screen."""
+
+disclaimer = """Welcome back to SRCT Roomlist. Just to be perfectly clear, this project
+                is provided as a service by the
+                <a href="https://gmu.collegiatelink.net/organization/srct">registered
+                student organization</a>
+                <a href="https://srct.gmu.edu/">Student-Run Computing and Technology</a>.
+                We are not a part of <a href="http://housing.gmu.edu/">Mason Housing</a>:
+                all information is voluntarily provided by participating students."""
+
+whatsopen_plug = """Welcome back to SRCT Roomlist. Wondering what's open at this hour?
+                    Check out another one of our
+                    <a href="https://srct.gmu.edu/projects/">student-built and hosted</a>
+                    projects: <a href="https://whatsopen.gmu.edu/">whatsopen.gmu.edu</a>."""
+
+open_source = """Welcome back to SRCT Roomlist. For the curious at heart,
+                 <a href="http://www.gnu.org/philosophy/free-sw.en.html">you can always
+                 review</a> this project's
+                 <a href="https://git.gmu.edu/srct/roomlist/tree/master">source code</a>.
+                 Come <a href="https://srct.gmu.edu/">to a meeting</a> and learn how to
+                 contribute!"""
+
+return_messages = [bug_reporting, privacy_reminder, disclaimer, whatsopen_plug, open_source]
+
 
 def custom_cas_login(request, *args, **kwargs):
     response = cas_login(request, *args, **kwargs)
@@ -67,8 +105,9 @@ def custom_cas_login(request, *args, **kwargs):
             rendered_url = reverse('updateStudent', args=[request.user.username])
             add_url = started % rendered_url
             messages.add_message(request, messages.INFO, mark_safe(add_url))
-        # eventually add a reminder if the privacy is set to students
-        # one in ten change will display a reminder and link to change
+        else:
+            welcome_back = random.choice(return_messages)
+            messages.add_message(request, messages.INFO, mark_safe(welcome_back))
 
     return response
 
@@ -95,6 +134,7 @@ def pk_or_none(me, obj):
         return None
     else:
         return obj.pk
+
 
 # details about the student
 class DetailStudent(LoginRequiredMixin, DetailView):
