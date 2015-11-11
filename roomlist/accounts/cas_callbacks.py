@@ -120,6 +120,12 @@ def create_user(tree):
             # also Major.DoesNotExist Error, but the handling for both is the same...
             except:
                 print("Unable to add student's major.")
+            try:
+                new_student.original_major = major_obj
+                new_student.save()
+                print("Added student's original major, %s, for later reference." % major_name)
+            except:
+                print("Unable to add student's original major for later reference.")
 
             print("Student object creation process completed.")
 
