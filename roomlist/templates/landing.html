@@ -17,7 +17,7 @@
       {% for student in roomies %}
           <div class="col-md-3">
             <a href="{{ student.get_absolute_url }}"><img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture"></img></a>
-            <h4>{{ student.user.get_full_name }}</h4>
+            <h4><a href="{{ student.get_absolute_url }}">{{ student.user.get_full_name }}</a></h4>
             <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
           </div>
       {% empty %}
@@ -37,7 +37,7 @@
       {% for student in floories %}
       <div class="col-md-3">
         <a href="{{ student.get_absolute_url }}"><img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture"></a>
-        <h4>{{ student.user.first_name }} {{ student.user.last_name }}</h4>
+        <h4><a href="{{ student.get_absolute_url }}">{{ student.user.get_full_name }}</a></h4>
         <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
         <h5><a href="{{ student.room.get_absolute_url }}">{{ student.room }}</h5></a>
       </div>
@@ -56,7 +56,7 @@
       {% for student in majormates %}
       <div class="col-md-3">
         <a href="{{ student.get_absolute_url }}"><img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture"></a>
-        <h4>{{ student.user.first_name }} {{ student.user.last_name }}</h4>
+        <h4><a href="{{ student.get_full_name }}">{{ student.user.get_full_name }}</a></h4>
       </div>
       {% empty %}
         <h4>There are no other students registered in your major right now.</h4>
