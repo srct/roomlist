@@ -25,7 +25,7 @@ class LandingPage(LoginRequiredMixin, TemplateView):
 
         # Create Dictionaries to store Students that meet criteria
         context["roomies"] = Student.objects.filter(room=me.room).exclude(user__username=me)
-        context["floories"] = Student.objects.filter(floor=me.get_floor()).exclude(user__username=me).exclude(room=me.room).order_by('room')
+        context["floories"] = Student.objects.filter(room__floor=me.get_floor()).exclude(user__username=me).exclude(room=me.room).order_by('room')
         context["majormates"] = Student.objects.filter(major=me.major).exclude(user__username=me).order_by('?')[:8]
 
         # Hack to Correctly Display Building plus Floor

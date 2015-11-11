@@ -15,7 +15,7 @@ from randomslugfield import RandomSlugField
 from multiselectfield import MultiSelectField
 from allauth.socialaccount.models import SocialAccount
 # imports from your apps
-from housing.models import Room, Floor
+from housing.models import Room
 
 
 class Major(TimeStampedModel):
@@ -132,7 +132,6 @@ class Student(TimeStampedModel):
 
     room = models.ForeignKey(Room, null=True, blank=True)
     major = models.ForeignKey('Major', null=True, blank=True)
-    floor = models.ForeignKey(Floor, null=True, blank=True)
 
     times_changed_room = models.PositiveIntegerField(default=0)
 
