@@ -22,6 +22,7 @@ class LandingPage(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
         me = Student.objects.get(user=self.request.user)
+        context['me'] = me
 
         # Create Dictionaries to store Students that meet criteria
         context["roomies"] = Student.objects.filter(room=me.room).exclude(user__username=me)
@@ -29,13 +30,13 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         context["majormates"] = Student.objects.filter(major=me.major).exclude(user__username=me).order_by('?')[:8]
 
         # Hack to Correctly Display Building plus Floor
-        floor = str(me.get_floor())
-        if floor[len(floor)-1:len(floor)] == "1":
-            context["home"] = "%s %s" %(me.get_building(), 'First')
-        elif floor[len(floor)-1:len(floor)] == "2":
-            context["home"] = "%s %s" %(me.get_building(), 'Second')
-        else:
-            context["home"] = "%s %s" %(me.get_building(), 'Third')
+        #floor = str(me.get_floor())
+        #if floor[len(floor)-1:len(floor)] == "1":
+        #    context["home"] = "%s %s" %(me.get_building(), 'First')
+        #elif floor[len(floor)-1:len(floor)] == "2":
+        #    context["home"] = "%s %s" %(me.get_building(), 'Second')
+        #else:
+        #    context["home"] = "%s %s" %(me.get_building(), 'Third')
 
         return context
 

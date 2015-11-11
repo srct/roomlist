@@ -6,10 +6,10 @@
 
 {% cache 300 roommates request.user.username %}
   {% if roomies|length == 1 %}
-    <h3>Your Roommate in {{ request.user.student.room }}</h3>
+    <h3>Your Roommate in {{ me.room }}</h3>
     <legend></legend>
   {% else %}
-  <h3>Your Roommates in {{ request.user.student.room }}</h3>
+  <h3>Your Roommates in <a href="{{ me.room.get_absolute_url }}">{{ me.room }}</a></h3>
   <legend></legend>
   {% endif %}
     <div class="text-center">
@@ -17,7 +17,8 @@
       {% for student in roomies %}
           <div class="col-md-3">
             <a href="{{ student.get_absolute_url }}"><img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture"></img></a>
-            <h4>{{ student.user.first_name }} {{ student.user.last_name }}</h4>
+            <h4>{{ student.user.get_full_name }}</h4>
+            <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
           </div>
       {% empty %}
         <h4>There are no other students registered in your room right now.</h4>
@@ -26,8 +27,10 @@
     </div>
 {% endcache %}
 
+{% load humanize %}
+
 {% cache 300 floormates request.user.username %}
-    <h3>Your Floormates from {{ home }}</h3>
+<h3>Your Floormates from <a href="{{ me.room.floor.get_absolute_url }}">{{ me.room.floor.building }} {{ me.room.floor.number|ordinal }}</a></h3>
     <legend></legend>
     <div class="text-center">
     <div class="row">
@@ -35,7 +38,8 @@
       <div class="col-md-3">
         <a href="{{ student.get_absolute_url }}"><img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture"></a>
         <h4>{{ student.user.first_name }} {{ student.user.last_name }}</h4>
-        <a href="{{ student.room.get_absolute_url }}"><h4>{{ student.room }}</h4></a>
+        <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
+        <h5><a href="{{ student.room.get_absolute_url }}">{{ student.room }}</h5></a>
       </div>
       {% empty %}
         <h4>There are no other students registered on your floor right now.</h4>
@@ -45,7 +49,7 @@
 {% endcache %}
 
 {% cache 600 majormates request.user.username %}
-    <h3>Other Students in <a href="{{ request.user.student.major.get_absolute_url }}">{{ request.user.student.major }}</a></h3>
+    <h3>Other Students in <a href="{{ me.major.get_absolute_url }}">{{ me.major.name }}</a></h3>
     <legend></legend>
     <div class="text-center">
     <div class="row">
