@@ -6,7 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.contrib import admin
 from django.views.decorators.cache import cache_page
-
+# imports from your apps
+from .views import HomePageView
 
 admin.autodiscover()
 admin.site.login = login_required(admin.site.login)
@@ -18,8 +19,7 @@ urlpatterns = patterns('',
 
     # project-level urls
     url(r'^$',
-        cache_page(4)(TemplateView.as_view(template_name="index.html")),
-        name='index'),
+        cache_page(4)(HomePageView.as_view()), name='homepage'),
     url(r'^about/$',
         cache_page(60 * 15)(TemplateView.as_view(template_name='about.html')),
         name='about'),

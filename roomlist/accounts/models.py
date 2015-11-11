@@ -131,6 +131,7 @@ class Student(TimeStampedModel):
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
 
     room = models.ForeignKey(Room, null=True, blank=True)
+
     major = models.ForeignKey('Major', related_name='major', null=True, blank=True)
 
     times_changed_room = models.PositiveIntegerField(default=0)
@@ -221,7 +222,7 @@ class Student(TimeStampedModel):
     def __unicode__(self):
         return unicode(self.user.username)
 
-    #def save(self, *args, **kwargs):
+    # def save(self, *args, **kwargs):
         #print('we be savin\'!')
         #from django.db.models.signals import pre_save, post_save
         #for signal in [pre_save, post_save]:
