@@ -23,7 +23,6 @@
 {% load gravatar %}
 
 <div class="row">
-
   {% for student in students %}
   <div class="col-sm-3 text-center">
     <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
@@ -34,6 +33,11 @@
       <p><em>*a number of other floormates say this info is incorrect</em></p>
     {% endif %}
   </div>
+  {% if forloop.counter|divisibleby:4 %}
+</div>
+<br />
+<div class="row">
+  {% endif %}
   {% endfor %}
 </div>
 

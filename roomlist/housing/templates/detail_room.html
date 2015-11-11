@@ -34,6 +34,11 @@
       <p><em>* a number of other floormates say this info is incorrect</em></p>
     {% endif %}
   </div>
+  {% if forloop.counter|divisibleby:4 %}
+</div>
+<br />
+<div class="row">
+  {% endif %}
   {% endfor %}
 </div>
 
