@@ -131,7 +131,7 @@ class Student(TimeStampedModel):
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
 
     room = models.ForeignKey(Room, null=True, blank=True)
-    major = models.ForeignKey('Major', null=True, blank=True)
+    major = models.ForeignKey('Major', related_name='major', null=True, blank=True)
 
     times_changed_room = models.PositiveIntegerField(default=0)
 
@@ -139,7 +139,8 @@ class Student(TimeStampedModel):
     graduating_year = models.IntegerField(default=current_year, blank=True)
 
     # from when first logged in through peoplefinder, stored for later
-    original_major = models.CharField(max_length=50, blank=True)
+    original_major = models.ForeignKey('Major', related_name='original_major',
+                                       null=True, blank=True)
 
     # social media accounts
 
