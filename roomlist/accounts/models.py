@@ -15,7 +15,7 @@ from randomslugfield import RandomSlugField
 from multiselectfield import MultiSelectField
 from allauth.socialaccount.models import SocialAccount
 # imports from your apps
-from housing.models import Room
+from housing.models import Room, Floor
 
 
 class Major(TimeStampedModel):
@@ -132,6 +132,7 @@ class Student(TimeStampedModel):
 
     room = models.ForeignKey(Room, null=True, blank=True)
     major = models.ForeignKey('Major', null=True, blank=True)
+    floor = models.ForeignKey(Floor, null=True, blank=True)
 
     times_changed_room = models.PositiveIntegerField(default=0)
 
@@ -220,7 +221,7 @@ class Student(TimeStampedModel):
     def __unicode__(self):
         return unicode(self.user.username)
 
-    #def save(self, *args, **kwargs):
+    # def save(self, *args, **kwargs):
         #print('we be savin\'!')
         #from django.db.models.signals import pre_save, post_save
         #for signal in [pre_save, post_save]:
