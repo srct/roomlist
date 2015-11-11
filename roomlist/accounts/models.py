@@ -142,6 +142,8 @@ class Student(TimeStampedModel):
     # from when first logged in through peoplefinder, stored for later
     original_major = models.ForeignKey('Major', related_name='original_major',
                                        null=True, blank=True)
+    original_first_name = models.CharField(max_length=100, blank=True)
+    original_last_name = models.CharField(max_length=100, blank=True)
 
     # social media accounts
 

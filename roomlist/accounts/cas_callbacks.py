@@ -121,6 +121,12 @@ def create_user(tree):
             except:
                 print("Unable to add student's major.")
             try:
+                new_student.original_first_name = info_name[0]
+                new_student.original_last_name = info_name[1]
+                print("Added student's original name for later reference.")
+            except:
+                print("Unable to add student's original name for later reference.")
+            try:
                 new_student.original_major = major_obj
                 new_student.save()
                 print("Added student's original major, %s, for later reference." % major_name)
