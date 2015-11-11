@@ -15,7 +15,7 @@ from randomslugfield import RandomSlugField
 from multiselectfield import MultiSelectField
 from allauth.socialaccount.models import SocialAccount
 # imports from your apps
-from housing.models import Room, Floor
+from housing.models import Room
 
 
 class Major(TimeStampedModel):
