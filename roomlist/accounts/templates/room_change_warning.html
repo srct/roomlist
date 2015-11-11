@@ -1,7 +1,7 @@
 {% if request.user.student.recent_changes %}
 <div class="row">
   <div class="col-md-12">
-    {% if request.user.student.recent_changes == 1 %}
+    {% if request.user.student.recent_changes <= 2 %}
       <div class="alert alert-warning text-center" role="alert">
         <strong>To safeguard everyone's privacy, the number of times you can change your room in a semester is limited.</strong>
     {% else %}

@@ -6,6 +6,7 @@ from django.utils.safestring import mark_safe
 from django.template.loader import render_to_string
 from django.utils.encoding import force_text
 from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext as _
 # third party imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout
@@ -73,6 +74,15 @@ class StudentUpdateForm(forms.Form):
     graduating_year = forms.IntegerField(label='Graduating Year')
 
 
+    def clean(self):
+        cleaned_data = super(StudentUpdateForm, self).clean()
+        form_room = cleaned_data.get('room')
+        students_in_room = Student.objects.filter(room=form_room).count()
+        #print(students_in_room)
+        # like in bookshare, I have no idea why the form errors don't display.
+        if students_in_room > 12:
+            raise ValidationError(_('Too many students in room (%d).' % students_in_room), code='invalid')
+
     def is_valid(self):
         # errors are not printed in form.as_p?
         #print("In is_valid.")
@@ -97,11 +107,20 @@ class WelcomePrivacyForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(WelcomePrivacyForm, self).__init__(*args, **kwargs)
-        if self.instance.recent_changes() >= 2:
+        if self.instance.recent_changes() > 2:
             self.fields['room'].widget = forms.widgets.HiddenInput()
         else:
             self.fields['room'] = SelectRoomField(queryset=Room.objects.all(),
                                                   label='', required=False)
+
+    def clean(self):
+        cleaned_data = super(WelcomePrivacyForm, self).clean()
+        form_room = cleaned_data.get('room')
+        students_in_room = Student.objects.filter(room=form_room).count()
+        #print(students_in_room)
+        # like in bookshare, I have no idea why the form errors don't display.
+        if students_in_room > 12:
+            raise ValidationError(_('Too many students in room (%d).' % students_in_room), code='invalid')
 
     class Meta:
         model = Student

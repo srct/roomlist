@@ -261,7 +261,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
                                           'major': pk_or_none(me, me.major),
                                           'graduating_year' : me.graduating_year,})
 
-        if me.recent_changes() >= 2:
+        if me.recent_changes() > 2:
             form.fields['room'].widget = HiddenInput()
         else:
             form.fields['room'].widget.user = self.request.user
@@ -273,17 +273,17 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
-        for key, value in request.POST.iteritems():
-            print(key, value)
+        #for key, value in request.POST.iteritems():
+            #print(key, value)
         return super(UpdateStudent, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
         me = Student.objects.get(user=self.request.user)
 
-        print("In form valid method!")
+        #print("In form valid method!")
 
-        for key, value in form.data.iteritems():
-            print(key, value)
+        #for key, value in form.data.iteritems():
+            #print(key, value)
 
         current_room = me.room
         try:
@@ -315,6 +315,11 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         return super(UpdateStudent, self).form_valid(form)
 
     def get_success_url(self):
+
+        if self.request.user.student.recent_changes() == 2:
+
+            messages.add_message(self.request, messages.WARNING, 'To safeguard everyone\'s privacy, you have just one remaining room change for the semester before you\'ll need to send us an email at roomlist@lists.srct.gmu.edu.')
+
         return reverse('detail_student',
                        kwargs={'slug':self.request.user.username})
 
