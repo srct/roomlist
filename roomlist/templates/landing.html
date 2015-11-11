@@ -4,6 +4,10 @@
 <h2>Welcome Back {{ request.user.first_name }}!</h2>
 <legend></legend>
 
+{% if not me.room %}
+  <h3><em><a href="{% url 'updateStudent' request.user.username %}">Select your room</a>, and we'll show you the other students on your floor.</em></h3>
+{% else %}
+
 {% cache 300 roommates request.user.username %}
   {% if roomies|length == 1 %}
     <h3>Your Roommate in {{ me.room }}</h3>
@@ -17,7 +21,7 @@
       {% for student in roomies %}
           <div class="col-md-3">
             <a href="{{ student.get_absolute_url }}"><img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture"></img></a>
-            <h4><a href="{{ student.get_absolute_url }}">{{ student.user.get_full_name }}</a></h4>
+            <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.get_full_name }}</strong></a></h4>
             <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
           </div>
       {% empty %}
@@ -37,7 +41,7 @@
       {% for student in floories %}
       <div class="col-md-3">
         <a href="{{ student.get_absolute_url }}"><img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture"></a>
-        <h4><a href="{{ student.get_absolute_url }}">{{ student.user.get_full_name }}</a></h4>
+        <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.get_full_name }}</strong></a></h4>
         <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
         <h5><a href="{{ student.room.get_absolute_url }}">{{ student.room }}</h5></a>
       </div>
@@ -48,6 +52,12 @@
     </div>
 {% endcache %}
 
+{% endif %}
+
+{% if not me.major %}
+  <h3><em><a href="{% url 'updateStudent' request.user.username %}">Set your major</a>, and we'll show you some of the other students in your program.</em></h3>
+{% else %}
+
 {% cache 600 majormates request.user.username %}
     <h3>Other Students in <a href="{{ me.major.get_absolute_url }}">{{ me.major.name }}</a></h3>
     <legend></legend>
@@ -56,7 +66,7 @@
       {% for student in majormates %}
       <div class="col-md-3">
         <a href="{{ student.get_absolute_url }}"><img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture"></a>
-        <h4><a href="{{ student.get_full_name }}">{{ student.user.get_full_name }}</a></h4>
+        <h4><a href="{{ student.get_full_name }}"><strong>{{ student.user.get_full_name }}</strong></a></h4>
       </div>
       {% empty %}
         <h4>There are no other students registered in your major right now.</h4>
@@ -65,5 +75,6 @@
     </div>
 {% endcache %}
 
+{% endif %}
 
 {% endblock %}
