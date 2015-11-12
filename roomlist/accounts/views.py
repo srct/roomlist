@@ -147,9 +147,7 @@ class DetailStudent(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailStudent, self).get_context_data(**kwargs)
 
-        # requesting_student = Student.objects.get(user=self.request.user)
-        requesting_student_filter = Student.objects.filter(user=self.request.user)
-        requesting_student = requesting_student_filter[0]
+        requesting_student = Student.objects.get(user=self.request.user)
 
         same_floor = on_the_same_floor(self.get_object(), requesting_student)
 
