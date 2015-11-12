@@ -26,6 +26,11 @@
           </div>
       {% empty %}
         <h4>There are no other students registered in your room right now.</h4>
+      {% if forloop.counter|divisibleby:4 %}
+      </div>
+      <br />
+      <div class="row">
+      {% endif %}
       {% endfor %}
     </div>
     </div>
@@ -47,6 +52,11 @@
       </div>
       {% empty %}
         <h4>There are no other students registered on your floor right now.</h4>
+      {% if forloop.counter|divisibleby:4 %}
+        </div>
+        <br />
+        <div class="row">
+      {% endif %}
       {% endfor %}
     </div>
     </div>
@@ -70,6 +80,11 @@
       </div>
       {% empty %}
         <h4>There are no other students registered in your major right now.</h4>
+      {% if forloop.counter|divisibleby:4 %}
+        </div>
+        <br />
+        <div class="row">
+      {% endif %}
       {% endfor %}
     </div>
     </div>
