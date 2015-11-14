@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} SRCT Roomlist | {{ student.user.first_name }} {{ student.user.last_name }} {% endblock %}
+{% block title %} SRCT Roomlist | {{ student.get_full_name }} {% endblock %}
 
 {% block messsage_queue %}
 {% endblock %}
@@ -12,8 +12,8 @@
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-8 col-md-offset-2 text-center">
-      <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.user.first_name }} Gravatar picture">
-      <h1>{{ student.user.first_name }} {{ student.user.last_name }}, {{ student.user.username }}</h1>
+      <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name }} Gravatar picture">
+      <h1>{{ student.get_full_name }} , {{ student.user.username }}</h1>
     </div>
   </div>
 </div>
