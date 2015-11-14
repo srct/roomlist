@@ -214,6 +214,24 @@ class Student(TimeStampedModel):
     def get_flag_count(self):
         my_flag_num = Confirmation.objects.filter(student=self, lives_there=False).count()
         return my_flag_num
+    
+    def get_first_name(self):
+        if self.user.get_short_name() == "":
+            return self.user.get_username()
+        else:
+            return self.user.get_short_name()
+    
+    def get_last_name(self):
+        if self.user.last_name == "":
+            return self.user.get_username()
+        else:
+            return self.user.last_name
+    
+    def get_full_name(self):
+        if self.user.get_full_name() == "":
+            return self.user.get_username()
+        else:
+            return self.user.get_full_name()
 
     class Meta:
         ordering = ['user']
@@ -223,7 +241,7 @@ class Student(TimeStampedModel):
 
     def __unicode__(self):
         return unicode(self.user.username)
-
+    
     # def save(self, *args, **kwargs):
         #print('we be savin\'!')
         #from django.db.models.signals import pre_save, post_save
