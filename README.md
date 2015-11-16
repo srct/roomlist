@@ -146,8 +146,6 @@ Social media authentication is provided through a package called [django-allauth
 
 What we're trying to accomplish with social media authentication is to verify users are linking to accounts they actually control. If we trusted users sufficiently to not type in gibberish or link to twitter.com/realDonaldTrump, we could provide a character field for each site.
 
-By default, example.com is set to 1. We'll add our site id, localhost. In settings.py, this is already accounted for; the default there is SITE_ID = 2.
-
 Head over to localhost:8000/admin. Under 'Social Accounts', click on 'Social Applications'. Click 'Add social application' in the upper right hand corner. Start off by adding Facebook.
 
 To fill in the name, id, key, and site for Facebook, and for all of the social media sites, you'll need to become a Developer for the site in question.
@@ -164,15 +162,80 @@ Back on the Django admin page, start filling in fields. App Name to Name, App ID
 
 Under 'Available Sites', click the little green plus button and add a new site. The Domain Name will be '127.0.0.1' and the Display Name 'localhost'. By default, Django has already gone to the trouble of creating 'example.com' as a site. Move example.com back to available sites and make sure 127.0.0.1 is added to Chosen Sites.
 
+By default, example.com is the first site. We'll add our site id, localhost. In settings.py, this is already accounted for; the default there is SITE_ID = 2.
+
 Something you'll need to carefully specify is the callback (or redirect) url. This is where your user is sent once they have successfully authenticated with the outside social media site.
 
 Let's add localhost to our Available sites.
 
 Now, to Instagram.
 
+Instagram actually asks you what you want to build and then will choose to give you access or not. Cross your fingers and let's begin the process.
+
+Sign up as developer. Your website (localhost:8000) phone number (if you haven't already given it to Instagram, see above) and what you want to build with the API. 'Verify users are linking to social media accounts they in fact control.
+
+Register Your Application.
+
+Manage clients.
+
+Register new client ID.
+
+Application name
+
+Description
+
+Company name(?) SRCT
+You must enter an absolute URI that starts with http:// or https://
+Submission error: all fields are required.
+Website URL localhost:8000
+Valid redirect urls: localhost:8000 (tab after to make it a link)
+http://localhost:8000/accounts/instagram/login/callback/
+contact email
+Captcha
+
 Next, to Twitter.
 
+Must actually be unique
+
+Use http://127.0.0.1:8000/
+
+Permissions: Read only
+
 Finally, to Google.
+
+Google's auth setup process is unquestionably the most confusing of the bunch, and yet we proceed, despite the number of students who will link their Google+ page will likely be no more than four.
+
+Project name-- google gives you the project name
+
+enable and manage apis
+
+google+
+
+credentials
+
+add credentials
+
+oauth2 client id
+web application
+name
+authorized javascript origins
+http://127.0.0.1:8000
+authorized redirect urls
+with trailing slash localhost
+
+you'll see them in a popup...
+
+roomlist or generated roomlist?
+
+project consent screen
+email address
+product name shown to users
+
+domain verification
+
+your site must be registered on the search console
+
+watch out for trailing spaces!!
 
 ### Notes on Cacheing
 
