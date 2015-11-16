@@ -8,6 +8,7 @@ from .views import (DetailStudent, UpdateStudent, DetailStudentSettings,
                     DetailCurrentStudent, DetailCurrentStudentSettings, ListMajors,
                     DetailMajor, WelcomeName, WelcomePrivacy, WelcomeMajor,
                     WelcomeSocial, CreateConfirmation, DeleteConfirmation)
+from .adapter import RemoveSocialConfirmationView
 
 
 urlpatterns = patterns('',
@@ -37,6 +38,10 @@ urlpatterns = patterns('',
     url(r'^student/(?P<slug>[\w-]+)/settings/$',
         cache_page(4)(UpdateStudent.as_view()),
         name='updateStudent'),
+
+    url(r'^student/(?P<slug>[\w-]+)/settings/social/remove/$',
+        RemoveSocialConfirmationView.as_view(),
+        name='remove_social'),
 
     #url(r'^settings/$',
         #cache_page(4)(DetailCurrentStudentSettings.as_view()),
