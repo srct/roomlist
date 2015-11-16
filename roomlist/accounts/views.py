@@ -79,6 +79,7 @@ return_messages = [bug_reporting, privacy_reminder, disclaimer, whatsopen_plug, 
 def custom_cas_login(request, *args, **kwargs):
     response = cas_login(request, *args, **kwargs)
     # returns HttpResponseRedirect
+
     if request.user.is_authenticated():
 
         if request.user.student.completedName is False:
@@ -469,7 +470,6 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
                        kwargs={'slug':self.request.user.username})
 
 
-# this is a work-in-progress catastrophuck
 class WelcomeSocial(LoginRequiredMixin, FormValidMessageMixin, UpdateView):
     model = Student
     form_class = WelcomeSocialForm

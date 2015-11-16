@@ -1,4 +1,7 @@
 {% extends 'layouts/base.html' %} {% block title %} SRCT Roomlist &bull; Homepage {% endblock %} {% block content %}
+
+{% include 'messages.html' %}
+
 {% load cache %}
 {% load gravatar %}
 <h2>Welcome Back {{ request.user.first_name }}!</h2>

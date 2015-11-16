@@ -2,7 +2,7 @@ Django==1.7.3
 Whoosh==2.6.0
 argparse==1.2.1
 beautifulsoup4==4.3.2
-django-allauth==0.19.0
+django-allauth==0.20.0
 django-analytical==0.19.0
 django-autoslug==1.7.2
 django-braces==1.4.0
