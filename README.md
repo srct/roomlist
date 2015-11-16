@@ -142,9 +142,29 @@ Head over to localhost:8000 and see the site!
 
 ## Configuring the Social Media Applications
 
+Social media authentication is provided through a package called [django-allauth](http://django-allauth.readthedocs.org/en/stable/installation.html). You can refer to those documentation pages for more information.
+
+What we're trying to accomplish with social media authentication is to verify users are linking to accounts they actually control. If we trusted users sufficiently to not type in gibberish or link to twitter.com/realDonaldTrump, we could provide a character field for each site.
+
+By default, example.com is set to 1. We'll add our site id, localhost. In settings.py, this is already accounted for; the default there is SITE_ID = 2.
+
 Head over to localhost:8000/admin. Under 'Social Accounts', click on 'Social Applications'. Click 'Add social application' in the upper right hand corner. Start off by adding Facebook.
 
-To generate the name, id, key, and site for Facebook, you'll need to become a Facebook Developer and create a name.
+To fill in the name, id, key, and site for Facebook, and for all of the social media sites, you'll need to become a Developer for the site in question.
+
+Navigate to, for example, the Facebook web login [documentation page](https://developers.facebook.com/docs/facebook-login/web). On the toolbar across the top of the page, you'll see a tab called 'My Apps'. Hovering over it, you'll see the option to Register as a Developer. Click the link, accept the Facebook platform and privacy policies, and you'll be ready to go. Depending on how fleshed out your profile page is, you may be prompted for more information (such as a phone number).
+
+On the page you'll be [redirected to](https://developers.facebook.com/quickstarts/), select the web app option. You'll be prompted to type the name of your new app. Go with something simple, like 'roomlist'. A dropdown will show an option to create a new app. Put Education as the category. Skip over 'namespace': that's used for specifically defining the app's name via Facebook's API. For the line labeled 'Site URL', type 'localhost:8000'. Hit 'next' and then click the link above the listed functionality that says 'Skip to Developer Dashboard'. (For the record, we're implementing the Login functionality.)
+
+After you click 'create app ID' and successfully complete a captcha, you'll be shown your app's dashboard. The two things you need on roomlist are right up at the top, the App ID and the App Secret.
+
+The user interface might be a bit different, particularly if you've done development with Facebook before, and some of these fields you may need to add after you've created the app. You may need to click 'Add Platform' from the Settings page of your app's Dashboard.
+
+Back on the Django admin page, start filling in fields. App Name to Name, App ID to Client id, App Secret to Secret Key. The 'Sites' section is a security measure you can have in place to make sure that your app is only called from the urls you expect, and is what you put in for the 'Site URL' for the Facebook configuration.
+
+Under 'Available Sites', click the little green plus button and add a new site. The Domain Name will be '127.0.0.1' and the Display Name 'localhost'. By default, Django has already gone to the trouble of creating 'example.com' as a site. Move example.com back to available sites and make sure 127.0.0.1 is added to Chosen Sites.
+
+Something you'll need to carefully specify is the callback (or redirect) url. This is where your user is sent once they have successfully authenticated with the outside social media site.
 
 Let's add localhost to our Available sites.
 
