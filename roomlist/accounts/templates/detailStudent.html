@@ -103,7 +103,7 @@
            <h4><i class="fa fa-facebook fa-lg"></i></h4>
           </td>
           <td class="col-md-8">
-            {% if accounts.facebook %} <h4><a href="https://facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">Facebook account</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
+            {% if accounts.facebook and shares %} <h4><a href="https://facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">Facebook account</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
           </td>
         </tr>
 
@@ -111,7 +111,7 @@
           <td>
             <h4><i class="fa fa-google fa-lg"></i></h4>
           </td>
-          <td>{% if accounts.google %} <h4><a href="https://plus.google.com/{{ accounts.google.0.uid }}" target="_blank">Google+ account</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
+          <td>{% if accounts.google and shares %} <h4><a href="https://plus.google.com/{{ accounts.google.0.uid }}" target="_blank">Google+ account</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
           </td>
         </tr>
 
@@ -120,7 +120,7 @@
             <h4><i class="fa fa-twitter fa-lg"></i></h4>
           </td>
           <td>
-            {% if accounts.twitter %} <h4><a href="https://twitter.com/{{ accounts.twitter.0.extra_data.screen_name }}" target="_blank">@{{ accounts.twitter.0.extra_data.screen_name }}</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
+            {% if accounts.twitter and shares %} <h4><a href="https://twitter.com/{{ accounts.twitter.0.extra_data.screen_name }}" target="_blank">@{{ accounts.twitter.0.extra_data.screen_name }}</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
           </td>
         </tr>
 
@@ -129,7 +129,7 @@
             <h4><i class="fa fa-instagram fa-lg"></i></h4>
           </td>
           <td>
-            {% if accounts.instagram %} <h4><a href="https://instagram.com/{{ accounts.instagram.0.extra_data.username }}" target="_blank">@{{ accounts.instagram.0.extra_data.username }}</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
+            {% if accounts.instagram and shares %} <h4><a href="https://instagram.com/{{ accounts.instagram.0.extra_data.username }}" target="_blank">@{{ accounts.instagram.0.extra_data.username }}</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
           </td>
         </tr>
       </tbody>
