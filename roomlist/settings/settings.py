@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 from __future__ import absolute_import, print_function
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -25,8 +26,6 @@ TEMPLATE_DIRS = (
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
-print(TEMPLATE_DIRS)
 
 TEMPLATE_LOADERS = (
 
@@ -79,6 +78,7 @@ INSTALLED_APPS = (
     'randomslugfield',
     'haystack',
     'multiselectfield',
+    # social media authentication
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -86,6 +86,10 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.instagram',
+    # 'allauth.socialaccount.providers.tumblr',
+    # 'allauth.socialaccount.providers.spotify',
+    # 'allauth.socialaccount.providers.github',
+    # twitch? stackexchange? soundcloud?
 )
 
 CRISPY_TEMPLATE_PACK = 'bootstrap'
@@ -107,10 +111,11 @@ ROOT_URLCONF = 'settings.urls'
 WSGI_APPLICATION = 'settings.wsgi.application'
 
 from . import secret
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 SECRET_KEY = secret.SECRET_KEY
+
+# Database
+# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -138,14 +143,29 @@ USE_TZ = True
 
 # set for social auth
 # example.com is by default set to 1
+
 SITE_ID = 2
+
+# further settings for social auth
+
+SOCIALACCOUNT_ADAPTER = 'accounts.adapter.AccountAdapter'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'SCOPE': ['public_profile', ],
+        'FIELDS': [
+            'id',
+            'first_name',
+            'last_name',
+            'link',
+            ]
+        }
+    }
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-
-ACCOUNT_ADAPTER = 'accounts.adapter.AccountAdapter'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',

@@ -9,6 +9,8 @@
 
 {% include 'room_change_warning.html' %}
 
+{% include 'messages.html' %}
+
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12 text-center">
@@ -27,6 +29,8 @@
 
 {% load socialaccount %} {% providers_media_js %}
 
+{% get_social_accounts request.user as accounts %}
+
 <div class="row">
   <div class="col-md-4">
     <div class="panel panel-default">
@@ -38,21 +42,27 @@
         <div class="row text-center">
           <div class="col-md-6">
           {% if accounts.facebook %}
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
-          {% endif %}
-          <a href="{% provider_login_url 'facebook' method='js_sdk' process='connect' next='#' %}">
+          <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-facebook fa-2x"></i></h4>
+            <h4>Facebook</h4>
+          {% else %}
+          <a href="{% provider_login_url 'facebook' process='connect' %}">
             <h4><i class="fa fa-facebook fa-2x"></i></h4>
             <h4>Facebook</h4>
           </a>
+          {% endif %}
           </div>
           <div class="col-md-6">
           {% if accounts.google %}
             <p><i class="fa fa-check-square-o"></i> Verified!</p>
-          {% endif %}
-          <a href="{% provider_login_url 'google' method='js_sdk' process='connect' next='#' %}">
+            <h4><i class="fa fa-google fa-2x"></i></h4>
+            <h4>Google</h4>
+          {% else %}
+          <a href="{% provider_login_url 'google' process='connect' %}">
             <h4><i class="fa fa-google fa-2x"></i></h4>
             <h4>Google</h4>
           </a>
+          {% endif %}
           </div>
         </div>
         <br />
@@ -60,22 +70,65 @@
           <div class="col-md-6">
           {% if accounts.twitter %}
             <p><i class="fa fa-check-square-o"></i> Verified!</p>
-          {% endif %}
-          <a href="{% provider_login_url 'twitter' method='js_sdk' process='connect' next='#' %}">
+            <h4><i class="fa fa-twitter fa-2x"></i></h4>
+            <h4>Twitter</h4>
+          {% else %}
+          <a href="{% provider_login_url 'twitter' process='connect' %}">
             <h4><i class="fa fa-twitter fa-2x"></i></h4>
             <h4>Twitter</h4>
           </a>
+          {% endif %}
           </div>
           <div class="col-md-6">
           {% if accounts.instagram %}
             <p><i class="fa fa-check-square-o"></i> Verified!</p>
-          {% endif %}
-          <a href="{% provider_login_url 'instagram' method='js_sdk' process='connect' next='#' %}">
+            <h4><i class="fa fa-instagram fa-2x"></i></h4>
+            <h4>Instagram</h4>
+          {% else %}
+          <a href="{% provider_login_url 'instagram' process='connect' %}">
             <h4><i class="fa fa-instagram fa-2x"></i></h4>
             <h4>Instagram</h4>
           </a>
+          {% endif %}
           </div>
         </div>
+        {% comment %}
+        <br />
+        <div class="row text-center">
+          <div class="col-md-6">
+          {% if accounts.tumblr %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-tumblr fa-2x"></i></h4>
+            <h4>Tumblr</h4>
+          {% else %}
+          <a href="{% provider_login_url 'tumblr' process='connect' %}">
+            <h4><i class="fa fa-tumblr fa-2x"></i></h4>
+            <h4>Tumblr</h4>
+          </a>
+          {% endif %}
+          </div>
+          <div class="col-md-6">
+          {% if accounts.github %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-github fa-2x"></i></h4>
+            <h4>Github</h4>
+          {% else %}
+          <a href="{% provider_login_url 'github' process='connect' %}">
+            <h4><i class="fa fa-github fa-2x"></i></h4>
+            <h4>Github</h4>
+          </a>
+          {% endif %}
+          </div>
+        </div>
+        {% endcomment %}
+        <br />
+        {% if accounts %}
+          <div class="row text-center">
+            <a href="{% url 'remove_social' request.user.username %}">
+              <button class="btn btn-xs btn-danger">Disconnect Accounts</button>
+            </a>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
