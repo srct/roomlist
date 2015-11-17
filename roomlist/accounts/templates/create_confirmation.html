@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} SRCT RoomList | Flag {{ student.user.get_full_name }}  {% endblock %}
+{% block title %} SRCT RoomList | Flag {{ student.user.get_full_name_or_uname }}  {% endblock %}
 
 {% block message_queue %}
 {% endblock %}
@@ -14,10 +14,10 @@
       <p class="lead text-center">
       <i class="fa fa-flag fa-lg"></i>
       <strong>
-      {% if not student.user.get_full_name %}
+      {% if not student.user.get_full_name_or_uname %}
         Someone
       {% else %}
-        {{ student.user.get_full_name }}
+        {{ student.user.get_full_name_or_uname }}
       {% endif %}
       </strong>
       <em>is in the wrong room!</em>

@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} SRCT RoomList | Remove Flag {{ confirmation.student.user.get_full_name }}  {% endblock %}
+{% block title %} SRCT RoomList | Remove Flag {{ confirmation.student.user.get_full_name_or_uname }}  {% endblock %}
 
 {% block message_queue %}
 {% endblock %}
@@ -15,10 +15,10 @@
       <i class="fa fa-flag fa-lg"></i>
       Maybe
       <strong>
-      {% if not confirmation.student.user.get_full_name %}
+      {% if not confirmation.student.user.get_full_name_or_uname %}
         Someone
       {% else %}
-        {{ confirmation.student.user.get_full_name }}
+        {{ confirmation.student.user.get_full_name_or_uname }}
       {% endif %}
       </strong>
       <em>is in the correct room after all...</em>

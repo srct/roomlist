@@ -27,8 +27,8 @@
 <div class="row">
   {% for student in students %}
   <div class="col-sm-3 text-center">
-    <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture">
-    <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.first_name }} {{ student.user.last_name }}</strong></a></h4>
+    <img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.get_first_name_or_uname }} Gravatar picture">
+    <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
     <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major.name }}</em></a></h5>
     {% if student.get_flag_count > 4 %}
       <p><em>* a number of other floormates say this info is incorrect</em></p>

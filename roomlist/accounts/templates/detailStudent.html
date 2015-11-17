@@ -10,7 +10,7 @@
     </div>
 
     <div class="col-md-6 text-center">
-      <h1><strong>{{ student.user.get_full_name }}</strong></h1>
+      <h1><strong>{{ student.user.get_full_name_or_uname }}</strong></h1>
       {% if shares %}
         <p class="lead"><strong>
         {% if student.room == None %}

@@ -215,23 +215,23 @@ class Student(TimeStampedModel):
         my_flag_num = Confirmation.objects.filter(student=self, lives_there=False).count()
         return my_flag_num
     
-    def get_first_name(self):
-        if self.user.get_short_name() == "":
+    def get_first_name_or_uname(self):
+        if not(self.user.get_short_name()):
             return self.user.get_username()
         else:
             return self.user.get_short_name()
     
-    def get_last_name(self):
-        if self.user.last_name == "":
+    def get_last_name_or_uname(self):
+        if not(self.user.last_name):
             return self.user.get_username()
         else:
             return self.user.last_name
     
-    def get_full_name(self):
-        if self.user.get_full_name() == "":
+    def get_full_name_or_uname(self):
+        if not(self.user.get_full_name_or_uname()):
             return self.user.get_username()
         else:
-            return self.user.get_full_name()
+            return self.user.get_full_name_or_uname()
 
     class Meta:
         ordering = ['user']
