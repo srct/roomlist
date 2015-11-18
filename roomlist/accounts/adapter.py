@@ -4,10 +4,13 @@ from datetime import datetime, timedelta
 # core django imports
 from django.core.urlresolvers import reverse
 from django.views.generic import FormView
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 # third party imports
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.socialaccount.views import ConnectionsView
 from allauth.socialaccount.forms import DisconnectForm
+from allauth.exceptions import ImmediateHttpResponse
 from braces.views import LoginRequiredMixin
 
 class AccountAdapter(DefaultSocialAccountAdapter):
@@ -36,10 +39,30 @@ class AccountAdapter(DefaultSocialAccountAdapter):
                 'slug': request.user.username,
             })
         else:
-           return reverse('updateStudent', kwargs={
+            return reverse('updateStudent', kwargs={
                 'slug': request.user.username,
-           })
+            })
 
+    def authentication_error(self, request, provider_id, error=None, exception=None,
+                             extra_context=None):
+
+        error_message = """Looks like something went awry with your social
+                           authentication. Wait a moment and try your username and
+                           password again. If things are still broken, let us know by
+                           sending an email to roomlist@lists.srct.gmu.edu."""
+
+        if not request.user.student.completedSocial:
+            messages.add_message(request, messages.ERROR, error_message)
+            social_redirect = HttpResponseRedirect(reverse('welcomeSocial', kwargs={
+                                  'slug': request.user.username,
+                              }))
+            raise ImmediateHttpResponse(social_redirect)
+        else:
+            messages.add_message(request, messages.ERROR, error_message)
+            update_redirect =  HttpResponseRedirect(reverse('updateStudent', kwargs={
+                                  'slug': request.user.username,
+                              }))
+            raise ImmediateHttpResponse(update_redirect)
 
 class RemoveSocialConfirmationView(LoginRequiredMixin, ConnectionsView):
     template_name = "remove_social.html"
@@ -48,8 +71,8 @@ class RemoveSocialConfirmationView(LoginRequiredMixin, ConnectionsView):
     def get(self, request, *args, **kwargs):
         if not request.user.socialaccount_set.all():
             # no social media accounts? back to the settings page with you!
-            return reverse('updateStudent',
-                            kwargs={'slug':self.request.user.username})
+            return HttpResponseRedirect(reverse('updateStudent',
+                                        kwargs={'slug':self.request.user.username}))
         else:
             return super(RemoveSocialConfirmationView, self).get(request, *args, **kwargs)
 

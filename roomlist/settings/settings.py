@@ -106,6 +106,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+# for bootstrap css classes
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {messages.ERROR: 'danger',}
+
 ROOT_URLCONF = 'settings.urls'
 
 WSGI_APPLICATION = 'settings.wsgi.application'
