@@ -25,7 +25,7 @@
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    <p class="text-center">Great! Now to your housing information and settings. Here, you'll select which room you live in, and then choose who you want to be able to see that information.</p>
+    <p class="text-center">Great, {{ request.user.student.get_first_name_or_uname }}! Now to your housing information and settings. Here, you'll select which room you live in, and then choose who you want to be able to see that information.</p>
     <p class="text-center"><strong>By default, your privacy is set to 'Floor'.</strong> That means only other students living on your floor can see your room.</p>
     <p class="text-center">You can choose to set your privacy to 'Building', which will make your room visible to everyone living in your building, or to 'Campus', where it will be visible to anyone with a current Mason username and password.</p>
   </div>

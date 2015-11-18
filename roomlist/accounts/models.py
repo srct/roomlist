@@ -9,6 +9,7 @@ from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils.text import slugify
+from django.contrib import messages
 # third party imports
 from autoslug import AutoSlugField
 from randomslugfield import RandomSlugField
@@ -201,12 +202,12 @@ class Student(TimeStampedModel):
 
     def profile_image_url(self):
         fb_uid = SocialAccount.objects.filter(user=self.user.id, provider='facebook')
-        print("profile_image")
+        #print("profile_image")
 
         if len(fb_uid) > 0:
             return "http://graph.facebook.com/{}/picture?width=175&height=175".format(fb_uid[0].uid)
 
-        return "http://www.gravatar.com/avatar/{}?s=175".format(hashlib.md5(self.user.email).hexdigest())
+        return "http://www.gravatar.com/avatar/{}?s=175&d=mm".format(hashlib.md5(self.user.email).hexdigest())
 
     def get_absolute_url(self):
         return reverse('detail_student', kwargs={'slug': self.slug})
@@ -217,21 +218,21 @@ class Student(TimeStampedModel):
     
     def get_first_name_or_uname(self):
         if not(self.user.get_short_name()):
-            return self.user.get_username()
+            return self.user.username
         else:
             return self.user.get_short_name()
     
     def get_last_name_or_uname(self):
         if not(self.user.last_name):
-            return self.user.get_username()
+            return self.user.username
         else:
             return self.user.last_name
     
     def get_full_name_or_uname(self):
-        if not(self.user.get_full_name_or_uname()):
-            return self.user.get_username()
+        if not(self.user.get_full_name()):
+            return self.user.username
         else:
-            return self.user.get_full_name_or_uname()
+            return self.user.get_full_name()
 
     class Meta:
         ordering = ['user']

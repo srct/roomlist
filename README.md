@@ -122,7 +122,7 @@ Then run `python manage.py migrate` to execute that sql code and set up your dat
 
 Finally, run `python manage.py createsuperuser` to create an admin account, using the same username and email as you'll access through CAS. This means your 'full' email address, for instance gmason@masonlive.gmu.edu. Your password will be handled through CAS, so you can just use 'password' here.
 
-(If you accidentally skip this step, you can run `python manage.py shell` and edit your user from there.)
+(If you accidentally skip this step, you can run `python manage.py shell` and edit your user from there. Selectyour user, and set .is_staff and .is_superuser to True, then save.)
 
 ## Loading in demo data
 
@@ -142,17 +142,75 @@ Head over to localhost:8000 and see the site!
 
 ## Configuring the Social Media Applications
 
-Head over to localhost:8000/admin. Under 'Social Accounts', click on 'Social Applications'. Click 'Add social application' in the upper right hand corner. Start off by adding Facebook.
+Social media authentication is provided through a package called [django-allauth](http://django-allauth.readthedocs.org/en/stable/installation.html). You can refer to those documentation pages for more information. Though in too many cases, the documenation is annoyingly sparse. The gulf between power of the package as shown through diving into the source and reading the documentation is vast.
 
-To generate the name, id, key, and site for Facebook, you'll need to become a Facebook Developer and create a name.
+What we're trying to accomplish with social media authentication is to verify users are linking to accounts they actually control. If we trusted users sufficiently to not type in gibberish or link to twitter.com/realDonaldTrump, we could provide a character field for each site.
 
-Let's add localhost to our Available sites.
+Head over to localhost:8000/admin. Under 'Social Accounts', click on 'Social Applications'. Click 'Add social application' in the upper right hand corner. We're going to start off by adding Facebook.
 
-Now, to Instagram.
+### Facebook
 
-Next, to Twitter.
+To fill in the name, id, key, and site for Facebook, (and for all of the social media sites), you'll need to become a Developer for the site in question.
 
-Finally, to Google.
+Navigate to, for example, the Facebook web login [documentation page](https://developers.facebook.com/docs/facebook-login/web). On the toolbar across the top of the page, you'll see a tab called 'My Apps'. Hovering over it, you'll see the option to Register as a Developer. Click the link, accept the Facebook platform and privacy policies, and you'll be ready to go. Depending on how fleshed out your profile page is, you may be prompted for more information (such as a phone number).
+
+On the page you'll be [redirected to](https://developers.facebook.com/quickstarts/), select the website option. You'll be prompted to type the name of your new app. Because Facebook does not require apps to have globally unique names, go with something simple, like 'roomlist'. A dropdown will show an option to create a new app. Put Education as the category. Click on 'Create App ID'. If you see an option for 'namespace', skip over that for now: that's used for specifically defining the app's name via Facebook's API. For the line labeled 'Site URL', type 'localhost:8000'. Hit 'next' and then click the link on the section that lists functionality that says 'Skip to Developer Dashboard'. (For the record, we're implementing the Login functionality.)
+
+You may be prompted to complete a captcha, and you'll then be shown your app's dashboard. The two things you need on roomlist are right up at the top, the App ID and the App Secret.
+
+The user interface might be a bit different, particularly if you've done development with Facebook before, and some of these fields you may need to add after you've created the app. You may need to click 'Add Platform' from the Settings page of your app's Dashboard instead.
+
+Back on the Django admin page, start filling in fields. App Name to Name, App ID to Client id, App Secret to Secret Key. The 'Sites' section is a security measure to ensure your app is only called from the urls you expect, and is what you put in for the 'Site URL' for the Facebook configuration.
+
+Under 'Available Sites', click the little green plus button and add a new site. The Domain Name will be '127.0.0.1' and the Display Name 'localhost'. By default, Django has already gone to the trouble of creating 'example.com' as a site. Move example.com back to available sites and make sure 127.0.0.1 is added to Chosen Sites.
+
+By default, example.com is the first site. We'll add our site id, localhost. In settings.py, this is already accounted for; the default there is SITE_ID = 2.
+
+Let's add localhost to our Available sites, and then hit save.
+
+Something you'll need to carefully specify is the callback (or redirect) url. This is where your user is sent once they have successfully authenticated with the outside social media site.
+
+### Instagram
+
+Instagram actually asks you what you want to build and then will choose to give you access or not. Cross your fingers and let's begin the process.
+
+Sign up as developer on Instagram's [developer site](https://www.instagram.com/developer). Click on 'register your application'. You'll be asked a couple things. For your website, use localhost:8000. If your Instagram account does not have a phone number, you'll be asked to provide it here. Finally, for what you want to build with the API, write something along the lines of 'Verify users are linking to social media accounts they in fact control.' Accept the terms and sign up.
+
+Interestingly, you'll be redirected to the 'Register Your Application' page. Click on 'Register Your Application' once more. From the next page, 'Manage clients', click 'Register a New Client ID'. On this form, for your Application name, you can also be generic; this does not need to be globally unique. For the description, you can use the same signup description you used initially. All fields except privacy policy are required, so use 'SRCT' as the company name. The website url will be http://localhost:8000. The 'http://' is required. For the valid redirect URI, Instagram takes a different tact than the other oauth2 applications. You will need the full redirect path. Type http://localhost:8000/accounts/instagram/login/callback/. The trailing slash is for some reason important. Because you can support multiple URIs, then hit tab. Use a real contact email. The privacy policy is not required. Complete the captcha and hit 'Register'.
+
+Now add this information back into the Django admin. Create a new social application, and copy the client name to name, the client id to client id, and client secret to secret key. Make sure localhost is chosen as your site, and hit save.
+
+### Twitter
+
+Create a new social application, selecting Twitter as the provider.
+
+Head to the Twitter [developer's page](https://dev.twitter.com/). Sign in, and go to apps.twitter.com and click 'create a new app'. Twitter does not require you to register as a developer up front, there is merely an agreement at the bottom on the new app page. You will, however, be required to add and verify your phone number to your Twitter account profile before submitting any apps.
+
+Unlike the previous two sites, your app name must actually be globally unique. Pick, for example, 'roomlist-1234'. Next, your description will actually be shown to users when they sign in, so make sure it's reasonably coherent. Write something like 'verify your twitter account for roomlist'. For the website, use http://127.0.0.1:8000/. Use the same address for the callback, http://127.0.0.1:8000/. Agree to the developer terms, and click 'create your application'.
+
+Next, by default, Twitter gives you more permissions than you actually need. On the app's page. click to the 'Permissions' tab. As we do not need to write to the users' Twitter account pages, select 'Read Only', and update your settings.
+
+Now, click to the tab 'Keys and Access Tokens', and copy the 'Consumer Key' to Client ID on your new social application, and the 'Consumer Secret' to Secret Key. Make sure the name is the unique one you gave your app. Set localhost as your Site, and click Save.
+
+### Google
+
+Google's auth setup process is unquestionably the most confusing of the bunch, and yet we proceed, despite the ceiling of students who will link their Google+ page being approximately four.
+
+Verify you have your phone number associated with your Google account, and then head to Google's [developer page](https://developers.google.com/). On that page, click 'Web'. Under the column titled 'Develop', click 'Sign In', and then click 'Get Started'.
+
+The first step, will link you to the Google Developer's console. Click that link, then, intuitively (/s) click 'Select a Project' in the navbar, and then 'Create a Project' in the dropdown.
+
+Type 'roomlist' in the project name field. Google will give you a globally unique project name underneath the field. Agree to the terms, and click 'create'.
+
+Project name-- google gives you the project name
+
+Go now to 'enable and manage APIs'. On the new screen under 'social APIs', click Google+ API. Click 'enable API', and then on the sidebar click 'credentials'. Then click 'add credentials', and 'oauth2 client id' under the dropdown. You will be asked to first configure a user consent screen (similar to the description we wrote for the Twitter client's authentication page). The only required field is your project name. Save, and then on the screen 'create client ID', click 'web application'. Name your project roomlist (this is only for your piece of mind, the actual name you'll use for Django is still the one Google generated for you), the authorized javascript origin is http://127.0.0.1:8000, without the trailing slash. For the authorized redirect url, type the full path like with Instagram, but inexplicably use 'localhost': http://localhost:8000/accounts/google/login/callback/, and *with* the trailing slash. Click 'Create'.
+
+Copy the Client ID and Client Secret from the popup window that you'll then see into the Django social app's Client ID and Secret Key, respectively. Unless you delete the preceeding and trailing space when you copy the hashes, you will be sad because your string will be wrong.
+
+If you've forgotten the name with the number, back on Google's page it's in the navbar, if you click on the more human-readable app's name.
+
+Add localhost as the site, click save, and throw a party, because thank goodness, you're finally all set.
 
 ### Notes on Cacheing
 
