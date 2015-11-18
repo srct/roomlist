@@ -6,15 +6,15 @@
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-2 col-md-offset-1 text-center">
-      <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.user.first_name }} profile picture">
+      <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_full_name_or_uname }} profile picture">
     </div>
 
     <div class="col-md-6 text-center">
-      <h1><strong>{{ student.user.get_full_name }}</strong></h1>
+      <h1><strong>{{ student.get_full_name_or_uname }}</strong></h1>
       {% if shares %}
         <p class="lead"><strong>
         {% if student.room == None %}
-          {{ student.user.first_name }} hasn't set their room yet.
+          {{ student.get_first_name_or_uname }} hasn't set their room yet.
         {% else %}
           <a href="{{ student.room.get_absolute_url }}">{{ student.room }}</a>
           {% if same_floor %}

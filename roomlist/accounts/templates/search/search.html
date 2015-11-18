@@ -45,7 +45,7 @@ SRCT Roomlist &bull; Search Students
           <h4>{{ result.object.user.username }}</h4>
         </td>
         <td>
-          <a href="{{ result.object.get_absolute_url }}"><h4><strong>{{ result.object.user.get_full_name }}</strong></h4></a>
+          <a href="{{ result.object.get_absolute_url }}"><h4><strong>{{ result.object.get_full_name_or_uname }}</strong></h4></a>
         </td>
         <td>
           {% if result.object.major %}

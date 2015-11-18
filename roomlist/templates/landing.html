@@ -4,7 +4,7 @@
 
 {% load cache %}
 {% load gravatar %}
-<h2>Welcome Back {{ request.user.first_name }}!</h2>
+<h2>Welcome Back {{ me.get_first_name_or_uname }}!</h2>
 <legend></legend>
 
 {% if not me.room %}
@@ -21,18 +21,20 @@
   {% endif %}
     <div class="row">
       {% for student in roomies %}
-          <div class="col-md-3 text-center">
-            <a href="{{ student.get_absolute_url }}"><img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture"></img></a>
-            <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.get_full_name }}</strong></a></h4>
-            <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
-          </div>
+        <div class="col-md-3 text-center">
+          <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture"></img>
+          <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
+          <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
+        </div>
       {% if forloop.counter|divisibleby:4 %}
       </div>
       <br />
       <div class="row">
       {% endif %}
       {% empty %}
-        <h4>There are no other students registered in your room right now.</h4>
+        <div class="col-md-12">
+          <h4>There are no other students registered in your room right now.</h4>
+        </div>
       {% endfor %}
     </div>
 {% endcache %}
@@ -45,8 +47,8 @@
     <div class="row">
       {% for student in floories %}
       <div class="col-md-3 text-center">
-        <a href="{{ student.get_absolute_url }}"><img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture"></a>
-        <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.user.get_full_name }}</strong></a></h4>
+        <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
+        <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
         <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
         <h5><a href="{{ student.room.get_absolute_url }}">{{ student.room }}</h5></a>
       </div>
@@ -56,7 +58,9 @@
         <div class="row">
       {% endif %}
       {% empty %}
-        <h4>There are no other students registered on your floor right now.</h4>
+        <div class="col-md-12">
+          <h4>There are no other students registered on your floor right now.</h4>
+        </div>
       {% endfor %}
     </div>
 {% endcache %}
@@ -73,8 +77,8 @@
     <div class="row">
       {% for student in majormates %}
       <div class="col-md-3 text-center">
-        <a href="{{ student.get_absolute_url }}"><img class="img-circle img-responsive center center-block" src="{% gravatar_url student.user.email 100 %}" alt="{{ student.user.first_name }} Gravatar picture"></a>
-        <h4><a href="{{ student.get_full_name }}"><strong>{{ student.user.get_full_name }}</strong></a></h4>
+        <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
+        <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
       </div>
       {% if forloop.counter|divisibleby:4 %}
         </div>
@@ -82,7 +86,9 @@
         <div class="row">
       {% endif %}
       {% empty %}
-        <h4>There are no other students registered in your major right now.</h4>
+        <div class="col-md-12">
+          <h4>There are no other students registered in your major right now.</h4>
+        </div>
       {% endfor %}
     </div>
 {% endcache %}
