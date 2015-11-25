@@ -1,5 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load humanize %}
+{% load cache %}
 {% block title %} SRCT Roomlist &bull; {{ floor.building.name }} {{ floor.number|ordinal }}{% endblock %}
 {% block content %}
 
@@ -23,6 +24,7 @@
 {% load gravatar %}
 
 <div class="row">
+  {% cache 900 students request.user.username %}
   {% for student in students %}
   <div class="col-sm-3 text-center">
     <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
@@ -61,4 +63,5 @@
 <legend></legend>
 {% include 'disclaimer.html' %}
 
+{% endcache %}
 {% endblock %}
