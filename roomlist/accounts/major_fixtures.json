@@ -189,6 +189,13 @@
   "pk": 27
 }, {
   "fields": {
+    "name": "Cyber Security Engineering, BS",
+    "slug": "j1afUi"
+  },
+  "model": "accounts.major",
+  "pk": 80
+}, {
+  "fields": {
     "name": "Dance, BA",
     "slug": "RHc32j"
   },
