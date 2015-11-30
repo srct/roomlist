@@ -36,6 +36,8 @@ def pfinfo(uname):
         metadata.raise_for_status()
     except requests.exceptions.RequestException as e:
         print("Cannot resolve to peoplefinder api:", e)
+        print("Returning empty user info tuple.")
+        return ([u'', u''], u'')
     else:
         pfjson = metadata.json()
         try:
@@ -67,6 +69,8 @@ def pfinfo(uname):
             return final_tuple
         except Exception as e:
             print("Unknown peoplefinder error:", e)
+            print("Returning empty user info tuple.")
+            return ([u'', u''], u'')
 
 
 def create_user(tree):
@@ -75,14 +79,22 @@ def create_user(tree):
     try:
         username = tree[0][0].text
         user, user_created = User.objects.get_or_create(username=username)
-        info_tuple = pfinfo(username)
+    except Exception as e:
+        print("CAS callback unsuccessful:", e)
 
+    # error handling in pfinfo function
+    info_tuple = pfinfo(username)
+
+    try:
         if user_created:
             print("Created user object %s." % username)
 
             # set and save the user's email
             email_str = "%s@%s" % (username, settings.ORGANIZATION_EMAIL_DOMAIN)
             user.email = email_str
+            # Password is a required User object field, though doesn't matter for our
+            # purposes because all user auth is handled through CAS, not Django's login.
+            user.password = 'cas_used_instead'
             user.save()
             print("Added user's email, %s." % email_str)
 
@@ -136,7 +148,6 @@ def create_user(tree):
             print("Student object creation process completed.")
 
         print("CAS callback successful.")
-
-    # if all else fails...
     except Exception as e:
-        print("CAS callback unsuccessful:", e)
+        print("Unhandled user creation error:", e)
+        # mail the administrators
