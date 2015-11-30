@@ -141,6 +141,7 @@
       </div>
 
       <div class="panel-body">
+              <p class="text-center">Off-campus locations along with a select number of locations <a href="{% url 'list_buildings'%}#Unsupported">on campus</a> aren't currently supported. You are still welcome to use Roomlist as a limited directory until we add support.</p>
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
 
           {{ my_form.as_p }}
