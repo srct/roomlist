@@ -1,8 +1,13 @@
-{% extends 'layouts/base.html' %} {% block title %} SRCT Roomlist &bull; Homepage {% endblock %} {% block content %}
+{% extends 'layouts/base.html' %}
+{% block title %} SRCT Roomlist &bull; Homepage {% endblock title %}
+
+{% block content %}
 
 {% include 'messages.html' %}
 
 {% load cache %}
+{% cache 120 landing request.user.username %}
+
 {% load gravatar %}
 <h2>Welcome Back {{ me.get_first_name_or_uname }}!</h2>
 <legend></legend>
@@ -11,7 +16,6 @@
   <h3><em><a href="{% url 'updateStudent' request.user.username %}">Select your room</a>, and we'll show you the other students on your floor.</em></h3>
 {% else %}
 
-{% cache 300 roommates request.user.username %}
   {% if roomies|length == 1 %}
     <h3>Your Roommate in {{ me.room }}</h3>
     <legend></legend>
@@ -37,11 +41,9 @@
         </div>
       {% endfor %}
     </div>
-{% endcache %}
 
 {% load humanize %}
 
-{% cache 300 floormates request.user.username %}
 <h3>Your Floormates from <a href="{{ me.room.floor.get_absolute_url }}">{{ me.room.floor.building }} {{ me.room.floor.number|ordinal }}</a></h3>
     <legend></legend>
     <div class="row">
@@ -63,7 +65,6 @@
         </div>
       {% endfor %}
     </div>
-{% endcache %}
 
 {% endif %}
 
@@ -71,7 +72,6 @@
   <h3><em><a href="{% url 'updateStudent' request.user.username %}">Set your major</a>, and we'll show you some of the other students in your program.</em></h3>
 {% else %}
 
-{% cache 600 majormates request.user.username %}
     <h3>Other Students in <a href="{{ me.major.get_absolute_url }}">{{ me.major.name }}</a></h3>
     <legend></legend>
     <div class="row">
@@ -91,8 +91,8 @@
         </div>
       {% endfor %}
     </div>
-{% endcache %}
 
 {% endif %}
 
+{% endcache %}
 {% endblock %}

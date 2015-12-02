@@ -1,7 +1,11 @@
-{% extends 'layouts/base.html' %} {% block title %} SRCT Roomlist | {{ student.user.first_name }} {{ student.user.last_name }} {% endblock %} {% load socialaccount %} {% block content %}
-
-<!--  gravatar_url student.user.email 175 %} -->
+{% extends 'layouts/base.html' %}
+{% block title %} SRCT Roomlist | {{ student.user.first_name }} {{ student.user.last_name }} {% endblock title %}
+{% block content %}
+{% load socialaccount %}
 {% load gravatar %}
+{% load cache %}
+{% cache 4 student_page request.user.username %}
+
 {% get_social_accounts student.user as accounts %}
 <div class="page-header" id="banner">
   <div class="row">
@@ -141,4 +145,5 @@
 <legend></legend>
 {% include 'disclaimer.html' %}
 
-{% endblock %}
+{% endcache %}
+{% endblock content %}

@@ -1,7 +1,8 @@
 {% extends 'layouts/base.html' %}
 {% block title %} SRCT Roomlist &bull; {{ room.floor.building.name }} {{ room.number }}{% endblock %}
 {% block content %}
-
+{% load cache %}
+{% cache 120 room_students request.user.username room %}
 {% load humanize %}
 
 <div class="page-header" id="banner">
@@ -62,4 +63,5 @@
 <legend></legend>
 {% include 'disclaimer.html' %}
 
-{% endblock %}
+{% endcache %}
+{% endblock content %}

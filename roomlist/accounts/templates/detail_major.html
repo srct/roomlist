@@ -1,8 +1,8 @@
 {% extends 'layouts/base.html' %}
-
 {% block title %} SRCT Roomlist | Majors | {{ major.name }} {% endblock title %}
-
 {% block content %}
+{% load cache %}
+{% cache 120 major_students request.user.username major %}
 
 <div class="page-header" id="banner">
   <div class="row">
@@ -113,4 +113,5 @@
 <legend></legend>
 {% include 'disclaimer.html' %}
 
+{% endcache %}
 {% endblock content %}

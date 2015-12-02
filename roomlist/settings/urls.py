@@ -18,8 +18,7 @@ handle500 = TemplateView.as_view(template_name="500.html")
 urlpatterns = patterns('',
 
     # project-level urls
-    url(r'^$',
-        cache_page(4)(HomePageView.as_view()), name='homepage'),
+    url(r'^$', HomePageView.as_view(), name='homepage'),
     url(r'^about/$',
         cache_page(60 * 15)(TemplateView.as_view(template_name='about.html')),
         name='about'),
