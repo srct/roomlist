@@ -200,6 +200,12 @@ class Student(TimeStampedModel):
         except AttributeError:
             return None
 
+    def totally_done(self):
+        if self.completedName and self.completedPrivacy and self.completedMajor and self.completedSocial:
+            return True
+        else:
+            return False
+
     def profile_image_url(self):
         fb_uid = SocialAccount.objects.filter(user=self.user.id, provider='facebook')
         #print("profile_image")

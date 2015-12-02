@@ -470,14 +470,12 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
                        kwargs={'slug':self.request.user.username})
 
 
-class WelcomeSocial(LoginRequiredMixin, FormValidMessageMixin, UpdateView):
+class WelcomeSocial(LoginRequiredMixin, UpdateView):
     model = Student
     form_class = WelcomeSocialForm
     context_object_name = 'student'
     template_name = 'welcome_social.html'
     login_url = 'login'
-
-    form_valid_message = "You successfully finished the welcome walkthrough!"
 
     def get(self, request, *args, **kwargs):
 
@@ -501,6 +499,11 @@ class WelcomeSocial(LoginRequiredMixin, FormValidMessageMixin, UpdateView):
         return super(WelcomeSocial, self).form_valid(form)
 
     def get_success_url(self):
+
+        if self.request.user.student.totally_done():
+            messages.add_message(self.request, messages.SUCCESS,
+                                 "You successfully finished the welcome walkthrough!")
+
         return reverse('detail_student',
                        kwargs={'slug':self.request.user.username})
 
