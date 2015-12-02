@@ -1,8 +1,8 @@
 {% extends 'layouts/base.html' %}
-
 {% block title %} SRCT Roomlist | Majors | {{ major.name }} {% endblock title %}
-{% load cache %}
 {% block content %}
+{% load cache %}
+{% cache 120 major_students request.user.username major %}
 
 <div class="page-header" id="banner">
   <div class="row">
@@ -25,7 +25,6 @@
     {% for building in aq_students_by_building %}
     <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
     <div class="row">
-      {% cache 900 building.list request.user.username %}
       {% for student in building.list %}
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
@@ -52,7 +51,6 @@
     {% for building in ra_students_by_building %}
     <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
     <div class="row">
-      {% cache 900 building.list request.user.username %}
       {% for student in building.list %}
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
@@ -79,7 +77,6 @@
     {% for building in sh_students_by_building %}
     <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
     <div class="row">
-      {% cache 900 building.list request.user.username %}
       {% for student in building.list %}
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
@@ -102,7 +99,6 @@
   <legend class="text-center">Location not visible because of student <a href="{% url 'updateStudent' request.user.username %}">privacy settings</a></legend>
   <div class="row">
     <div class="col-md-12">
-      {% cache 900 location_hidden request.user.username %}
       {% for student in location_hidden %}
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">

@@ -22,13 +22,11 @@ urlpatterns = patterns('',
         name='list_majors'),
 
     url(r'^majors/(?P<slug>[\w-]+)/(?P<major>[\w-]+)/$',
-        cache_page(60 * 2)(DetailMajor.as_view()),
-        name='detail_major'),
+        DetailMajor.as_view(), name='detail_major'),
 
     # student profile pages
     url(r'^student/(?P<slug>[\w-]+)/$',
-        cache_page(4)(DetailStudent.as_view()),
-        name='detail_student'),
+        DetailStudent.as_view(), name='detail_student'),
 
     #url(r'^student/$',
         #cache_page(60 * 2)(DetailCurrentStudent.as_view()),
