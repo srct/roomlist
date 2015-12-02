@@ -141,6 +141,12 @@
       </div>
 
       <div class="panel-body">
+        <p class="text-center">Off-campus locations along with a select number of locations <a href="{% url 'list_buildings'%}#Unsupported">on campus</a> aren't currently supported. You are still welcome to use Roomlist as a limited directory until we add support.</p>
+        <p class="text-center">
+          If you have a <a href="https://en.gravatar.com/">Gravatar profile</a> associated
+          with your <a href="https://masonlive.gmu.edu/">Masonlive email</a> address, your
+          default profile picture on this service will that Gravatar profile picture.
+        </p>
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
 
           {{ my_form.as_p }}

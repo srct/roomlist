@@ -55,6 +55,26 @@
 
 <legend><strong><a name="Aquia" href="#Aquia">Aquia</a></strong></legend>
 <div class="row">
+  {% for building in aquia %}
+  <div class="col-sm-3 text-center">
+    <a href="{{ building.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ building.name }}</a>
+  </div>
+  {% if forloop.counter|divisibleby:4 %}
+</div>
+<br />
+<div class="row">
+  {% endif %}
+  {% endfor %}
+</div>
+
+<br />
+
+<legend><a name="Unsupported" href="#Unsupported">Unsupported Buildings</a></legend>
+<div class="row">
+  <div class="col-md-12">
+    <p>The following Mason housing locations are not currently supported:</p>
+    <p>Liberty Square, Beacon Hall, Mason Global Center, Piedmont, Tidewater, Student Apartments, and the Townhouses</p>
+  </div>
 </div>
 
 {% endblock %}
