@@ -9,6 +9,7 @@ from django.contrib import messages
 import requests
 # imports from your apps
 from .models import Student, Major
+from settings.slack import slack_post
 
 
 def pfparse(pf_name_result):
@@ -88,6 +89,15 @@ def create_user(tree):
     try:
         if user_created:
             print("Created user object %s." % username)
+
+            # notify developers of user signup milestones
+            num_users = User.objects.all().count()
+            if num_users % 50:
+                message = "Congratulations! We've passed %d user registrations!" % num_users
+                slack_post(text=message,
+                           channel='#roomlist',
+                           username='Roomlist User Milestones',
+                           icon_emoji=':tada:')
 
             # set and save the user's email
             email_str = "%s@%s" % (username, settings.ORGANIZATION_EMAIL_DOMAIN)
