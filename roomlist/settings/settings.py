@@ -208,4 +208,41 @@ else:
             'BACKEND': 'redis_cache.RedisCache',
             'LOCATION': '/var/run/redis/redis.sock',
         },
+    i}
+
+# need to configure ADMINS email so that ERROR level logs (500 level exceptions)
+# can be sent out
+
+# https://docs.djangoproject.com/en/1.7/topics/logging/
+# https://docs.djangoproject.com/en/1.7/howto/error-reporting/
+# https://docs.python.org/2/library/logging.config.html#configuration-dictionary-schema
+
+if not DEBUG:
+
+# ADMINS =
+# SERVER_EMAIL =
+# EMAIL_HOST =
+# EMAIL_HOST_USER =
+# EMAIL_HOST_PASSWORD =
+
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                # make sure to change this to the proper path, and one that
+                # can be written to
+                'filename': '/path/to/django/debug.log',
+            },
+        },
+        # logs request errors
+        'loggers': {
+            'django.request': {
+                'handlers': ['file'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+        },
     }
