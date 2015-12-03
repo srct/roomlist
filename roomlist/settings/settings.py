@@ -208,7 +208,7 @@ else:
             'BACKEND': 'redis_cache.RedisCache',
             'LOCATION': '/var/run/redis/redis.sock',
         },
-    i}
+    }
 
 # need to configure ADMINS email so that ERROR level logs (500 level exceptions)
 # can be sent out
@@ -219,11 +219,13 @@ else:
 
 if not DEBUG:
 
-# ADMINS =
-# SERVER_EMAIL =
-# EMAIL_HOST =
-# EMAIL_HOST_USER =
-# EMAIL_HOST_PASSWORD =
+    ADMINS = config.ADMINS
+    SERVER_EMAIL = config.SERVER_EMAIL
+    EMAIL_HOST = config.EMAIL_HOST
+    EMAIL_PORT = config.EMAIL_PORT
+    EMAIL_HOST_USER = config.EMAIL_HOST_USER
+    EMAIL_HOST_PASSWORD = config.EMAIL_HOST_PASSWORD
+    EMAIL_USE_SSL = config.EMAIL_USE_SSL
 
     LOGGING = {
         'version': 1,
