@@ -104,7 +104,7 @@ def create_user(tree):
             user.email = email_str
             # Password is a required User object field, though doesn't matter for our
             # purposes because all user auth is handled through CAS, not Django's login.
-            user.password = 'cas_used_instead'
+            user.set_password('cas_used_instead')
             user.save()
             print("Added user's email, %s." % email_str)
 
