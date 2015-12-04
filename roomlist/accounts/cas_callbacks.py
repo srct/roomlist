@@ -92,7 +92,7 @@ def create_user(tree):
 
             # notify developers of user signup milestones
             num_users = User.objects.all().count()
-            if num_users % 50:
+            if num_users % 50 == 0:
                 message = "Congratulations! We've passed %d user registrations!" % num_users
                 slack_post(text=message,
                            channel='#roomlist',

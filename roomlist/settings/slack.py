@@ -15,7 +15,7 @@ def slack_post(text, channel, username, icon_emoji):
         r = requests.post(webhook_url, data=json.dumps(payload))
         r.raise_for_status()
         print(r.status_code)
-    except request.exceptions.RequestException as e:
+    except requests.exceptions.RequestException as e:
         print("Error posting to Slack:", e)
 
 # Examples
