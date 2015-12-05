@@ -44,10 +44,12 @@
       </div>
 
       <div class="panel-body">
+        {% spaceless %}
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
           {{ my_form.as_p }}
           <input type="submit" value="Save" class="btn btn-primary"/>
         </form>
+        {% endspaceless %}
       </div>
     </div>
 

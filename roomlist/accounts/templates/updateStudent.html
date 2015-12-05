@@ -27,7 +27,7 @@
 
 <br />
 
-{% load socialaccount %} {% providers_media_js %}
+{% load socialaccount %}
 
 {% get_social_accounts request.user as accounts %}
 
@@ -147,12 +147,14 @@
           with your <a href="https://masonlive.gmu.edu/">Masonlive email</a> address, your
           default profile picture on this service will that Gravatar profile picture.
         </p>
+        {% spaceless %}
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
 
           {{ my_form.as_p }}
 
           <input type="submit" value="Save" class="btn btn-primary"/>
         </form>
+        {% endspaceless %}
       </div>
     </div>
 
