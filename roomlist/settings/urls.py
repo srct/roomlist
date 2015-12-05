@@ -8,6 +8,7 @@ from django.contrib import admin
 from django.views.decorators.cache import cache_page
 # imports from your apps
 from .views import HomePageView
+from haystack.views import SearchView
 
 admin.autodiscover()
 admin.site.login = login_required(admin.site.login)
@@ -31,7 +32,7 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('accounts.urls')),
 
     # search
-    url(r'^search/', include('haystack.urls'), name='search'),
+    url(r'^search/', login_required(SearchView(), login_url='login'), name='search'),
 
     # login and logout
     url(r'^login/', 'accounts.views.custom_cas_login', name='login'),
