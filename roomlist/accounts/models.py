@@ -211,9 +211,9 @@ class Student(TimeStampedModel):
         #print("profile_image")
 
         if len(fb_uid) > 0:
-            return "http://graph.facebook.com/{}/picture?width=175&height=175".format(fb_uid[0].uid)
+            return "https://graph.facebook.com/{}/picture?width=175&height=175".format(fb_uid[0].uid)
 
-        return "http://www.gravatar.com/avatar/{}?s=175&d=mm".format(hashlib.md5(self.user.email).hexdigest())
+        return "https://secure.gravatar.com/avatar/{}?s=175&d=mm".format(hashlib.md5(self.user.email).hexdigest())
 
     def get_absolute_url(self):
         return reverse('detail_student', kwargs={'slug': self.slug})
