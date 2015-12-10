@@ -38,7 +38,7 @@ class DetailBuilding(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailBuilding, self).get_context_data(**kwargs)
-        context['floors'] = Floor.objects.filter(building__name=''+self.get_object().name).order_by('number')
+        context['floors'] = Floor.objects.filter(building=self.get_object()).order_by('number')
         return context
 
 
@@ -53,33 +53,9 @@ class DetailFloor(LoginRequiredMixin, DetailView):
 
         requesting_student = Student.objects.get(user=self.request.user)
 
-        # if self.request.user is on the floor
-        def onFloor():
-            floor_status = False
-            if requesting_student.get_floor() == self.get_object():
-                floor_status = True
-            return floor_status
-
-        # if self.request.user is in the building
-        def inBuilding():
-            building_status = False
-            if requesting_student.get_building() == self.get_object().building:
-                building_status = True
-            return building_status
-
-        rooms = Room.objects.filter(floor=self.get_object()).order_by('number')
-        floor_students = []
-        for room in rooms:
-            if onFloor():
-                floor_students.extend(Student.objects.filter(room=room).floor_building_students())
-            elif inBuilding():
-                floor_students.extend(Student.objects.filter(room=room).building_students())
-            else:
-                floor_students.extend(Student.objects.filter(room=room).students())
-
-        context['students'] = floor_students
-        context['notOnFloor'] = not onFloor()
-        context['notInBuilding'] = not inBuilding()
+        context['students'] = Student.objects.visible(requesting_student, self.get_object())
+        context['notOnFloor'] = not(requesting_student in self.get_object())
+        context['notInBuilding'] = not(requesting_student in self.get_object().building)
         return context
 
 
@@ -93,34 +69,8 @@ class DetailRoom(LoginRequiredMixin, DetailView):
 
         requesting_student = Student.objects.get(user=self.request.user)
 
-        # if self.request.user is on the floor
-        def onFloor():
-            floor_status = False
-            if requesting_student.get_floor() == self.get_object().floor:
-                floor_status = True
-            return floor_status
-
-        # if self.request.user is in the building
-        def inBuilding():
-            building_status = False
-            if requesting_student.get_building() == self.get_object().floor.building:
-                building_status = True
-            return building_status
-
-        if onFloor():
-            students = Student.objects.filter(room=self.get_object()).floor_building_students()
-        elif inBuilding():
-            students = Student.objects.filter(room=self.get_object()).building_students()
-        else:
-            students = Student.objects.filter(room=self.get_object()).students()
-
-        context['students'] = students
-        context['notOnFloor'] = not onFloor()
-        context['notInBuilding'] = not inBuilding()
+        context['students'] = Student.objects.visible(requesting_student, self.get_object())
+        context['notOnFloor'] = not(requesting_student in self.get_object().floor)
+        context['notInBuilding'] = not(requesting_student in self.get_object().floor.building)
 
         return context
-
-    login_url = '/'
-
-
-# deleted 'UpdateRoom' view-- that will be handled on the user's page
