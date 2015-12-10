@@ -56,6 +56,15 @@ class Building(TimeStampedModel):
     def __unicode__(self):  # __unicode__ on Python 2
         return unicode(self.name)
 
+    def __contains__(self, student):
+        try:
+            if student.room.floor.building == self:
+                return True
+            else:
+                return False
+        except:
+            return False
+
     class Meta:
         ordering = ['name']
 
@@ -77,6 +86,15 @@ class Floor(TimeStampedModel):
 
     def __str__(self):  # __unicode__ on Python 2
         return self.building.__str__()+" "+self.number.__str__()
+
+    def __contains__(self, student):
+        try:
+            if student.room.floor == self:
+                return True
+            else:
+                return False
+        except:
+            return False
 
     class Meta:
         ordering = ['building', 'number']
@@ -100,6 +118,15 @@ class Room(TimeStampedModel):
 
     def __str__(self):  # __unicode__ on Python 2
         return self.floor.building.__str__()+" "+self.number.__str__()
+
+    def __contains__(self, student):
+        try:
+            if student.room == self:
+                return True
+            else:
+                return False
+        except:
+            return False
 
     class Meta:
         ordering = ['number']
