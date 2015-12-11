@@ -6,6 +6,8 @@
 {% endblock %}
 
 {% block content %}
+{% load cache %}
+{% cache 4 student_update request.user.username %}
 
 {% include 'room_change_warning.html' %}
 
@@ -161,7 +163,7 @@
   </div>
 </div>
 
-
+{% endcache %}
 {% endblock content %}
 
 {% block javascript %}

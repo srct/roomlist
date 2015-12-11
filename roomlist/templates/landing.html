@@ -6,7 +6,7 @@
 {% include 'messages.html' %}
 
 {% load cache %}
-{% cache 120 landing request.user.username %}
+{% cache 15 landing request.user.username %}
 
 {% load gravatar %}
 <h2>Welcome Back {{ me.get_first_name_or_uname }}!</h2>
@@ -67,7 +67,9 @@
     </div>
 
 {% endif %}
+{% endcache %}
 
+{% cache 120 landing_majors request.user.username %}
 {% if not me.major %}
   <h3><em><a href="{% url 'updateStudent' request.user.username %}">Set your major</a>, and we'll show you some of the other students in your program.</em></h3>
 {% else %}

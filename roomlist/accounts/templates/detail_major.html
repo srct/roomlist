@@ -2,7 +2,7 @@
 {% block title %} SRCT Roomlist | Majors | {{ major.name }} {% endblock title %}
 {% block content %}
 {% load cache %}
-{% cache 120 major_students request.user.username major %}
+{% cache 15 major_students request.user.username major %}
 
 <div class="page-header" id="banner">
   <div class="row">
