@@ -1,6 +1,8 @@
 # standard library imports
 from __future__ import absolute_import, print_function
 import random
+from operator import attrgetter
+from itertools import chain
 # core django imports
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
@@ -527,67 +529,56 @@ class DetailMajor(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailMajor, self).get_context_data(**kwargs)
-        me = Student.objects.get(user=self.request.user)
+        requesting_student = Student.objects.get(user=self.request.user)
 
-        students = Student.objects.filter(major=self.get_object()).order_by('room__floor__building__name', 'user__last_name', 'user__first_name')
+        # retrieve every room that has a student with the major in question
+        aq_rooms = [
+            room
+            for room in Room.objects.filter(floor__building__neighbourhood='aq')
+            if room.student_set.filter(major=self.get_object())
+        ]
+        ra_rooms = [
+            room
+            for room in Room.objects.filter(floor__building__neighbourhood='ra')
+            if room.student_set.filter(major=self.get_object())
+        ]
+        sh_rooms = [
+            room
+            for room in Room.objects.filter(floor__building__neighbourhood='sh')
+            if room.student_set.filter(major=self.get_object())
+        ]
 
-        def onFloor(me, student):
-            floor_status = False
-            if me.get_floor() == student.get_floor():
-                floor_status = True
-            return floor_status
+        # identify if the student(s) in that room are visible to the requesting student
+        # 'chain' is necessary if there are multiple students in one room with the same major
+        aq_visible = list(chain(*[
+            Student.objects.visible(requesting_student, room)
+            for room in aq_rooms
+        ]))
+        ra_visible = list(chain(*[
+            Student.objects.visible(requesting_student, room)
+            for room in ra_rooms
+        ]))
+        sh_visible = list(chain(*[
+            Student.objects.visible(requesting_student, room)
+            for room in sh_rooms
+        ]))
 
-        def inBuilding(me, student):
-            floor_status = False
-            if me.get_building() == student.get_building():
-                floor_status = True
-            return floor_status
+        # see what students are left over (aren't visible)
+        everyone = Student.objects.filter(major=self.get_object()).order_by('user__username')
+        hidden = list(((set(everyone) - set(aq_visible)) - set(ra_visible)) - set(sh_visible))
 
-        aq_location_visible = []
-        ra_location_visible = []
-        sh_location_visible = []
-        location_hidden = []
+        # sort each of the lists of students by their username
+        # as elsewhere, this is imperfect if a student changes their display name
+        # this is necessary as a separate step because .visible returns a list type
+        # note we're using '.' instead of '__', because who likes syntactical consistency
+        sorted_aq_visible = sorted(aq_visible, key=attrgetter('user.username'))
+        sorted_ra_visible = sorted(ra_visible, key=attrgetter('user.username'))
+        sorted_sh_visible = sorted(sh_visible, key=attrgetter('user.username'))
 
-        aq_students = students.filter(room__floor__building__neighbourhood='aq')
-
-        for student in aq_students:
-            if student.privacy == u'students':
-                aq_location_visible.append(student)
-            elif (student.privacy == u'building') and inBuilding(me, student):
-                aq_location_visible.append(student)
-            elif (student.privacy == u'floor') and onFloor(me, student):
-                aq_location_visible.append(student)
-            else:
-                location_hidden.append(student)
-
-        ra_students = students.filter(room__floor__building__neighbourhood='ra')
-
-        for student in ra_students:
-            if student.privacy == u'students':
-                ra_location_visible.append(student)
-            elif (student.privacy == u'building') and inBuilding(me, student):
-                ra_location_visible.append(student)
-            elif (student.privacy == u'floor') and onFloor(me, student):
-                ra_location_visible.append(student)
-            else:
-                location_hidden.append(student)
-
-        sh_students = students.filter(room__floor__building__neighbourhood='sh')
-
-        for student in sh_students:
-            if student.privacy == u'students':
-                sh_location_visible.append(student)
-            elif (student.privacy == u'building') and inBuilding(me, student):
-                sh_location_visible.append(student)
-            elif (student.privacy == u'floor') and onFloor(me, student):
-                sh_location_visible.append(student)
-            else:
-                location_hidden.append(student)
-
-        context['aq_location_visible'] = aq_location_visible
-        context['ra_location_visible'] = ra_location_visible
-        context['sh_location_visible'] = sh_location_visible
-        context['location_hidden'] = location_hidden
+        context['aq_location_visible'] = sorted_aq_visible
+        context['ra_location_visible'] = sorted_ra_visible
+        context['sh_location_visible'] = sorted_sh_visible
+        context['location_hidden'] = hidden
 
         return context
 
