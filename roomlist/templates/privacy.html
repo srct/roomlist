@@ -5,6 +5,8 @@ SRCT Roomlist &bull; Privacy Policy
 {% endblock %}
 
 {% block content %}
+{% load cache %}
+{% cache 900 privacy %}
 
 <div class="page-header" id="banner">
   <div class="row">
@@ -171,4 +173,5 @@ SRCT Roomlist &bull; Privacy Policy
   </div>
 </div>
 
+{% endcache %}
 {% endblock %}

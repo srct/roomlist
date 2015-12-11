@@ -3,6 +3,8 @@
 {% block title %} SRCT Roomlist | Majors | {{ major.name }} {% endblock title %}
 
 {% block content %}
+{% load cache %}
+{% cache 900 list_majors %}
 
 <div class="page-header" id="banner">
   <div class="row">
@@ -47,4 +49,5 @@
   </div>
 </div>
 
+{% endcache %}
 {% endblock content %}
