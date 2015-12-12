@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 from __future__ import absolute_import, print_function
+from . import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
@@ -27,6 +28,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+STATIC_ROOT = config.STATIC_ROOT
+
 TEMPLATE_LOADERS = (
 
     'django.template.loaders.filesystem.Loader',
@@ -41,14 +44,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request',
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount',
+    'django.core.context_processors.request'
 )
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-from . import config
 DEBUG = config.DEBUG
 TEMPLATE_DEBUG = config.TEMPLATE_DEBUG
 ALLOWED_HOSTS = config.ALLOWED_HOSTS
@@ -67,6 +67,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.humanize',
+    'cas',
     # apps
     'api',
     'housing',
@@ -74,7 +75,6 @@ INSTALLED_APPS = (
     # packages
     'crispy_forms',
     'django_gravatar',
-    'analytical',
     'randomslugfield',
     'haystack',
     'multiselectfield',
@@ -99,8 +99,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'cas.middleware.CASMiddleware',
-    'django.middleware.doc.XViewMiddleware',
-
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -207,7 +205,7 @@ else:
         'default': {
             'BACKEND': 'redis_cache.RedisCache',
             # configure to redis port
-            'LOCATION': '/var/run/redis/redis.sock',
+            'LOCATION': config.REDIS_PATH,
         },
     }
 
@@ -228,6 +226,8 @@ if not DEBUG:
     EMAIL_HOST_PASSWORD = config.EMAIL_HOST_PASSWORD
     EMAIL_USE_SSL = config.EMAIL_USE_SSL
 
+    ACCOUNT_DEFAULT_HTTP_PROTOCOL = config.ACCOUNT_DEFAULT_HTTP_PROTOCOL
+
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
@@ -237,7 +237,7 @@ if not DEBUG:
                 'class': 'logging.FileHandler',
                 # make sure to change this to the proper path, and one that
                 # can be written to
-                'filename': '/path/to/django/debug.log',
+                'filename': config.DEBUG_FILE_PATH,
             },
             # 'mail_admins' by default does not include a traceback attachment
             # setting 'include_html' to True will attach an html traceback file to the email

@@ -31,3 +31,16 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_SSL = False
+
+# Where is Redis listening? Can be either a host:part or a UNIX socket
+REDIS_PATH = 'localhost:6379'
+
+# Django debug file path
+DEBUG_FILE_PATH = '/path/to/debug.log'
+
+# Needed for allauth, what protocol are we going to be using?
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
+
+# Mainly for deployment, where do we want our static files to go when running:
+# python manage.py collectstatic
+STATIC_ROOT = '/path/to/static_files/'

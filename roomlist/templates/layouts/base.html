@@ -1,5 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -13,7 +12,6 @@
 </head>
 
 <body>
-  {% load piwik %}
   <div id="wrap" style="display: flex;">
     {% include 'layouts/navbar.html' %}
     <div id="contentcontain" class="container">
@@ -30,7 +28,6 @@
   <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
   {% block javascript %}
   {% endblock javascript %}
-  {% piwik %}
 </body>
 
 </html>
