@@ -206,6 +206,7 @@ else:
     CACHES = {
         'default': {
             'BACKEND': 'redis_cache.RedisCache',
+            # configure to redis port
             'LOCATION': '/var/run/redis/redis.sock',
         },
     }
@@ -232,11 +233,19 @@ if not DEBUG:
         'disable_existing_loggers': False,
         'handlers': {
             'file': {
-                'level': 'DEBUG',
+                'level': 'DEBUG', # will log all errors
                 'class': 'logging.FileHandler',
                 # make sure to change this to the proper path, and one that
                 # can be written to
                 'filename': '/path/to/django/debug.log',
+            },
+            # 'mail_admins' by default does not include a traceback attachment
+            # setting 'include_html' to True will attach an html traceback file to the email
+            # you can also set an addtional 'email_backend' arg to a custom email handler (e.g. SES)
+            'mail_admins': {
+                'level': 'ERROR',
+                'class': 'django.util.log.AdminEmailHandler',
+                'include_html': True,
             },
         },
         # logs request errors
@@ -246,5 +255,7 @@ if not DEBUG:
                 'level': 'DEBUG',
                 'propagate': True,
             },
+        # django's default loggers send request and security messages at the ERROR
+        # or CRITICAL level to the AdminEmailHandler via mail_admins
         },
     }
