@@ -531,53 +531,35 @@ class DetailMajor(LoginRequiredMixin, DetailView):
         context = super(DetailMajor, self).get_context_data(**kwargs)
         requesting_student = Student.objects.get(user=self.request.user)
 
-        # retrieve every room that has a student with the major in question
-        aq_rooms = [
-            room
-            for room in Room.objects.filter(floor__building__neighbourhood='aq')
-            if room.student_set.filter(major=self.get_object())
-        ]
-        ra_rooms = [
-            room
-            for room in Room.objects.filter(floor__building__neighbourhood='ra')
-            if room.student_set.filter(major=self.get_object())
-        ]
-        sh_rooms = [
-            room
-            for room in Room.objects.filter(floor__building__neighbourhood='sh')
-            if room.student_set.filter(major=self.get_object())
-        ]
+	# retrieve every room that has a student with the major in question
+	neighbourhoods = ("aq", "ra", "sh")
+	visible_by_neighbourhood = {}
+	for neighbourhood in neighbourhoods:
+	    rooms = [
+		room
+		for room in Room.objects.filter(floor__building__neighbourhood=neighbourhood)
+		if room.student_set.filter(major=self.get_object())
+	    ]
 
-        # identify if the student(s) in that room are visible to the requesting student
-        # 'chain' is necessary if there are multiple students in one room with the same major
-        aq_visible = list(chain(*[
-            Student.objects.visible(requesting_student, room)
-            for room in aq_rooms
-        ]))
-        ra_visible = list(chain(*[
-            Student.objects.visible(requesting_student, room)
-            for room in ra_rooms
-        ]))
-        sh_visible = list(chain(*[
-            Student.objects.visible(requesting_student, room)
-            for room in sh_rooms
-        ]))
+	    # identify if the student(s) in that room are visible to the requesting student
+	    # 'chain' is necessary if there are multiple students in one room with the same major
+	    #
+	    # we sort each of the lists of students by their username
+	    # as elsewhere, this is imperfect if a student changes their display name
+	    # this is necessary as a separate step because .visible returns a list type
+	    # note we're using '.' instead of '__', because who likes syntactical consistency
+	    visible_by_neighbourhood[neighbourhood] = sorted(list(chain(*[
+		Student.objects.visible(requesting_student, room)
+		for room in rooms
+	    ])), key=attrgetter('user.username'))
 
         # see what students are left over (aren't visible)
-        everyone = Student.objects.filter(major=self.get_object()).order_by('user__username')
-        hidden = list(((set(everyone) - set(aq_visible)) - set(ra_visible)) - set(sh_visible))
+        hidden = Student.objects.filter(major=self.get_object()).order_by('user__username')
+	for visible in neighbourhoods.values():
+	    hidden -= set(visible)
 
-        # sort each of the lists of students by their username
-        # as elsewhere, this is imperfect if a student changes their display name
-        # this is necessary as a separate step because .visible returns a list type
-        # note we're using '.' instead of '__', because who likes syntactical consistency
-        sorted_aq_visible = sorted(aq_visible, key=attrgetter('user.username'))
-        sorted_ra_visible = sorted(ra_visible, key=attrgetter('user.username'))
-        sorted_sh_visible = sorted(sh_visible, key=attrgetter('user.username'))
-
-        context['aq_location_visible'] = sorted_aq_visible
-        context['ra_location_visible'] = sorted_ra_visible
-        context['sh_location_visible'] = sorted_sh_visible
+	for neighbourhood, visible in neighbourhoods.items():
+	    context['%s_location_visible' % neighbourhood] = visible
         context['location_hidden'] = hidden
 
         return context
