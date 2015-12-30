@@ -77,7 +77,7 @@ class StudentQuerySet(models.query.QuerySet):
         elif isinstance(housing, Floor):
             rooms = Room.objects.filter(floor=housing).order_by('number')
         elif isinstance(housing, Building):
-            rooms = Room.objects.filter(floor__building=housing).order_by('floor__building__name', 'number')
+            rooms = Room.objects.filter(floor__building=housing).order_by('number')
         else:
             raise TypeError("'housing' arg must be Building, Floor, or Room")
 
