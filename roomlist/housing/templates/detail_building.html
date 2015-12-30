@@ -1,6 +1,8 @@
 {% extends 'layouts/base.html' %}
 {% block title %} SRCT Roomlist &bull; {{ building.name }} {% endblock %}
 {% block content %}
+{% load cache %}
+{% cache 900 detail_building building %}
 
 <div class="page-header" id="banner">
   <div class="row">
@@ -33,4 +35,5 @@
   {% endfor %}
 </div>
 
+{% endcache %}
 {% endblock %}

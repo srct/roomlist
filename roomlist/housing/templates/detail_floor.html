@@ -3,7 +3,7 @@
 {% block title %} SRCT Roomlist &bull; {{ floor.building.name }} {{ floor.number|ordinal }}{% endblock title %}
 {% block content %}
 {% load cache %}
-{% cache 120 floor_students request.user.username floor %}
+{% cache 15 floor_students request.user.username floor %}
 
 <div class="page-header" id="banner">
   <div class="row">

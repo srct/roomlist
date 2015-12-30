@@ -2,7 +2,6 @@
 from __future__ import absolute_import, print_function
 # core django imports
 from django.conf.urls import patterns, include, url
-from django.views.decorators.cache import cache_page
 # imports from your apps
 from .views import (DetailStudent, UpdateStudent, DetailStudentSettings,
                     DetailCurrentStudent, DetailCurrentStudentSettings, ListMajors,
@@ -17,9 +16,7 @@ urlpatterns = patterns('',
     url(r'', include('allauth.urls')),
 
     # majors pages
-    url(r'^majors/$',
-        cache_page(60 * 15)(ListMajors.as_view()),
-        name='list_majors'),
+    url(r'^majors/$', ListMajors.as_view(), name='list_majors'),
 
     url(r'^majors/(?P<slug>[\w-]+)/(?P<major>[\w-]+)/$',
         DetailMajor.as_view(), name='detail_major'),
@@ -34,8 +31,7 @@ urlpatterns = patterns('',
 
     # student settings
     url(r'^student/(?P<slug>[\w-]+)/settings/$',
-        cache_page(4)(UpdateStudent.as_view()),
-        name='updateStudent'),
+        UpdateStudent.as_view(), name='updateStudent'),
 
     url(r'^student/(?P<slug>[\w-]+)/settings/social/remove/$',
         RemoveSocialConfirmationView.as_view(),

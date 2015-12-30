@@ -6,6 +6,9 @@ SRCT Roomlist &bull; About
 
 {% block content %}
 
+{% load cache %}
+{% cache 900 about %}
+
 <div class="container container-padding">
   <div class="row">
     <div class="col-lg-12 license">
@@ -88,4 +91,5 @@ SRCT Roomlist &bull; About
   </div>
 </div>
 
+{% endcache %}
 {% endblock %}
