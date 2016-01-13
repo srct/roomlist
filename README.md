@@ -103,7 +103,7 @@ Though you can use an existing user to access this database, here's how to creat
 For local development, password strength is less important, but use a strong passphrase for deployment. You can choose a different username.
 
 ``GRANT ALL ON roomlist.* TO 'roommate'@'localhost';``
-This allows your database user to create all the tables it needs on the bookshare database. (Each model in each app's models.py is a separate table, and each attribute a column, and each instance a row.)
+This allows your database user to create all the tables it needs on the roomlist database. (Each model in each app's models.py is a separate table, and each attribute a column, and each instance a row.)
 
 ``GRANT ALL ON test_roomlist.* TO 'roommate'@'localhost';`` ``FLUSH PRIVILEGES;``
 When running test cases, django creates a test database so your 'real' database doesn't get screwed up. This database is called 'test_' + whatever your normal database is named. Note that for permissions it doesn't matter that this database hasn't yet been created.
