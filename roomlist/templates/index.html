@@ -4,14 +4,13 @@
 {% block content %}
 
 {% load cache %}
-{% cache 900 homepage %}
 
 <div class="container container-padding">
   <div class="row">
     <div class="col-md-12 license">
       <div class="jumbotron jumboindex">
         <h1 class="text-center"><strong>SRCT</strong>&#8203;ROOMLIST</h1>
-        <h3 class="text-center">Find your on-campus neighbors.</h3>
+        <h3 class="text-center">Find your on-campus neighbors</h3>
       </div>
       <a href="https://creativecommons.org/licenses/by-nc/2.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc/2.0/80x15.png" title="'North Section of President's Park Dorms' by Flickr user cgs_gmu2005 is licensed under a Creative Commons Attribution-NonCommercial 2.0 Generic License."
         />
@@ -20,36 +19,118 @@
   </div>
 </div>
 
-<legend></legend>
+<hr/>
 
 <div class="row">
-  <div class="col-md-3 text-center">
-    <h4><i class="fa fa-key fa-lg"></i></h4>
-    <h4>Log in with your Mason credentials</h4>
-  </div>
-  <div class="col-md-3 text-center">
-    <h4><i class="fa fa-group fa-lg"></i></h4>
-    <h4>See who else lives on your floor</h4>
-  </div>
-  <div class="col-md-3 text-center">
-    <h4><i class="fa fa-facebook fa-lg"></i></h4>
-    <h4>Link to your social media accounts</h4>
-  </div>
-  <div class="col-md-3 text-center">
-    <h4><i class="fa fa-lock fa-lg"></i></h4>
-    <h4>Choose to share by floor, building, or campus</h4>
+  <div class="col-md-12 text-center">
+    <h4>
+      Roomlist is a voluntary, privacy-focused student housing directory for Mason
+    </h4>
   </div>
 </div>
 
-{% if not user.is_authenticated %}
-<br />
+<hr />
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-1">
+    <h5><strong>
+      <i class="fa fa-key fa-2x"></i>&nbsp;&nbsp;
+      Log in with your Mason credentials
+    </strong></h5>
+    <h5>
+      Only people with a current, valid Mason username and password may join.
+    </h5>
+  </div>
+  <div class="col-md-6 text-right">
+    <img src="/static/img/login.png" class="img-responsive img-thumbnail example-picture"
+     alt="Mason CAS auth screen">
+  </div>
+</div>
+
+<hr/>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-1">
+    <img src="/static/img/floormates.png" class="img-responsive img-thumbnail example-picture"
+     alt="students on a floor">
+  </div>
+  <div class="col-md-4 text-right">
+    <h5><strong>
+      See who else lives on your floor&nbsp;&nbsp;
+      <i class="fa fa-group fa-2x"></i>
+    </strong></h5>
+    <h5>
+      A better way to foster community than accidentally running into neighbors
+      on the stairs or in an elevator.
+    </h5>
+  </div>
+</div>
+
+<hr/>
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-1">
+    <h5><strong>
+      <i class="fa fa-university fa-2x"></i>&nbsp;&nbsp;
+      Find other students by major
+    </strong></h5>
+    <h5>
+      An easy way to identify people for developing study groups and making friends
+      within your major.
+    </h5>
+  </div>
+  <div class="col-md-6 text-right">
+    <img src="/static/img/majors.png" class="img-responsive img-thumbnail example-picture"
+     alt="list of majors">
+  </div>
+</div>
+
+<hr/>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-1">
+    <img src="/static/img/privacy.png" class="img-responsive img-thumbnail example-picture"
+     alt="privacy settings options">
+  </div>
+  <div class="col-md-4 text-right">
+    <h5><strong>
+      Limit your visibility to your floor or building&nbsp;&nbsp;
+      <i class="fa fa-lock fa-2x"></i>
+    </strong></h5>
+    <h5>
+      If you choose to select what room you live in, you have full control over
+      who else sees that information.
+    </h5>
+  </div>
+</div>
+
+<hr/>
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-1">
+    <h5><strong>
+      <i class="fa fa-share-alt fa-2x"></i>&nbsp;&nbsp;
+      Link to your social media accounts
+    </strong></h5>
+    <h5>
+      We're not recreating Facebook here. Link to your Facebook, Twitter, Instagram,
+      or Google pages.
+    </h5>
+  </div>
+  <div class="col-md-6 text-right">
+    <img src="/static/img/social.png" class="img-responsive img-thumbnail example-picture"
+     alt="user's social media account links">
+  </div>
+</div>
+
+<hr/>
 
 <div class="row">
   <div class="col-md-4 col-md-offset-4 text-center">
     <a href="{% url 'login' %}" class="btn btn-primary btn-lg btn-block">Get Started</a>
   </div>
 </div>
-{% endif %}
 
-{% endcache %}
+<br />
+
 {% endblock content %}

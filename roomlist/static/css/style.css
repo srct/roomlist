@@ -35,7 +35,7 @@ a[name] {
   background-position: center;
   box-shadow: inset 0px 0px 20px #333;
   color: white;
-  text-shadow: 2px 2px 4px #000;
+  text-shadow: 2px 2px 5px #000;
   padding-top: 75px;
   padding-bottom: 75px;
 }
@@ -95,3 +95,9 @@ outline-offset: none;
 
 .breadcrumb {background: rgba(245, 245, 245, 1); border: 2px solid rgba(245, 245, 245, 1); border-radius: 4px; display: block;}
 .breadcrumb li {font-size: 20px;}
+
+.example-picture {
+  max-height: 200px;
+  box-shadow: 2px 2px 5px #d3d3d3;
+
+}
