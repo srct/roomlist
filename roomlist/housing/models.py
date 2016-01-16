@@ -56,14 +56,25 @@ class Building(TimeStampedModel):
     def __unicode__(self):  # __unicode__ on Python 2
         return unicode(self.name)
 
-    def __contains__(self, student):
-        try:
-            if student.room.floor.building == self:
+    def __contains__(self, obj):
+        if isinstance(obj, Floor):
+            if obj.building == self:  # floor.building == building
                 return True
             else:
                 return False
-        except:
-            return False
+        elif isinstance(obj, Room):
+            if obj.floor.building == self:  # room.floor.building == building
+                return True
+            else:
+                return False
+        else:
+            try:
+                if obj.room.floor.building == self:  # student.room.floor.building == building
+                    return True
+                else:
+                    return False
+            except:
+                return False
 
     class Meta:
         ordering = ['name']
@@ -87,14 +98,20 @@ class Floor(TimeStampedModel):
     def __str__(self):  # __unicode__ on Python 2
         return self.building.__str__()+" "+self.number.__str__()
 
-    def __contains__(self, student):
-        try:
-            if student.room.floor == self:
+    def __contains__(self, obj):  # circular imports with Student
+        if isinstance(obj, Room):
+            if obj.floor == self:  # room.floor == room
                 return True
             else:
                 return False
-        except:
-            return False
+        else:
+            try:
+                if obj.room.floor == self:  # student.room.floor == floor
+                    return True
+                else:
+                    return False
+            except:
+                return False
 
     class Meta:
         ordering = ['building', 'number']
@@ -119,9 +136,9 @@ class Room(TimeStampedModel):
     def __str__(self):  # __unicode__ on Python 2
         return self.floor.building.__str__()+" "+self.number.__str__()
 
-    def __contains__(self, student):
+    def __contains__(self, obj):  # circular imports with Student
         try:
-            if student.room == self:
+            if obj.room == self:  # student.room == room
                 return True
             else:
                 return False
