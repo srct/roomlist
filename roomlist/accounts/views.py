@@ -3,7 +3,7 @@ from __future__ import absolute_import, print_function
 import random
 # core django imports
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.views.generic import (CreateView, ListView, DetailView, UpdateView,
                                   FormView, DeleteView)
 from django.core.urlresolvers import reverse
@@ -21,22 +21,8 @@ from .forms import (StudentUpdateForm, WelcomeNameForm, WelcomePrivacyForm,
                     WelcomeSocialForm)
 
 
-not_started = """Welcome to SRCT Roomlist! <a href="%s">Click here</a> to walk through
-                 your profile setup."""
-
-# 1 or 2
-started = """Welcome back to SRCT Roomlist! It looks like you're not quite finished with
-             setting up your profile. <a href="%s">Click here</a> to return to your
-             welcome walkthrough."""
-
-# 3
-almost = """Welcome back to SRCT Roomlist! It looks like you're almost finished
-            with setting up your profile. <a href="%s">Click here</a> to return
-            to the last page of your welcome walkthrough."""
-
-# walkthrough finished but Room is None
-no_room = """It looks like you haven't set your room yet. Head to <a href="%s"> your
-             settings page</a> to get that taken care of."""
+settings_redirect = """You've already finished the welcome walkthrough.
+                       Your user settings can now be changed here on this page."""
 
 #########
 
@@ -82,30 +68,20 @@ def custom_cas_login(request, *args, **kwargs):
 
     if request.user.is_authenticated():
 
-        if request.user.student.completedName is False:
-            rendered_url = reverse('welcomeName', args=[request.user.username])
-            add_url = not_started % rendered_url
-            messages.add_message(request, messages.INFO, mark_safe(add_url))
+        if not request.user.student.totally_done():
 
-        elif request.user.student.completedPrivacy is False:
-            rendered_url = reverse('welcomePrivacy', args=[request.user.username])
-            add_url = started % rendered_url
-            messages.add_message(request, messages.INFO, mark_safe(add_url))
-
-        elif request.user.student.completedMajor is False:
-            rendered_url = reverse('welcomeMajor', args=[request.user.username])
-            add_url = started % rendered_url
-            messages.add_message(request, messages.INFO, mark_safe(add_url))
-
-        elif request.user.student.completedName is False:
-            rendered_url = reverse('welcomeSocial', args=[request.user.username])
-            add_url = started % rendered_url
-            messages.add_message(request, messages.INFO, mark_safe(add_url))
-
-        elif request.user.student.room is None:
-            rendered_url = reverse('updateStudent', args=[request.user.username])
-            add_url = started % rendered_url
-            messages.add_message(request, messages.INFO, mark_safe(add_url))
+            if not request.user.student.completedName:
+                return HttpResponseRedirect(reverse('welcomeName',
+                                            kwargs={'slug':request.user.username}))
+            elif not request.user.student.completedPrivacy:
+                return HttpResponseRedirect(reverse('welcomePrivacy',
+                                            kwargs={'slug':request.user.username}))
+            elif not request.user.student.completedMajor:
+                return HttpResponseRedirect(reverse('welcomeMajor',
+                                            kwargs={'slug':request.user.username}))
+            elif not request.user.completedSocial:
+                return HttpResponseRedirect(reverse('welcomeSocial',
+                                            kwargs={'slug':request.user.username}))
         else:
             welcome_back = random.choice(return_messages)
             messages.add_message(request, messages.INFO, mark_safe(welcome_back))
@@ -336,8 +312,14 @@ class WelcomeName(LoginRequiredMixin, FormView):
 
         if not(url_uname == self.request.user.username):
             return HttpResponseForbidden()
+        elif self.request.user.student.totally_done():
+            messages.add_message(request, messages.INFO, settings_redirect)
+            return reverse('updateStudent',
+                           kwargs={'slug':self.request.user.username})
         else:
             return super(WelcomeName, self).get(request, *args, **kwargs)
+
+
 
     def get_context_data(self, **kwargs):
         context = super(WelcomeName, self).get_context_data(**kwargs)
@@ -392,6 +374,10 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
 
         if not(url_uname == self.request.user.username):
             return HttpResponseForbidden()
+        elif self.request.user.student.totally_done():
+            messages.add_message(request, messages.INFO, settings_redirect)
+            return reverse('updateStudent',
+                           kwargs={'slug':self.request.user.username})
         else:
             return super(WelcomePrivacy, self).get(request, *args, **kwargs)
 
@@ -451,6 +437,10 @@ class WelcomeMajor(LoginRequiredMixin, UpdateView):
 
         if not(url_uname == self.request.user.username):
             return HttpResponseForbidden()
+        elif self.request.user.student.totally_done():
+            messages.add_message(request, messages.INFO, settings_redirect)
+            return reverse('updateStudent',
+                           kwargs={'slug':self.request.user.username})
         else:
             return super(WelcomeMajor, self).get(request, *args, **kwargs)
 
@@ -484,6 +474,10 @@ class WelcomeSocial(LoginRequiredMixin, UpdateView):
 
         if not(url_uname == self.request.user.username):
             return HttpResponseForbidden()
+        elif self.request.user.student.totally_done():
+            messages.add_message(request, messages.INFO, settings_redirect)
+            return reverse('updateStudent',
+                           kwargs={'slug':self.request.user.username})
         else:
             return super(WelcomeSocial, self).get(request, *args, **kwargs)
 
