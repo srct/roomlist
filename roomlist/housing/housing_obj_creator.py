@@ -14,10 +14,17 @@ from housing.models import Building, Floor, Room
 # check if there are floors already in the database
 # check if there are rooms already in the database
 
-# fail if there is already stuff there?
-
 # building name, neighborhood
 mason_housing = { 'Adams': 'sh',
+                  'Apartment 1': 'aq',
+                  'Apartment 2': 'aq',
+                  'Apartment 3': 'aq',
+                  'Apartment 4': 'aq',
+                  'Apartment 5': 'aq',
+                  'Apartment 6': 'aq',
+                  'Apartment 7': 'aq',
+                  'Apartment 8': 'aq',
+                  'Apartment 9': 'aq',
                   'Amherst': 'ra',
                   'Blue Ridge': 'ra',
                   'Brunswick': 'ra',
@@ -49,8 +56,7 @@ mason_housing = { 'Adams': 'sh',
                   'Whitetop': 'aq',
                   'Wilson': 'sh', }
 
-# Student Apartments -- multiple buildings
-# Townhouses -- multiple buildings
+# Townhouses -- really whacky naming
 # Beacon Hall -- graduate students
 # Liberty Square -- Weird letters in name
 # Mason Global Center -- international students
@@ -79,7 +85,7 @@ new_floors = 0
 with open('housing/buildingFloors.txt') as buildings:
     for line in buildings:
         line = line.strip()
-        if re.match('[a-z A-z]', line):
+        if re.match('^[a-z A-Z]*( {1}\d)?$', line):
             current_building = Building.objects.get(name=line)
             print(current_building)
         else:
@@ -97,7 +103,7 @@ new_rooms = 0
 with open('housing/building_rooms.txt') as rooms:
      for line in rooms:
          line = line.strip()
-         if re.match('[a-z A-Z]', line):
+         if re.match('^[a-z A-Z]*( {1}\d)?$', line):
              current_building = Building.objects.get(name=line)
              print(current_building)
          else:
