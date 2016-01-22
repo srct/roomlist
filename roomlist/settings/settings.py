@@ -244,7 +244,7 @@ if not DEBUG:
             # you can also set an addtional 'email_backend' arg to a custom email handler (e.g. SES)
             'mail_admins': {
                 'level': 'ERROR',
-                'class': 'django.util.log.AdminEmailHandler',
+                'class': 'django.utils.log.AdminEmailHandler',
                 'include_html': True,
             },
         },
