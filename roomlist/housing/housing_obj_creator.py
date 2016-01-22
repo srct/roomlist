@@ -38,10 +38,12 @@ mason_housing = { 'Adams': 'sh',
                   'Madison': 'sh',
                   'Monroe': 'sh',
                   'Northern Neck': 'ra',
+                  'Piedmont': 'ra',
                   'Potomac Heights': 'sh',
                   'Rogers': 'aq',
                   'Roosevelt': 'sh',
                   'Sandbridge': 'ra',
+                  'Tidewater': 'ra',
                   'Truman': 'sh',
                   'Washington': 'sh',
                   'Whitetop': 'aq',
@@ -49,8 +51,6 @@ mason_housing = { 'Adams': 'sh',
 
 # Student Apartments -- multiple buildings
 # Townhouses -- multiple buildings
-# Piedmont -- broken off-by-one blueprint
-# Tidewater -- broken off-by-one blueprint
 # Beacon Hall -- graduate students
 # Liberty Square -- Weird letters in name
 # Mason Global Center -- international students
@@ -58,30 +58,45 @@ mason_housing = { 'Adams': 'sh',
 start_time = datetime.now()
 print("Creating buildings...")
 
-for building_name, neighborhood in mason_housing.iteritems():
-    my_building = Building.objects.create(name=building_name, neighbourhood=neighborhood)
-    print(my_building)
-    my_building.save()
+new_buildings = 0
 
-print("Created %d buildings." % Building.objects.all().count())
+for building_name, neighborhood in mason_housing.iteritems():
+    my_building, building_created = Building.objects.get_or_create(name=building_name,
+                                                                   neighbourhood=neighborhood)
+    if not building_created:
+        print(my_building)
+    else:
+        my_building.save()
+        new_buildings += 1
+        print(my_building, "(NEW!)")
+
+print("Created %d new buildings, %d buildings total." % (new_buildings,
+                                                         Building.objects.all().count()))
 print("Creating floors...")
+
+new_floors = 0
 
 with open('housing/buildingFloors.txt') as buildings:
     for line in buildings:
-        line = line.rstrip('\n')
+        line = line.strip()
         if re.match('[a-z A-z]', line):
-            print(line)
             current_building = Building.objects.get(name=line)
+            print(current_building)
         else:
-            my_floor = Floor.objects.create(number=int(line), building=current_building)
-            my_floor.save()
+            my_floor, floor_created = Floor.objects.get_or_create(number=int(line),
+                                                                  building=current_building)
+            if floor_created:
+                my_floor.save()
+                new_floors += 1
 
-print("Created %d floors." % Floor.objects.all().count())
+print("Created %d new floors, %d floors total." % (new_floors, Floor.objects.all().count()))
 print("Creating rooms...")
+
+new_rooms = 0
 
 with open('housing/building_rooms.txt') as rooms:
      for line in rooms:
-         line = line.rstrip('\n')
+         line = line.strip()
          if re.match('[a-z A-Z]', line):
              current_building = Building.objects.get(name=line)
              print(current_building)
@@ -90,10 +105,12 @@ with open('housing/building_rooms.txt') as rooms:
                  my_floor = Floor.objects.get(building=current_building, number=int(line[1]))
              else:
                  my_floor = Floor.objects.get(building=current_building, number=int(line[0]))
-             my_room = Room.objects.create(floor=my_floor, number=int(line))
-             my_room.save()
+             my_room, room_created = Room.objects.get_or_create(floor=my_floor, number=int(line))
+             if room_created:
+                 new_rooms += 1
+                 my_room.save()
 
-print("Created %d rooms." % Room.objects.all().count())
+print("Created %d new rooms, %d rooms total." % (new_rooms, Room.objects.all().count()))
 end_time = datetime.now()
 total_time = end_time - start_time
 print("Elapsed time:", total_time)
