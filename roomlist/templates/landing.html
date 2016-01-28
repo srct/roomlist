@@ -12,6 +12,8 @@
 <h2>Welcome Back {{ me.get_first_name_or_uname }}!</h2>
 <legend></legend>
 
+{% if me.on_campus %}
+
 {% if not me.room %}
   <h3><em><a href="{% url 'updateStudent' request.user.username %}">Select your room</a>, and we'll show you the other students on your floor.</em></h3>
 {% else %}
@@ -68,6 +70,8 @@
 
 {% endif %}
 {% endcache %}
+
+{% endif %}
 
 {% cache 120 landing_majors request.user.username %}
 {% if not me.major %}
