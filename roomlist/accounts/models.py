@@ -126,11 +126,12 @@ class Student(TimeStampedModel):
     )
 
     # selectmultiple in forms
-    gender = MultiSelectField(max_length=25, choices=GENDER_CHOICES, blank=True)
+    gender = MultiSelectField(max_length=50, choices=GENDER_CHOICES, blank=True)
     show_gender = models.BooleanField(default=False)
 
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
 
+    on_campus = models.BooleanField(default=True)
     room = models.ForeignKey(Room, null=True, blank=True)
 
     major = models.ForeignKey('Major', related_name='major', null=True, blank=True)
