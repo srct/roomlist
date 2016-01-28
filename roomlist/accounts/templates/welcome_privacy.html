@@ -26,12 +26,14 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <p class="text-center">Great, {{ request.user.student.get_first_name_or_uname }}! Now to your housing information and settings. Here, you'll select which room you live in, and then choose who you want to be able to see that information.</p>
+    <p class="text-center">If you don't live on campus, you can select 'No' and move right along.</p>
+    <p class="text-center">For on campus students, here you'll select which room you live in, and then choose who you want to be able to see that information.</p>
     <p class="text-center"><strong>By default, your privacy is set to 'Floor'.</strong> That means only other students <em>living on your floor</em> can see your room or links to your social media profiles.
     You can choose to set your privacy to '<strong>Building</strong>', which will make your room visible to everyone living in your building, or to '<strong>Campus</strong>', where it will be visible to anyone with a current Mason username and password.</p>
     <p class="text-center">To close a rather straightforward privacy loophole, you can only change your room a limited number of times a year, after which you will need to
     <a href="mailto:roomlist@lists.srct.gmu.edu?Subject=I%20Don%27t%20Know%20Where%20I%20Live%3A%20Halp%20Pls">email us</a>.
     </p>
-    <p class="text-center">Off-campus locations along with a select number of locations <a href="{% url 'list_buildings' %}#Unsupported">on campus</a> are not currently supported. You are still welcome to use roomlist as a limited interactive directory until we add support.</p>
+    <p class="text-center">A select number of locations <a href="{% url 'list_buildings' %}#Unsupported">on campus</a> are not currently supported. You are still welcome to use roomlist as an interactive directory until we add support.</p>
   </div>
 </div>
 
@@ -44,12 +46,49 @@
       </div>
 
       <div class="panel-body">
+        {% if not request.user.student.recent_changes > 2 %}
         {% spaceless %}
+        {% if my_form.non_field_errors %}
+        <hr />
+        <ul class="text-center">
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        <hr />
+        {% endif %}
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
-          {{ my_form.as_p }}
+          <fieldset>
+            <div class="form-group">
+              <label for="{{ my_form.on_campus.id_for_label }}" class="col-md-3">
+                Do You Live on Campus?
+              </label>
+                {% for option in my_form.on_campus %}
+                  <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
+                {% endfor %}
+              </div>
+            <div id="lives-on-campus">
+              <div class="form-group">
+                <div class="col-md-12">
+                  {{ my_form.room }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="{{ my_form.privacy.id_for_label }}" class="col-md-2">
+                  Privacy
+                </label>
+                  {{ my_form.privacy }}
+              </div>
+            </div>
+          </fieldset>
           <input type="submit" value="Save" class="btn btn-primary"/>
         </form>
         {% endspaceless %}
+        {% else %}
+        <a href="{% url 'welcomeMajor' request.user.username %}">
+          <button type="button" class="btn btn-primary">Continue</button>
+        </a>
+        {% endif %}
       </div>
     </div>
 
@@ -71,6 +110,27 @@
 {% block javascript %}
   <script type="text/javascript" src="/static/js/jquery.chained.min.js"></script>
   <script>
+    // toggle room selection availability
+    // can see if on campus, cannot see if not on campus
+    $(document).ready(function() {
+      var $radio = $('input:radio[name=on_campus]');
+      // when first rendering the page
+      if($radio.filter('[value=False]').is(':checked')) {
+        $("#lives-on-campus").hide();
+      } else {
+        $("#lives-on-campus").show();
+      }
+      // if student changes the value
+      $($radio.filter('[value=False]').click(function(){
+        $("#lives-on-campus").slideUp();
+      }));
+      $($radio.filter('[value=True]').click(function(){
+        $("#lives-on-campus").slideDown();
+      }));
+    });
+    $("#lives-on-campus").hide();
+
+    // room selection
     $("#building").chained("#neighborhood");
     $("#floor").chained("#building");
     $("#room").chained("#floor");
