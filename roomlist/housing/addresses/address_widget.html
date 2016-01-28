@@ -1,0 +1,34 @@
+<div class="form-group">
+  <label class="col-md-2">Address</label>
+    <div class="col-md-10">
+      <input type="text" class="form-control" placeholder="4400 University Drive">
+    </div>
+</div>
+<div class="form-group">
+  <label class="col-md-2">City</label>
+    <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Fairfax">
+    </div>
+  <label class="col-md-2">State</label>
+    <div class="col-md-4">
+      <select id="state" name="state">
+        {% for state in states %}
+          {% if user.student.address.state == state.0 %}
+            <option value="{{ state.0 }}" selected="selected">{{ state.1 }}</option>
+          {% else %}
+            {% if state.0 == "VA" %}
+              <option value="{{ state.0 }}" selected="selected">{{ state.1 }}</option>
+            {% else %}
+              <option value="{{ state.0 }}">{{ state.1 }}</option>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+</div>
+<div class="form-group">
+  <label class="col-md-2">Zip Code</label>
+    <div class="col-md-1">
+      <input type="text" placeholder="22030">
+    </div>
+</div>
