@@ -108,12 +108,10 @@ class StudentUpdateForm(forms.Form):
 
 class WelcomeNameForm(forms.Form):
 
-    first_name = forms.CharField(label='First Name', required=False)
-    last_name = forms.CharField(label='Last Name', required=False)
-    gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
-                                  label='Gender Identity (please choose all that apply)',
-                                  required=False)
-    show_gender = BooleanRadioField(label='Show your gender on your profile?')
+    first_name = forms.CharField( required=False)
+    last_name = forms.CharField(required=False)
+    gender = MultiSelectFormField(choices=Student.GENDER_CHOICES, required=False)
+    show_gender = BooleanRadioField()
 
 
 class WelcomePrivacyForm(forms.ModelForm):

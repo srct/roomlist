@@ -352,6 +352,10 @@ class WelcomeName(LoginRequiredMixin, FormView):
                                         'last_name': me.user.last_name,
                                         'gender': me.gender,
                                         'show_gender': me.show_gender, })
+
+        form.fields['first_name'].widget.attrs['class'] = 'form-control'
+        form.fields['last_name'].widget.attrs['class'] = 'form-control'
+
         context['my_form'] = form
         return context
 
@@ -367,7 +371,7 @@ class WelcomeName(LoginRequiredMixin, FormView):
         me.user.last_name = form.data['last_name']
 
         me.gender = form.data.getlist('gender')
-        me.show_gender = form.data.get('show_gender', False)
+        me.show_gender = strtobool(form.data.get('show_gender', 'False'))
 
         me.completedName = True
 
