@@ -1,5 +1,5 @@
 {% load humanize %}
-<label>Neighborhood</label>
+<label>Neighborhood</label>&nbsp;
 <select id="neighborhood" name="neighborhood">
   {% for neighborhood in neighborhoods %}
     {% if user.student.get_building.neighbourhood == neighborhood.0 %}
@@ -9,7 +9,7 @@
     {% endif %}
   {% endfor %}
 </select>
-<label>Building</label>
+&nbsp;&nbsp;<label>Building</label>&nbsp;
 <select id="building" name="building">
   <option value="">---</option>
   {% for building in buildings %}
@@ -20,7 +20,7 @@
     {% endif %}
   {% endfor %}
 </select>
-<label>Floor</label>
+&nbsp;&nbsp;<label>Floor</label>&nbsp;
 <select id="floor" name="floor">
   <option value="">---</option>
   {% for floor in floors %}
@@ -31,7 +31,7 @@
     {% endif %}
   {% endfor %}
 </select>
-<label>Room</label>
+&nbsp;&nbsp;<label>Room</label>&nbsp;
 <select id="room" name="room" class="roompicker">
   <option value="">---</option>
   {% for room in rooms %}
