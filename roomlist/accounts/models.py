@@ -16,7 +16,7 @@ from randomslugfield import RandomSlugField
 from multiselectfield import MultiSelectField
 from allauth.socialaccount.models import SocialAccount
 # imports from your apps
-from housing.models import Room
+from housing.models import Room, Floor, Building
 
 
 class Major(TimeStampedModel):
@@ -71,6 +71,28 @@ class StudentQuerySet(models.query.QuerySet):
 
         return list(floor) + list(set(building_students) - set(floor))
 
+    def visible(self, student, housing):
+        if isinstance(housing, Room):
+            rooms = [housing]
+        elif isinstance(housing, Floor):
+            rooms = Room.objects.filter(floor=housing).order_by('number')
+        elif isinstance(housing, Building):
+            rooms = Room.objects.filter(floor__building=housing).order_by('number')
+        else:
+            raise TypeError("'housing' arg must be Building, Floor, or Room")
+
+        visible_students = []
+
+        for room in rooms:
+            if student in room.floor:
+                visible_students.extend(self.filter(room=room).floor_building_students())
+            elif student in room.floor.building:
+                visible_students.extend(self.filter(room=room).building_students())
+            else:
+                visible_students.extend(self.filter(room=room).students())
+
+        return visible_students
+
 
 class StudentManager(models.Manager):
 
@@ -93,6 +115,9 @@ class StudentManager(models.Manager):
 
     def floor_building_students(self):
         return self.get_queryset().floor_building_students()
+
+    def visible(self, student, housing):
+        return self.get_queryset().visible(student, housing)
 
 
 class Student(TimeStampedModel):
