@@ -553,12 +553,17 @@ class DetailMajor(LoginRequiredMixin, DetailView):
 		for room in rooms
 	    ])), key=attrgetter('user.username'))
 
-        # see what students are left over (aren't visible)
-        hidden = Student.objects.filter(major=self.get_object()).order_by('user__username')
-	for visible in neighbourhoods.values():
-	    hidden -= set(visible)
+        # print(visible_by_neighbourhood)
 
-	for neighbourhood, visible in neighbourhoods.items():
+        # see what students are left over (aren't visible)
+        hidden = set(Student.objects.filter(major=self.get_object()).order_by('user__username'))
+        # print(hidden)
+	for visible in visible_by_neighbourhood.values():
+            # print('visible', visible)
+	    hidden = hidden.difference(set(visible))
+            # print(hidden)
+
+	for neighbourhood, visible in visible_by_neighbourhood.iteritems():
 	    context['%s_location_visible' % neighbourhood] = visible
         context['location_hidden'] = hidden
 
