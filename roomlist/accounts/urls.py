@@ -5,8 +5,7 @@ from django.conf.urls import patterns, include, url
 # imports from your apps
 from .views import (DetailStudent, UpdateStudent, DetailStudentSettings,
                     DetailCurrentStudent, DetailCurrentStudentSettings, ListMajors,
-                    DetailMajor, WelcomeName, WelcomePrivacy, WelcomeMajor,
-                    WelcomeSocial, CreateConfirmation, DeleteConfirmation)
+                    DetailMajor, CreateConfirmation, DeleteConfirmation)
 from .adapter import RemoveSocialConfirmationView
 
 
@@ -48,25 +47,4 @@ urlpatterns = patterns('',
     # delete
     url(r'^student/(?P<student_slug>[\w-]+)/flag/(?P<slug>[\w-]+)/$',
         DeleteConfirmation.as_view(), name='deleteConfirmation'),
-
-    # first welcome page
-    # let's verify your name and optionally select a gender
-    url(r'^welcome/(?P<slug>[\w-]+)/1/$',
-        WelcomeName.as_view(), name='welcomeName'),
-
-    # second welcome page
-    # let's set your room and privacy
-    url(r'^welcome/(?P<slug>[\w-]+)/2/$',
-        WelcomePrivacy.as_view(), name='welcomePrivacy'),
-
-    # third welcome page
-    # let's verify your major
-    url(r'^welcome/(?P<slug>[\w-]+)/3/$',
-        WelcomeMajor.as_view(), name='welcomeMajor'),
-
-    # fourth welcome page
-    # set your social media links
-    url(r'^welcome/(?P<slug>[\w-]+)/4/$',
-        WelcomeSocial.as_view(), name='welcomeSocial'),
-
 )
