@@ -23,6 +23,18 @@ class BuildingTest(TestCase):
         wilson_third.save()
         wilson_313.save()
 
+        harrison = Building.objects.create(name='Harrison', neighbourhood='sh', campus='ff')
+        harrison_third = Floor.objects.create(building=harrison, number=3)
+        harrison_313 = Room.objects.create(floor=harrison_third, number=313)
+
+        global harrison
+        global harrison_third
+        global harrison_313
+
+        harrison.save()
+        harrison_third.save()
+        harrison_313.save()
+
         gmason = User.objects.create_user(username='gmason',
                                           first_name='George',
                                           last_name='Mason',
@@ -37,24 +49,30 @@ class BuildingTest(TestCase):
 
     def test_building_contains_room(self):
         self.assertTrue(wilson_313 in wilson)
+        self.assertFalse(harrison_313 in wilson)
 
     def test_building_contains_floor(self):
         self.assertTrue(wilson_third in wilson)
+        self.assertFalse(harrison_third in wilson)
 
     def test_building_contains_student(self):
         self.assertTrue(george in wilson)
+        self.assertFalse(george in harrison)
 
 
 class FloorTest(TestCase):
 
     def test_floor_contains_room(self):
         self.assertTrue(wilson_313 in wilson_third)
+        self.assertFalse(harrison_313 in wilson_third)
 
     def test_floor_contains_student(self):
         self.assertTrue(george in wilson_third)
+        self.assertFalse(george in harrison_third)
 
 
 class RoomTest(TestCase):
 
     def test_room_contains_student(self):
         self.assertTrue(george in wilson_313)
+        self.assertFalse(george in harrison_313)
