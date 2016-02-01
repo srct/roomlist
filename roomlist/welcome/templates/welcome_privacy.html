@@ -85,7 +85,7 @@
         </form>
         {% endspaceless %}
         {% else %}
-        <a href="{% url 'welcomeMajor' request.user.username %}">
+        <a href="{% url 'welcomeMajor' %}">
           <button type="button" class="btn btn-primary">Continue</button>
         </a>
         {% endif %}
