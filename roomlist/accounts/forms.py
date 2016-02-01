@@ -4,13 +4,8 @@ from __future__ import absolute_import, print_function
 from django import forms
 from django.utils.safestring import mark_safe
 from django.template.loader import render_to_string
-from django.utils.encoding import force_text
 from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext as _
 # third party imports
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout
-from crispy_forms.bootstrap import PrependedText, AppendedText
 from multiselectfield import MultiSelectFormField
 # imports from your apps
 from .models import Student, Major
@@ -104,47 +99,3 @@ class StudentUpdateForm(forms.Form):
         valid = super(StudentUpdateForm, self).is_valid()
         #print(valid)
         return valid
-
-
-class WelcomeNameForm(forms.Form):
-
-    first_name = forms.CharField( required=False)
-    last_name = forms.CharField(required=False)
-    gender = MultiSelectFormField(choices=Student.GENDER_CHOICES, required=False)
-    show_gender = BooleanRadioField()
-
-
-class WelcomePrivacyForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super(WelcomePrivacyForm, self).__init__(*args, **kwargs)
-        if self.instance.recent_changes() > 2:
-            self.fields['room'].widget = forms.widgets.HiddenInput()
-        else:
-            self.fields['room'] = SelectRoomField(queryset=Room.objects.all(), required=False)
-
-    on_campus = BooleanRadioField()
-
-    def clean(self):
-        cleaned_data = super(WelcomePrivacyForm, self).clean()
-        form_room = cleaned_data.get('room')
-        if not(form_room is None):
-            students_in_room = Student.objects.filter(room=form_room).count()
-            #print(students_in_room)
-            # like in bookshare, I have no idea why the form errors don't display.
-            if students_in_room > 12:
-                raise ValidationError(_('Too many students in room (%d).' % students_in_room), code='invalid')
-
-    class Meta:
-        model = Student
-        fields = ('room', 'privacy', 'on_campus')
-
-class WelcomeSocialForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super(WelcomeSocialForm, self).__init__(*args, **kwargs)
-        self.fields['completedSocial'].widget = forms.widgets.HiddenInput()
-
-    class Meta:
-        model = Student
-        fields = ('completedSocial', )
