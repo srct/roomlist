@@ -13,6 +13,8 @@
 
 {% include 'messages.html' %}
 
+{% load accounts_extras %}
+
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12 text-center">
@@ -143,18 +145,112 @@
       </div>
 
       <div class="panel-body">
-        <p class="text-center">Off-campus locations along with a select number of locations <a href="{% url 'list_buildings'%}#Unsupported">on campus</a> aren't currently supported. You are still welcome to use Roomlist as a limited directory until we add support.</p>
+        <p class="text-center">A select number of locations <a href="{% url 'list_buildings'%}#Unsupported">on campus</a> aren't currently supported. You are still welcome to use Roomlist as a limited directory until we add support.</p>
         <p class="text-center">
           If you have a <a href="https://en.gravatar.com/">Gravatar profile</a> associated
           with your <a href="https://masonlive.gmu.edu/">Masonlive email</a> address, your
           default profile picture on this service will that Gravatar profile picture.
         </p>
+        <hr />
+        {% if my_form.non_field_errors %}
+        <ul class="text-center">
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        <hr />
+        {% endif %}
         {% spaceless %}
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
-
-          {{ my_form.as_p }}
-
+          <fieldset>
+          <div class="form-group">
+            <label for="{{ my_form.first_name.id_for_label }}" class="col-md-2">First Name</label>
+              <div class="col-md-4">
+                {% if not my_form.first_name.errors %}
+                  {{ my_form.first_name }}
+                {% else %}
+                  <div class="has-error">
+                    {{ my_form.first_name }}
+                    <p>{{ form.first_name.errors }}</p>
+                  </div>
+                {% endif %}
+              </div>
+            <label for="{{ my_form.last_name.id_for_label }}" class="col-md-2">Last Name</label>
+              <div class="col-md-4">
+                {% if not my_form.last_name.errors %}
+                  {{ my_form.last_name }}
+                {% else %}
+                  <div class="has-error">
+                    {{ my_form.last_name }}
+                    <p>{{ form.last_name.errors }}</p>
+                  </div>
+                {% endif %}
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ my_form.gender.id_for_label }}" class="col-md-3">
+              Gender Identity<br />(choose all that apply)
+            </label>
+              {% for checkbox in my_form.gender %}
+                <div class="checkbox col-md-3">
+                  <label for="{{ checkbox.id_for_label }}">
+                    {{ checkbox.choice_label|gender_icon }}
+                    {{ checkbox.tag }}
+                  </label>
+                </div>
+              {% endfor %}
+          </div>
+          <div class="form-group">
+            <label for="{{ my_form.show_gender.id_for_label }}" class="col-md-3">
+              Show Gender on Profile?
+            </label>
+              {% for option in my_form.show_gender %}
+                <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
+              {% endfor %}
+          </div>
+          <div class="form-group">
+            <label for="{{ my_form.major.id_for_label }}" class="col-md-2">
+              Major<br />(select one)
+            </label>
+            <div class="col-md-4">
+              {{ my_form.major }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ my_form.graduating_year.id_for_label }}" class="col-md-2">
+              Graduating Year
+            </label>
+              <div class="col-md-2">
+                {{ my_form.graduating_year }}
+              </div>
+          </div>
+          {% if not request.user.student.recent_changes > 2 %}
+          <hr />
+          <div class="form-group">
+            <label for="{{ my_form.on_campus.id_for_label }}" class="col-md-3">
+              Do You Live on Campus?
+            </label>
+              {% for option in my_form.on_campus %}
+                <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
+              {% endfor %}
+          </div>
+          <div id="lives-on-campus">
+            <div class="form-group">
+              <div class="col-md-12">
+                {{ my_form.room }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="{{ my_form.privacy.id_for_label }}" class="col-md-2">
+                Privacy
+              </label>
+                {{ my_form.privacy }}
+            </div>
+          </div>
+          {% endif %}
+          <hr />
           <input type="submit" value="Save" class="btn btn-primary"/>
+        </fieldset>
         </form>
         {% endspaceless %}
       </div>
@@ -169,6 +265,27 @@
 {% block javascript %}
   <script type="text/javascript" src="/static/js/jquery.chained.min.js"></script>
   <script>
+    // toggle room selection availability
+    // can see if on campus, cannot see if not on campus
+    $(document).ready(function() {
+      var $radio = $('input:radio[name=on_campus]');
+      // when first rendering the page
+      if($radio.filter('[value=False]').is(':checked')) {
+        $("#lives-on-campus").hide();
+      } else {
+        $("#lives-on-campus").show();
+      }
+      // if student changes the value
+      $($radio.filter('[value=False]').click(function(){
+        $("#lives-on-campus").slideUp();
+      }));
+      $($radio.filter('[value=True]').click(function(){
+        $("#lives-on-campus").slideDown();
+      }));
+    });
+    $("#lives-on-campus").hide();
+
+    // room selection
     $("#building").chained("#neighborhood");
     $("#floor").chained("#building");
     $("#room").chained("#floor");

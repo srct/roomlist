@@ -1,6 +1,7 @@
 # standard library imports
 from __future__ import absolute_import, print_function
 import random
+from distutils.util import strtobool
 # core django imports
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden, HttpResponseRedirect
@@ -203,7 +204,6 @@ class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
     def get_object(self):
         return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
 
-
 # update a student, but FormView to allow name update on same page
 class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
     template_name = 'updateStudent.html'
@@ -234,12 +234,20 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
                                           'room': pk_or_none(me, me.room),
                                           'privacy': me.privacy,
                                           'major': pk_or_none(me, me.major),
-                                          'graduating_year' : me.graduating_year,})
+                                          'graduating_year': me.graduating_year,
+                                          'on_campus': me.on_campus, })
 
         if me.recent_changes() > 2:
             form.fields['room'].widget = HiddenInput()
+            form.fields['privacy'].widget = HiddenInput()
+            form.fields['on_campus'].widget = HiddenInput()
         else:
             form.fields['room'].widget.user = self.request.user
+
+        # bootstrap
+        form.fields['first_name'].widget.attrs['class'] = 'form-control'
+        form.fields['last_name'].widget.attrs['class'] = 'form-control'
+        form.fields['graduating_year'].widget.attrs['class'] = 'form-control'
 
         context['my_form'] = form
 
@@ -261,15 +269,29 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
             #print(key, value)
 
         current_room = me.room
-        try:
-            form_room = Room.objects.get(pk=form.data['room'])
-        except:
+
+        # if you somehow got around the hidden widget, you're still outta luck
+        if me.recent_changes() > 2:
+            form_room = current_room
+        else:
+            try:
+                form_room = Room.objects.get(pk=form.data['room'])
+            except:
+                form_room = None
+
+        # casts to an integer, 0 or 1
+        on_campus = strtobool(form.data.get('on_campus', 'True'))
+
+        # no room if you move off campus
+        if not on_campus:
             form_room = None
 
+        # note this is after the 'on campus' check
         if current_room != form_room:
             me.times_changed_room += 1
             Confirmation.objects.filter(student=me).delete()
 
+        me.on_campus = on_campus
         me.room = form_room
 
         try:
@@ -280,7 +302,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         me.user.first_name = form.data['first_name']
         me.user.last_name = form.data['last_name']
         me.gender = form.data.getlist('gender')
-        me.show_gender = form.data.get('show_gender', False)
+        me.show_gender = strtobool(form.data.get('show_gender', 'False'))
         me.privacy = form.data['privacy']
         me.graduating_year = form.data['graduating_year']
 
@@ -330,6 +352,10 @@ class WelcomeName(LoginRequiredMixin, FormView):
                                         'last_name': me.user.last_name,
                                         'gender': me.gender,
                                         'show_gender': me.show_gender, })
+
+        form.fields['first_name'].widget.attrs['class'] = 'form-control'
+        form.fields['last_name'].widget.attrs['class'] = 'form-control'
+
         context['my_form'] = form
         return context
 
@@ -345,7 +371,7 @@ class WelcomeName(LoginRequiredMixin, FormView):
         me.user.last_name = form.data['last_name']
 
         me.gender = form.data.getlist('gender')
-        me.show_gender = form.data.get('show_gender', False)
+        me.show_gender = strtobool(form.data.get('show_gender', 'False'))
 
         me.completedName = True
 
@@ -390,6 +416,8 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
 
         form.fields['room'].widget.user = self.request.user
 
+        form.fields['on_campus'].initial = self.request.user.student.on_campus
+
         context['my_form'] = form
 
         return context
@@ -404,9 +432,20 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
 
         current_room = me.room
 
-        try:
-            form_room = Room.objects.get(pk=form.data['room'])
-        except:
+        # if you somehow got around the hidden widget, you're still outta luck
+        if me.recent_changes() > 2:
+            form_room = current_room
+        else:
+            try:
+                form_room = Room.objects.get(pk=form.data['room'])
+            except:
+                form_room = None
+
+        # casts to an integer, 0 or 1
+        on_campus = strtobool(form.data.get('on_campus', 'True'))
+
+        # no room if you move off campus
+        if not on_campus:
             form_room = None
 
         if current_room != form_room:
@@ -414,6 +453,9 @@ class WelcomePrivacy(LoginRequiredMixin, UpdateView):
             Confirmation.objects.filter(student=me).delete()
 
         form.instance.completedPrivacy = True
+
+        form.instance.on_campus = on_campus
+        form.instance.room = form_room
 
         return super(WelcomePrivacy, self).form_valid(form)
 

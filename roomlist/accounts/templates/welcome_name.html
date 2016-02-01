@@ -7,6 +7,8 @@
 
 {% block content %}
 
+{% load accounts_extras %}
+
 <div class="progress">
   <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
     <span class="sr-only">25% complete</span>
@@ -35,10 +37,64 @@
       <div class="panel-heading">
         <h1 class="panel-title text-center"><strong>Name & Gender</strong></h1>
       </div>
-
+      {% if error in my_form.non_field_errors %}
+      <ul class="text-center">
+        {% for error in my_form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
       <div class="panel-body">
-        <form action="" method="post">{% csrf_token %}
-          {{ my_form.as_p }}
+        <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
+          <fieldset>
+          <div class="form-group">
+            <label for="{{ my_form.first_name.id_for_label }}" class="col-md-2">First Name</label>
+              <div class="col-md-4">
+                {% if not my_form.first_name.errors %}
+                  {{ my_form.first_name }}
+                {% else %}
+                  <div class="has-error">
+                    {{ my_form.first_name }}
+                    <p>{{ form.first_name.errors }}</p>
+                  </div>
+                {% endif %}
+              </div>
+            <label for="{{ my_form.last_name.id_for_label }}" class="col-md-2">Last Name</label>
+              <div class="col-md-4">
+                {% if not my_form.last_name.errors %}
+                  {{ my_form.last_name }}
+                {% else %}
+                  <div class="has-error">
+                    {{ my_form.last_name }}
+                    <p>{{ form.last_name.errors }}</p>
+                  </div>
+                {% endif %}
+              </div>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ my_form.gender.id_for_label }}" class="col-md-3">
+              Gender Identity<br />(choose all that apply)
+            </label>
+              {% for checkbox in my_form.gender %}
+                <div class="checkbox col-md-3">
+                  <label for="{{ checkbox.id_for_label }}">
+                    {{ checkbox.choice_label|gender_icon }}
+                    {{ checkbox.tag }}
+                </div>
+              {% endfor %}
+          </div>
+
+          <div class="form-group">
+            <label for "{{ my_form.show_gender.id_for_label }}" class="col-md-3">
+              Show Gender on Profile?
+            </label>
+              {% for radio in my_form.show_gender %}
+                <label class="radio-inline">{{ radio.choice_label }}{{ radio.tag }}</label>
+              {% endfor %}
+          </div>
+
+          </fieldset>
           <input type="submit" value="Save" class="btn btn-primary"/>
         </form>
       </div>

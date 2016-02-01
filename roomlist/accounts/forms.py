@@ -57,22 +57,33 @@ class SelectRoomField(forms.models.ModelChoiceField):
 #    should raise error if user hasn't actually selected room, made it to end of selectors
 #    def clean(self, value):
 
+
+class BooleanRadioField(forms.TypedChoiceField):
+
+    def __init__(self, *args, **kwargs):
+        boolean_choices = ((True, 'Yes'), (False, 'No'))
+
+        kwargs['widget'] = forms.RadioSelect
+        kwargs['choices'] = boolean_choices
+        kwargs['coerce'] = bool
+        kwargs['required'] = True
+        super(BooleanRadioField, self).__init__(*args, **kwargs)
+
+
 class StudentUpdateForm(forms.Form):
 
-    first_name = forms.CharField(label='First Name', required=False)
-    last_name = forms.CharField(label='Last Name', required=False)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
     gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
-                                  label='Gender Identity (please choose all that apply)',
                                   required=False)
-    show_gender = forms.BooleanField(label='Show your gender on your profile?',
-                                     required=False)
+    show_gender = BooleanRadioField()
 
-    room = SelectRoomField(queryset=Room.objects.all(), label='', required=False)
+    on_campus = BooleanRadioField()
+    room = SelectRoomField(queryset=Room.objects.all(), required=False)
 
-    privacy = forms.ChoiceField(choices=Student.PRIVACY_CHOICES)
-    major = forms.ModelChoiceField(queryset=Major.objects.all(), required=False,
-                                   label='Major (select one)',)
-    graduating_year = forms.IntegerField(label='Graduating Year')
+    privacy = forms.TypedChoiceField(choices=Student.PRIVACY_CHOICES)
+    major = forms.ModelChoiceField(queryset=Major.objects.all(), required=False)
+    graduating_year = forms.IntegerField()
 
 
     def clean(self):
@@ -94,15 +105,13 @@ class StudentUpdateForm(forms.Form):
         #print(valid)
         return valid
 
+
 class WelcomeNameForm(forms.Form):
 
-    first_name = forms.CharField(label='First Name', required=False)
-    last_name = forms.CharField(label='Last Name', required=False)
-    gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
-                                  label='Gender Identity (please choose all that apply)',
-                                  required=False)
-    show_gender = forms.BooleanField(label='Show your gender on your profile?',
-                                     required=False)
+    first_name = forms.CharField( required=False)
+    last_name = forms.CharField(required=False)
+    gender = MultiSelectFormField(choices=Student.GENDER_CHOICES, required=False)
+    show_gender = BooleanRadioField()
 
 
 class WelcomePrivacyForm(forms.ModelForm):
@@ -112,8 +121,9 @@ class WelcomePrivacyForm(forms.ModelForm):
         if self.instance.recent_changes() > 2:
             self.fields['room'].widget = forms.widgets.HiddenInput()
         else:
-            self.fields['room'] = SelectRoomField(queryset=Room.objects.all(),
-                                                  label='', required=False)
+            self.fields['room'] = SelectRoomField(queryset=Room.objects.all(), required=False)
+
+    on_campus = BooleanRadioField()
 
     def clean(self):
         cleaned_data = super(WelcomePrivacyForm, self).clean()
@@ -127,8 +137,7 @@ class WelcomePrivacyForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ('room', 'privacy', )
-
+        fields = ('room', 'privacy', 'on_campus')
 
 class WelcomeSocialForm(forms.ModelForm):
 

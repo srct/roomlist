@@ -17,7 +17,9 @@
       <h1><strong>{{ student.get_full_name_or_uname }}</strong></h1>
       {% if shares %}
         <p class="lead"><strong>
-        {% if student.room == None %}
+        {% if not student.on_campus %}
+          {{ student.get_first_name_or_uname }} doesn't live on campus.
+        {% elif student.room == None %}
           {{ student.get_first_name_or_uname }} hasn't set their room yet.
         {% else %}
           <a href="{{ student.room.get_absolute_url }}">{{ student.room }}</a>
@@ -41,7 +43,12 @@
         <p><em>* a number of other floormates say this room info is incorrect</em></p>
         {% endif %}
       {% endif %}
-      <p><em>shares room with</em>: <span class="label label-default"><strong>{{ student.privacy }}</strong></span></p>
+      {% if student.on_campus %}
+        <p>
+          <em>shares room with</em>:
+          <span class="label label-default"><strong>{{ student.privacy }}</strong></span>
+        </p>
+      {% endif %}
     </div>
   </div>
 </div>
