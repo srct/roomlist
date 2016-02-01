@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     # app-level urls
     url(r'^housing/', include('housing.urls')),
     url(r'^accounts/', include('accounts.urls')),
+    url(r'^welcome/', include('welcome.urls')),
 
     # search
     url(r'^search/', login_required(SearchView(), login_url='login'), name='search'),
