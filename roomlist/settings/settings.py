@@ -71,6 +71,7 @@ INSTALLED_APPS = (
     'api',
     'housing',
     'accounts',
+    'welcome',
     # packages
     'crispy_forms',
     'django_gravatar',

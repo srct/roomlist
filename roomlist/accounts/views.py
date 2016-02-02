@@ -20,15 +20,10 @@ from ratelimit.decorators import ratelimit
 # imports from your apps
 from .models import Student, Major, Confirmation
 from housing.models import Building, Floor, Room
-from .forms import (StudentUpdateForm, WelcomeNameForm, WelcomePrivacyForm,
-                    WelcomeSocialForm)
+from .forms import StudentUpdateForm
 
-
-settings_redirect = """You've already finished the welcome walkthrough.
-                       Your user settings can now be changed here on this page."""
 
 #########
-
 bug_reporting = """Welcome back to SRCT Roomlist. This project is the
                    <a href="https://srct.gmu.edu/projects/">collaborative work
                    of students like you</a>. If you see anything amiss, or have ideas for
@@ -61,6 +56,7 @@ open_source = """Welcome back to SRCT Roomlist. For the curious at heart,
                  <a href="https://git.gmu.edu/srct/roomlist/tree/master">source code</a>.
                  Come <a href="https://srct.gmu.edu/">to a meeting</a> and learn how to
                  contribute!"""
+#########
 
 return_messages = [bug_reporting, privacy_reminder, disclaimer, whatsopen_plug, open_source]
 
@@ -74,17 +70,13 @@ def custom_cas_login(request, *args, **kwargs):
         if not request.user.student.totally_done():
 
             if not request.user.student.completedName:
-                return HttpResponseRedirect(reverse('welcomeName',
-                                            kwargs={'slug':request.user.username}))
+                return HttpResponseRedirect(reverse('welcomeName'))
             elif not request.user.student.completedPrivacy:
-                return HttpResponseRedirect(reverse('welcomePrivacy',
-                                            kwargs={'slug':request.user.username}))
+                return HttpResponseRedirect(reverse('welcomePrivacy'))
             elif not request.user.student.completedMajor:
-                return HttpResponseRedirect(reverse('welcomeMajor',
-                                            kwargs={'slug':request.user.username}))
+                return HttpResponseRedirect(reverse('welcomeMajor'))
             elif not request.user.completedSocial:
-                return HttpResponseRedirect(reverse('welcomeSocial',
-                                            kwargs={'slug':request.user.username}))
+                return HttpResponseRedirect(reverse('welcomeSocial'))
         else:
             welcome_back = random.choice(return_messages)
             messages.add_message(request, messages.INFO, mark_safe(welcome_back))
@@ -318,229 +310,6 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         if self.request.user.student.recent_changes() == 2:
 
             messages.add_message(self.request, messages.WARNING, 'To safeguard everyone\'s privacy, you have just one remaining room change for the semester before you\'ll need to send us an email at roomlist@lists.srct.gmu.edu.')
-
-        return reverse('detail_student',
-                       kwargs={'slug':self.request.user.username})
-
-
-# welcome pages
-class WelcomeName(LoginRequiredMixin, FormView):
-    template_name = 'welcome_name.html'
-    form_class = WelcomeNameForm
-    login_url = 'login'
-
-    def get(self, request, *args, **kwargs):
-
-        current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
-
-        if not(url_uname == self.request.user.username):
-            return HttpResponseForbidden()
-        elif self.request.user.student.totally_done():
-            messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
-        else:
-            return super(WelcomeName, self).get(request, *args, **kwargs)
-
-
-
-    def get_context_data(self, **kwargs):
-        context = super(WelcomeName, self).get_context_data(**kwargs)
-
-        me = Student.objects.get(user=self.request.user)
-
-        form = WelcomeNameForm(initial={'first_name': me.user.first_name,
-                                        'last_name': me.user.last_name,
-                                        'gender': me.gender,
-                                        'show_gender': me.show_gender, })
-
-        form.fields['first_name'].widget.attrs['class'] = 'form-control'
-        form.fields['last_name'].widget.attrs['class'] = 'form-control'
-
-        context['my_form'] = form
-        return context
-
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomeName, self).post(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        me = Student.objects.get(user=self.request.user)
-
-        me.user.first_name = form.data['first_name']
-        me.user.last_name = form.data['last_name']
-
-        me.gender = form.data.getlist('gender')
-        me.show_gender = strtobool(form.data.get('show_gender', 'False'))
-
-        me.completedName = True
-
-        me.user.save()
-        me.save()
-
-        return super(WelcomeName, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse('welcomePrivacy',
-                       kwargs={'slug':self.request.user.username})
-
-
-class WelcomePrivacy(LoginRequiredMixin, UpdateView):
-    model = Student
-    form_class = WelcomePrivacyForm
-    context_object_name = 'student'
-    template_name = 'welcome_privacy.html'
-
-    login_url = 'login'
-
-    def get(self, request, *args, **kwargs):
-
-        current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
-
-        if not(url_uname == self.request.user.username):
-            return HttpResponseForbidden()
-        elif self.request.user.student.totally_done():
-            messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
-        else:
-            return super(WelcomePrivacy, self).get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(WelcomePrivacy, self).get_context_data(**kwargs)
-
-        me = Student.objects.get(user=self.request.user)
-
-        form = WelcomePrivacyForm()
-
-        form.fields['room'].widget.user = self.request.user
-
-        form.fields['on_campus'].initial = self.request.user.student.on_campus
-
-        context['my_form'] = form
-
-        return context
-
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomePrivacy, self).post(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        me = self.get_object()
-
-        current_room = me.room
-
-        # if you somehow got around the hidden widget, you're still outta luck
-        if me.recent_changes() > 2:
-            form_room = current_room
-        else:
-            try:
-                form_room = Room.objects.get(pk=form.data['room'])
-            except:
-                form_room = None
-
-        # casts to an integer, 0 or 1
-        on_campus = strtobool(form.data.get('on_campus', 'True'))
-
-        # no room if you move off campus
-        if not on_campus:
-            form_room = None
-
-        if current_room != form_room:
-            form.instance.times_changed_room += 1
-            Confirmation.objects.filter(student=me).delete()
-
-        form.instance.completedPrivacy = True
-
-        form.instance.on_campus = on_campus
-        form.instance.room = form_room
-
-        return super(WelcomePrivacy, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse('welcomeMajor',
-                       kwargs={'slug':self.request.user.username})
-
-
-class WelcomeMajor(LoginRequiredMixin, UpdateView):
-    model = Student
-    fields = ['major', 'graduating_year', ]
-    context_object_name = 'student'
-    template_name = 'welcome_major.html'
-
-    login_url = 'login'
-
-    def get(self, request, *args, **kwargs):
-
-        current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
-
-        if not(url_uname == self.request.user.username):
-            return HttpResponseForbidden()
-        elif self.request.user.student.totally_done():
-            messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
-        else:
-            return super(WelcomeMajor, self).get(request, *args, **kwargs)
-
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomeMajor, self).post(request, *args, **kwargs)
-
-    def form_valid(self, form):
-
-        form.instance.completedMajor = True
-
-        return super(WelcomeMajor, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse('welcomeSocial',
-                       kwargs={'slug':self.request.user.username})
-
-
-class WelcomeSocial(LoginRequiredMixin, UpdateView):
-    model = Student
-    form_class = WelcomeSocialForm
-    context_object_name = 'student'
-    template_name = 'welcome_social.html'
-    login_url = 'login'
-
-    def get(self, request, *args, **kwargs):
-
-        current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
-
-        if not(url_uname == self.request.user.username):
-            return HttpResponseForbidden()
-        elif self.request.user.student.totally_done():
-            messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
-        else:
-            return super(WelcomeSocial, self).get(request, *args, **kwargs)
-
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomeSocial, self).post(request, *args, **kwargs)
-
-    def form_valid(self, form):
-
-        form.instance.completedSocial = True
-
-        return super(WelcomeSocial, self).form_valid(form)
-
-    def get_success_url(self):
-
-        if self.request.user.student.totally_done():
-            messages.add_message(self.request, messages.SUCCESS,
-                                 "You successfully finished the welcome walkthrough!")
 
         return reverse('detail_student',
                        kwargs={'slug':self.request.user.username})
