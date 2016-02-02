@@ -2,6 +2,8 @@
 from __future__ import absolute_import, print_function
 # core django imports
 from django.conf.urls import patterns, include, url
+from django.views.generic import RedirectView
+from django.core.urlresolvers import reverse_lazy
 # imports from your apps
 from .views import WelcomeName, WelcomePrivacy, WelcomeMajor, WelcomeSocial
 
@@ -10,8 +12,12 @@ urlpatterns = patterns('',
 
     # first welcome page
     # let's verify your name and optionally select a gender
-    url(r'^$',
+    url(r'^1/$',
         WelcomeName.as_view(), name='welcomeName'),
+
+    # thought it made sense to redirect without the number
+    url(r'^$',
+        RedirectView.as_view(url=reverse_lazy('welcomeName'), permanent=True)),
 
     # second welcome page
     # let's set your room and privacy
