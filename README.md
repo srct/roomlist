@@ -212,6 +212,12 @@ If you've forgotten the name with the number, back on Google's page it's in the 
 
 Add localhost as the site, click save, and throw a party, because thank goodness, you're finally all set.
 
+
+### Github
+
+Github's auth setup is mercifully comparatively easy. Sign in and go to https://github.com/settings/applications/new. (Note if you're creating a token for an organization, you'll need to instead go to 
+https://github.com/organizations/srct/settings/applications/new/. App names do not need to be universally unique. Set http://localhost:8000 as your Homepage URL. Your description will be shown to your users; write something like 'Verify your Github account with Roomlist!'. For the authorization callback, use http://localhost:8000/accounts/github/login/callback/. Note your Client ID and Client Secret in the refreshed page, and add a new social application. Copy everything over directly from your just configured Github OAuth Application page, and add localhost as your chosen site.
+
 ### Notes on Cacheing
 
 Roomlist's urls are set to be cached for periods of time set so that ordinary user experience will not be impacted, but a substantial load will be lifted from a deployment server. However, this can be annoying when you're making and want to check small changes rapidly on development. You can edit the respective apps' urls.py files and remove the cacheing configurations, but make sure that you do not include such edits in any pushes!
