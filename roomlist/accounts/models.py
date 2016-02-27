@@ -266,6 +266,14 @@ class Student(TimeStampedModel):
         else:
             return self.user.get_full_name()
 
+    def is_noob(self):
+        now = timezone.now()
+        days = (now - self.created).days
+        if days > 2:  # more than two days
+            return False
+        else:
+            return True
+
     class Meta:
         ordering = ['user']
 

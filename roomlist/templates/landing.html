@@ -9,7 +9,12 @@
 {% cache 15 landing request.user.username %}
 
 {% load gravatar %}
-<h2>Welcome Back {{ me.get_first_name_or_uname }}!</h2>
+<h2>Welcome
+{% if not  me.is_noob %}
+Back
+{% else %}
+{% endif %}
+{{ me.get_first_name_or_uname }}!</h2>
 <legend></legend>
 
 {% if me.on_campus %}
