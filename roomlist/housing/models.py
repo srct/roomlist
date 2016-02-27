@@ -11,7 +11,7 @@ from autoslug import AutoSlugField
 
 
 class Building(TimeStampedModel):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     NONE = 'na'
     AQUIA = 'aq'
@@ -47,7 +47,6 @@ class Building(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('detail_building', kwargs={
             'building': slugify(self.building_name),
-            'slug': self.slug,
         })
 
     def __str__(self):  # __unicode__ on Python 2
@@ -92,7 +91,6 @@ class Floor(TimeStampedModel):
         return reverse('detail_floor', kwargs={
             'building': slugify(self.building.building_name),
             'floor': self.floor_num,
-            'slug': self.slug,
         })
 
     def __str__(self):  # __unicode__ on Python 2
@@ -115,6 +113,7 @@ class Floor(TimeStampedModel):
 
     class Meta:
         ordering = ['building', 'number']
+        unique_together = ('number', 'building')
 
 
 class Room(TimeStampedModel):
@@ -130,7 +129,6 @@ class Room(TimeStampedModel):
             'floor': self.floor.floor_num,
             'building': slugify(self.floor.building.building_name),
             'room': self.room_num,
-            'slug': self.slug,
         })
 
     def __str__(self):  # __unicode__ on Python 2
@@ -147,3 +145,4 @@ class Room(TimeStampedModel):
 
     class Meta:
         ordering = ['number']
+        unique_together = ('number', 'floor',)
