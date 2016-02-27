@@ -9,6 +9,21 @@ from .models import Building, Floor, Room
 from accounts.models import Student
 
 
+# this should be written in cache, to be entirely honest
+def shadowbanning(me, other_people):
+    # start with only students who are actually blocking anyone
+    blockers = [student for student in Student.objects.exclude(blocked_kids__exact='')]
+    # of those students, collect the ones that block *you*
+    blocks_me = [student
+                 for student in blockers
+                 if me in student.blocked_kids.all()]
+    if len(blocks_me):
+        student_safety = list(set(other_people) - set(blocks_me))
+        return student_safety
+    else:
+        return other_people
+
+
 # a list of neighborhoods and their buildings
 class ListBuildings(LoginRequiredMixin, ListView):
     model = Building
@@ -70,9 +85,13 @@ class DetailFloor(LoginRequiredMixin, DetailView):
 
         requesting_student = Student.objects.get(user=self.request.user)
 
-        context['students'] = Student.objects.visible(requesting_student, self.get_object())
-        context['notOnFloor'] = not(requesting_student in self.get_object())
-        context['notInBuilding'] = not(requesting_student in self.get_object().building)
+        students = Student.objects.visible(requesting_student, self.get_object())
+        notOnFloor = not(requesting_student in self.get_object())
+        notInBuilding = not(requesting_student in self.get_object().building)
+
+        context['students'] = shadowbanning(requesting_student, students)
+        context['notOnFloor'] = shadowbanning(requesting_student, notOnFloor)
+        context['notInBuilding'] = shadowbanning(requesting_student, notInBuilding)
         return context
 
 
@@ -99,8 +118,11 @@ class DetailRoom(LoginRequiredMixin, DetailView):
 
         requesting_student = Student.objects.get(user=self.request.user)
 
-        context['students'] = Student.objects.visible(requesting_student, self.get_object())
-        context['notOnFloor'] = not(requesting_student in self.get_object().floor)
-        context['notInBuilding'] = not(requesting_student in self.get_object().floor.building)
+        students = Student.objects.visible(requesting_student, self.get_object())
+        notOnFloor = not(requesting_student in self.get_object().floor)
+        notInBuilding = not(requesting_student in self.get_object().floor.building)
 
+        context['students'] = shadowbanning(requesting_student, students)
+        context['notOnFloor'] = shadowbanning(requesting_student, notOnFloor)
+        context['notInBuilding'] = shadowbanning(requesting_student, notInBuilding)
         return context

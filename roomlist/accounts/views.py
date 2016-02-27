@@ -6,7 +6,7 @@ from operator import attrgetter
 from itertools import chain
 # core django imports
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.http import HttpResponseForbidden, HttpResponseRedirect, Http404
 from django.views.generic import (CreateView, ListView, DetailView, UpdateView,
                                   FormView, DeleteView)
 from django.core.urlresolvers import reverse
@@ -115,6 +115,17 @@ class DetailStudent(LoginRequiredMixin, DetailView):
     template_name = 'detailStudent.html'
 
     login_url = 'login'
+
+    def get(self, request, *args, **kwargs):
+
+        current_url = self.request.get_full_path()
+        url_uname = current_url.split('/')[3]
+        detailed_student = Student.objects.get(user__username=url_username)
+
+        if (detailed_student in self.request.user.student.blocked_kids.all()):
+            raise Http404
+        else:
+            return super(DetailStudent, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(DetailStudent, self).get_context_data(**kwargs)
@@ -227,6 +238,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
                                           'show_gender': me.show_gender,
                                           'room': pk_or_none(me, me.room),
                                           'privacy': me.privacy,
+                                          'blocked_kids': me.blocked_kids.all(),
                                           'major': pk_or_none(me, me.major),
                                           'graduating_year': me.graduating_year,
                                           'on_campus': me.on_campus, })
@@ -298,8 +310,8 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         me.gender = form.data.getlist('gender')
         me.show_gender = strtobool(form.data.get('show_gender', 'False'))
         me.privacy = form.data['privacy']
+        me.blocked_kids = form.data['blocked_kids']
         me.graduating_year = form.data['graduating_year']
-
         me.user.save()
         me.save()
 
