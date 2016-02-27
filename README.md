@@ -218,6 +218,17 @@ Add localhost as the site, click save, and throw a party, because thank goodness
 Github's auth setup is mercifully comparatively easy. Sign in and go to https://github.com/settings/applications/new. (Note if you're creating a token for an organization, you'll need to instead go to 
 https://github.com/organizations/srct/settings/applications/new/. App names do not need to be universally unique. Set http://localhost:8000 as your Homepage URL. Your description will be shown to your users; write something like 'Verify your Github account with Roomlist!'. For the authorization callback, use http://localhost:8000/accounts/github/login/callback/. Note your Client ID and Client Secret in the refreshed page, and add a new social application. Copy everything over directly from your just configured Github OAuth Application page, and add localhost as your chosen site.
 
+### Tumblr
+
+Head to https://www.tumblr.com/settings/apps. The page is predominantly about Tumblr's mobile apps, but there's a faint gray line of text at the bottom. 'Wanna make an app? Cool. Register to use the Tumblr API, then have at it.' You'll need to verify your email address with Tumblr before continuing.
+
+Click the '+ Register application' button, and then you'll have another page ahead of you to fill of OAuth information.
+A couple of notes: the Application Name is not universal. Use the application description you've been using throughout, 'Verify your Tumblr account with Roomlist!'. The administrative contact email will be your Tumblr default account email. Set the callback url as http://localhost:8000/accounts/tumblr/login/callback/. Your application page icons cannot have transparent background. All right, you're ready to register!
+
+On the Applications page that you'll be redirected to, the 'OAuth Consumer Key' is the Client ID you'll need when you add a new Social Application. Click 'Show Secret Key' to get the Client Secret. Use the name you gave your app, add localhost for your site, and you're off to the races.
+
+Tumblr doesn't seem to have a way to only request specific permissions-- it will ask if it's okay both to access information and to post on your behalf. We're not interested in the latter, but keep in mind it will ask users if that's okay.
+
 ### Notes on Cacheing
 
 Roomlist's urls are set to be cached for periods of time set so that ordinary user experience will not be impacted, but a substantial load will be lifted from a deployment server. However, this can be annoying when you're making and want to check small changes rapidly on development. You can edit the respective apps' urls.py files and remove the cacheing configurations, but make sure that you do not include such edits in any pushes!
