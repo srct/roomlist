@@ -5,12 +5,13 @@ from django.conf.urls import patterns, include, url
 # third party imports
 from rest_framework.routers import DefaultRouter
 # imports from your apps
-from .views import BuildingAPI, FloorAPI, RoomAPI
+from .views import BuildingAPI, FloorAPI, RoomAPI, MajorAPI
 
 
 router = DefaultRouter()
 router.register(r'buildings', BuildingAPI)
 router.register(r'floors', FloorAPI)
 router.register(r'rooms', RoomAPI)
+router.register(r'majors', MajorAPI)
 
 urlpatterns = router.urls
