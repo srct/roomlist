@@ -245,6 +245,15 @@
                 {{ my_form.privacy }}
             </div>
           </div>
+          <hr />
+          <div class="form-group">
+            <label for="{{ my_form.blocked_kids.id_for_label }}" class="col-md-2">
+              Blocked Students
+            </label>
+            <div class="col-md-10">
+              {{ my_form.blocked_kids }}
+            </div>
+          </div>
           {% endif %}
           <hr />
           <input type="submit" value="Save" class="btn btn-primary"/>
