@@ -1,12 +1,17 @@
-from django.conf.urls import patterns, url
+# standard library imports
+from __future__ import absolute_import, print_function
+# core django imports
+from django.conf.urls import patterns, include, url
+# third party imports
+from rest_framework.routers import DefaultRouter
+# imports from your apps
+from .views import BuildingAPI, FloorAPI, RoomAPI, MajorAPI
 
-from api import views
 
-urlpatterns = patterns('',
-    url(r'^$', views.index, name='index'),
-    url(r'^building/(?P<building>.+)/(?P<room_number>\d+)$', views.room, name='room'),
-    url(r'^building/(?P<buildingName>[a-zA-Z]+)$', views.building, name='building'),
-    url(r'^buildings/$', views.buildings_list, name='buildings_list'),
-    url(r'^neighbourhood/(?P<nhood>[a-zA-Z]+)$', views.neighbourhood, name='neighbourhood'),
-    url(r'^room/(?P<building>[a-zA-Z]+)/(?P<room_number>\d+)$', views.room, name='room'),
-)
+router = DefaultRouter()
+router.register(r'buildings', BuildingAPI)
+router.register(r'floors', FloorAPI)
+router.register(r'rooms', RoomAPI)
+router.register(r'majors', MajorAPI)
+
+urlpatterns = router.urls

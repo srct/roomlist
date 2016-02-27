@@ -79,6 +79,7 @@ INSTALLED_APPS = (
     'randomslugfield',
     'haystack',
     'multiselectfield',
+    'rest_framework',
     # social media authentication
     'allauth',
     'allauth.account',
@@ -100,7 +101,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'cas.middleware.CASMiddleware',
-    'django.middleware.doc.XViewMiddleware',
+    'django.contrib.admindocs.middleware.XViewMiddleware',
 
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

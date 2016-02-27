@@ -36,6 +36,13 @@ class DetailBuilding(LoginRequiredMixin, DetailView):
 
     login_url = 'login'
 
+    def get_object(self):
+        url_parts = self.request.get_full_path().split('/')
+        # [u'', u'housing', u'building',]
+        building_name = url_parts[2].replace('-', ' ').title()
+        building = Building.objects.get(name=building_name)
+        return building
+
     def get_context_data(self, **kwargs):
         context = super(DetailBuilding, self).get_context_data(**kwargs)
         context['floors'] = Floor.objects.filter(building=self.get_object()).order_by('number')
@@ -47,6 +54,16 @@ class DetailFloor(LoginRequiredMixin, DetailView):
     model = Floor
     context_object_name = 'floor'
     template_name = 'detail_floor.html'
+
+    def get_object(self):
+        url_parts = self.request.get_full_path().split('/')
+        # [u'', u'housing', u'building', u'floor', ]
+        building_name = url_parts[2].replace('-', ' ').title()
+        floor_number = int(url_parts[3])
+        building = Building.objects.get(name=building_name)
+        floor = Floor.objects.get(number=floor_number,
+                                  building=building)
+        return floor
 
     def get_context_data(self, **kwargs):
         context = super(DetailFloor, self).get_context_data(**kwargs)
@@ -63,6 +80,19 @@ class DetailRoom(LoginRequiredMixin, DetailView):
     model = Room
     context_object_name = 'room'
     template_name = 'detail_room.html'
+
+    def get_object(self):
+        url_parts = self.request.get_full_path().split('/')
+        # [u'', u'housing', u'building', u'floor', u'room', ]
+        building_name = url_parts[2].replace('-', ' ').title()
+        floor_number = int(url_parts[3])
+        room_number = int(url_parts[4])
+        building = Building.objects.get(name=building_name)
+        floor = Floor.objects.get(number=floor_number,
+                                  building=building)
+        room = Room.objects.get(floor=floor,
+                                number=room_number)
+        return room
 
     def get_context_data(self, **kwargs):
         context = super(DetailRoom, self).get_context_data(**kwargs)
