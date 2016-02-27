@@ -155,6 +155,7 @@ class Student(TimeStampedModel):
     show_gender = models.BooleanField(default=False)
 
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
+    blocked_kids = models.ManyToManyField("self", blank=True)
 
     on_campus = models.BooleanField(default=True)
     room = models.ForeignKey(Room, null=True, blank=True)
