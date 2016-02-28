@@ -120,7 +120,7 @@ class DetailStudent(LoginRequiredMixin, DetailView):
 
         current_url = self.request.get_full_path()
         url_uname = current_url.split('/')[3]
-        detailed_student = Student.objects.get(user__username=url_username)
+        detailed_student = Student.objects.get(user__username=url_uname)
 
         if (detailed_student in self.request.user.student.blocked_kids.all()):
             raise Http404

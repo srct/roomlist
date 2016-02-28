@@ -5,9 +5,10 @@ from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.contrib import admin
+# third party imports
+from haystack.views import SearchView
 # imports from your apps
 from .views import HomePageView
-from haystack.views import SearchView
 
 admin.autodiscover()
 admin.site.login = login_required(admin.site.login)
