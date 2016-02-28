@@ -40,6 +40,7 @@ SRCT Roomlist &bull; Search Students
     {% endif %}
 
     {% for result in page.object_list %}
+      {% if not result.object.user.student in request.user.student.blocked_kids.all %}
       <tr>
         <td>
           <h4>{{ result.object.user.username }}</h4>
@@ -55,6 +56,7 @@ SRCT Roomlist &bull; Search Students
           {% endif %}
         </td>
       </tr>
+      {% endif %}
     {% empty %}
       <h3 class="text-center">No results found.</h3>
     {% endfor %}

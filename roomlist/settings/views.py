@@ -7,6 +7,8 @@ from django.views.generic import (View, DetailView, TemplateView)
 from braces.views import LoginRequiredMixin
 from cas.views import login as cas_login
 from accounts.models import Student
+# imports from your apps
+from housing.views import shadowbanning
 
 class HomePageView(View):
     def get(self, request, *args, **kwargs):
@@ -25,10 +27,13 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         context['me'] = me
 
         # Create Dictionaries to store Students that meet criteria
-        context["roomies"] = Student.objects.filter(room=me.room).exclude(user__username=me)
-        context["floories"] = Student.objects.filter(room__floor=me.get_floor()).exclude(user__username=me).exclude(room=me.room).order_by('room')
-        context["majormates"] = Student.objects.filter(major=me.major).exclude(user__username=me).order_by('?')[:8]
+        roomies = Student.objects.filter(room=me.room).exclude(user__username=me)
+        floories = Student.objects.filter(room__floor=me.get_floor()).exclude(user__username=me).exclude(room=me.room).order_by('room')
+        majormates = Student.objects.filter(major=me.major).exclude(user__username=me).order_by('?')[:8]
 
+        context["roomies"] = shadowbanning(me, roomies)
+        context["floories"] = shadowbanning(me, floories)
+        context["majormates"] = shadowbanning(me, majormates)
         # Hack to Correctly Display Building plus Floor
         #floor = str(me.get_floor())
         #if floor[len(floor)-1:len(floor)] == "1":

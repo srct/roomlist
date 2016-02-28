@@ -418,6 +418,10 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
         if flags >= 1:
             return HttpResponseForbidden()
 
+        # you can't see the page if the person has banned you
+        if confirmer in student.blocked_kids.all():
+            raise Http404
+
         return super(CreateConfirmation, self).get(request, *args, **kwargs)
 
 
