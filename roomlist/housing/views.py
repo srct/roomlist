@@ -12,7 +12,7 @@ from accounts.models import Student
 # this should be written in cache, to be entirely honest
 def shadowbanning(me, other_people):
     # start with only students who are actually blocking anyone
-    blockers = [student for student in Student.objects.exclude(blocked_kids__exact='')]
+    blockers = [student for student in Student.objects.exclude(blocked_kids=None)]
     # of those students, collect the ones that block *you*
     blocks_me = [student
                  for student in blockers
@@ -86,12 +86,11 @@ class DetailFloor(LoginRequiredMixin, DetailView):
         requesting_student = Student.objects.get(user=self.request.user)
 
         students = Student.objects.visible(requesting_student, self.get_object())
-        notOnFloor = not(requesting_student in self.get_object())
-        notInBuilding = not(requesting_student in self.get_object().building)
 
         context['students'] = shadowbanning(requesting_student, students)
-        context['notOnFloor'] = shadowbanning(requesting_student, notOnFloor)
-        context['notInBuilding'] = shadowbanning(requesting_student, notInBuilding)
+        # boolean values; helps cut down on if/else block complexity on the template
+        context['notOnFloor'] = not(requesting_student in self.get_object())
+        context['notInBuilding'] = not(requesting_student in self.get_object().building)
         return context
 
 
@@ -119,10 +118,8 @@ class DetailRoom(LoginRequiredMixin, DetailView):
         requesting_student = Student.objects.get(user=self.request.user)
 
         students = Student.objects.visible(requesting_student, self.get_object())
-        notOnFloor = not(requesting_student in self.get_object().floor)
-        notInBuilding = not(requesting_student in self.get_object().floor.building)
 
         context['students'] = shadowbanning(requesting_student, students)
-        context['notOnFloor'] = shadowbanning(requesting_student, notOnFloor)
-        context['notInBuilding'] = shadowbanning(requesting_student, notInBuilding)
+        context['notOnFloor'] = not(requesting_student in self.get_object())
+        context['notInBuilding'] = not(requesting_student in self.get_object().building)
         return context
