@@ -2,16 +2,27 @@
 from __future__ import absolute_import, print_function
 # core django imports
 from django.conf.urls import patterns, include, url
-# third party imports
-from rest_framework.routers import DefaultRouter
 # imports from your apps
-from .views import BuildingAPI, FloorAPI, RoomAPI, MajorAPI
+from .views import BuildingList, BuildingRetrieve, FloorRetrieve, RoomRetrieve,\
+                   MajorList, MajorRetrieve
 
+# custom routing ftw
+# separate out major and building patterns
+building_urls = patterns('',
+    url(r'^$', BuildingList.as_view(), name='api_list_buildings'),
+    url(r'^building/(?P<pk>\d+)/$', BuildingRetrieve.as_view(), name='api_detail_building'),
+    url(r'^building/floor/(?P<pk>\d+)/$', FloorRetrieve.as_view(), name='api_detail_floor'),
+    # list all the floors still?
+    url(r'^building/floor/room/(?P<pk>\d+)/$', RoomRetrieve.as_view(), name='api_deatil_room'),
+    # list all the rooms still?
+)
 
-router = DefaultRouter()
-router.register(r'buildings', BuildingAPI)
-router.register(r'floors', FloorAPI)
-router.register(r'rooms', RoomAPI)
-router.register(r'majors', MajorAPI)
+major_urls = patterns('',
+    url(r'^$', MajorList.as_view(), name='api_list_majors'),
+    url(r'^(?P<pk>\d+)/$', MajorRetrieve.as_view(), name='api_detail_building'),
+)
 
-urlpatterns = router.urls
+urlpatterns = patterns('',
+    url(r'^housing/', include(building_urls)),
+    url(r'^majors/', include(major_urls)),
+)

@@ -11,9 +11,6 @@ from accounts.models import Major
 
 class BuildingSerializer(serializers.ModelSerializer):
 
-    # floors
-    # rooms
-
     class Meta:
         model = Building
         fields = ('name', 'neighbourhood', 'campus')
@@ -22,7 +19,6 @@ class BuildingSerializer(serializers.ModelSerializer):
 class FloorSerializer(serializers.ModelSerializer):
 
     building = serializers.SerializerMethodField('get_building_name')
-    #rooms = serializers.SerializerMethodField('get_floor_rooms')
 
     def get_building_name(self, floor):
         return floor.building.name
@@ -34,7 +30,7 @@ class FloorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Floor
-        fields = ('number', 'building', )#'rooms')
+        fields = ('number', 'building')
 
 
 class RoomSerializer(serializers.ModelSerializer):
