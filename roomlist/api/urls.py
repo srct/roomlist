@@ -10,10 +10,10 @@ from .views import BuildingList, BuildingRetrieve, FloorRetrieve, RoomRetrieve,\
 # separate out major and building patterns
 building_urls = patterns('',
     url(r'^$', BuildingList.as_view(), name='api_list_buildings'),
-    url(r'^building/(?P<pk>\d+)/$', BuildingRetrieve.as_view(), name='api_detail_building'),
-    url(r'^building/floor/(?P<pk>\d+)/$', FloorRetrieve.as_view(), name='api_detail_floor'),
+    url(r'^(?P<name>[\w-]+)/$', BuildingRetrieve.as_view(), name='api_detail_building'),
+    url(r'^building/(?P<pk>\d+)/$', FloorRetrieve.as_view(), name='api_detail_floor'),
     # list all the floors still?
-    url(r'^building/floor/room/(?P<pk>\d+)/$', RoomRetrieve.as_view(), name='api_deatil_room'),
+    url(r'^building/floor/(?P<pk>\d+)/$', RoomRetrieve.as_view(), name='api_deatil_room'),
     # list all the rooms still?
 )
 

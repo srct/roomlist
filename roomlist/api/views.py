@@ -29,6 +29,7 @@ class BuildingRetrieve(RetrieveAPIView):
     model = Building
     queryset = Building.objects.all()
     serializer_class = BuildingSerializer
+    lookup_field = 'name'
 
 
 #class FloorList(ListAPIView):
