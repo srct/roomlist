@@ -5,6 +5,9 @@ from django.shortcuts import get_object_or_404
 # third party imports
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.views import APIView
+from rest_framework.reverse import reverse
+from rest_framework.response import Response
 # imports from your apps
 from housing.models import Building, Floor, Room
 from accounts.models import Major
@@ -84,3 +87,12 @@ class MajorRetrieve(RetrieveAPIView):
     queryset = Major.objects.all()
     serializer_class = MajorSerializer
     lookup_field = 'slug'
+
+
+# root urls
+class APIRoot(APIView):
+    def get(self, request):
+        return Response({
+            'housing': reverse('api_list_buildings', request=request),
+            'majors': reverse('api_list_majors', request=request),
+        })

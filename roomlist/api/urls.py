@@ -2,11 +2,14 @@
 from __future__ import absolute_import, print_function
 # core django imports
 from django.conf.urls import patterns, include, url
+from django.views.generic import RedirectView
 # imports from your apps
 from .views import BuildingList, BuildingRetrieve, FloorRetrieve, RoomRetrieve,\
-                   MajorList, MajorRetrieve
+                   MajorList, MajorRetrieve, APIRoot
 
 # custom routing ftw
+
+# API v1
 # separate out major and building patterns
 building_urls = patterns('',
     url(r'^$', BuildingList.as_view(), name='api_list_buildings'),
@@ -20,10 +23,14 @@ building_urls = patterns('',
 
 major_urls = patterns('',
     url(r'^$', MajorList.as_view(), name='api_list_majors'),
-    url(r'^(?P<slug>[\w-]+)/$', MajorRetrieve.as_view(), name='api_detail_building'),
+    url(r'^(?P<slug>[\w-]+)/$', MajorRetrieve.as_view(), name='api_detail_major'),
 )
 
 urlpatterns = patterns('',
-    url(r'^housing/', include(building_urls)),
-    url(r'^majors/', include(major_urls)),
+    url(r'^v1/housing/', include(building_urls)),
+    url(r'^v1/majors/', include(major_urls)),
+    url(r'^v1/$', APIRoot.as_view(), name='api_root'),
+    url(r'^$',  RedirectView.as_view(pattern_name='api_root')),
 )
+
+# Subsequent API versions below
