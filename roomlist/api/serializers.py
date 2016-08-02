@@ -11,6 +11,13 @@ from accounts.models import Major
 
 class BuildingSerializer(serializers.ModelSerializer):
 
+    floors = serializers.SerializerMethodField('get_building_floors')
+
+    def get_building_floors(self, building):
+        floors = serialize('json', Floor.objects.filter(building=building),
+                           fields=('number'))
+        return floors
+
     class Meta:
         model = Building
         fields = ('name', 'neighbourhood', 'campus')
