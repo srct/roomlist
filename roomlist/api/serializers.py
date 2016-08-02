@@ -11,7 +11,9 @@ from accounts.models import Major
 
 class BuildingSerializer(serializers.ModelSerializer):
 
-    floors = serializers.SerializerMethodField('get_building_floors')
+    # using django's built-in serialization makes for many escape characters
+    # and lots of unnecessary fields... there has to be a way to do this with DRF
+    #floors = serializers.SerializerMethodField('get_building_floors')
 
     def get_building_floors(self, building):
         floors = serialize('json', Floor.objects.filter(building=building),
@@ -26,6 +28,7 @@ class BuildingSerializer(serializers.ModelSerializer):
 class FloorSerializer(serializers.ModelSerializer):
 
     building = serializers.SerializerMethodField('get_building_name')
+    #rooms = serializers.SerializerMethodField('get_floor_room')
 
     def get_building_name(self, floor):
         return floor.building.name
