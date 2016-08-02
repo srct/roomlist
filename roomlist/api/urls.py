@@ -10,16 +10,17 @@ from .views import BuildingList, BuildingRetrieve, FloorRetrieve, RoomRetrieve,\
 # separate out major and building patterns
 building_urls = patterns('',
     url(r'^$', BuildingList.as_view(), name='api_list_buildings'),
-    url(r'^(?P<name>[\w-]+)/$', BuildingRetrieve.as_view(), name='api_detail_building'),
-    url(r'^building/(?P<pk>\d+)/$', FloorRetrieve.as_view(), name='api_detail_floor'),
+    url(r'^(?P<building_name>[\w-]+)/$', BuildingRetrieve.as_view(), name='api_detail_building'),
+    # the naming here and for floors is a little obnoxious
+    url(r'^(?P<building__building_name>[\w-]+)/(?P<floor_num>\d+)/$', FloorRetrieve.as_view(), name='api_detail_floor'),
     # list all the floors still?
-    url(r'^building/floor/(?P<pk>\d+)/$', RoomRetrieve.as_view(), name='api_deatil_room'),
+    url(r'^(?P<floor__building__building_name>[\w-]+)/(?P<floor__floor_num>\d+)/(?P<room_num>\d+)/$', RoomRetrieve.as_view(), name='api_detail_room'),
     # list all the rooms still?
 )
 
 major_urls = patterns('',
     url(r'^$', MajorList.as_view(), name='api_list_majors'),
-    url(r'^(?P<pk>\d+)/$', MajorRetrieve.as_view(), name='api_detail_building'),
+    url(r'^(?P<slug>[\w-]+)/$', MajorRetrieve.as_view(), name='api_detail_building'),
 )
 
 urlpatterns = patterns('',
