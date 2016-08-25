@@ -11,7 +11,8 @@ from rest_framework.response import Response
 # imports from your apps
 from housing.models import Building, Floor, Room
 from accounts.models import Major
-from .serializers import (BuildingSerializer, FloorSerializer, RoomSerializer,
+from .serializers import (BuildingSerializer, BuildingFloorListSerializer,
+                          FloorSerializer, RoomSerializer,
                           MajorSerializer)
 
 
@@ -45,7 +46,7 @@ class BuildingList(ListAPIView):
 class BuildingRetrieve(RetrieveAPIView):
     model = Building
     queryset = Building.objects.all()
-    serializer_class = BuildingSerializer
+    serializer_class = BuildingFloorListSerializer
     lookup_field = 'building_name'
 
 
