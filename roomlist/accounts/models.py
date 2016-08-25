@@ -25,6 +25,11 @@ class Major(TimeStampedModel):
 
     slug = AutoSlugField(populate_from='name', unique=True)
 
+    # don't fix this just yet-- coincide with end of semester when everyone's
+    # changing up their accounts anyway
+    #name_slug = AutoSlugField(populate_from='name')  # custom function to delete
+                                                      # ba/bs/etc
+
     def first_letter(self):
         return self.name and self.name[0] or ''
 
