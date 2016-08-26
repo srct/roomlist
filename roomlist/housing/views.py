@@ -59,7 +59,7 @@ class DetailFloor(LoginRequiredMixin, DetailView):
         url_parts = self.request.get_full_path().split('/')
         # [u'', u'housing', u'building', u'floor', ]
         building_name = url_parts[2].replace('-', ' ').title()
-        floor_number = int(url_parts[3])
+        floor_number = url_parts[3]
         building = Building.objects.get(name=building_name)
         floor = Floor.objects.get(number=floor_number,
                                   building=building)
@@ -85,8 +85,8 @@ class DetailRoom(LoginRequiredMixin, DetailView):
         url_parts = self.request.get_full_path().split('/')
         # [u'', u'housing', u'building', u'floor', u'room', ]
         building_name = url_parts[2].replace('-', ' ').title()
-        floor_number = int(url_parts[3])
-        room_number = int(url_parts[4])
+        floor_number = url_parts[3]
+        room_number = url_parts[4].upper()
         building = Building.objects.get(name=building_name)
         floor = Floor.objects.get(number=floor_number,
                                   building=building)
