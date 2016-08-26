@@ -42,6 +42,7 @@ mason_housing = { 'Adams': 'sh',
                   'Jefferson': 'sh',
                   'Kennedy': 'sh',
                   'Lincoln': 'sh',
+                  'Liberty Square': 'sh',  # wing letters precede room numbers
                   'Madison': 'sh',
                   'Monroe': 'sh',
                   'Northern Neck': 'ra',
@@ -58,7 +59,6 @@ mason_housing = { 'Adams': 'sh',
 
 # Townhouses -- really whacky naming
 # Beacon Hall -- graduate students
-# Liberty Square -- Weird letters in name
 # Mason Global Center -- international students
 
 start_time = datetime.now()
@@ -82,14 +82,14 @@ print("Creating floors...")
 
 new_floors = 0
 
-with open('housing/buildingFloors.txt') as buildings:
+with open('housing/building_floors.txt') as buildings:
     for line in buildings:
         line = line.strip()
         if re.match('^[a-z A-Z]*( {1}\d)?$', line):
             current_building = Building.objects.get(name=line)
             print(current_building)
         else:
-            my_floor, floor_created = Floor.objects.get_or_create(number=int(line),
+            my_floor, floor_created = Floor.objects.get_or_create(number=line,
                                                                   building=current_building)
             if floor_created:
                 my_floor.save()
@@ -107,11 +107,11 @@ with open('housing/building_rooms.txt') as rooms:
              current_building = Building.objects.get(name=line)
              print(current_building)
          else:
-             if current_building.name in ('Commonwealth', 'Dominion'):
-                 my_floor = Floor.objects.get(building=current_building, number=int(line[1]))
+             if current_building.name in ('Commonwealth', 'Dominion', 'Liberty Square'):
+                 my_floor = Floor.objects.get(building=current_building, number=line[1])
              else:
-                 my_floor = Floor.objects.get(building=current_building, number=int(line[0]))
-             my_room, room_created = Room.objects.get_or_create(floor=my_floor, number=int(line))
+                 my_floor = Floor.objects.get(building=current_building, number=line[0])
+             my_room, room_created = Room.objects.get_or_create(floor=my_floor, number=line)
              if room_created:
                  new_rooms += 1
                  my_room.save()
