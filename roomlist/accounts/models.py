@@ -1,5 +1,5 @@
 # standard library imports
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, print_function, division
 import hashlib
 from datetime import date
 # core django imports
@@ -213,7 +213,7 @@ class Student(TimeStampedModel):
         days = (now - created).days
 
         # must be int-- floor function
-        third_years = (days / (30 * 4)) + 1
+        third_years = (days // (30 * 4)) + 1
 
         return (self.times_changed_room / third_years)
 

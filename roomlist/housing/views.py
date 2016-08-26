@@ -1,5 +1,5 @@
 # standard library imports
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, print_function, unicode_literals
 # core django imports
 from django.views.generic import DetailView, ListView
 # third party imports
@@ -38,7 +38,7 @@ class DetailBuilding(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         url_parts = self.request.get_full_path().split('/')
-        # [u'', u'housing', u'building',]
+        # ['', 'housing', 'building',]
         building_name = url_parts[2].replace('-', ' ').title()
         building = Building.objects.get(name=building_name)
         return building
@@ -57,7 +57,7 @@ class DetailFloor(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         url_parts = self.request.get_full_path().split('/')
-        # [u'', u'housing', u'building', u'floor', ]
+        # ['', 'housing', 'building', 'floor', ]
         building_name = url_parts[2].replace('-', ' ').title()
         floor_number = url_parts[3]
         building = Building.objects.get(name=building_name)
@@ -83,7 +83,7 @@ class DetailRoom(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         url_parts = self.request.get_full_path().split('/')
-        # [u'', u'housing', u'building', u'floor', u'room', ]
+        # ['', 'housing', 'building', 'floor', 'room', ]
         building_name = url_parts[2].replace('-', ' ').title()
         floor_number = url_parts[3]
         room_number = url_parts[4].upper()
