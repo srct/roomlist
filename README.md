@@ -22,6 +22,8 @@ These instructions are for Ubuntu and Debian, or related Linux distributions. (I
 
 First, install python, pip, and git on your system. Python is the programming language used for Django, the web framework used by Roomlist. 'Pip' is the python package manager. Git is the version control system used for SRCT projects.
 
+**Debian/Ubuntu**
+
 Open a terminal and run the following commands.
 
 `sudo apt-get update`
@@ -31,6 +33,27 @@ This retrieves links to the most up-to-date and secure versions of your packages
 `sudo apt-get install python python-dev python-pip git`
 
 you install python and git.
+
+Now you're ready to set up the Roomlist repository on your machine.
+
+**macOS (Formerly OS X)**
+
+This tutorial uses the third party Homebrew package manager for macOS, which allows you to install
+packages from your terminal just as easily as you could on a Linux based system. You could use another
+package manager (or not use one at all), but Homebrew is highly reccomended.
+
+To get homebrew, run the following command in a terminal:
+``/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+
+**Note**: You do NOT need to use `sudo` when running any Homebrew commands, and it likely won't work if you do.
+
+Now you want to Python, pip, and git (macOS actually ships with some of these, but we want to have the latest versions). To do so, run the following command in your terminal:
+
+`brew install python git`
+
+Now you're ready to set up the Roomlist repository on your machine.
+
+#### Git Setup
 
 Now, we're going to clone down a copy of the Roomlist codebase from git.gmu.edu, the SRCT code respository.
 
