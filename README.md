@@ -47,9 +47,9 @@ To get homebrew, run the following command in a terminal:
 
 **Note**: You do NOT need to use `sudo` when running any Homebrew commands, and it likely won't work if you do.
 
-Now you want to Python, pip, and git (macOS actually ships with some of these, but we want to have the latest versions). To do so, run the following command in your terminal:
+Now you want to Python, pip, git, and MySQL (macOS actually ships with some of these, but we want to have the latest versions). To do so, run the following command in your terminal:
 
-`brew install python git`
+`brew install python git mysql`
 
 Now you're ready to set up the Roomlist repository on your machine.
 
