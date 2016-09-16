@@ -132,6 +132,10 @@ The project includes a number of json files with demo data to load into the data
 
 To start off indexing your models for searching, run `python manage.py update_index`.
 
+## Update room list
+
+To update all of the rooms, halls, and floors, you must execute a command to populate them in order for it to work properly. Simply navigate to the roomlist folder and run `python manage.py shell < housing/housing_obj_creator.py`.
+
 ## Starting up the test server
 
 With your virtual environment active, run
