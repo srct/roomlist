@@ -8,6 +8,7 @@ django-braces==1.4.0
 git+https://github.com/kstateome/django-cas.git
 django-crispy-forms==1.4.0
 django-filter==0.12.0
+git+https://github.com/kstateome/django-cas.git
 django-gravatar2==1.1.4
 django-haystack==2.3.1
 django-localflavor==1.0
