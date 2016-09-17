@@ -2,6 +2,16 @@
 
 {% block title %} SRCT Roomlist | Majors {% endblock title %}
 
+{% block og_metadata %}
+<meta property="og:title" content="SRCT Roomlist Majors"/>
+<meta property="og:description" content="Undergraduate majors on SRCT Roomlist. Log in with your Mason username and password to find your on-campus neighbors."/>
+{% endblock %}
+
+{% block tw_metadata %}
+<meta name="twitter:title" content="SRCT Roomlist Majors" />
+<meta name="twitter:description" content="Undergraduate majors on SRCT Roomlist. Log in with your Mason username and password to find your on-campus neighbors." />
+{% endblock tw_metadata %}
+
 {% block content %}
 
 {% include 'no_auth.html' %}
