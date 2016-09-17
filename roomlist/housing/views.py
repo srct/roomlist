@@ -10,14 +10,12 @@ from accounts.models import Student
 
 
 # a list of neighborhoods and their buildings
-class ListBuildings(LoginRequiredMixin, ListView):
+class ListBuildings(ListView):
     model = Building
     queryset = Building.objects.all()
     # paginate_by
     context_object_name = 'buildings'
     template_name = 'list_buildings.html'
-
-    login_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super(ListBuildings, self).get_context_data(**kwargs)

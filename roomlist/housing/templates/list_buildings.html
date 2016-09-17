@@ -3,6 +3,9 @@
 {% block title %} SRCT Roomlist &bull; Neighborhoods {% endblock title %}
 
 {% block content %}
+
+{% include 'no_auth.html' %}
+
 {% load cache %}
 {% cache 900 list_buildings %}
 
