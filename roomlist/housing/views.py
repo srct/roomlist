@@ -48,6 +48,8 @@ class DetailFloor(LoginRequiredMixin, DetailView):
     context_object_name = 'floor'
     template_name = 'detail_floor.html'
 
+    login_url = 'login'
+
     def get_context_data(self, **kwargs):
         context = super(DetailFloor, self).get_context_data(**kwargs)
 
@@ -88,6 +90,8 @@ class DetailRoom(LoginRequiredMixin, DetailView):
     context_object_name = 'room'
     template_name = 'detail_room.html'
 
+    login_url = 'login'
+
     def get_context_data(self, **kwargs):
         context = super(DetailRoom, self).get_context_data(**kwargs)
 
@@ -119,8 +123,6 @@ class DetailRoom(LoginRequiredMixin, DetailView):
         context['notInBuilding'] = not inBuilding()
 
         return context
-
-    login_url = '/'
 
 
 # deleted 'UpdateRoom' view-- that will be handled on the user's page
