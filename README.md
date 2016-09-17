@@ -18,7 +18,7 @@ Please visit the [SRCT Wiki](http://wiki.srct.gmu.edu/) for more information on 
 
 These instructions are for Ubuntu and Debian, or related Linux distributions. (If you'd like to help write the instructions for Mac OSX, please do!)
 
-### Prerequisities
+### Prerequisities and Package Installation
 
 First, install python, pip, and git on your system. Python is the programming language used for Django, the web framework used by Roomlist. 'Pip' is the python package manager. Git is the version control system used for SRCT projects.
 
@@ -34,6 +34,14 @@ This retrieves links to the most up-to-date and secure versions of your packages
 
 you install python and git.
 
+Next, install these packages from the standard repositories
+
+`$ sudo apt-get install libldap2-dev mysql-server mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev libjpeg-dev redis-server`
+
+If prompted to install additional required packages, install those as well.
+
+When prompted to set your mysql password, it's advisable to set it as the same as your normal superuser password.
+
 Now you're ready to set up the Roomlist repository on your machine.
 
 **macOS (Formerly OS X)**
@@ -47,9 +55,9 @@ To get homebrew, run the following command in a terminal:
 
 **Note**: You do NOT need to use `sudo` when running any Homebrew commands, and it likely won't work if you do.
 
-Now you want to Python, pip, git, and MySQL (macOS actually ships with some of these, but we want to have the latest versions). To do so, run the following command in your terminal:
+Now you want to Python, pip, git, and MySQL (macOS actually ships with some of these, but we want to have the latest versions). We'll also install Redis, though this package is only relevant when testing the production environment. To do so, run the following command in your terminal:
 
-`brew install python git mysql`
+`brew install python git mysql redis`
 
 Now you're ready to set up the Roomlist repository on your machine.
 
@@ -62,16 +70,6 @@ Configure your ssh keys by following the directions at git.gmu.edu/help/ssh/READ
 Now, on your computer, navigate to the directory in which you want to download the project (perhaps one called development/ or something similar), and run
 
 `git clone git@git.gmu.edu:srct/roomlist.git`
-
-### Package Installation
-
-Next, install these packages from the standard repositories
-
-`$ sudo apt-get install libldap2-dev mysql-server mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev libjpeg-dev redis-server`
-
-If prompted to install additional required packages, install those as well.
-
-When prompted to set your mysql password, it's advisable to set it as the same as your normal superuser password.
 
 ### The Virtual Environment
 
