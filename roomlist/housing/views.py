@@ -26,13 +26,11 @@ class ListBuildings(ListView):
 
 
 # building floors, other information
-class DetailBuilding(LoginRequiredMixin, DetailView):
+class DetailBuilding(DetailView):
     model = Building
     slug_field = 'slug__iexact'
     context_object_name = 'building'
     template_name = 'detail_building.html'
-
-    login_url = 'login'
 
     def get_object(self):
         url_parts = self.request.get_full_path().split('/')
@@ -52,6 +50,8 @@ class DetailFloor(LoginRequiredMixin, DetailView):
     model = Floor
     context_object_name = 'floor'
     template_name = 'detail_floor.html'
+
+    login_url = 'login'
 
     def get_object(self):
         url_parts = self.request.get_full_path().split('/')
@@ -78,6 +78,8 @@ class DetailRoom(LoginRequiredMixin, DetailView):
     model = Room
     context_object_name = 'room'
     template_name = 'detail_room.html'
+
+    login_url = 'login'
 
     def get_object(self):
         url_parts = self.request.get_full_path().split('/')
