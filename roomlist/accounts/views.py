@@ -316,13 +316,11 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
 
 
 # majors pages
-class ListMajors(LoginRequiredMixin, ListView):
+class ListMajors(ListView):
     model = Major
     queryset = Major.objects.all().order_by('name')
     context_object_name = 'majors'
     template_name = 'list_majors.html'
-
-    login_url = 'login'
 
 
 class DetailMajor(LoginRequiredMixin, DetailView):

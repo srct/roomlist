@@ -5,6 +5,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.contrib import admin
+from django.views.generic import RedirectView
 # imports from your apps
 from .views import HomePageView
 from haystack.views import SearchView
@@ -29,6 +30,9 @@ urlpatterns = patterns('',
 
     # search
     url(r'^search/', login_required(SearchView(), login_url='login'), name='search'),
+
+    # redirects
+    url(r'^majors/', RedirectView.as_view(pattern_name='list_majors')),
 
     # login and logout
     url(r'^login/', 'accounts.views.custom_cas_login', name='login'),
