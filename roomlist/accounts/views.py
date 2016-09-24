@@ -200,7 +200,7 @@ class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
 
 # update a student, but FormView to allow name update on same page
 class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
-    template_name = 'updateStudent.html'
+    template_name = 'update_student.html'
     form_class = StudentUpdateForm
     login_url = 'login'
 

@@ -24,13 +24,13 @@
 
 <div class="row">
   {{ student }} text text text {{ request.user }}
-  <a href="{% url 'updateStudent' request.user.student.slug %}">
+  <a href="{% url 'update_student' request.user.student.slug %}">
     <div class="col-md-3 text-center">
       <h4><i class="fa fa-lock fa-5x"></i></h4>
     <h4>Set Your Room and Privacy</h4>
     </div>
   </a>
-  <a href="{% url 'updateStudentMajor' request.user.student.slug %}">
+  <a href="{% url 'update_student_major' request.user.student.slug %}">
     <div class="col-md-3 text-center">
       <h4><i class="fa fa-graduation-cap fa-5x"></i></h4>
       <h4>Set Your Major</h4>

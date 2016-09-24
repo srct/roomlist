@@ -30,7 +30,7 @@ urlpatterns = patterns('',
 
     # student settings
     url(r'^student/(?P<slug>[\w-]+)/settings/$',
-        UpdateStudent.as_view(), name='updateStudent'),
+        UpdateStudent.as_view(), name='update_student'),
 
     url(r'^student/(?P<slug>[\w-]+)/settings/social/remove/$',
         RemoveSocialConfirmationView.as_view(),

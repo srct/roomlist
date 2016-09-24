@@ -29,7 +29,7 @@ class WelcomeName(LoginRequiredMixin, FormView):
 
         if self.request.user.student.totally_done():
             messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
+            return reverse('update_student',
                            kwargs={'slug':self.request.user.username})
         else:
             return super(WelcomeName, self).get(request, *args, **kwargs)
@@ -84,7 +84,7 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
 
         if self.request.user.student.totally_done():
             messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
+            return reverse('update_student',
                            kwargs={'slug':self.request.user.username})
         else:
             return super(WelcomePrivacy, self).get(request, *args, **kwargs)
@@ -157,7 +157,7 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
 
         if self.request.user.student.totally_done():
             messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
+            return reverse('update_student',
                            kwargs={'slug':self.request.user.username})
         else:
             return super(WelcomeMajor, self).get(request, *args, **kwargs)
@@ -208,7 +208,7 @@ class WelcomeSocial(LoginRequiredMixin, FormView):
 
         if self.request.user.student.totally_done():
             messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
+            return reverse('update_student',
                            kwargs={'slug':self.request.user.username})
         else:
             return super(WelcomeSocial, self).get(request, *args, **kwargs)

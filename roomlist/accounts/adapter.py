@@ -39,7 +39,7 @@ class AccountAdapter(DefaultSocialAccountAdapter):
                 'slug': request.user.username,
             })
         else:
-            return reverse('updateStudent', kwargs={
+            return reverse('update_student', kwargs={
                 'slug': request.user.username,
             })
 
@@ -59,7 +59,7 @@ class AccountAdapter(DefaultSocialAccountAdapter):
             raise ImmediateHttpResponse(social_redirect)
         else:
             messages.add_message(request, messages.ERROR, error_message)
-            update_redirect =  HttpResponseRedirect(reverse('updateStudent', kwargs={
+            update_redirect =  HttpResponseRedirect(reverse('update_student', kwargs={
                                   'slug': request.user.username,
                               }))
             raise ImmediateHttpResponse(update_redirect)
@@ -71,7 +71,7 @@ class RemoveSocialConfirmationView(LoginRequiredMixin, ConnectionsView):
     def get(self, request, *args, **kwargs):
         if not request.user.socialaccount_set.all():
             # no social media accounts? back to the settings page with you!
-            return HttpResponseRedirect(reverse('updateStudent',
+            return HttpResponseRedirect(reverse('update_student',
                                         kwargs={'slug':self.request.user.username}))
         else:
             return super(RemoveSocialConfirmationView, self).get(request, *args, **kwargs)
@@ -80,5 +80,5 @@ class RemoveSocialConfirmationView(LoginRequiredMixin, ConnectionsView):
         return super(RemoveSocialConfirmationView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('updateStudent',
+        return reverse('update_student',
                         kwargs={'slug':self.request.user.username})
