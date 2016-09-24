@@ -13,7 +13,7 @@ from autoslug import AutoSlugField
 
 class Building(TimeStampedModel):
     name = models.CharField(max_length=100, unique=True)
-
+    abbreviation = models.CharField(max_length=2, blank=True)
     NONE = 'na'
     AQUIA = 'aq'
     RAPPAHANNOCK = 'ra'
