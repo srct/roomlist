@@ -34,11 +34,10 @@
 &nbsp;&nbsp;<label>Room</label>&nbsp;
 <select id="room" name="room" class="roompicker">
   <option value="">---</option>
+  {% load cache %}
+  {% cache 3600 room_list %}
   {% for room in rooms %}
-    {% if user.student.room.pk == room.pk %}
-      <option value="{{ room.pk }}" class="{{ room.floor.pk }}" selected="selected">{{ room.number }}</option>
-    {% else %}
       <option value="{{ room.pk }}" class="{{ room.floor.pk }}">{{ room.number }}</option>
-    {% endif %}
   {% endfor %}
+  {% endcache %}
 </select>

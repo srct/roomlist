@@ -280,6 +280,12 @@
       $($radio.filter('[value=True]').click(function(){
         $("#lives-on-campus").slideDown();
       }));
+
+    // find the room a student is staying in and select it for them on page load
+    // this allows us to cache the list of rooms
+      var selectedRoom = "{{ request.user.student.room.pk }}";
+      $("#room").val(selectedRoom)
+      .find("option[value=" + selectedRoom + "]").attr('selected', true);
     });
     $("#lives-on-campus").hide();
 
