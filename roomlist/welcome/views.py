@@ -208,8 +208,8 @@ class WelcomeSocial(LoginRequiredMixin, FormView):
 
         if self.request.user.student.totally_done():
             messages.add_message(request, messages.INFO, settings_redirect)
-            return render_to_string('update_student',
-                                    context={'slug':self.request.user.username})
+            return redirect(reverse('update_student',
+                            kwargs={'slug':self.request.user.username}))
         else:
             return super(WelcomeSocial, self).get(request, *args, **kwargs)
 
