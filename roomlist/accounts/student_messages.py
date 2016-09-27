@@ -22,7 +22,8 @@ disclaimer = """Welcome back to SRCT Roomlist. Just to be perfectly clear, this 
 whatsopen_plug = """Welcome back to SRCT Roomlist. Wondering what's open at this hour?
                     Check out another one of our
                     <a href="https://srct.gmu.edu/projects/">student-built and hosted</a>
-                    projects: <a href="https://whatsopen.gmu.edu/">whatsopen.gmu.edu</a>."""
+                    projects:
+                    <a href="https://whatsopen.gmu.edu/">whatsopen.gmu.edu</a>."""
 
 open_source = """Welcome back to SRCT Roomlist. For the curious at heart,
                  <a href="http://www.gnu.org/philosophy/free-sw.en.html">you can always
@@ -31,5 +32,5 @@ open_source = """Welcome back to SRCT Roomlist. For the curious at heart,
                  Come <a href="https://srct.gmu.edu/">to a meeting</a> and learn how to
                  contribute!"""
 
-return_messages = [bug_reporting, privacy_reminder, disclaimer, whatsopen_plug, open_source]
-
+return_messages = [bug_reporting, privacy_reminder, disclaimer,
+                   whatsopen_plug, open_source]

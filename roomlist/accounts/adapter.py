@@ -1,17 +1,15 @@
 # standard library imports
 from __future__ import absolute_import, print_function
-from datetime import datetime, timedelta
 # core django imports
 from django.core.urlresolvers import reverse
-from django.views.generic import FormView
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 # third party imports
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.socialaccount.views import ConnectionsView
-from allauth.socialaccount.forms import DisconnectForm
 from allauth.exceptions import ImmediateHttpResponse
 from braces.views import LoginRequiredMixin
+
 
 class AccountAdapter(DefaultSocialAccountAdapter):
     """A custom implementation of a portion of the allauth social media package.
@@ -25,8 +23,8 @@ class AccountAdapter(DefaultSocialAccountAdapter):
 
     # the request processed by the adapter is one from the successful oauth callback
     # uncomment this method to print what URL you are arriving from
-    #def pre_social_login(self, request, sociallogin):
-        #print(request.get_full_path(), 'pre_login')
+    # def pre_social_login(self, request, sociallogin):
+    #     print(request.get_full_path(), 'pre_login')
 
     def populate_user(self, request, sociallogin, data):
         # This is a hook to populate User attributes, but we expressly don't actually
@@ -71,8 +69,9 @@ class AccountAdapter(DefaultSocialAccountAdapter):
             messages.add_message(request, messages.ERROR, error_message)
             update_redirect =  HttpResponseRedirect(reverse('update_student', kwargs={
                                   'slug': request.user.username,
-                              }))
+                               }))
             raise ImmediateHttpResponse(update_redirect)
+
 
 class RemoveSocialConfirmationView(LoginRequiredMixin, ConnectionsView):
     """To customize where users are sent when removing their social media connections.
@@ -86,7 +85,7 @@ class RemoveSocialConfirmationView(LoginRequiredMixin, ConnectionsView):
         if not request.user.socialaccount_set.all():
             # no social media accounts? back to the settings page with you!
             return HttpResponseRedirect(reverse('update_student',
-                                        kwargs={'slug':self.request.user.username}))
+                                        kwargs={'slug': self.request.user.username}))
         else:
             return super(RemoveSocialConfirmationView, self).get(request, *args, **kwargs)
 
@@ -95,4 +94,4 @@ class RemoveSocialConfirmationView(LoginRequiredMixin, ConnectionsView):
 
     def get_success_url(self):
         return reverse('update_student',
-                        kwargs={'slug':self.request.user.username})
+                        kwargs={'slug': self.request.user.username})

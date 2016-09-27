@@ -50,10 +50,10 @@ class BuildingRetrieve(RetrieveAPIView):
     lookup_field = 'building_name'
 
 
-#class FloorList(ListAPIView):
-#    queryset = Floor.objects.all()
-#    serializer_class = FloorSerializer
-#    pagination_class = HousingPagination
+# class FloorList(ListAPIView):
+#     queryset = Floor.objects.all()
+#     serializer_class = FloorSerializer
+#     pagination_class = HousingPagination
 
 
 class FloorRetrieve(MultipleFieldLookupMixin, RetrieveAPIView):
@@ -71,10 +71,10 @@ class RoomRetrieve(MultipleFieldLookupMixin, RetrieveAPIView):
                               'floor__building__building_name')
 
 
-#class RoomList(ListAPIView):  # kek
-#    queryset = Room.objects.all()
-#    serializer_class = RoomSerializer
-#    pagination_class = HousingPagination
+# class RoomList(ListAPIView):  # kek
+#     queryset = Room.objects.all()
+#     serializer_class = RoomSerializer
+#     pagination_class = HousingPagination
 
 
 # major apis

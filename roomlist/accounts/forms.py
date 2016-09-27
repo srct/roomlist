@@ -83,22 +83,21 @@ class StudentUpdateForm(forms.Form):
     major = forms.ModelChoiceField(queryset=Major.objects.all(), required=False)
     graduating_year = forms.IntegerField()
 
-
     def clean(self):
         cleaned_data = super(StudentUpdateForm, self).clean()
         form_room = cleaned_data.get('room')
         if not(form_room is None):
             students_in_room = Student.objects.filter(room=form_room).count()
-            #print(students_in_room)
+            # print(students_in_room)
             # like in bookshare, I have no idea why the form errors don't display.
             if students_in_room > 12:
                 raise ValidationError(_('Too many students in room (%d).' % students_in_room), code='invalid')
 
     def is_valid(self):
         # errors are not printed in form.as_p?
-        #print("In is_valid.")
-        #print(self.is_bound, 'is bound')
-        #print(self.errors, type(self.errors), 'errors')
+        # print("In is_valid.")
+        # print(self.is_bound, 'is bound')
+        # print(self.errors, type(self.errors), 'errors')
         valid = super(StudentUpdateForm, self).is_valid()
-        #print(valid)
+        # print(valid)
         return valid

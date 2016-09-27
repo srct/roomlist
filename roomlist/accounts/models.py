@@ -8,8 +8,6 @@ from django.utils import timezone
 from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.utils.text import slugify
-from django.contrib import messages
 # third party imports
 from autoslug import AutoSlugField
 from randomslugfield import RandomSlugField
@@ -222,7 +220,6 @@ class Student(TimeStampedModel):
         # must be int-- floor function
         third_years = (days // (30 * 4)) + 1
 
-
         return (self.times_changed_room // third_years)
 
     def get_floor(self):
@@ -248,7 +245,7 @@ class Student(TimeStampedModel):
 
     def profile_image_url(self):
         fb_uid = SocialAccount.objects.filter(user=self.user.id, provider='facebook')
-        #print("profile_image")
+        # print("profile_image")
 
         if len(fb_uid) > 0:
             return "https://graph.facebook.com/{}/picture?width=175&height=175".format(fb_uid[0].uid)
@@ -269,13 +266,13 @@ class Student(TimeStampedModel):
             return self.user.username
         else:
             return self.user.get_short_name()
-    
+
     def get_last_name_or_uname(self):
         if not(self.user.last_name):
             return self.user.username
         else:
             return self.user.last_name
-    
+
     def get_full_name_or_uname(self):
         if not(self.user.get_full_name()):
             return self.user.username
@@ -301,12 +298,12 @@ class Student(TimeStampedModel):
         return unicode(self.user.username)
 
     # uncomment if there's something going awry while saving
-    #def save(self, *args, **kwargs):
-        #print('we be savin\'!')
-        #from django.db.models.signals import pre_save, post_save
-        #for signal in [pre_save, post_save]:
-            #print(signal, signal.receivers)
-        #super(Student, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+        # print('we be savin\'!')
+        # from django.db.models.signals import pre_save, post_save
+        # for signal in [pre_save, post_save]:
+        #     print(signal, signal.receivers)
+        # super(Student, self).save(*args, **kwargs)
 
 
 class Confirmation(TimeStampedModel):

@@ -5,10 +5,8 @@ from distutils.util import strtobool
 from operator import attrgetter
 from itertools import chain
 # core django imports
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden, HttpResponseRedirect
-from django.views.generic import (CreateView, ListView, DetailView, UpdateView,
-                                  FormView, DeleteView)
+from django.views.generic import CreateView, ListView, DetailView, FormView, DeleteView
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.safestring import mark_safe
@@ -19,7 +17,7 @@ from cas.views import login as cas_login
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from .models import Student, Major, Confirmation
-from housing.models import Building, Floor, Room
+from housing.models import Room
 from .forms import StudentUpdateForm
 from .student_messages import return_messages
 
@@ -99,6 +97,7 @@ class DetailStudent(LoginRequiredMixin, DetailView):
                 print("Students are not supposed to be able to make more than one flag per student.")
                 print(e)
 
+        # recognizably too complex
         def onFloor():
             floor_status = False
             if requesting_student.get_floor() == self.get_object().get_floor():
@@ -185,17 +184,17 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
-        #for key, value in request.POST.iteritems():
-            #print(key, value)
+        # for key, value in request.POST.iteritems():
+            # print(key, value)
         return super(UpdateStudent, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
         me = Student.objects.get(user=self.request.user)
 
-        #print("In form valid method!")
+        # print("In form valid method!")
 
-        #for key, value in form.data.iteritems():
-            #print(key, value)
+        # for key, value in form.data.iteritems():
+        #    print(key, value)
 
         current_room = me.room
 
@@ -247,7 +246,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
             messages.add_message(self.request, messages.WARNING, 'To safeguard everyone\'s privacy, you have just one remaining room change for the semester before you\'ll need to send us an email at roomlist@lists.srct.gmu.edu.')
 
         return reverse('detail_student',
-                       kwargs={'slug':self.request.user.username})
+                       kwargs={'slug': self.request.user.username})
 
 
 # majors pages
@@ -269,41 +268,39 @@ class DetailMajor(LoginRequiredMixin, DetailView):
         context = super(DetailMajor, self).get_context_data(**kwargs)
         requesting_student = Student.objects.get(user=self.request.user)
 
-	# retrieve every room that has a student with the major in question
-	neighbourhoods = ("aq", "ra", "sh")
-	visible_by_neighbourhood = {}
-	for neighbourhood in neighbourhoods:
-	    rooms = [
-		room
-		for room in Room.objects.filter(floor__building__neighbourhood=neighbourhood)
-		if room.student_set.filter(major=self.get_object())
-	    ]
+        # retrieve every room that has a student with the major in question
+        neighbourhoods = ("aq", "ra", "sh")
+        visible_by_neighbourhood = {}
+        for neighbourhood in neighbourhoods:
+            rooms = [
+                room
+                for room in Room.objects.filter(floor__building__neighbourhood=neighbourhood)
+                if room.student_set.filter(major=self.get_object())
+            ]
 
-	    # identify if the student(s) in that room are visible to the requesting student
-	    # 'chain' is necessary if there are multiple students in one room with the same major
-	    #
-	    # we sort each of the lists of students by their username
-	    # as elsewhere, this is imperfect if a student changes their display name
-	    # this is necessary as a separate step because .visible returns a list type
-	    # note we're using '.' instead of '__', because who likes syntactical consistency
-	    visible_by_neighbourhood[neighbourhood] = sorted(list(chain(*[
-		Student.objects.visible(requesting_student, room)
-		for room in rooms
-	    ])), key=attrgetter('user.username'))
-
-        # print(visible_by_neighbourhood)
+            # identify if the student(s) in that room are visible to the requesting student
+            # 'chain' is necessary if there are multiple students in one room with the same major
+            #
+            # we sort each of the lists of students by their username
+            # as elsewhere, this is imperfect if a student changes their display name
+            # this is necessary as a separate step because .visible returns a list type
+            # note we're using '.' instead of '__', because who likes syntactical consistency
+            visible_by_neighbourhood[neighbourhood] = sorted(list(chain(*[
+                Student.objects.visible(requesting_student, room)
+                for room in rooms
+            ])), key=attrgetter('user.username'))
 
         # see what students are left over (aren't visible)
         hidden = set(Student.objects.filter(major=self.get_object()).order_by('user__username'))
         # print(hidden)
-	for visible in visible_by_neighbourhood.values():
+        for visible in visible_by_neighbourhood.values():
             # print('visible', visible)
-	    hidden = hidden.difference(set(visible))
+            hidden = hidden.difference(set(visible))
             # print(hidden)
 
-	for neighbourhood, visible in visible_by_neighbourhood.iteritems():
-	    context['%s_location_visible' % neighbourhood] = visible
-        context['location_hidden'] = hidden
+        for neighbourhood, visible in visible_by_neighbourhood.iteritems():
+            context['%s_location_visible' % neighbourhood] = visible
+            context['location_hidden'] = hidden
 
         return context
 
@@ -344,7 +341,6 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
 
         return super(CreateConfirmation, self).get(request, *args, **kwargs)
 
-
     def get_context_data(self, **kwargs):
         context = super(CreateConfirmation, self).get_context_data(**kwargs)
 
@@ -380,7 +376,7 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         # redirect to the flagged student page when saving
         return reverse('detail_student',
-                       kwargs={'slug':self.object.student.slug})
+                       kwargs={'slug': self.object.student.slug})
 
 
 class DeleteConfirmation(LoginRequiredMixin, DeleteView):
@@ -400,4 +396,4 @@ class DeleteConfirmation(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('detail_student',
-                       kwargs={'slug':self.object.student.slug})
+                       kwargs={'slug': self.object.student.slug})

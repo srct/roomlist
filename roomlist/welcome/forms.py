@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 # third party imports
 from multiselectfield import MultiSelectFormField
 # imports from your apps
-from accounts.models import Student, Major
+from accounts.models import Student
 from accounts.forms import SelectRoomField, BooleanRadioField
 from housing.models import Room
 
@@ -35,7 +35,7 @@ class WelcomePrivacyForm(forms.ModelForm):
         form_room = cleaned_data.get('room')
         if not(form_room is None):
             students_in_room = Student.objects.filter(room=form_room).count()
-            #print(students_in_room)
+            # print(students_in_room)
             # like in bookshare, I have no idea why the form errors don't display.
             if students_in_room > 12:
                 raise ValidationError(_('Too many students in room (%d).' % students_in_room), code='invalid')

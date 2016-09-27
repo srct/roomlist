@@ -4,7 +4,6 @@ from __future__ import absolute_import, print_function
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
-from django.contrib import messages
 # third party imports
 import requests
 # imports from your apps

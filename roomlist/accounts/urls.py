@@ -3,8 +3,7 @@ from __future__ import absolute_import, print_function
 # core django imports
 from django.conf.urls import patterns, include, url
 # imports from your apps
-from .views import (DetailStudent, UpdateStudent, DetailStudentSettings,
-                    DetailCurrentStudent, DetailCurrentStudentSettings, ListMajors,
+from .views import (DetailStudent, UpdateStudent, ListMajors,
                     DetailMajor, CreateConfirmation, DeleteConfirmation)
 from .adapter import RemoveSocialConfirmationView
 

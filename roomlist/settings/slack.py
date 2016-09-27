@@ -8,6 +8,7 @@ import requests
 
 webhook_url = 'https://hooks.slack.com/services/xxxxxxxxx/xxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxx'
 
+
 def slack_post(text, channel, username, icon_emoji):
     try:
         payload = {'text': text, 'channel': channel,
