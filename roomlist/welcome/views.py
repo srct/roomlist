@@ -21,10 +21,14 @@ settings_redirect = """You've already finished the welcome walkthrough.
 
 
 class WelcomeName(LoginRequiredMixin, FormView):
+    """Student adds first and last name, and gender and gender display."""
+
     template_name = 'welcome_name.html'
     form_class = WelcomeNameForm
     login_url = 'login'
 
+    # students are redirected to the normal settings page once they have completed
+    # the welcome walkthrough in its entirety
     def get(self, request, *args, **kwargs):
 
         if self.request.user.student.totally_done():
@@ -76,6 +80,8 @@ class WelcomeName(LoginRequiredMixin, FormView):
 
 
 class WelcomePrivacy(LoginRequiredMixin, FormView):
+    """Student adds off-or-on campus status, and if on-campus, housing and privacy."""
+
     form_class = WelcomePrivacyForm
     template_name = 'welcome_privacy.html'
     login_url = 'login'
@@ -149,6 +155,8 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
 
 
 class WelcomeMajor(LoginRequiredMixin, FormView):
+    """Student adds major and graduation year."""
+
     template_name = 'welcome_major.html'
     form_class = WelcomeMajorForm
     login_url = 'login'
@@ -200,6 +208,8 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
 
 
 class WelcomeSocial(LoginRequiredMixin, FormView):
+    """Student connects social media accounts. Redirects to settings page when done."""
+
     form_class = WelcomeSocialForm
     template_name = 'welcome_social.html'
     login_url = 'login'
