@@ -141,13 +141,15 @@ Run `python manage.py makemigrations` to create the tables and rows and columns 
 
 Then run `python manage.py migrate` to execute that sql code and set up your database. Migrations also track how you've changed your models over the life of your database, which allows you to make changes to your tables without screwing up existing information.
 
-Finally, run `python manage.py createsuperuser` to create an admin account, using the same username and email as you'll access through CAS. This means your 'full' email address, for instance gmason@masonlive.gmu.edu. Your password will be handled through CAS, so you can just use 'password' here.
+Finally, run `python manage.py createsuperuser` to create an admin account, using the same username and email as you'll access through CAS. This means your 'full' email address, for instance *gmason@masonlive.gmu.edu*. Your password will be handled through CAS, so you can just use 'password' here.
 
 (If you accidentally skip this step, you can run `python manage.py shell` and edit your user from there. Selectyour user, and set .is_staff and .is_superuser to True, then save.)
 
-## Loading in demo data
+## Loading in initial data
 
-The project includes a number of json files with demo data to load into the database, for Majors and also for all freshman housing. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly. Follow this with `python manage.py loaddata housing/initial_data.json` and a sizeable number of housing objects should be 'installed'.
+The project includes a json file to load majors into the database. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly.
+
+To add all freshman housing, with the virtual environment enabled, run `python manage.py shell < housing/housing_obj_creator.py`. It will take a couple of minutes, but this script will create every building, floor, and room in your database.
 
 ## Starting search
 
