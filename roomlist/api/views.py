@@ -13,7 +13,7 @@ from housing.models import Building, Floor, Room
 from accounts.models import Major
 from .serializers import (BuildingSerializer, BuildingFloorListSerializer,
                           FloorSerializer, RoomSerializer,
-                          MajorSerializer)
+                          MajorSerializer, MajorURLSerializer)
 
 
 # pagination class for optional inheritance
@@ -80,7 +80,7 @@ class RoomRetrieve(MultipleFieldLookupMixin, RetrieveAPIView):
 # major apis
 class MajorList(ListAPIView):
     queryset = Major.objects.all()
-    serializer_class = MajorSerializer
+    serializer_class = MajorURLSerializer
 
 
 class MajorRetrieve(RetrieveAPIView):

@@ -105,3 +105,13 @@ class MajorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Major
         fields = ('name', )
+
+
+class MajorURLSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Major
+        fields = ('url', 'name')
+        extra_kwargs = {
+            'url': {'view_name': 'api_detail_major', 'lookup_field': 'slug'}
+        }
