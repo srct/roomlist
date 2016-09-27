@@ -107,6 +107,8 @@ class MajorSerializer(serializers.ModelSerializer):
         fields = ('name', )
 
 
+# the first major serializer is used when listing majors; this is used for the
+# object's own page's display
 class MajorURLSerializer(serializers.ModelSerializer):
 
     class Meta:

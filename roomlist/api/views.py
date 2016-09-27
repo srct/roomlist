@@ -90,7 +90,8 @@ class MajorRetrieve(RetrieveAPIView):
     lookup_field = 'slug'
 
 
-# root urls
+# root urls-- custom version of drf's root DefaultRouter, because we're doing
+# atypical things with url handling and aren't using out-of-the-box routers
 class APIRoot(APIView):
     def get(self, request):
         return Response({
