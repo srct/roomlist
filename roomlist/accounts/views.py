@@ -21,47 +21,11 @@ from ratelimit.decorators import ratelimit
 from .models import Student, Major, Confirmation
 from housing.models import Building, Floor, Room
 from .forms import StudentUpdateForm
-
-
-#########
-bug_reporting = """Welcome back to SRCT Roomlist. This project is the
-                   <a href="https://srct.gmu.edu/projects/">collaborative work
-                   of students like you</a>. If you see anything amiss, or have ideas for
-                   features or a better user experience, please send an email to
-                   roomlist@lists.srct.gmu.edu, tweet
-                   <a href="https://twitter.com/MasonSRCT/">@MasonSRCT</a>, or, for the
-                   more technically experienced, review our
-                   <a href="https://git.gmu.edu/srct/roomlist/issues">issues page</a>."""
-
-privacy_reminder = """Welcome back to SRCT Roomlist. A friendly reminder you can change
-                      your privacy settings at any time on your settings page by
-                      clicking the cog in the upper right of your screen."""
-
-disclaimer = """Welcome back to SRCT Roomlist. Just to be perfectly clear, this project
-                is provided as a service by the
-                <a href="https://gmu.collegiatelink.net/organization/srct">registered
-                student organization</a>
-                <a href="https://srct.gmu.edu/">Student-Run Computing and Technology</a>.
-                We are not a part of <a href="http://housing.gmu.edu/">Mason Housing</a>:
-                all information is voluntarily provided by participating students."""
-
-whatsopen_plug = """Welcome back to SRCT Roomlist. Wondering what's open at this hour?
-                    Check out another one of our
-                    <a href="https://srct.gmu.edu/projects/">student-built and hosted</a>
-                    projects: <a href="https://whatsopen.gmu.edu/">whatsopen.gmu.edu</a>."""
-
-open_source = """Welcome back to SRCT Roomlist. For the curious at heart,
-                 <a href="http://www.gnu.org/philosophy/free-sw.en.html">you can always
-                 review</a> this project's
-                 <a href="https://git.gmu.edu/srct/roomlist/tree/master">source code</a>.
-                 Come <a href="https://srct.gmu.edu/">to a meeting</a> and learn how to
-                 contribute!"""
-#########
-
-return_messages = [bug_reporting, privacy_reminder, disclaimer, whatsopen_plug, open_source]
+from .student_messages import return_messages
 
 
 def custom_cas_login(request, *args, **kwargs):
+    """If a student has not completed the welcome walkthrough, go there on login."""
     response = cas_login(request, *args, **kwargs)
     # returns HttpResponseRedirect
 
@@ -84,6 +48,7 @@ def custom_cas_login(request, *args, **kwargs):
     return response
 
 
+# only two students on the same floor can confirm one another (crowdsourced verification)
 def on_the_same_floor(student, confirmer):
     if student == confirmer:
         # Student is confirmer
@@ -167,36 +132,6 @@ class DetailStudent(LoginRequiredMixin, DetailView):
             context['my_flag'] = my_flag
         return context
 
-
-class DetailCurrentStudent(LoginRequiredMixin, DetailView):
-    model = Student
-    context_object_name = 'student'
-    template_name = 'detailStudent.html'
-
-    login_url = 'login'
-
-    def get_object(self):
-        return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
-
-
-# changeable student settings
-class DetailStudentSettings(LoginRequiredMixin, DetailView):
-    model = Student
-    context_object_name = 'student'
-    template_name = 'studentSettings.html'
-
-    login_url = 'login'
-
-
-class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
-    model = Student
-    context_object_name = 'student'
-    template_name = 'studentSettings.html'
-
-    login_url = 'login'
-
-    def get_object(self):
-        return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
 
 # update a student, but FormView to allow name update on same page
 class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
@@ -374,6 +309,9 @@ class DetailMajor(LoginRequiredMixin, DetailView):
 
 
 class CreateConfirmation(LoginRequiredMixin, CreateView):
+    """Students on the same floor may flag one another.
+
+    This is our attempt at crowdsourced verification."""
     model = Confirmation
     fields = []
     template_name = 'create_confirmation.html'

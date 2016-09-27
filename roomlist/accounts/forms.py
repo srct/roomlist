@@ -13,6 +13,7 @@ from housing.models import Building, Floor, Room
 
 
 class SelectRoomWidget(forms.widgets.Select):
+    """A series of dropdowns in which a student can filter through housing options."""
 
     template_name = 'room_select_widget.html'
 
@@ -47,6 +48,7 @@ class SelectRoomWidget(forms.widgets.Select):
 
 
 class SelectRoomField(forms.models.ModelChoiceField):
+    """A special field for room selection, using the room selection widget."""
     widget = SelectRoomWidget
 
 #    should raise error if user hasn't actually selected room, made it to end of selectors
@@ -54,6 +56,7 @@ class SelectRoomField(forms.models.ModelChoiceField):
 
 
 class BooleanRadioField(forms.TypedChoiceField):
+    """Displays booleans as a radio selector, rather than checkboxes."""
 
     def __init__(self, *args, **kwargs):
         boolean_choices = ((True, 'Yes'), (False, 'No'))
