@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     # majors pages
     url(r'^majors/$', ListMajors.as_view(), name='list_majors'),
 
-    url(r'^majors/(?P<slug>[\w-]+)/(?P<major>[\w-]+)/$',
+    url(r'^majors/(?P<slug>[\w-]+)/$',
         DetailMajor.as_view(), name='detail_major'),
 
     # student profile pages

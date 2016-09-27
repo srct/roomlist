@@ -23,12 +23,11 @@ class Major(TimeStampedModel):
     name = models.CharField(max_length=50)
     # I believe the longest is "Government and International Politics"
 
-    slug = AutoSlugField(populate_from='name', unique=True)
-
-    # don't fix this just yet-- coincide with end of semester when everyone's
-    # changing up their accounts anyway
-    #name_slug = AutoSlugField(populate_from='name')  # custom function to delete
-                                                      # ba/bs/etc
+    slug = AutoSlugField(populate_from='name', always_update=True, unique=True)
+    # always_update is set to support migrating from previous versions' slugs
+    # which were originally random characters
+    # on always_update, the slug is modified whenever the populated_from field changes
+    # to update from previous versions, call .save() on all existing models
 
     def first_letter(self):
         return self.name and self.name[0] or ''
@@ -40,10 +39,7 @@ class Major(TimeStampedModel):
         return unicode(self.name)
 
     def get_absolute_url(self):
-        return reverse('detail_major', kwargs={
-            'slug': self.slug,
-            'major': slugify(self.name),
-        })
+        return reverse('detail_major', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['name']
