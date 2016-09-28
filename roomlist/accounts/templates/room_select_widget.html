@@ -23,18 +23,16 @@
 &nbsp;&nbsp;<label>Floor</label>&nbsp;
 <select id="floor" name="floor">
   <option value="">---</option>
+  {% load cache %}
+  {% cache 3600 floor_list %}
   {% for floor in floors %}
-    {% if user.student.get_floor.pk == floor.pk %}
-      <option value="{{ floor.pk }}" class="{{ floor.building.name }}" selected="selected">{{ floor.number|ordinal }}</option>
-    {% else %}
       <option value="{{ floor.pk }}" class="{{ floor.building.name }}">{{ floor.number|ordinal }}</option>
-    {% endif %}
   {% endfor %}
+  {% endcache %}
 </select>
 &nbsp;&nbsp;<label>Room</label>&nbsp;
 <select id="room" name="room" class="roompicker">
   <option value="">---</option>
-  {% load cache %}
   {% cache 3600 room_list %}
   {% for room in rooms %}
       <option value="{{ room.pk }}" class="{{ room.floor.pk }}">{{ room.number }}</option>
