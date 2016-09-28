@@ -120,36 +120,6 @@
 {% endblock content %}
 
 {% block javascript %}
-  <script type="text/javascript" src="/static/js/jquery.chained.min.js"></script>
-  <script>
-    // toggle room selection availability
-    // can see if on campus, cannot see if not on campus
-    $(document).ready(function() {
-      var $radio = $('input:radio[name=on_campus]');
-      // when first rendering the page
-      if($radio.filter('[value=False]').is(':checked')) {
-        $("#lives-on-campus").hide();
-      } else {
-        $("#lives-on-campus").show();
-      }
-      // if student changes the value
-      $($radio.filter('[value=False]').click(function(){
-        $("#lives-on-campus").slideUp();
-      }));
-      $($radio.filter('[value=True]').click(function(){
-        $("#lives-on-campus").slideDown();
-      }));
-    // find the room a student is staying in and select if for them on page load
-    // this allows us to cache the list of rooms
-      var selectedRoom = "{{ request.user.student.room.pk }}";
-      $("#room").val(selectedRoom)
-      .find("option[value=" + selectedRoom + "]").attr('selected', true);
-    });
-    $("#lives-on-campus").hide();
-
-    // room selection
-    $("#building").chained("#neighborhood");
-    $("#floor").chained("#building");
-    $("#room").chained("#floor");
-  </script>
+<script type="text/javascript" src="/static/js/jquery.chained.min.js"></script>
+{% include 'room_selection_script.html' %}
 {% endblock javascript %}
