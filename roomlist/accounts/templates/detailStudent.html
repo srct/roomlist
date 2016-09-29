@@ -62,7 +62,7 @@
         <tr>
           <td><h4><strong>Major</strong>:
             {% if student.major %}
-              {{ student.major.name }}
+              <a href="{% url 'detail_major' student.major.slug %}">{{ student.major.name }}</a>
             {% else %}
               &nbsp;&mdash;
             {% endif %}
@@ -79,7 +79,7 @@
         </tr>
 
         <tr>
-          <td><h4><strong>Email</strong>: {{ student.user.email }}</h4></td>
+          <td><h4><strong>Email</strong>: <a href="mailto:{{ student.user.email }}">{{ student.user.email }}</a></h4></a></td>
         </tr>
         {% if student.show_gender %}
           <tr>
