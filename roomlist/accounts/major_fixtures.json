@@ -2,7 +2,7 @@
    {
       "fields":{
          "slug":"accounting-bs",
-         "name":"Accounting, BS",
+         "name":"Accounting, BS"
       },
       "model":"accounts.major",
       "pk":1
@@ -10,7 +10,7 @@
    {
       "fields":{
          "slug":"anthropology-ba",
-         "name":"Anthropology, BA",
+         "name":"Anthropology, BA"
       },
       "model":"accounts.major",
       "pk":2
@@ -18,7 +18,7 @@
    {
       "fields":{
          "slug":"applied-computer-science-bs",
-         "name":"Applied Computer Science, BS",
+         "name":"Applied Computer Science, BS"
       },
       "model":"accounts.major",
       "pk":3
@@ -26,7 +26,7 @@
    {
       "fields":{
          "slug":"applied-information-technology-bs",
-         "name":"Applied Information Technology, BS",
+         "name":"Applied Information Technology, BS"
       },
       "model":"accounts.major",
       "pk":4
@@ -34,7 +34,7 @@
    {
       "fields":{
          "slug":"applied-science-bas",
-         "name":"Applied Science, BAS",
+         "name":"Applied Science, BAS"
       },
       "model":"accounts.major",
       "pk":5
@@ -42,7 +42,7 @@
    {
       "fields":{
          "slug":"art-and-visual-technology-ba",
-         "name":"Art and Visual Technology, BA",
+         "name":"Art and Visual Technology, BA"
       },
       "model":"accounts.major",
       "pk":6
@@ -50,7 +50,7 @@
    {
       "fields":{
          "slug":"art-and-visual-technology-bfa",
-         "name":"Art and Visual Technology, BFA",
+         "name":"Art and Visual Technology, BFA"
       },
       "model":"accounts.major",
       "pk":7
@@ -58,7 +58,7 @@
    {
       "fields":{
          "slug":"art-history-ba",
-         "name":"Art History, BA",
+         "name":"Art History, BA"
       },
       "model":"accounts.major",
       "pk":8
@@ -66,7 +66,7 @@
    {
       "fields":{
          "slug":"astronomy-bs",
-         "name":"Astronomy, BS",
+         "name":"Astronomy, BS"
       },
       "model":"accounts.major",
       "pk":9
@@ -74,7 +74,7 @@
    {
       "fields":{
          "slug":"athletic-training-bs",
-         "name":"Athletic Training, BS",
+         "name":"Athletic Training, BS"
       },
       "model":"accounts.major",
       "pk":10
@@ -82,7 +82,7 @@
    {
       "fields":{
          "slug":"bioengineering-bs",
-         "name":"Bioengineering, BS",
+         "name":"Bioengineering, BS"
       },
       "model":"accounts.major",
       "pk":11
@@ -90,7 +90,7 @@
    {
       "fields":{
          "slug":"biology-ba",
-         "name":"Biology, BA",
+         "name":"Biology, BA"
       },
       "model":"accounts.major",
       "pk":12
@@ -98,7 +98,7 @@
    {
       "fields":{
          "slug":"biology-bs",
-         "name":"Biology, BS",
+         "name":"Biology, BS"
       },
       "model":"accounts.major",
       "pk":13
@@ -106,7 +106,7 @@
    {
       "fields":{
          "slug":"business-administration-mba",
-         "name":"Business Administration, MBA",
+         "name":"Business Administration, MBA"
       },
       "model":"accounts.major",
       "pk":14
@@ -114,7 +114,7 @@
    {
       "fields":{
          "slug":"chemistry-ba",
-         "name":"Chemistry, BA",
+         "name":"Chemistry, BA"
       },
       "model":"accounts.major",
       "pk":15
@@ -122,7 +122,7 @@
    {
       "fields":{
          "slug":"chemistry-bs",
-         "name":"Chemistry, BS",
+         "name":"Chemistry, BS"
       },
       "model":"accounts.major",
       "pk":16
@@ -130,7 +130,7 @@
    {
       "fields":{
          "slug":"civil-and-infrastructure-engineering-bs",
-         "name":"Civil and Infrastructure Engineering, BS",
+         "name":"Civil and Infrastructure Engineering, BS"
       },
       "model":"accounts.major",
       "pk":17
@@ -138,7 +138,7 @@
    {
       "fields":{
          "slug":"communication-ba",
-         "name":"Communication, BA",
+         "name":"Communication, BA"
       },
       "model":"accounts.major",
       "pk":18
@@ -146,7 +146,7 @@
    {
       "fields":{
          "slug":"community-health-bs",
-         "name":"Community Health, BS",
+         "name":"Community Health, BS"
       },
       "model":"accounts.major",
       "pk":19
@@ -154,7 +154,7 @@
    {
       "fields":{
          "slug":"computer-engineering-bs",
-         "name":"Computer Engineering, BS",
+         "name":"Computer Engineering, BS"
       },
       "model":"accounts.major",
       "pk":20
@@ -162,7 +162,7 @@
    {
       "fields":{
          "slug":"computer-game-design-bfa",
-         "name":"Computer Game Design, BFA",
+         "name":"Computer Game Design, BFA"
       },
       "model":"accounts.major",
       "pk":21
@@ -170,7 +170,7 @@
    {
       "fields":{
          "slug":"computer-science-bs",
-         "name":"Computer Science, BS",
+         "name":"Computer Science, BS"
       },
       "model":"accounts.major",
       "pk":22
@@ -178,7 +178,7 @@
    {
       "fields":{
          "slug":"conflict-analysis-and-resolution-ba",
-         "name":"Conflict Analysis and Resolution, BA",
+         "name":"Conflict Analysis and Resolution, BA"
       },
       "model":"accounts.major",
       "pk":23
@@ -186,7 +186,7 @@
    {
       "fields":{
          "slug":"conflict-analysis-and-resolution-bs",
-         "name":"Conflict Analysis and Resolution, BS",
+         "name":"Conflict Analysis and Resolution, BS"
       },
       "model":"accounts.major",
       "pk":24
@@ -194,7 +194,7 @@
    {
       "fields":{
          "slug":"creative-writing-bfa",
-         "name":"Creative Writing, BFA",
+         "name":"Creative Writing, BFA"
       },
       "model":"accounts.major",
       "pk":25
@@ -202,7 +202,7 @@
    {
       "fields":{
          "slug":"criminology-law-and-society-ba",
-         "name":"Criminology, Law and Society, BA",
+         "name":"Criminology, Law and Society, BA"
       },
       "model":"accounts.major",
       "pk":26
@@ -210,7 +210,7 @@
    {
       "fields":{
          "slug":"criminology-law-and-society-bs",
-         "name":"Criminology, Law and Society, BS",
+         "name":"Criminology, Law and Society, BS"
       },
       "model":"accounts.major",
       "pk":27
@@ -218,7 +218,7 @@
    {
       "fields":{
          "slug":"dance-ba",
-         "name":"Dance, BA",
+         "name":"Dance, BA"
       },
       "model":"accounts.major",
       "pk":28
@@ -226,7 +226,7 @@
    {
       "fields":{
          "slug":"dance-bfa",
-         "name":"Dance, BFA",
+         "name":"Dance, BFA"
       },
       "model":"accounts.major",
       "pk":29
@@ -234,7 +234,7 @@
    {
       "fields":{
          "slug":"earth-science-bs",
-         "name":"Earth Science, BS",
+         "name":"Earth Science, BS"
       },
       "model":"accounts.major",
       "pk":30
@@ -242,7 +242,7 @@
    {
       "fields":{
          "slug":"economics-ba",
-         "name":"Economics, BA",
+         "name":"Economics, BA"
       },
       "model":"accounts.major",
       "pk":31
@@ -250,7 +250,7 @@
    {
       "fields":{
          "slug":"economics-bs",
-         "name":"Economics, BS",
+         "name":"Economics, BS"
       },
       "model":"accounts.major",
       "pk":32
@@ -258,7 +258,7 @@
    {
       "fields":{
          "slug":"electrical-engineering-bs",
-         "name":"Electrical Engineering, BS",
+         "name":"Electrical Engineering, BS"
       },
       "model":"accounts.major",
       "pk":33
@@ -266,7 +266,7 @@
    {
       "fields":{
          "slug":"english-ba",
-         "name":"English, BA",
+         "name":"English, BA"
       },
       "model":"accounts.major",
       "pk":34
@@ -274,7 +274,7 @@
    {
       "fields":{
          "slug":"environmental-and-sustainability-studies-ba",
-         "name":"Environmental and Sustainability Studies, BA",
+         "name":"Environmental and Sustainability Studies, BA"
       },
       "model":"accounts.major",
       "pk":35
@@ -282,7 +282,7 @@
    {
       "fields":{
          "slug":"environmental-science-bs",
-         "name":"Environmental Science, BS",
+         "name":"Environmental Science, BS"
       },
       "model":"accounts.major",
       "pk":36
@@ -290,7 +290,7 @@
    {
       "fields":{
          "slug":"executive-mba",
-         "name":"Executive MBA",
+         "name":"Executive MBA"
       },
       "model":"accounts.major",
       "pk":37
@@ -298,7 +298,7 @@
    {
       "fields":{
          "slug":"film-and-video-studies-ba",
-         "name":"Film and Video Studies, BA",
+         "name":"Film and Video Studies, BA"
       },
       "model":"accounts.major",
       "pk":38
@@ -306,7 +306,7 @@
    {
       "fields":{
          "slug":"finance-bs",
-         "name":"Finance, BS",
+         "name":"Finance, BS"
       },
       "model":"accounts.major",
       "pk":39
@@ -314,7 +314,7 @@
    {
       "fields":{
          "slug":"foreign-languages-ba",
-         "name":"Foreign Languages, BA",
+         "name":"Foreign Languages, BA"
       },
       "model":"accounts.major",
       "pk":40
@@ -322,7 +322,7 @@
    {
       "fields":{
          "slug":"forensic-science-bs",
-         "name":"Forensic Science, BS",
+         "name":"Forensic Science, BS"
       },
       "model":"accounts.major",
       "pk":41
@@ -330,7 +330,7 @@
    {
       "fields":{
          "slug":"geography-ba",
-         "name":"Geography, BA",
+         "name":"Geography, BA"
       },
       "model":"accounts.major",
       "pk":42
@@ -338,7 +338,7 @@
    {
       "fields":{
          "slug":"geography-bs",
-         "name":"Geography, BS",
+         "name":"Geography, BS"
       },
       "model":"accounts.major",
       "pk":43
@@ -346,7 +346,7 @@
    {
       "fields":{
          "slug":"geology-ba",
-         "name":"Geology, BA",
+         "name":"Geology, BA"
       },
       "model":"accounts.major",
       "pk":44
@@ -354,7 +354,7 @@
    {
       "fields":{
          "slug":"global-affairs-ba",
-         "name":"Global Affairs, BA",
+         "name":"Global Affairs, BA"
       },
       "model":"accounts.major",
       "pk":45
@@ -362,7 +362,7 @@
    {
       "fields":{
          "slug":"global-and-environmental-change-bs",
-         "name":"Global and Environmental Change, BS",
+         "name":"Global and Environmental Change, BS"
       },
       "model":"accounts.major",
       "pk":46
@@ -370,7 +370,7 @@
    {
       "fields":{
          "slug":"government-and-international-politics-ba",
-         "name":"Government and International Politics, BA",
+         "name":"Government and International Politics, BA"
       },
       "model":"accounts.major",
       "pk":47
@@ -378,7 +378,7 @@
    {
       "fields":{
          "slug":"health-administration-bs",
-         "name":"Health Administration, BS",
+         "name":"Health Administration, BS"
       },
       "model":"accounts.major",
       "pk":48
@@ -386,7 +386,7 @@
    {
       "fields":{
          "slug":"health-fitness-and-recreation-resources-bs",
-         "name":"Health, Fitness, and Recreation Resources, BS",
+         "name":"Health, Fitness, and Recreation Resources, BS"
       },
       "model":"accounts.major",
       "pk":49
@@ -394,7 +394,7 @@
    {
       "fields":{
          "slug":"history-ba",
-         "name":"History, BA",
+         "name":"History, BA"
       },
       "model":"accounts.major",
       "pk":50
@@ -402,7 +402,7 @@
    {
       "fields":{
          "slug":"human-development-and-family-science-ba",
-         "name":"Human Development and Family Science, BA",
+         "name":"Human Development and Family Science, BA"
       },
       "model":"accounts.major",
       "pk":51
@@ -410,7 +410,7 @@
    {
       "fields":{
          "slug":"individualized-study-bis",
-         "name":"Individualized Study, BIS",
+         "name":"Individualized Study, BIS"
       },
       "model":"accounts.major",
       "pk":52
@@ -418,7 +418,7 @@
    {
       "fields":{
          "slug":"information-systems-and-operations-management-bs",
-         "name":"Information Systems and Operations Management, BS",
+         "name":"Information Systems and Operations Management, BS"
       },
       "model":"accounts.major",
       "pk":53
@@ -426,7 +426,7 @@
    {
       "fields":{
          "slug":"integrative-studies-ba",
-         "name":"Integrative Studies, BA",
+         "name":"Integrative Studies, BA"
       },
       "model":"accounts.major",
       "pk":54
@@ -434,7 +434,7 @@
    {
       "fields":{
          "slug":"integrative-studies-bs",
-         "name":"Integrative Studies, BS",
+         "name":"Integrative Studies, BS"
       },
       "model":"accounts.major",
       "pk":55
@@ -442,7 +442,7 @@
    {
       "fields":{
          "slug":"latin-american-studies-ba",
-         "name":"Latin American Studies, BA",
+         "name":"Latin American Studies, BA"
       },
       "model":"accounts.major",
       "pk":56
@@ -450,7 +450,7 @@
    {
       "fields":{
          "slug":"management-bs",
-         "name":"Management, BS",
+         "name":"Management, BS"
       },
       "model":"accounts.major",
       "pk":57
@@ -458,7 +458,7 @@
    {
       "fields":{
          "slug":"marketing-bs",
-         "name":"Marketing, BS",
+         "name":"Marketing, BS"
       },
       "model":"accounts.major",
       "pk":58
@@ -466,7 +466,7 @@
    {
       "fields":{
          "slug":"mathematics-ba",
-         "name":"Mathematics, BA",
+         "name":"Mathematics, BA"
       },
       "model":"accounts.major",
       "pk":59
@@ -474,7 +474,7 @@
    {
       "fields":{
          "slug":"mathematics-bs",
-         "name":"Mathematics, BS",
+         "name":"Mathematics, BS"
       },
       "model":"accounts.major",
       "pk":60
@@ -482,7 +482,7 @@
    {
       "fields":{
          "slug":"medical-laboratory-science-bs",
-         "name":"Medical Laboratory Science, BS",
+         "name":"Medical Laboratory Science, BS"
       },
       "model":"accounts.major",
       "pk":61
@@ -490,7 +490,7 @@
    {
       "fields":{
          "slug":"music-ba",
-         "name":"Music, BA",
+         "name":"Music, BA"
       },
       "model":"accounts.major",
       "pk":62
@@ -498,7 +498,7 @@
    {
       "fields":{
          "slug":"music-bm",
-         "name":"Music, BM",
+         "name":"Music, BM"
       },
       "model":"accounts.major",
       "pk":63
@@ -506,7 +506,7 @@
    {
       "fields":{
          "slug":"neuroscience-bs",
-         "name":"Neuroscience, BS",
+         "name":"Neuroscience, BS"
       },
       "model":"accounts.major",
       "pk":64
@@ -514,7 +514,7 @@
    {
       "fields":{
          "slug":"nursing-bsn",
-         "name":"Nursing, BSN",
+         "name":"Nursing, BSN"
       },
       "model":"accounts.major",
       "pk":65
@@ -522,7 +522,7 @@
    {
       "fields":{
          "slug":"philosophy-ba",
-         "name":"Philosophy, BA",
+         "name":"Philosophy, BA"
       },
       "model":"accounts.major",
       "pk":66
@@ -530,7 +530,7 @@
    {
       "fields":{
          "slug":"physical-education-bsed",
-         "name":"Physical Education, BSEd",
+         "name":"Physical Education, BSEd"
       },
       "model":"accounts.major",
       "pk":67
@@ -538,7 +538,7 @@
    {
       "fields":{
          "slug":"physics-bs",
-         "name":"Physics, BS",
+         "name":"Physics, BS"
       },
       "model":"accounts.major",
       "pk":68
@@ -546,7 +546,7 @@
    {
       "fields":{
          "slug":"psychology-ba",
-         "name":"Psychology, BA",
+         "name":"Psychology, BA"
       },
       "model":"accounts.major",
       "pk":69
@@ -554,7 +554,7 @@
    {
       "fields":{
          "slug":"psychology-bs",
-         "name":"Psychology, BS",
+         "name":"Psychology, BS"
       },
       "model":"accounts.major",
       "pk":70
@@ -562,7 +562,7 @@
    {
       "fields":{
          "slug":"public-administration-bs",
-         "name":"Public Administration, BS",
+         "name":"Public Administration, BS"
       },
       "model":"accounts.major",
       "pk":71
@@ -570,7 +570,7 @@
    {
       "fields":{
          "slug":"religious-studies-ba",
-         "name":"Religious Studies, BA",
+         "name":"Religious Studies, BA"
       },
       "model":"accounts.major",
       "pk":72
@@ -578,7 +578,7 @@
    {
       "fields":{
          "slug":"russian-and-eurasian-studies-ba",
-         "name":"Russian and Eurasian Studies, BA",
+         "name":"Russian and Eurasian Studies, BA"
       },
       "model":"accounts.major",
       "pk":73
@@ -586,7 +586,7 @@
    {
       "fields":{
          "slug":"social-work-bsw",
-         "name":"Social Work, BSW",
+         "name":"Social Work, BSW"
       },
       "model":"accounts.major",
       "pk":74
@@ -594,7 +594,7 @@
    {
       "fields":{
          "slug":"sociology-ba",
-         "name":"Sociology, BA",
+         "name":"Sociology, BA"
       },
       "model":"accounts.major",
       "pk":75
@@ -602,7 +602,7 @@
    {
       "fields":{
          "slug":"systems-engineering-bs",
-         "name":"Systems Engineering, BS",
+         "name":"Systems Engineering, BS"
       },
       "model":"accounts.major",
       "pk":76
@@ -610,7 +610,7 @@
    {
       "fields":{
          "slug":"theater-ba",
-         "name":"Theater, BA",
+         "name":"Theater, BA"
       },
       "model":"accounts.major",
       "pk":77
@@ -618,7 +618,7 @@
    {
       "fields":{
          "slug":"theater-bfa",
-         "name":"Theater, BFA",
+         "name":"Theater, BFA"
       },
       "model":"accounts.major",
       "pk":78
@@ -626,7 +626,7 @@
    {
       "fields":{
          "slug":"tourism-and-events-management-bs",
-         "name":"Tourism and Events Management, BS",
+         "name":"Tourism and Events Management, BS"
       },
       "model":"accounts.major",
       "pk":79
@@ -634,7 +634,7 @@
    {
       "fields":{
          "slug":"cyber-security-engineering-bs",
-         "name":"Cyber Security Engineering, BS",
+         "name":"Cyber Security Engineering, BS"
       },
       "model":"accounts.major",
       "pk":80
