@@ -26,7 +26,7 @@
   {% load cache %}
   {% cache 3600 floor_list %}
   {% for floor in floors %}
-      <option value="{{ floor.pk }}" class="{{ floor.building.name }}">{{ floor.number|ordinal }}</option>
+    <option value="{{ floor.pk }}" class="{{ floor.building.name }}">{{ floor.number|ordinal }}</option>
   {% endfor %}
   {% endcache %}
 </select>
@@ -35,7 +35,7 @@
   <option value="">---</option>
   {% cache 3600 room_list %}
   {% for room in rooms %}
-      <option value="{{ room.pk }}" class="{{ room.floor.pk }}">{{ room.number }}</option>
+    <option value="{{ room.pk }}" class="{{ room.floor.pk }}">{{ room.number }}</option>
   {% endfor %}
   {% endcache %}
 </select>

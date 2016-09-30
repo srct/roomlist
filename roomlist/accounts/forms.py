@@ -24,12 +24,12 @@ class SelectRoomWidget(forms.widgets.Select):
             print("Sorry about that, but we're currently ignoring your fancy attrs.")
         # should probably type check the other fields too
         if rooms is None:
-            self.rooms = Room.objects.all()
+            self.rooms = Room.objects.all().prefetch_related('floor')
         else:
             if not all(isinstance(thing, Room) for thing in rooms):
                 raise TypeError("Rooms in a SelectRoomWidget must all be Rooms!")
         if floors is None:
-            self.floors = Floor.objects.all()
+            self.floors = Floor.objects.all().prefetch_related('building')
         if buildings is None:
             self.buildings = Building.objects.all()
         if neighborhoods is None:
