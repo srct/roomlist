@@ -104,6 +104,7 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
                                            'privacy': me.privacy, })
 
         form.fields['room'].widget.user = self.request.user
+        form.fields['major'].widget.attrs['class'] = 'chosen-select'
 
         context['my_form'] = form
 

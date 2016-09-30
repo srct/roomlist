@@ -177,6 +177,9 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         form.fields['last_name'].widget.attrs['class'] = 'form-control'
         form.fields['graduating_year'].widget.attrs['class'] = 'form-control'
 
+        # chosen
+        form.fields['major'].widget.attrs['class'] = 'chosen-select'
+
         context['my_form'] = form
 
         return context
