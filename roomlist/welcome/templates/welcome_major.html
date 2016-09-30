@@ -2,6 +2,10 @@
 
 {% block title %} SRCT RoomList | Welcome | Step 3 of 4 {% endblock %}
 
+{% block css %}
+<link href="/static/css/chosen.min.css" rel="stylesheet" media="screen">
+{% endblock css %}
+
 {% block message_queue %}
 {% endblock %}
 
@@ -61,5 +65,11 @@
   </div>
 </div>
 
-
 {% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="/static/js/chosen.min.js"></script>
+<script>
+$(".chosen-select").chosen()
+</script>
+{% endblock javascript %}

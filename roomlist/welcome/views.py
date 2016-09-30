@@ -104,7 +104,6 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
                                            'privacy': me.privacy, })
 
         form.fields['room'].widget.user = self.request.user
-        form.fields['major'].widget.attrs['class'] = 'chosen-select'
 
         context['my_form'] = form
 
@@ -179,8 +178,9 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
         form = WelcomeMajorForm(initial={'major': me.major,
                                          'graduating_year': me.graduating_year, })
 
-        context['my_form'] = form
+        form.fields['major'].widget.attrs['class'] = 'chosen-select'
 
+        context['my_form'] = form
         context['student'] = me
 
         return context
