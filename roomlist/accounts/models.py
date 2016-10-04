@@ -166,7 +166,7 @@ class Student(TimeStampedModel):
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
 
     on_campus = models.BooleanField(default=True)
-    room = models.ForeignKey(Room, related_name='room', null=True, blank=True)
+    room = models.ForeignKey(Room, null=True, blank=True)
 
     major = models.ManyToManyField(Major, related_name='majors', blank=True)
 
