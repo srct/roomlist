@@ -154,6 +154,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         context = super(UpdateStudent, self).get_context_data(**kwargs)
 
         me = Student.objects.get(user=self.request.user)
+        majors = [pk_or_none(me, major) for major in me.major.all()]
 
         form = StudentUpdateForm(initial={'first_name': me.user.first_name,
                                           'last_name': me.user.last_name,
@@ -161,7 +162,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
                                           'show_gender': me.show_gender,
                                           'room': pk_or_none(me, me.room),
                                           'privacy': me.privacy,
-                                          'major': pk_or_none(me, me.major),
+                                          'major': majors,
                                           'graduating_year': me.graduating_year,
                                           'on_campus': me.on_campus, })
 

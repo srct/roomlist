@@ -212,7 +212,7 @@
           </div>
           <div class="form-group">
             <label for="{{ my_form.major.id_for_label }}" class="col-md-2">
-              Major<br />(select one)
+              Major(s)
             </label>
             <div class="col-md-4">
               {{ my_form.major }}
@@ -268,7 +268,7 @@
 <script type="text/javascript" src="/static/js/chained.min.js"></script>
 <script type="text/javascript" src="/static/js/chosen.min.js"></script>
 <script>
-$(".chosen-select").chosen()
+$(".chosen-select").chosen({max_selected_options: 2});
 </script>
 {% include 'room_selection_script.html' %}
 {% endblock javascript %}
