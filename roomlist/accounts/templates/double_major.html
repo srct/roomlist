@@ -1,0 +1,10 @@
+{% if student.major.all|length > 0 %}
+  <a href="{{ student.major.all.0.get_absolute_url }}">
+    {{ student.major.all.0.name }}</a>
+  {% if student.major.all|length == 2 %}
+    &<a href="{{ student.major.all.1.get_absolute_url }}">
+      {{ student.major.all.1.name }}</a>
+  {% endif %}
+{% else %}
+  &nbsp;&mdash;
+{% endif %}
