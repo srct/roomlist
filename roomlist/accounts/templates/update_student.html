@@ -268,7 +268,8 @@
 <script type="text/javascript" src="/static/js/chained.min.js"></script>
 <script type="text/javascript" src="/static/js/chosen.min.js"></script>
 <script>
-$(".chosen-select").chosen({max_selected_options: 2});
+$(".chosen-select").chosen({max_selected_options: 2,
+                           placeholder_text_multiple: '(select up to two)'});
 </script>
 {% include 'room_selection_script.html' %}
 {% endblock javascript %}
