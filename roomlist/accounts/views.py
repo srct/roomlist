@@ -278,7 +278,7 @@ class DetailMajor(LoginRequiredMixin, DetailView):
             rooms = [
                 room
                 for room in Room.objects.filter(floor__building__neighbourhood=neighbourhood)
-                if room.student_set.filter(major=self.get_object())
+                if room.student_set.filter(major__in=[self.get_object()])
             ]
 
             # identify if the student(s) in that room are visible to the requesting student
@@ -294,7 +294,7 @@ class DetailMajor(LoginRequiredMixin, DetailView):
             ])), key=attrgetter('user.username'))
 
         # see what students are left over (aren't visible)
-        hidden = set(Student.objects.filter(major=self.get_object()).order_by('user__username'))
+        hidden = set(Student.objects.filter(major__in=[self.get_object()]).order_by('user__username'))
         # print(hidden)
         for visible in visible_by_neighbourhood.values():
             # print('visible', visible)
