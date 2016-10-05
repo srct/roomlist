@@ -10,7 +10,7 @@ from django.contrib import messages
 from braces.views import LoginRequiredMixin
 from ratelimit.decorators import ratelimit
 # imports from your apps
-from accounts.models import Student, Confirmation
+from accounts.models import Student, Confirmation, Major
 from housing.models import Room
 from .forms import (WelcomeNameForm, WelcomeMajorForm,
                     WelcomePrivacyForm, WelcomeSocialForm)
@@ -175,7 +175,7 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
 
         me = Student.objects.get(user=self.request.user)
 
-        form = WelcomeMajorForm(initial={'major': me.major,
+        form = WelcomeMajorForm(initial={'major': me.major.all(),
                                          'graduating_year': me.graduating_year, })
 
         form.fields['major'].widget.attrs['class'] = 'chosen-select'
@@ -194,7 +194,23 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
 
         me = Student.objects.get(user=self.request.user)
 
-        me.major = form.instance.major
+        try:
+            # see UpdateStudent in accounts/ for a detailed explanation
+            # but m2m fields are more difficult to manage than other relationships
+            form_major_pks = set(form.data.getlist('major')[:2])
+            form_majors = [Major.objects.get(pk=pk) for pk in form_major_pks]
+            # a student likely won't have any majors on the welcome walkthrough
+            # using Python's implicit evaluation (empty is False, anything is True)
+            if me.major.all():
+                for current_major in me.major.all():
+                    if current_major not in form_majors:
+                        me.major.remove(current_major)
+            for form_major in form_majors:
+                if form_major not in me.major.all():
+                    me.major.add(form_major)
+        except:
+            pass
+
         me.graduating_year = form.instance.graduating_year
 
         me.completedMajor = True
