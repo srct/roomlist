@@ -246,7 +246,8 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
                 if form_major not in me.major.all():
                     me.major.add(form_major)
         except:
-            me.major = None
+            # don't change majors
+            pass
 
         me.user.first_name = form.data['first_name']
         me.user.last_name = form.data['last_name']
