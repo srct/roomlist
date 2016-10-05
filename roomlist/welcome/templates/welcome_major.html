@@ -70,6 +70,7 @@
 {% block javascript %}
 <script type="text/javascript" src="/static/js/chosen.min.js"></script>
 <script>
-$(".chosen-select").chosen()
+$(".chosen-select").chosen({max_selected_options: 2,
+                           placeholder_text_multiple: '(select up to two)'});
 </script>
 {% endblock javascript %}
