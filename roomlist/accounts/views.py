@@ -189,7 +189,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
         # for key, value in request.POST.iteritems():
-            # print(key, value)
+        #     print(key, value)
         return super(UpdateStudent, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -198,7 +198,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         # print("In form valid method!")
 
         # for key, value in form.data.iteritems():
-        #    print(key, value)
+        #     print(key, value)
 
         current_room = me.room
 
@@ -227,7 +227,24 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         me.room = form_room
 
         try:
-            me.major = Major.objects.get(pk=form.data['major'])
+            # in case someone disabled the js, limit processing to only the first
+            # two majors passed by the user
+            # we also eliminate the potential a student manipulates the form to
+            # pass in two majors of the same type by casting to a set
+            form_major_pks = set(form.data.getlist('major')[:2])
+            # retrieve the major objects from the list of pk strings
+            form_majors = [Major.objects.get(pk=pk) for pk in form_major_pks]
+            # print(form_majors)
+            # iterate over a student's current majors
+            for current_major in me.major.all():
+                # remove m2m relationship if not in majors from form
+                if current_major not in form_majors:
+                    me.major.remove(current_major)
+            # iterate over the majors in the form
+            for form_major in form_majors:
+                # add new m2m relationship to student
+                if form_major not in me.major.all():
+                    me.major.add(form_major)
         except:
             me.major = None
 
