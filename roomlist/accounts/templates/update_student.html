@@ -147,11 +147,13 @@
       </div>
 
       <div class="panel-body">
-        <p class="text-center">A select number of locations <a href="{% url 'list_buildings'%}#Unsupported">on campus</a> aren't currently supported. You are still welcome to use Roomlist as a limited directory until we add support.</p>
-        <p class="text-center">
+        <p>
           If you have a <a href="https://en.gravatar.com/">Gravatar profile</a> associated
           with your <a href="https://masonlive.gmu.edu/">Masonlive email</a> address, your
-          default profile picture on this service will that Gravatar profile picture.
+          profile picture on Roomlist will use Gravatar.
+        </p>
+        <p>
+          If you connect your Facebook account, we will use your Facebook profile picture.
         </p>
         <hr />
         {% if my_form.non_field_errors %}
@@ -237,6 +239,9 @@
               {% endfor %}
           </div>
           <div id="lives-on-campus">
+            <hr />
+            <p class="help-block">The Global Center, the Townhouses, and Beacon Hall are not currently supported.<br />
+            We'll let everyone know when we add them.</p>
             <div class="form-group">
               <div class="col-md-12">
                 {{ my_form.room }}
