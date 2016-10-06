@@ -255,6 +255,9 @@
             </div>
           </div>
           <hr />
+            <p class="help-block">
+              You will not be able to see these students, and they will not be able to see you.
+            </p>
           <div class="form-group">
             <label for="{{ my_form.blocked_kids.id_for_label }}" class="col-md-2">
               Blocked Students
@@ -284,6 +287,8 @@
 <script>
 $(".chosen-select").chosen({max_selected_options: 2,
                            placeholder_text_multiple: '(select up to two)'});
+$(".blocked-select").chosen({width: "100%",
+                             placeholder_text_multiple: "(search by name)"});
 </script>
 {% include 'room_selection_script.html' %}
 {% endblock javascript %}
