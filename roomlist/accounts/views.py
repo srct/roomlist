@@ -178,6 +178,8 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
                                           'graduating_year': me.graduating_year,
                                           'on_campus': me.on_campus, })
 
+        form.fields['blocked_kids'].queryset = Student.objects.exclude(user=self.request.user)
+
         if me.recent_changes() > 2:
             form.fields['room'].widget = HiddenInput()
             form.fields['privacy'].widget = HiddenInput()
@@ -192,6 +194,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
 
         # chosen
         form.fields['major'].widget.attrs['class'] = 'chosen-select'
+        form.fields['blocked_kids'].widget.attrs['class'] = 'blocked-select'
 
         context['my_form'] = form
 
@@ -261,12 +264,27 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
             # don't change majors
             pass
 
+        # replicate the same thing for the other m2m field
+        try:
+            form_blocked_pks = set(form.data.getlist('blocked_kids'))
+            current_blocked = me.blocked_kids.all()
+            # most people will not being blocking other students
+            if form_blocked_pks:
+                form_blocked = [Student.objects.get(pk=pk) for pk in form_blocked_pks]
+                for current_block in current_blocked:
+                    if current_block not in form_blocked:
+                        me.blocked_kids.remove(current_block)
+                for form_block in form_blocked:
+                    if form_block not in current_blocked:
+                        me.blocked_kids.add(form_block)
+        except:
+            pass
+
         me.user.first_name = form.data['first_name']
         me.user.last_name = form.data['last_name']
         me.gender = form.data.getlist('gender')
         me.show_gender = strtobool(form.data.get('show_gender', 'False'))
         me.privacy = form.data['privacy']
-        me.blocked_kids = form.data['blocked_kids']
         me.graduating_year = form.data['graduating_year']
         me.user.save()
         me.save()
