@@ -2,7 +2,20 @@
 
 {% block title %} SRCT Roomlist &bull; Neighborhoods {% endblock title %}
 
+{% block og_metadata %}
+<meta property="og:title" content="SRCT Roomlist Neighborhoods"/>
+<meta property="og:description" content="Housing locations on SRCT Roomlist. Log in with your Mason username and password to find your on-campus neighbors."/>
+{% endblock og_metadata %}
+
+{% block tw_metadata %}
+<meta name="twitter:title" content="SRCT Roomlist Neighborhoods" />
+<meta name="twitter:description" content="Housing locations on SRCT Roomlist. Log in with your Mason username and password to find your on-campus neighbors." />
+{% endblock tw_metadata %}
+
 {% block content %}
+
+{% include 'no_auth.html' %}
+
 {% load cache %}
 {% cache 900 list_buildings %}
 
@@ -75,7 +88,7 @@
 <div class="row">
   <div class="col-md-12">
     <p>The following Mason housing locations are not currently supported:</p>
-    <p>Liberty Square, Beacon Hall, Mason Global Center, and the Townhouses</p>
+    <p>Beacon Hall, the Mason Global Center, and the Townhouses.</p>
   </div>
 </div>
 

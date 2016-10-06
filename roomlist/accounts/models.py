@@ -1,5 +1,5 @@
 # standard library imports
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, print_function, division
 import hashlib
 from datetime import date
 # core django imports
@@ -8,8 +8,6 @@ from django.utils import timezone
 from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.utils.text import slugify
-from django.contrib import messages
 # third party imports
 from autoslug import AutoSlugField
 from randomslugfield import RandomSlugField
@@ -23,7 +21,11 @@ class Major(TimeStampedModel):
     name = models.CharField(max_length=50)
     # I believe the longest is "Government and International Politics"
 
-    slug = AutoSlugField(populate_from='name', unique=True)
+    slug = AutoSlugField(populate_from='name', always_update=True, unique=True)
+    # always_update is set to support migrating from previous versions' slugs
+    # which were originally random characters
+    # on always_update, the slug is modified whenever the populated_from field changes
+    # to update from previous versions, call .save() on all existing models
 
     def first_letter(self):
         return self.name and self.name[0] or ''
@@ -35,16 +37,19 @@ class Major(TimeStampedModel):
         return unicode(self.name)
 
     def get_absolute_url(self):
-        return reverse('detail_major', kwargs={
-            'slug': self.slug,
-            'major': slugify(self.name),
-        })
+        return reverse('detail_major', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['name']
 
 
 class StudentQuerySet(models.query.QuerySet):
+    """Set theory defining groups of students based on their housing locations.
+
+    Used in determining privacy."""
+
+    # allows calling .floor or .building or .students when referencing a students'
+    # privacy to simplify life syntactically
     def floor(self):
         return self.filter(privacy='floor')
 
@@ -72,6 +77,10 @@ class StudentQuerySet(models.query.QuerySet):
         return list(floor) + list(set(building_students) - set(floor))
 
     def visible(self, student, housing):
+        """Returns a list of students visible to the student reviewing a housing object.
+
+        Example usage:
+        Student.objects.visible(request.user.student, floor)"""
         if isinstance(housing, Room):
             rooms = [housing]
         elif isinstance(housing, Floor):
@@ -95,8 +104,8 @@ class StudentQuerySet(models.query.QuerySet):
 
 
 class StudentManager(models.Manager):
-
     # this 'duplication' allows for queryset chaining
+    # https://docs.djangoproject.com/en/1.8/topics/db/managers/
 
     def get_queryset(self):
         return StudentQuerySet(self.model, using=self._db)
@@ -173,9 +182,9 @@ class Student(TimeStampedModel):
     original_first_name = models.CharField(max_length=100, blank=True)
     original_last_name = models.CharField(max_length=100, blank=True)
 
-    # social media accounts
-
     # welcome walkthrough completion
+    # each of these booleans is toggled when a student submits the form
+    # on the associated page
     completedName = models.BooleanField(default=False)
     completedPrivacy = models.BooleanField(default=False)
     completedMajor = models.BooleanField(default=False)
@@ -186,7 +195,7 @@ class Student(TimeStampedModel):
     objects = StudentManager()
 
     # this doesn't take into account superseniors or graduate students or negative values
-    # hence private method
+    # hence private method; not yet suggested for use
     def _get_class(self):
         time_to_graduate = self.graduating_year - self.current_year
         if time_to_graduate >= 4:
@@ -201,17 +210,18 @@ class Student(TimeStampedModel):
             return "magic"
 
     def recent_changes(self):
-        # part of TimeStampedModel
+        # timezone.now takes into account timezones, which a local machine may not
         now = timezone.now()
+        # part of TimeStampedModel
         created = self.created
 
         # could make this more formal with dateutil, but...
         days = (now - created).days
 
         # must be int-- floor function
-        third_years = (days / (30 * 4)) + 1
+        third_years = (days // (30 * 4)) + 1
 
-        return (self.times_changed_room / third_years)
+        return (self.times_changed_room // third_years)
 
     def get_floor(self):
         try:
@@ -228,6 +238,7 @@ class Student(TimeStampedModel):
             return None
 
     def totally_done(self):
+        """To assess if a user has completed the welcome walkthrough."""
         if self.completedName and self.completedPrivacy and self.completedMajor and self.completedSocial:
             return True
         else:
@@ -235,7 +246,7 @@ class Student(TimeStampedModel):
 
     def profile_image_url(self):
         fb_uid = SocialAccount.objects.filter(user=self.user.id, provider='facebook')
-        #print("profile_image")
+        # print("profile_image")
 
         if len(fb_uid) > 0:
             return "https://graph.facebook.com/{}/picture?width=175&height=175".format(fb_uid[0].uid)
@@ -248,25 +259,28 @@ class Student(TimeStampedModel):
     def get_flag_count(self):
         my_flag_num = Confirmation.objects.filter(student=self, lives_there=False).count()
         return my_flag_num
-    
+
+    # displays the student's username if the student if they choose to delete their name
+
     def get_first_name_or_uname(self):
         if not(self.user.get_short_name()):
             return self.user.username
         else:
             return self.user.get_short_name()
-    
+
     def get_last_name_or_uname(self):
         if not(self.user.last_name):
             return self.user.username
         else:
             return self.user.last_name
-    
+
     def get_full_name_or_uname(self):
         if not(self.user.get_full_name()):
             return self.user.username
         else:
             return self.user.get_full_name()
 
+    # how recently has the student joined roomlist? changes some messages displayed
     def is_noob(self):
         now = timezone.now()
         days = (now - self.created).days
@@ -283,16 +297,18 @@ class Student(TimeStampedModel):
 
     def __unicode__(self):
         return unicode(self.user.username)
-    
+
+    # uncomment if there's something going awry while saving
     # def save(self, *args, **kwargs):
-        #print('we be savin\'!')
-        #from django.db.models.signals import pre_save, post_save
-        #for signal in [pre_save, post_save]:
-            #print(signal, signal.receivers)
-        #super(Student, self).save(*args, **kwargs)
+        # print('we be savin\'!')
+        # from django.db.models.signals import pre_save, post_save
+        # for signal in [pre_save, post_save]:
+        #     print(signal, signal.receivers)
+        # super(Student, self).save(*args, **kwargs)
 
 
 class Confirmation(TimeStampedModel):
+    """Tracks relations between two students in crowdsourcing the room validity."""
 
     confirmer = models.ForeignKey(Student, related_name='confirmer_set')
     student = models.ForeignKey(Student, related_name='student_set')

@@ -17,30 +17,30 @@
       <h1><strong>{{ student.get_full_name_or_uname }}</strong></h1>
       {% if shares %}
         <p class="lead"><strong>
-        {% if not student.on_campus %}
-          {{ student.get_first_name_or_uname }} doesn't live on campus.
-        {% elif student.room == None %}
-          {{ student.get_first_name_or_uname }} hasn't set their room yet.
-        {% else %}
-          <a href="{{ student.room.get_absolute_url }}">{{ student.room }}</a>
-          {% if same_floor %}
-            {% if has_flagged %}
-              <a href="{% url 'deleteConfirmation' student.slug my_flag.slug %}">
-                <small><span style="padding-left:15px" class="fa-stack fa-lg">
-                  <i class="fa fa-flag fa-stack-1x"></i>
-                  <i class="fa fa-ban fa-stack-2x text-danger"></i>
-                </span></small>
-              </a>
-            {% else %}
-              <a href="{% url 'createConfirmation' student.slug %}">
-                <i style="padding-left:15px" class="fa fa-flag"></i>
-              </a>
+          {% if not student.on_campus %}
+            {{ student.get_first_name_or_uname }} doesn't live on campus.
+          {% elif student.room == None %}
+            {{ student.get_first_name_or_uname }} hasn't set their room yet.
+          {% else %}
+            <a href="{{ student.room.get_absolute_url }}">{{ student.room }}</a>
+            {% if same_floor %}
+              {% if has_flagged %}
+                <a href="{% url 'deleteConfirmation' student.slug my_flag.slug %}">
+                  <small><span style="padding-left:15px" class="fa-stack fa-lg">
+                    <i class="fa fa-flag fa-stack-1x"></i>
+                    <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                  </span></small>
+                </a>
+              {% else %}
+                <a href="{% url 'createConfirmation' student.slug %}">
+                  <i style="padding-left:15px" class="fa fa-flag"></i>
+                </a>
+              {% endif %}
             {% endif %}
           {% endif %}
-        {% endif %}
         </strong></p>
         {% if student.get_flag_count > 4 %}
-        <p><em>* a number of other floormates say this room info is incorrect</em></p>
+          <p><em>* a number of other floormates say this room info is incorrect</em></p>
         {% endif %}
       {% endif %}
       {% if student.on_campus %}
@@ -62,7 +62,7 @@
         <tr>
           <td><h4><strong>Major</strong>:
             {% if student.major %}
-              {{ student.major.name }}
+              <a href="{% url 'detail_major' student.major.slug %}">{{ student.major.name }}</a>
             {% else %}
               &nbsp;&mdash;
             {% endif %}
@@ -71,15 +71,16 @@
 
         <tr>
           <td><h4><strong>Class of</strong>:
-          {% if student.graduating_year == None %}
-              &nbsp;&mdash;
-          {% else %}
-             {{ student.graduating_year|bc }}
-          {% endif %}</h4></td>
+            {% if student.graduating_year == None %}
+                &nbsp;&mdash;
+            {% else %}
+               {{ student.graduating_year|bc }}
+            {% endif %}
+          </h4></td>
         </tr>
 
         <tr>
-          <td><h4><strong>Email</strong>: {{ student.user.email }}</h4></td>
+          <td><h4><strong>Email</strong>: <a href="mailto:{{ student.user.email }}">{{ student.user.email }}</a></h4></a></td>
         </tr>
         {% if student.show_gender %}
           <tr>
@@ -111,7 +112,7 @@
       <tbody>
         <tr>
           <td class="col-md-4">
-           <h4><i class="fa fa-facebook fa-lg"></i></h4>
+            <h4><i class="fa fa-facebook fa-lg"></i></h4>
           </td>
           <td class="col-md-8">
             {% if accounts.facebook and shares %} <h4><a href="https://facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">Facebook account</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
@@ -122,7 +123,8 @@
           <td>
             <h4><i class="fa fa-google fa-lg"></i></h4>
           </td>
-          <td>{% if accounts.google and shares %} <h4><a href="https://plus.google.com/{{ accounts.google.0.uid }}" target="_blank">Google+ account</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
+          <td>
+            {% if accounts.google and shares %} <h4><a href="https://plus.google.com/{{ accounts.google.0.uid }}" target="_blank">Google+ account</a></h4> {% else %} <h4>&mdash;</h4> {% endif %}
           </td>
         </tr>
 

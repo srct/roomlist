@@ -110,7 +110,7 @@ MIDDLEWARE_CLASSES = (
 
 # for bootstrap css classes
 from django.contrib.messages import constants as messages
-MESSAGE_TAGS = {messages.ERROR: 'danger',}
+MESSAGE_TAGS = {messages.ERROR: 'danger', }
 
 ROOT_URLCONF = 'settings.urls'
 
@@ -190,9 +190,9 @@ CAS_RESPONSE_CALLBACKS = (
 )
 
 HAYSTACK_CONNECTIONS = {
-    'default' : {
-        'ENGINE' : 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH' : os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
     },
 }
 
@@ -243,7 +243,7 @@ if not DEBUG:
             },
             # 'mail_admins' by default does not include a traceback attachment
             # setting 'include_html' to True will attach an html traceback file to the email
-            # you can also set an addtional 'email_backend' arg to a custom email handler (e.g. SES)
+            # you can also set an additional 'email_backend' arg to a custom email handler (e.g. SES)
             'mail_admins': {
                 'level': 'ERROR',
                 'class': 'django.utils.log.AdminEmailHandler',

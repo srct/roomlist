@@ -5,10 +5,8 @@ from distutils.util import strtobool
 from operator import attrgetter
 from itertools import chain
 # core django imports
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden, HttpResponseRedirect, Http404
-from django.views.generic import (CreateView, ListView, DetailView, UpdateView,
-                                  FormView, DeleteView)
+from django.views.generic import CreateView, ListView, DetailView, FormView, DeleteView
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.safestring import mark_safe
@@ -19,49 +17,13 @@ from cas.views import login as cas_login
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from .models import Student, Major, Confirmation
-from housing.models import Building, Floor, Room
+from housing.models import Room
 from .forms import StudentUpdateForm
-
-
-#########
-bug_reporting = """Welcome back to SRCT Roomlist. This project is the
-                   <a href="https://srct.gmu.edu/projects/">collaborative work
-                   of students like you</a>. If you see anything amiss, or have ideas for
-                   features or a better user experience, please send an email to
-                   roomlist@lists.srct.gmu.edu, tweet
-                   <a href="https://twitter.com/MasonSRCT/">@MasonSRCT</a>, or, for the
-                   more technically experienced, review our
-                   <a href="https://git.gmu.edu/srct/roomlist/issues">issues page</a>."""
-
-privacy_reminder = """Welcome back to SRCT Roomlist. A friendly reminder you can change
-                      your privacy settings at any time on your settings page by
-                      clicking the cog in the upper right of your screen."""
-
-disclaimer = """Welcome back to SRCT Roomlist. Just to be perfectly clear, this project
-                is provided as a service by the
-                <a href="https://gmu.collegiatelink.net/organization/srct">registered
-                student organization</a>
-                <a href="https://srct.gmu.edu/">Student-Run Computing and Technology</a>.
-                We are not a part of <a href="http://housing.gmu.edu/">Mason Housing</a>:
-                all information is voluntarily provided by participating students."""
-
-whatsopen_plug = """Welcome back to SRCT Roomlist. Wondering what's open at this hour?
-                    Check out another one of our
-                    <a href="https://srct.gmu.edu/projects/">student-built and hosted</a>
-                    projects: <a href="https://whatsopen.gmu.edu/">whatsopen.gmu.edu</a>."""
-
-open_source = """Welcome back to SRCT Roomlist. For the curious at heart,
-                 <a href="http://www.gnu.org/philosophy/free-sw.en.html">you can always
-                 review</a> this project's
-                 <a href="https://git.gmu.edu/srct/roomlist/tree/master">source code</a>.
-                 Come <a href="https://srct.gmu.edu/">to a meeting</a> and learn how to
-                 contribute!"""
-#########
-
-return_messages = [bug_reporting, privacy_reminder, disclaimer, whatsopen_plug, open_source]
+from .student_messages import return_messages
 
 
 def custom_cas_login(request, *args, **kwargs):
+    """If a student has not completed the welcome walkthrough, go there on login."""
     response = cas_login(request, *args, **kwargs)
     # returns HttpResponseRedirect
 
@@ -84,6 +46,7 @@ def custom_cas_login(request, *args, **kwargs):
     return response
 
 
+# only two students on the same floor can confirm one another (crowdsourced verification)
 def on_the_same_floor(student, confirmer):
     if student == confirmer:
         # Student is confirmer
@@ -145,6 +108,7 @@ class DetailStudent(LoginRequiredMixin, DetailView):
                 print("Students are not supposed to be able to make more than one flag per student.")
                 print(e)
 
+        # recognizably too complex
         def onFloor():
             floor_status = False
             if requesting_student.get_floor() == self.get_object().get_floor():
@@ -179,39 +143,9 @@ class DetailStudent(LoginRequiredMixin, DetailView):
         return context
 
 
-class DetailCurrentStudent(LoginRequiredMixin, DetailView):
-    model = Student
-    context_object_name = 'student'
-    template_name = 'detailStudent.html'
-
-    login_url = 'login'
-
-    def get_object(self):
-        return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
-
-
-# changeable student settings
-class DetailStudentSettings(LoginRequiredMixin, DetailView):
-    model = Student
-    context_object_name = 'student'
-    template_name = 'studentSettings.html'
-
-    login_url = 'login'
-
-
-class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
-    model = Student
-    context_object_name = 'student'
-    template_name = 'studentSettings.html'
-
-    login_url = 'login'
-
-    def get_object(self):
-        return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
-
 # update a student, but FormView to allow name update on same page
 class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
-    template_name = 'updateStudent.html'
+    template_name = 'update_student.html'
     form_class = StudentUpdateForm
     login_url = 'login'
 
@@ -255,6 +189,9 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         form.fields['last_name'].widget.attrs['class'] = 'form-control'
         form.fields['graduating_year'].widget.attrs['class'] = 'form-control'
 
+        # chosen
+        form.fields['major'].widget.attrs['class'] = 'chosen-select'
+
         context['my_form'] = form
 
         return context
@@ -262,17 +199,17 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
-        #for key, value in request.POST.iteritems():
-            #print(key, value)
+        # for key, value in request.POST.iteritems():
+            # print(key, value)
         return super(UpdateStudent, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
         me = Student.objects.get(user=self.request.user)
 
-        #print("In form valid method!")
+        # print("In form valid method!")
 
-        #for key, value in form.data.iteritems():
-            #print(key, value)
+        # for key, value in form.data.iteritems():
+        #    print(key, value)
 
         current_room = me.room
 
@@ -324,17 +261,15 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
             messages.add_message(self.request, messages.WARNING, 'To safeguard everyone\'s privacy, you have just one remaining room change for the semester before you\'ll need to send us an email at roomlist@lists.srct.gmu.edu.')
 
         return reverse('detail_student',
-                       kwargs={'slug':self.request.user.username})
+                       kwargs={'slug': self.request.user.username})
 
 
 # majors pages
-class ListMajors(LoginRequiredMixin, ListView):
+class ListMajors(ListView):
     model = Major
     queryset = Major.objects.all().order_by('name')
     context_object_name = 'majors'
     template_name = 'list_majors.html'
-
-    login_url = 'login'
 
 
 class DetailMajor(LoginRequiredMixin, DetailView):
@@ -348,46 +283,47 @@ class DetailMajor(LoginRequiredMixin, DetailView):
         context = super(DetailMajor, self).get_context_data(**kwargs)
         requesting_student = Student.objects.get(user=self.request.user)
 
-	# retrieve every room that has a student with the major in question
-	neighbourhoods = ("aq", "ra", "sh")
-	visible_by_neighbourhood = {}
-	for neighbourhood in neighbourhoods:
-	    rooms = [
-		room
-		for room in Room.objects.filter(floor__building__neighbourhood=neighbourhood)
-		if room.student_set.filter(major=self.get_object())
-	    ]
+        # retrieve every room that has a student with the major in question
+        neighbourhoods = ("aq", "ra", "sh")
+        visible_by_neighbourhood = {}
+        for neighbourhood in neighbourhoods:
+            rooms = [
+                room
+                for room in Room.objects.filter(floor__building__neighbourhood=neighbourhood)
+                if room.student_set.filter(major=self.get_object())
+            ]
 
-	    # identify if the student(s) in that room are visible to the requesting student
-	    # 'chain' is necessary if there are multiple students in one room with the same major
-	    #
-	    # we sort each of the lists of students by their username
-	    # as elsewhere, this is imperfect if a student changes their display name
-	    # this is necessary as a separate step because .visible returns a list type
-	    # note we're using '.' instead of '__', because who likes syntactical consistency
-	    visible_by_neighbourhood[neighbourhood] = sorted(list(chain(*[
-		Student.objects.visible(requesting_student, room)
-		for room in rooms
-	    ])), key=attrgetter('user.username'))
-
-        # print(visible_by_neighbourhood)
+            # identify if the student(s) in that room are visible to the requesting student
+            # 'chain' is necessary if there are multiple students in one room with the same major
+            #
+            # we sort each of the lists of students by their username
+            # as elsewhere, this is imperfect if a student changes their display name
+            # this is necessary as a separate step because .visible returns a list type
+            # note we're using '.' instead of '__', because who likes syntactical consistency
+            visible_by_neighbourhood[neighbourhood] = sorted(list(chain(*[
+                Student.objects.visible(requesting_student, room)
+                for room in rooms
+            ])), key=attrgetter('user.username'))
 
         # see what students are left over (aren't visible)
         hidden = set(Student.objects.filter(major=self.get_object()).order_by('user__username'))
         # print(hidden)
-	for visible in visible_by_neighbourhood.values():
+        for visible in visible_by_neighbourhood.values():
             # print('visible', visible)
-	    hidden = hidden.difference(set(visible))
+            hidden = hidden.difference(set(visible))
             # print(hidden)
 
-	for neighbourhood, visible in visible_by_neighbourhood.iteritems():
-	    context['%s_location_visible' % neighbourhood] = visible
-        context['location_hidden'] = hidden
+        for neighbourhood, visible in visible_by_neighbourhood.iteritems():
+            context['%s_location_visible' % neighbourhood] = visible
+            context['location_hidden'] = hidden
 
         return context
 
 
 class CreateConfirmation(LoginRequiredMixin, CreateView):
+    """Students on the same floor may flag one another.
+
+    This is our attempt at crowdsourced verification."""
     model = Confirmation
     fields = []
     template_name = 'create_confirmation.html'
@@ -424,7 +360,6 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
 
         return super(CreateConfirmation, self).get(request, *args, **kwargs)
 
-
     def get_context_data(self, **kwargs):
         context = super(CreateConfirmation, self).get_context_data(**kwargs)
 
@@ -460,7 +395,7 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         # redirect to the flagged student page when saving
         return reverse('detail_student',
-                       kwargs={'slug':self.object.student.slug})
+                       kwargs={'slug': self.object.student.slug})
 
 
 class DeleteConfirmation(LoginRequiredMixin, DeleteView):
@@ -480,4 +415,4 @@ class DeleteConfirmation(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('detail_student',
-                       kwargs={'slug':self.object.student.slug})
+                       kwargs={'slug': self.object.student.slug})

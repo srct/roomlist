@@ -13,6 +13,7 @@ from housing.models import Building, Floor, Room
 
 
 class SelectRoomWidget(forms.widgets.Select):
+    """A series of dropdowns in which a student can filter through housing options."""
 
     template_name = 'room_select_widget.html'
 
@@ -23,12 +24,12 @@ class SelectRoomWidget(forms.widgets.Select):
             print("Sorry about that, but we're currently ignoring your fancy attrs.")
         # should probably type check the other fields too
         if rooms is None:
-            self.rooms = Room.objects.all()
+            self.rooms = Room.objects.all().prefetch_related('floor')
         else:
             if not all(isinstance(thing, Room) for thing in rooms):
                 raise TypeError("Rooms in a SelectRoomWidget must all be Rooms!")
         if floors is None:
-            self.floors = Floor.objects.all()
+            self.floors = Floor.objects.all().prefetch_related('building')
         if buildings is None:
             self.buildings = Building.objects.all()
         if neighborhoods is None:
@@ -47,6 +48,7 @@ class SelectRoomWidget(forms.widgets.Select):
 
 
 class SelectRoomField(forms.models.ModelChoiceField):
+    """A special field for room selection, using the room selection widget."""
     widget = SelectRoomWidget
 
 #    should raise error if user hasn't actually selected room, made it to end of selectors
@@ -54,6 +56,7 @@ class SelectRoomField(forms.models.ModelChoiceField):
 
 
 class BooleanRadioField(forms.TypedChoiceField):
+    """Displays booleans as a radio selector, rather than checkboxes."""
 
     def __init__(self, *args, **kwargs):
         boolean_choices = ((True, 'Yes'), (False, 'No'))
@@ -84,22 +87,21 @@ class StudentUpdateForm(forms.Form):
     major = forms.ModelChoiceField(queryset=Major.objects.all(), required=False)
     graduating_year = forms.IntegerField()
 
-
     def clean(self):
         cleaned_data = super(StudentUpdateForm, self).clean()
         form_room = cleaned_data.get('room')
         if not(form_room is None):
             students_in_room = Student.objects.filter(room=form_room).count()
-            #print(students_in_room)
+            # print(students_in_room)
             # like in bookshare, I have no idea why the form errors don't display.
             if students_in_room > 12:
                 raise ValidationError(_('Too many students in room (%d).' % students_in_room), code='invalid')
 
     def is_valid(self):
         # errors are not printed in form.as_p?
-        #print("In is_valid.")
-        #print(self.is_bound, 'is bound')
-        #print(self.errors, type(self.errors), 'errors')
+        # print("In is_valid.")
+        # print(self.is_bound, 'is bound')
+        # print(self.errors, type(self.errors), 'errors')
         valid = super(StudentUpdateForm, self).is_valid()
-        #print(valid)
+        # print(valid)
         return valid

@@ -4,6 +4,7 @@ from __future__ import absolute_import, print_function
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.text import slugify
+from django.core.validators import RegexValidator
 # third party imports
 from model_utils.models import TimeStampedModel
 from randomslugfield import RandomSlugField
@@ -12,7 +13,7 @@ from autoslug import AutoSlugField
 
 class Building(TimeStampedModel):
     name = models.CharField(max_length=100, unique=True)
-
+    abbreviation = models.CharField(max_length=2, blank=True)
     NONE = 'na'
     AQUIA = 'aq'
     RAPPAHANNOCK = 'ra'
@@ -81,7 +82,8 @@ class Building(TimeStampedModel):
 
 class Floor(TimeStampedModel):
     building = models.ForeignKey('Building')
-    number = models.IntegerField()
+    number = models.CharField(max_length=1,  # Mason doesn't like tall buildings
+                              validators=[RegexValidator(regex='^[0-9]{1}',)])
 
     slug = RandomSlugField(length=6)
 
@@ -117,12 +119,20 @@ class Floor(TimeStampedModel):
 
 
 class Room(TimeStampedModel):
-    number = models.IntegerField()
+    number = models.CharField(max_length=5,
+                              validators=[RegexValidator(regex='^[A-Z]?[0-9]{3,4}',)])
+
     floor = models.ForeignKey('Floor')
 
     slug = RandomSlugField(length=6)
 
     room_num = AutoSlugField(populate_from='number',)  # unique_with='floor')
+
+    def get_wing(self):
+        if self.number[0].isalpha():
+            return self.number[0]
+        else:
+            return None
 
     def get_absolute_url(self):
         return reverse('detail_room', kwargs={

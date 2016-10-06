@@ -5,10 +5,7 @@ from django import forms
 from django.utils.safestring import mark_safe
 from django.template.loader import render_to_string
 from localflavor.us.us_states import US_STATES as states
-# imports from your apps
 
-
-#class YesNoBooleanWidget(forms.widget.RadioWidget):
 
 class AddressWidget(forms.widgets.Widget):
 

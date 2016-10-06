@@ -25,15 +25,22 @@
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    <p class="text-center">Great, {{ request.user.student.get_first_name_or_uname }}! Now to your housing information and settings. Here, you'll select which room you live in, and then choose who you want to be able to see that information.</p>
-    <p class="text-center">If you don't live on campus, you can select 'No' and move right along.</p>
-    <p class="text-center">For on campus students, here you'll select which room you live in, and then choose who you want to be able to see that information.</p>
-    <p class="text-center"><strong>By default, your privacy is set to 'Floor'.</strong> That means only other students <em>living on your floor</em> can see your room or links to your social media profiles.
-    You can choose to set your privacy to '<strong>Building</strong>', which will make your room visible to everyone living in your building, or to '<strong>Campus</strong>', where it will be visible to anyone with a current Mason username and password.</p>
-    <p class="text-center">To close a rather straightforward privacy loophole, you can only change your room a limited number of times a year, after which you will need to
-    <a href="mailto:roomlist@lists.srct.gmu.edu?Subject=I%20Don%27t%20Know%20Where%20I%20Live%3A%20Halp%20Pls">email us</a>.
+    <p>
+      Excellent, {{ request.user.student.get_first_name_or_uname }}! If you live on
+      campus, you have three privacy options to control your room and social media
+      visibility.
+      <ul>
+        <li><strong>Floor</strong>: Only the other students living on your floor.</li>
+        <li><strong>Building</strong>: Everyone living in your building.</li>
+        <li><strong>All Students</strong>: Anyone with a current Mason username and password.</li>
+      </ul>
+      If you live off campus and decide to include any social media accounts, please
+      note they will be visible to anyone signed in.
     </p>
-    <p class="text-center">A select number of locations <a href="{% url 'list_buildings' %}#Unsupported">on campus</a> are not currently supported. You are still welcome to use roomlist as an interactive directory until we add support.</p>
+    <p>
+      To protect everyone's privacy, you'll only be able to change your room a couple
+      times a year, so make sure to set it correctly.
+    </p>
   </div>
 </div>
 
@@ -68,6 +75,11 @@
                 {% endfor %}
               </div>
             <div id="lives-on-campus">
+              <p><small>
+                The Global Center, the Townhouses, and Beacon Hall are not currently supported.
+                We'll let everyone know when we add them. Until then, if you live there, you're
+                still welcome to browse around.
+              </small></p>
               <div class="form-group">
                 <div class="col-md-12">
                   {{ my_form.room }}
@@ -108,31 +120,7 @@
 {% endblock content %}
 
 {% block javascript %}
-  <script type="text/javascript" src="/static/js/jquery.chained.min.js"></script>
-  <script>
-    // toggle room selection availability
-    // can see if on campus, cannot see if not on campus
-    $(document).ready(function() {
-      var $radio = $('input:radio[name=on_campus]');
-      // when first rendering the page
-      if($radio.filter('[value=False]').is(':checked')) {
-        $("#lives-on-campus").hide();
-      } else {
-        $("#lives-on-campus").show();
-      }
-      // if student changes the value
-      $($radio.filter('[value=False]').click(function(){
-        $("#lives-on-campus").slideUp();
-      }));
-      $($radio.filter('[value=True]').click(function(){
-        $("#lives-on-campus").slideDown();
-      }));
-    });
-    $("#lives-on-campus").hide();
-
-    // room selection
-    $("#building").chained("#neighborhood");
-    $("#floor").chained("#building");
-    $("#room").chained("#floor");
-  </script>
+<script type="text/javascript" src="/static/js/chained.min.js"></script>
+<script type="text/javascript" src="/static/js/chosen.min.js"></script>
+{% include 'room_selection_script.html' %}
 {% endblock javascript %}

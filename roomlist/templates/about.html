@@ -1,8 +1,16 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %}
-SRCT Roomlist &bull; About
+{% block title %} SRCT Roomlist &bull; About {% endblock %}
+
+{% block og_metadata %}
+<meta property="og:title" content="About SRCT Roomlist"/>
+<meta property="og:description" content="Roomlist is a Mason student housing directory, developed and hosted by Student-Run Computing and Tech, a registered student org."/>
 {% endblock %}
+
+{% block tw_metadata %}
+<meta name="twitter:title" content="About SRCT Roomlist" />
+<meta name="twitter:description" content="Roomlist is a Mason student housing directory, developed and hosted by Student-Run Computing and Tech, a registered student org." />
+{% endblock tw_metadata %}
 
 {% block content %}
 

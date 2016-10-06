@@ -5,6 +5,7 @@ from django.contrib import admin
 # imports from your apps
 from .models import Student, Major, Confirmation
 
+
 class StudentAdmin(admin.ModelAdmin):
     list_display = ("get_name", "room", "privacy", "major", "created")
 

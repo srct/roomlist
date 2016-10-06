@@ -18,9 +18,11 @@ Please visit the [SRCT Wiki](http://wiki.srct.gmu.edu/) for more information on 
 
 These instructions are for Ubuntu and Debian, or related Linux distributions. (If you'd like to help write the instructions for Mac OSX, please do!)
 
-### Prerequisities
+### Prerequisities and Package Installation
 
 First, install python, pip, and git on your system. Python is the programming language used for Django, the web framework used by Roomlist. 'Pip' is the python package manager. Git is the version control system used for SRCT projects.
+
+**Debian/Ubuntu**
 
 Open a terminal and run the following commands.
 
@@ -32,16 +34,6 @@ This retrieves links to the most up-to-date and secure versions of your packages
 
 you install python and git.
 
-Now, we're going to clone down a copy of the Roomlist codebase from git.gmu.edu, the SRCT code respository.
-
-Configure your ssh keys by following the directions at git.gmu.edu/help/ssh/README.
-
-Now, on your computer, navigate to the directory in which you want to download the project (perhaps one called development/ or something similar), and run
-
-`git clone git@git.gmu.edu:srct/roomlist.git`
-
-### Package Installation
-
 Next, install these packages from the standard repositories
 
 `$ sudo apt-get install libldap2-dev mysql-server mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev libjpeg-dev redis-server`
@@ -49,6 +41,35 @@ Next, install these packages from the standard repositories
 If prompted to install additional required packages, install those as well.
 
 When prompted to set your mysql password, it's advisable to set it as the same as your normal superuser password.
+
+Now you're ready to set up the Roomlist repository on your machine.
+
+**macOS (Formerly OS X)**
+
+This tutorial uses the third party Homebrew package manager for macOS, which allows you to install
+packages from your terminal just as easily as you could on a Linux based system. You could use another
+package manager (or not use one at all), but Homebrew is highly reccomended.
+
+To get homebrew, run the following command in a terminal:
+``/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+
+**Note**: You do NOT need to use `sudo` when running any Homebrew commands, and it likely won't work if you do.
+
+Now you want to Python, pip, git, and MySQL (macOS actually ships with some of these, but we want to have the latest versions). We'll also install Redis, though this package is only relevant when testing the production environment. To do so, run the following command in your terminal:
+
+`brew install python git mysql redis`
+
+Now you're ready to set up the Roomlist repository on your machine.
+
+#### Git Setup
+
+Now, we're going to clone down a copy of the Roomlist codebase from git.gmu.edu, the SRCT code respository.
+
+Configure your ssh keys by following the directions at git.gmu.edu/help/ssh/README.
+
+Now, on your computer, navigate to the directory in which you want to download the project (perhaps one called development/ or something similar), and run
+
+`git clone git@git.gmu.edu:srct/roomlist.git`
 
 ### The Virtual Environment
 
@@ -120,13 +141,15 @@ Run `python manage.py makemigrations` to create the tables and rows and columns 
 
 Then run `python manage.py migrate` to execute that sql code and set up your database. Migrations also track how you've changed your models over the life of your database, which allows you to make changes to your tables without screwing up existing information.
 
-Finally, run `python manage.py createsuperuser` to create an admin account, using the same username and email as you'll access through CAS. This means your 'full' email address, for instance gmason@masonlive.gmu.edu. Your password will be handled through CAS, so you can just use 'password' here.
+Finally, run `python manage.py createsuperuser` to create an admin account, using the same username and email as you'll access through CAS. This means your 'full' email address, for instance *gmason@masonlive.gmu.edu*. Your password will be handled through CAS, so you can just use 'password' here.
 
 (If you accidentally skip this step, you can run `python manage.py shell` and edit your user from there. Selectyour user, and set .is_staff and .is_superuser to True, then save.)
 
-## Loading in demo data
+## Loading in initial data
 
-The project includes a number of json files with demo data to load into the database, for Majors and also for all freshman housing. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly. Follow this with `python manage.py loaddata housing/initial_data.json` and a sizeable number of housing objects should be 'installed'.
+The project includes a json file to load majors into the database. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly.
+
+To add all freshman housing, with the virtual environment enabled, run `python manage.py shell < housing/housing_obj_creator.py`. It will take a couple of minutes, but this script will create every building, floor, and room in your database.
 
 ## Starting search
 

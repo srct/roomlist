@@ -23,18 +23,27 @@
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    <p class="text-center">We're not trying to recreate Facebook here. On this final step, you can point people to a variety of your social media accounts from your user page.</p> 
-    <p class="text-center">You'll be asked to sign in, but that's just to verify the account actually belongs to you. With the exception of your choice to use your Facebook profile picture as your profile picture here, we don't use any information on these third-party sites.</p>
-    <p class="text-center">We'll only show these links to people who can also see your room.</p> 
+    <p>
+      We're not recreating yet another social network. Instead,
+      {{ request.user.student.get_first_name_or_uname }}, point other students to the
+      social media accounts you already use on your directory page.
+    </p>
+    <p>
+      You'll be asked to sign in to verify each account actually belongs to you.
+      Otherwise, we don't use anything from these sites, with one exception. If you
+      connect your Facebook account, we'll display your profile picture.
+    </p>
   </div>
 </div>
+
+<br />
 
 {% load socialaccount %}
 
 {% get_social_accounts request.user as accounts %}
 
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-offset-2 col-md-8">
 
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -44,7 +53,7 @@
       <div class="panel-body">
         <div class="row text-center">
           {% comment %} is it not possible to redirect the login failure? {% endcomment %}
-          <div class="col-md-3">
+          <div class="col-md-4">
             {% if accounts.facebook %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
               <h4><i class="fa fa-facebook fa-3x"></i></h4>
@@ -56,7 +65,7 @@
             </a>
             {% endif %}
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             {% if accounts.google %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
               <h4><i class="fa fa-google fa-3x"></i></h4>
@@ -68,7 +77,7 @@
             </a>
             {% endif %}
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             {% if accounts.twitter %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
               <h4><i class="fa fa-twitter fa-3x"></i></h4>
@@ -80,7 +89,10 @@
             </a>
             {% endif %}
           </div>
-          <div class="col-md-3">
+        </div>
+        <br />
+        <div class="row text-center">
+          <div class="col-md-4">
             {% if accounts.instagram %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
               <h4><i class="fa fa-instagram fa-3x"></i></h4>
@@ -89,6 +101,30 @@
             <a href="{% provider_login_url 'instagram' process='connect' %}">
               <h4><i class="fa fa-instagram fa-3x"></i></h4>
               <h4>Instagram</h4>
+            </a>
+            {% endif %}
+          </div>
+          <div class="col-md-4">
+            {% if accounts.tumblr %}
+              <p><i class="fa fa-check-square-o"></i> Verified!</p>
+              <h4><i class="fa fa-tumblr fa-3x"></i></h4>
+              <h4>Tumblr</h4>
+            {% else %}
+            <a href="{% provider_login_url 'tumblr' process='connect' %}">
+              <h4><i class="fa fa-tumblr fa-3x"></i></h4>
+              <h4>Tumblr</h4>
+            </a>
+            {% endif %}
+          </div>
+          <div class="col-md-4">
+            {% if accounts.github %}
+              <p><i class="fa fa-check-square-o"></i> Verified!</p>
+              <h4><i class="fa fa-github fa-3x"></i></h4>
+              <h4>Github</h4>
+            {% else %}
+            <a href="{% provider_login_url 'github' process='connect' %}">
+              <h4><i class="fa fa-github fa-3x"></i></h4>
+              <h4>Github</h4>
             </a>
             {% endif %}
           </div>

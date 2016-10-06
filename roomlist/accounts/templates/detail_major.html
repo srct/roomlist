@@ -102,7 +102,7 @@
 <br />
 
 {% if location_hidden %}
-  <legend class="text-center">Location not visible because of student <a href="{% url 'updateStudent' request.user.username %}">privacy settings</a></legend>
+  <legend class="text-center">Location not visible because of student <a href="{% url 'update_student' request.user.username %}">privacy settings</a></legend>
   <div class="row">
     <div class="col-md-12">
       {% for student in location_hidden %}

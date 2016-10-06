@@ -17,7 +17,7 @@ def shadowbanning(me, other_people):
     blocks_me = [student
                  for student in blockers
                  if me in student.blocked_kids.all()]
-    if len(blocks_me):
+    if blocks_me:  # python implicit truth evaluation
         student_safety = list(set(other_people) - set(blocks_me))
         return student_safety
     else:
@@ -25,14 +25,12 @@ def shadowbanning(me, other_people):
 
 
 # a list of neighborhoods and their buildings
-class ListBuildings(LoginRequiredMixin, ListView):
+class ListBuildings(ListView):
     model = Building
     queryset = Building.objects.all()
     # paginate_by
     context_object_name = 'buildings'
     template_name = 'list_buildings.html'
-
-    login_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super(ListBuildings, self).get_context_data(**kwargs)
@@ -43,13 +41,11 @@ class ListBuildings(LoginRequiredMixin, ListView):
 
 
 # building floors, other information
-class DetailBuilding(LoginRequiredMixin, DetailView):
+class DetailBuilding(DetailView):
     model = Building
     slug_field = 'slug__iexact'
     context_object_name = 'building'
     template_name = 'detail_building.html'
-
-    login_url = 'login'
 
     def get_object(self):
         url_parts = self.request.get_full_path().split('/')
@@ -70,11 +66,13 @@ class DetailFloor(LoginRequiredMixin, DetailView):
     context_object_name = 'floor'
     template_name = 'detail_floor.html'
 
+    login_url = 'login'
+
     def get_object(self):
         url_parts = self.request.get_full_path().split('/')
         # [u'', u'housing', u'building', u'floor', ]
         building_name = url_parts[2].replace('-', ' ').title()
-        floor_number = int(url_parts[3])
+        floor_number = url_parts[3]
         building = Building.objects.get(name=building_name)
         floor = Floor.objects.get(number=floor_number,
                                   building=building)
@@ -99,12 +97,14 @@ class DetailRoom(LoginRequiredMixin, DetailView):
     context_object_name = 'room'
     template_name = 'detail_room.html'
 
+    login_url = 'login'
+
     def get_object(self):
         url_parts = self.request.get_full_path().split('/')
         # [u'', u'housing', u'building', u'floor', u'room', ]
         building_name = url_parts[2].replace('-', ' ').title()
-        floor_number = int(url_parts[3])
-        room_number = int(url_parts[4])
+        floor_number = url_parts[3]
+        room_number = url_parts[4].upper()
         building = Building.objects.get(name=building_name)
         floor = Floor.objects.get(number=floor_number,
                                   building=building)

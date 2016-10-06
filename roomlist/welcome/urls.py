@@ -1,7 +1,7 @@
 # standard library imports
 from __future__ import absolute_import, print_function
 # core django imports
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 from django.views.generic import RedirectView
 from django.core.urlresolvers import reverse_lazy
 # imports from your apps

@@ -2,8 +2,8 @@
 from __future__ import absolute_import, print_function
 from distutils.util import strtobool
 # core django imports
-from django.shortcuts import render
-from django.views.generic import  FormView
+from django.shortcuts import redirect
+from django.views.generic import FormView
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 # third party imports
@@ -21,16 +21,20 @@ settings_redirect = """You've already finished the welcome walkthrough.
 
 
 class WelcomeName(LoginRequiredMixin, FormView):
+    """Student adds first and last name, and gender and gender display."""
+
     template_name = 'welcome_name.html'
     form_class = WelcomeNameForm
     login_url = 'login'
 
+    # students are redirected to the normal settings page once they have completed
+    # the welcome walkthrough in its entirety
     def get(self, request, *args, **kwargs):
 
         if self.request.user.student.totally_done():
             messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
+            return redirect(reverse('update_student',
+                            kwargs={'slug': self.request.user.username}))
         else:
             return super(WelcomeName, self).get(request, *args, **kwargs)
 
@@ -76,6 +80,8 @@ class WelcomeName(LoginRequiredMixin, FormView):
 
 
 class WelcomePrivacy(LoginRequiredMixin, FormView):
+    """Student adds off-or-on campus status, and if on-campus, housing and privacy."""
+
     form_class = WelcomePrivacyForm
     template_name = 'welcome_privacy.html'
     login_url = 'login'
@@ -84,8 +90,8 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
 
         if self.request.user.student.totally_done():
             messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
+            return redirect(reverse('update_student',
+                            kwargs={'slug': self.request.user.username}))
         else:
             return super(WelcomePrivacy, self).get(request, *args, **kwargs)
 
@@ -149,6 +155,8 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
 
 
 class WelcomeMajor(LoginRequiredMixin, FormView):
+    """Student adds major and graduation year."""
+
     template_name = 'welcome_major.html'
     form_class = WelcomeMajorForm
     login_url = 'login'
@@ -157,8 +165,8 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
 
         if self.request.user.student.totally_done():
             messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
+            return redirect(reverse('update_student',
+                            kwargs={'slug': self.request.user.username}))
         else:
             return super(WelcomeMajor, self).get(request, *args, **kwargs)
 
@@ -167,12 +175,12 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
 
         me = Student.objects.get(user=self.request.user)
 
-
         form = WelcomeMajorForm(initial={'major': me.major,
                                          'graduating_year': me.graduating_year, })
 
-        context['my_form'] = form
+        form.fields['major'].widget.attrs['class'] = 'chosen-select'
 
+        context['my_form'] = form
         context['student'] = me
 
         return context
@@ -200,6 +208,8 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
 
 
 class WelcomeSocial(LoginRequiredMixin, FormView):
+    """Student connects social media accounts. Redirects to settings page when done."""
+
     form_class = WelcomeSocialForm
     template_name = 'welcome_social.html'
     login_url = 'login'
@@ -208,8 +218,8 @@ class WelcomeSocial(LoginRequiredMixin, FormView):
 
         if self.request.user.student.totally_done():
             messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
+            return redirect(reverse('update_student',
+                            kwargs={'slug': self.request.user.username}))
         else:
             return super(WelcomeSocial, self).get(request, *args, **kwargs)
 
@@ -243,4 +253,4 @@ class WelcomeSocial(LoginRequiredMixin, FormView):
                                  "You successfully finished the welcome walkthrough!")
 
         return reverse('detail_student',
-                       kwargs={'slug':self.request.user.username})
+                       kwargs={'slug': self.request.user.username})

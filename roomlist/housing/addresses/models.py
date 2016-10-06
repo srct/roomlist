@@ -1,4 +1,9 @@
+# core django imports
+from django.db import models
+# third party imports
 from localflavor.us.models import USStateField, USZipCodeField
+from model_utils.models import TimeStampedModel
+
 
 # buildings on campus don't have separate addresses yet
 class Address(TimeStampedModel):
