@@ -19,7 +19,7 @@ Back
 
 {% if me.on_campus %}
 
-{% if not me.room %}
+{% if not me.room and me.on_campus %}
   <h3><em><a href="{% url 'update_student' request.user.username %}">Select your room</a>, and we'll show you the other students on your floor.</em></h3>
 {% else %}
 
@@ -79,14 +79,14 @@ Back
 
 
 {% cache 120 landing_majors request.user.username %}
-{% if not me.major %}
+{% if not me.major.all %}
   <h3><em><a href="{% url 'update_student' request.user.username %}">Set your major</a>, and we'll show you some of the other students in your program.</em></h3>
 {% else %}
-
-    <h3>Other Students in <a href="{{ me.major.get_absolute_url }}">{{ me.major.name }}</a></h3>
-    <legend></legend>
+  {% for major, students in majormates.items %}
+    <h3>Other Students in <a href="{{ major.get_absolute_url }}">{{ major.name }}</a></h3>
+    <hr />
     <div class="row">
-      {% for student in majormates %}
+      {% for student in students %}
       <div class="col-md-3 text-center">
         <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
         <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
@@ -102,7 +102,7 @@ Back
         </div>
       {% endfor %}
     </div>
-
+  {% endfor %}
 {% endif %}
 
 {% endcache %}

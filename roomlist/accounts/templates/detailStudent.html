@@ -60,12 +60,13 @@
     <table class="table table-hover text-center">
       <tbody>
         <tr>
-          <td><h4><strong>Major</strong>:
-            {% if student.major %}
-              <a href="{% url 'detail_major' student.major.slug %}">{{ student.major.name }}</a>
-            {% else %}
-              &nbsp;&mdash;
-            {% endif %}
+          {% if student.major.all|length == 2 %}
+            <td><h4><strong>Majors</strong>:
+          {% else %}
+            <td><h4><strong>Major</strong>:
+          {% endif %}
+
+          {% include 'double_major.html' %}
           </h4></td>
         </tr>
 
