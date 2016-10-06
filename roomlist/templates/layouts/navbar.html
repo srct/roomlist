@@ -20,12 +20,19 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-        <li>
+        <li class="visible-lg visible-md visible-sm">
           <a href="/search"><i class="fa fa-search fa-fw fa-lg"></i></a>
+        </li>
+        <li class="visible-xs">
+          <a href="/search">Search</a>
+        </li>
         <li><a href="/accounts/student/{{ user.username }}">{{ user.username }}</a>
         </li>
-        <li>
+        <li class="visible-lg visible-md visible-sm">
           <a href="{% url 'update_student' request.user.username %}"><i class="fa fa-cog fa-fw fa-lg"></i></a>
+        </li>
+        <li class="visible-xs">
+          <a href="{% url 'update_student' request.user.username %}">Settings</a>
         </li>
         <li><a href="{% url 'logout' %}">Logout</a>
         </li>
