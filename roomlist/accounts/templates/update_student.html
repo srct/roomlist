@@ -22,18 +22,10 @@
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12 text-center">
-      <h1><strong>SRCT</strong>ROOMLIST</a></strong> Student Update</h1>
+      <h1><strong>SRCT</strong>ROOMLIST</a></strong> {{ request.user.student.get_full_name_or_uname }}'s Settings</h1>
     </div>
   </div>
 </div>
-
-<div class="row">
-  <div class="col-md-12 text-center">
-    <h2><strong>Welcome, {{ request.user.student.get_first_name_or_uname }}!</strong></h2>
-  </div>
-</div>
-
-<br />
 
 {% load socialaccount %}
 
@@ -143,7 +135,7 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h1 class="panel-title text-center"><strong>Student Settings</strong></h1>
+        <h1 class="panel-title text-center"><strong>Profile Settings</strong></h1>
       </div>
 
       <div class="panel-body">
