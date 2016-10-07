@@ -120,7 +120,7 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 DATABASES = {
     'default': {
         # If you want to change the database engine you are free to do so here.
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'roomlist',
         'USER': 'roommate',
         'PASSWORD': secret.DB_PASSWORD,
