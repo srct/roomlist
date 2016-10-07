@@ -8,32 +8,46 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
+# standard library imports
 from __future__ import absolute_import, print_function
+import os
+# core django imports
+from django.contrib.messages import constants as messages
+# imports from your apps
+from . import secret
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-
-import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-ORGANIZATION_EMAIL_DOMAIN = 'masonlive.gmu.edu'
+# cryptography
+SECRET_KEY = secret.SECRET_KEY
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-    os.path.join(BASE_DIR, 'housing/templates'),
-    os.path.join(BASE_DIR, 'accounts/templates'),
-)
+# These configurations are set by default for a local development environment. Turning
+# off debug mode will display 404 and 500 error pages instead of detailed logs.
+DEBUG = True
+TEMPLATE_DEBUG = True
+# the domains this application will be deployed on, e.g. which
+# domains this app should listen to requests from.
+ALLOWED_HOSTS = ['127.0.0.1']
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.7/howto/static-files/
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+# where template files are located
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+    # may specify to avoid requiring paths
+    os.path.join(BASE_DIR, 'housing/templates'),
+    os.path.join(BASE_DIR, 'accounts/templates'),
+)
 TEMPLATE_LOADERS = (
-
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-
 )
-
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
@@ -45,19 +59,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
 )
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-from . import config
-DEBUG = config.DEBUG
-TEMPLATE_DEBUG = config.TEMPLATE_DEBUG
-ALLOWED_HOSTS = config.ALLOWED_HOSTS
-
-PIWIK_DOMAIN_PATH = config.PIWIK_DOMAIN_PATH
-PIWIK_SITE_ID = config.PIWIK_SITE_ID
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -108,54 +111,42 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-# for bootstrap css classes
-from django.contrib.messages import constants as messages
-MESSAGE_TAGS = {messages.ERROR: 'danger', }
-
 ROOT_URLCONF = 'settings.urls'
 
 WSGI_APPLICATION = 'settings.wsgi.application'
 
-from . import secret
-
-SECRET_KEY = secret.SECRET_KEY
-
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': config.DB_ENGINE,
-        'NAME': secret.DB_NAME,
-        'USER': secret.DB_USER,
+        # If you want to change the database engine you are free to do so here.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'roomlist',
+        'USER': 'roommate',
         'PASSWORD': secret.DB_PASSWORD,
-        'HOST': secret.DB_HOST,
-        'PORT': secret.DB_PORT,
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'America/New_York'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 # set for social auth
 # example.com is by default set to 1
-
+# add localhost and it will be 2
 SITE_ID = 2
 
 # further settings for social auth
-
+# custom account adapter
 SOCIALACCOUNT_ADAPTER = 'accounts.adapter.AccountAdapter'
 
+# specifying what information is being requested from Facebook
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
         'SCOPE': ['public_profile', ],
@@ -168,96 +159,47 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
+# for bootstrap css classes
+MESSAGE_TAGS = {messages.ERROR: 'danger', }
 
-STATIC_URL = '/static/'
-
+# for using Mason's Central Authentication Service
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'cas.backends.CASBackend',
 )
-
-# Peoplefinder API for user creation
-PF_URL = "http://api.srct.gmu.edu/pf/v1/"
-
+# Mason's CAS endpoint-- note the lack of a trailing slash... actually matters
 CAS_SERVER_URL = 'https://login.gmu.edu'
 CAS_LOGOUT_COMPLETELY = True
 CAS_PROVIDE_URL_TO_LOGOUT = True
-
 CAS_RESPONSE_CALLBACKS = (
     'accounts.cas_callbacks.create_user',
 )
+# Peoplefinder API endpoint for user creation in the CAS callback (above)
+PF_URL = "http://api.srct.gmu.edu/pf/v1/"
+# email address used in CAS callback
+ORGANIZATION_EMAIL_DOMAIN = 'masonlive.gmu.edu'
 
+# haystack is the package used for search
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
         'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
     },
 }
-
 # Haystack Signal Processor
 # The RealtimeSignalProcessor allows for objects to indexed as soon as
 # they are created -- in real time.
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
-# Use redis cache when not in local development
-if DEBUG:
-    pass
-else:
-    CACHES = {
-        'default': {
-            'BACKEND': 'redis_cache.RedisCache',
-            # configure to redis port
-            'LOCATION': '/var/run/redis/redis.sock',
-        },
+# dummy cache for development-- doesn't actually cache things
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
+}
 
-# need to configure ADMINS email so that ERROR level logs (500 level exceptions)
-# can be sent out
-
-# https://docs.djangoproject.com/en/1.7/topics/logging/
-# https://docs.djangoproject.com/en/1.7/howto/error-reporting/
-# https://docs.python.org/2/library/logging.config.html#configuration-dictionary-schema
-
-if not DEBUG:
-
-    ADMINS = config.ADMINS
-    SERVER_EMAIL = config.SERVER_EMAIL
-    EMAIL_HOST = config.EMAIL_HOST
-    EMAIL_PORT = config.EMAIL_PORT
-    EMAIL_HOST_USER = config.EMAIL_HOST_USER
-    EMAIL_HOST_PASSWORD = config.EMAIL_HOST_PASSWORD
-    EMAIL_USE_SSL = config.EMAIL_USE_SSL
-
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'file': {
-                'level': 'DEBUG', # will log all errors
-                'class': 'logging.FileHandler',
-                # make sure to change this to the proper path, and one that
-                # can be written to
-                'filename': '/path/to/django/debug.log',
-            },
-            # 'mail_admins' by default does not include a traceback attachment
-            # setting 'include_html' to True will attach an html traceback file to the email
-            # you can also set an additional 'email_backend' arg to a custom email handler (e.g. SES)
-            'mail_admins': {
-                'level': 'ERROR',
-                'class': 'django.utils.log.AdminEmailHandler',
-                'include_html': True,
-            },
-        },
-        # logs request errors
-        'loggers': {
-            'django.request': {
-                'handlers': ['file'],
-                'level': 'DEBUG',
-                'propagate': True,
-            },
-        # django's default loggers send request and security messages at the ERROR
-        # or CRITICAL level to the AdminEmailHandler via mail_admins
-        },
-    }
+# configure piwik analytics
+# point to the piwik url
+PIWIK_DOMAIN_PATH = 'piwik.example.com'
+# set piwik server site id (piwik can track multiple websites)
+PIWIK_SITE_ID = 1
