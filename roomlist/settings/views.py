@@ -35,12 +35,13 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         my_majors = tuple(me.major.all())
         students_by_major = {}
         for major in my_majors:
-            students_by_major[major] = Student.objects.filter(major__in=[major]).exclude(user=me.user).order_by('?')[:8]
-        majormates = students_by_major
+            major_students = Student.objects.filter(major__in=[major]).exclude(user=me.user).order_by('?')[:8]
+            censored_major = shadowbanning(me, major_students)
+            students_by_major[major] = censored_major
 
         context["roomies"] = shadowbanning(me, roomies)
         context["floories"] = shadowbanning(me, floories)
-        context["majormates"] = shadowbanning(me, majormates)
+        context["majormates"] = students_by_major
         return context
 
 
