@@ -21,11 +21,8 @@
 
 <div class="row">
   <div class="col-md-12">
-    {% regroup aq_location_visible by get_building as aq_students_by_building %}
-    {% for building in aq_students_by_building %}
-    <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
     <div class="row">
-      {% for student in building.list %}
+      {% for student in aq_location_visible %}
         {% if not student in request.user.student.blocked_kids.all %}
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
@@ -36,11 +33,12 @@
           {% endif %}
         </div>
         {% endif %}
-     {% endfor %}
-   </div>
-   {% empty %}
-   No visible students.
-   {% endfor %}
+      {% empty %}
+      <div class="col-md-12">
+        <p>No visible students.</p>
+      </div>
+      {% endfor %}
+    </div>
   </div>
 </div>
 
@@ -50,11 +48,8 @@
 
 <div class="row">
   <div class="col-md-12">
-    {% regroup ra_location_visible by get_building as ra_students_by_building %}
-    {% for building in ra_students_by_building %}
-    <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
     <div class="row">
-      {% for student in building.list %}
+      {% for student in ra_location_visible %}
         {% if not student in request.user.student.blocked_kids.all %}
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
@@ -65,11 +60,12 @@
           {% endif %}
         </div>
         {% endif %}
-     {% endfor %}
-   </div>
-   {% empty %}
-   No visible students.
-   {% endfor %}
+      {% empty %}
+      <div class="col-md-12">
+        <p>No visible students.</p>
+      </div>
+      {% endfor %}
+    </div>
   </div>
 </div>
 
@@ -79,11 +75,8 @@
 
 <div class="row">
   <div class="col-md-12">
-    {% regroup sh_location_visible by get_building as sh_students_by_building %}
-    {% for building in sh_students_by_building %}
-    <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
     <div class="row">
-      {% for student in building.list %}
+      {% for student in sh_location_visible %}
         {% if not student in request.user.student.blocked_kids.all %}
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
@@ -94,18 +87,19 @@
           {% endif %}
         </div>
         {% endif %}
-     {% endfor %}
-   </div>
-   {% empty %}
-   No visible students.
-   {% endfor %}
+      {% empty %}
+      <div class="col-md-12">
+        <p>No visible students.</p>
+      </div>
+      {% endfor %}
+    </div>
   </div>
 </div>
 
 <br />
 
 {% if location_hidden %}
-  <legend class="text-center">Location not visible because of student <a href="{% url 'update_student' request.user.username %}">privacy settings</a></legend>
+  <legend class="text-center">Off-campus/Location not visible because of student <a href="{% url 'update_student' request.user.username %}">privacy settings</a></legend>
   <div class="row">
     <div class="col-md-12">
       {% for student in location_hidden %}
