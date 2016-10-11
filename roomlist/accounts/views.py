@@ -17,9 +17,9 @@ from cas.views import login as cas_login
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from .models import Student, Major, Confirmation
-from housing.models import Building
 from .forms import StudentUpdateForm
 from .student_messages import return_messages
+from housing.views import shadowbanning
 
 
 def custom_cas_login(request, *args, **kwargs):
@@ -318,46 +318,12 @@ class DetailMajor(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailMajor, self).get_context_data(**kwargs)
-        requesting_student = Student.objects.get(user=self.request.user)
+        me = Student.objects.get(user=self.request.user)
 
         # all students in the major
-        major_students = Student.objects.filter(major__in=[self.get_object()]).order_by('user__username')
+        major_students = Student.objects.filter(major__in=[self.get_object()]).order_by('-graduating_year')
 
-        neighbourhoods = ("aq", "ra", "sh")
-        visible_by_neighbourhood = {}
-
-        for neighbourhood in neighbourhoods:
-            # print(neighbourhood)
-            # grab all buildings in each neighborhood
-            buildings_by_neighbourhood = Building.objects.filter(neighbourhood=neighbourhood)
-            # print(buildings_by_neighbourhood)
-
-            # identify if the student(s) in that room are visible to the requesting student
-            # go building by building and assess if the students in that building
-            # with the current major are visible to the requesting student
-            # chain is a function that flattens arrays, and is neccesary when combining
-            # students from each building
-
-            # we sort each of the lists of students by their username
-            # as elsewhere, this is imperfect if a student changes their display name
-            # this is necessary as a separate step because .visible returns a list type
-
-            # note we're using '.' instead of '__', because who likes syntactical consistency
-            visible_by_neighbourhood[neighbourhood] = sorted(list(chain(*[
-                major_students.visible(requesting_student, building)
-                for building in buildings_by_neighbourhood
-            ])), key=attrgetter('user.username'))
-
-        # see what students are left over (aren't visible)
-        hidden = set(major_students)
-        for visible in visible_by_neighbourhood.values():
-            # print('visible', visible)
-            hidden = hidden.difference(set(visible))
-            # print(hidden)
-
-        for neighbourhood, visible in visible_by_neighbourhood.iteritems():
-            context['%s_location_visible' % neighbourhood] = visible
-            context['location_hidden'] = hidden
+        context['major_students'] = shadowbanning(me, major_students)
 
         return context
 
