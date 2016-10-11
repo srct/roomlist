@@ -14,12 +14,12 @@ PIWIK_SITE_ID = 4
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql'
-        'NAME': ''
-        'USER': ''
-        'PASSWORD': secret.DB_PASSWORD
-        'HOST': ''
-        'PORT': ''
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': secret.DB_PASSWORD,
+        'HOST': '',
+        'PORT': '',
     }
 }
 
