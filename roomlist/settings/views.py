@@ -29,7 +29,12 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         # Create Dictionaries to store Students that meet criteria
         context["roomies"] = Student.objects.filter(room=me.room).exclude(user__username=me)
         context["floories"] = Student.objects.filter(room__floor=me.get_floor()).exclude(user__username=me).exclude(room=me.room).order_by('room')
-        context["majormates"] = Student.objects.filter(major=me.major).exclude(user__username=me).order_by('?')[:8]
+
+        my_majors = tuple(me.major.all())
+        students_by_major = {}
+        for major in my_majors:
+            students_by_major[major] = Student.objects.filter(major__in=[major]).exclude(user__username=me).order_by('?')[:8]
+        context["majormates"] = students_by_major
 
         return context
 

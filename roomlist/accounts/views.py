@@ -154,6 +154,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         context = super(UpdateStudent, self).get_context_data(**kwargs)
 
         me = Student.objects.get(user=self.request.user)
+        majors = [pk_or_none(me, major) for major in me.major.all()]
 
         form = StudentUpdateForm(initial={'first_name': me.user.first_name,
                                           'last_name': me.user.last_name,
@@ -161,7 +162,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
                                           'show_gender': me.show_gender,
                                           'room': pk_or_none(me, me.room),
                                           'privacy': me.privacy,
-                                          'major': pk_or_none(me, me.major),
+                                          'major': majors,
                                           'graduating_year': me.graduating_year,
                                           'on_campus': me.on_campus, })
 
@@ -188,7 +189,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
         # for key, value in request.POST.iteritems():
-            # print(key, value)
+        #     print(key, value)
         return super(UpdateStudent, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -197,7 +198,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         # print("In form valid method!")
 
         # for key, value in form.data.iteritems():
-        #    print(key, value)
+        #     print(key, value)
 
         current_room = me.room
 
@@ -226,9 +227,27 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         me.room = form_room
 
         try:
-            me.major = Major.objects.get(pk=form.data['major'])
+            # in case someone disabled the js, limit processing to only the first
+            # two majors passed by the user
+            # we also eliminate the potential a student manipulates the form to
+            # pass in two majors of the same type by casting to a set
+            form_major_pks = set(form.data.getlist('major')[:2])
+            # retrieve the major objects from the list of pk strings
+            form_majors = [Major.objects.get(pk=pk) for pk in form_major_pks]
+            # print(form_majors)
+            # iterate over a student's current majors
+            for current_major in me.major.all():
+                # remove m2m relationship if not in majors from form
+                if current_major not in form_majors:
+                    me.major.remove(current_major)
+            # iterate over the majors in the form
+            for form_major in form_majors:
+                # add new m2m relationship to student
+                if form_major not in me.major.all():
+                    me.major.add(form_major)
         except:
-            me.major = None
+            # don't change majors
+            pass
 
         me.user.first_name = form.data['first_name']
         me.user.last_name = form.data['last_name']
@@ -278,7 +297,7 @@ class DetailMajor(LoginRequiredMixin, DetailView):
             rooms = [
                 room
                 for room in Room.objects.filter(floor__building__neighbourhood=neighbourhood)
-                if room.student_set.filter(major=self.get_object())
+                if room.student_set.filter(major__in=[self.get_object()])
             ]
 
             # identify if the student(s) in that room are visible to the requesting student
@@ -294,7 +313,7 @@ class DetailMajor(LoginRequiredMixin, DetailView):
             ])), key=attrgetter('user.username'))
 
         # see what students are left over (aren't visible)
-        hidden = set(Student.objects.filter(major=self.get_object()).order_by('user__username'))
+        hidden = set(Student.objects.filter(major__in=[self.get_object()]).order_by('user__username'))
         # print(hidden)
         for visible in visible_by_neighbourhood.values():
             # print('visible', visible)

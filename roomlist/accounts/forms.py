@@ -80,7 +80,7 @@ class StudentUpdateForm(forms.Form):
     room = SelectRoomField(queryset=Room.objects.all(), required=False)
 
     privacy = forms.TypedChoiceField(choices=Student.PRIVACY_CHOICES)
-    major = forms.ModelChoiceField(queryset=Major.objects.all(), required=False)
+    major = forms.ModelMultipleChoiceField(queryset=Major.objects.all(), required=False)
     graduating_year = forms.IntegerField()
 
     def clean(self):

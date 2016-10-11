@@ -49,11 +49,9 @@ SRCT Roomlist &bull; Search Students
           <a href="{{ result.object.get_absolute_url }}"><h4><strong>{{ result.object.get_full_name_or_uname }}</strong></h4></a>
         </td>
         <td>
-          {% if result.object.major %}
-            <a href="{{ result.object.major.get_absolute_url }}"><h4>{{ result.object.major }}</h4></a>
-          {% else %}
-            &nbsp;&mdash;
-          {% endif %}
+          {% with result.object as student %}
+            <h4>{% include 'double_major.html' %}</h4>
+          {% endwith %}
         </td>
         <td>
           {% if result.object.graduating_year %}

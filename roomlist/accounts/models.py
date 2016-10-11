@@ -168,7 +168,7 @@ class Student(TimeStampedModel):
     on_campus = models.BooleanField(default=True)
     room = models.ForeignKey(Room, null=True, blank=True)
 
-    major = models.ForeignKey('Major', related_name='major', null=True, blank=True)
+    major = models.ManyToManyField(Major, related_name='majors', blank=True)
 
     times_changed_room = models.PositiveIntegerField(default=0)
 
