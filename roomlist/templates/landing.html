@@ -35,7 +35,7 @@ Back
         <div class="col-md-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture"></img>
           <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
-          <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
+          <h5><em>{% include 'double_major.html' %}</em></h5>
         </div>
       {% if forloop.counter|divisibleby:4 %}
       </div>
@@ -58,7 +58,7 @@ Back
       <div class="col-md-3 text-center">
         <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
         <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
-        <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
+        <h5><em>{% include 'double_major.html' %}</em></h5>
         <h5><a href="{{ student.room.get_absolute_url }}">{{ student.room }}</h5></a>
       </div>
       {% if forloop.counter|divisibleby:4 %}

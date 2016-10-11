@@ -16,8 +16,6 @@ Please visit the [SRCT Wiki](http://wiki.srct.gmu.edu/) for more information on 
 
 ## Setting everything up for development
 
-These instructions are for Ubuntu and Debian, or related Linux distributions. (If you'd like to help write the instructions for Mac OSX, please do!)
-
 ### Prerequisities and Package Installation
 
 First, install python, pip, and git on your system. Python is the programming language used for Django, the web framework used by Roomlist. 'Pip' is the python package manager. Git is the version control system used for SRCT projects.
@@ -135,8 +133,6 @@ Exit the mysql shell by typing `exit`.
 
 Now, to configure your newly created database with the project settings, and set up your project's cryptographic key, copy the secret.py.template in settings/ to secret.py. Follow the comment instructions provided in each file to set your secret key and database info.
 
-Also copy config.py.template to config.py. You won't need to make any changes here off the bat. See more information about this file under the 'Deployment' section.
-
 Run `python manage.py makemigrations` to create the tables and rows and columns for your database. This command generates sql code based on your database models. If you don't see output noting the creation of a number of models, add the app name to the end of the command, e.g. `python manage.py makemigrations housing`.
 
 Then run `python manage.py migrate` to execute that sql code and set up your database. Migrations also track how you've changed your models over the life of your database, which allows you to make changes to your tables without screwing up existing information.
@@ -150,10 +146,6 @@ Finally, run `python manage.py createsuperuser` to create an admin account, usin
 The project includes a json file to load majors into the database. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly.
 
 To add all freshman housing, with the virtual environment enabled, run `python manage.py shell < housing/housing_obj_creator.py`. It will take a couple of minutes, but this script will create every building, floor, and room in your database.
-
-## Starting search
-
-To start off indexing your models for searching, run `python manage.py update_index`.
 
 ## Starting up the test server
 
@@ -258,7 +250,7 @@ Roomlist's urls are set to be cached for periods of time set so that ordinary us
 
 ## Deployment
 
-A number of deployment-related settings have been moved from settings.py to config.py in settings/ for ease of use. Make sure to never have DEBUG mode on when running your project in deployment.
+Configure and use `production.py` instead of `settings.py` in the production environment, to turn on caching, turn off debug mode, set up email, support https, and a whole lot more. To use this settings file, pass an additional argmument when running the project. `python manage.py runserver --settings=settings.production`
 
 ### Docker
 

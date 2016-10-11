@@ -164,6 +164,7 @@ class Student(TimeStampedModel):
     show_gender = models.BooleanField(default=False)
 
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
+    blocked_kids = models.ManyToManyField("self", blank=True)
 
     on_campus = models.BooleanField(default=True)
     room = models.ForeignKey(Room, null=True, blank=True)
@@ -292,10 +293,10 @@ class Student(TimeStampedModel):
         ordering = ['user']
 
     def __str__(self):              # __unicode__ on Python 2
-        return self.user.username
+        return self.get_full_name_or_uname()
 
     def __unicode__(self):
-        return unicode(self.user.username)
+        return unicode(self.get_full_name_or_uname())
 
     # uncomment if there's something going awry while saving
     # def save(self, *args, **kwargs):

@@ -4,9 +4,11 @@ from __future__ import absolute_import, print_function
 import json
 # third party imports
 import requests
+# imports from your apps
+from .secret import SLACK_WEBHOOK_URL
 
 
-webhook_url = 'https://hooks.slack.com/services/xxxxxxxxx/xxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxx'
+webhook_url = SLACK_WEBHOOK_URL
 
 
 def slack_post(text, channel, username, icon_emoji):

@@ -6,6 +6,8 @@ from django.views.generic import (View, DetailView, TemplateView)
 # third party imports
 from braces.views import LoginRequiredMixin
 from accounts.models import Student
+# imports from your apps
+from housing.views import shadowbanning
 
 
 class HomePageView(View):
@@ -27,15 +29,19 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         context['me'] = me
 
         # Create Dictionaries to store Students that meet criteria
-        context["roomies"] = Student.objects.filter(room=me.room).exclude(user__username=me)
-        context["floories"] = Student.objects.filter(room__floor=me.get_floor()).exclude(user__username=me).exclude(room=me.room).order_by('room')
+        roomies = Student.objects.filter(room=me.room).exclude(user=me.user)
+        floories = Student.objects.filter(room__floor=me.get_floor()).exclude(user=me.user).exclude(room=me.room).order_by('room')
 
         my_majors = tuple(me.major.all())
         students_by_major = {}
         for major in my_majors:
-            students_by_major[major] = Student.objects.filter(major__in=[major]).exclude(user__username=me).order_by('?')[:8]
-        context["majormates"] = students_by_major
+            major_students = Student.objects.filter(major__in=[major]).exclude(user=me.user).order_by('?')[:8]
+            censored_major = shadowbanning(me, major_students)
+            students_by_major[major] = censored_major
 
+        context["roomies"] = shadowbanning(me, roomies)
+        context["floories"] = shadowbanning(me, floories)
+        context["majormates"] = students_by_major
         return context
 
 

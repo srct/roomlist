@@ -26,6 +26,7 @@
     <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
     <div class="row">
       {% for student in building.list %}
+        {% if not student in request.user.student.blocked_kids.all %}
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
           <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
@@ -34,6 +35,7 @@
             <p><em>* a number of other floormates say this info is incorrect</em></p>
           {% endif %}
         </div>
+        {% endif %}
      {% endfor %}
    </div>
    {% empty %}
@@ -53,6 +55,7 @@
     <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
     <div class="row">
       {% for student in building.list %}
+        {% if not student in request.user.student.blocked_kids.all %}
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
           <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
@@ -61,6 +64,7 @@
             <p><em>* a number of other floormates say this info is incorrect</em></p>
           {% endif %}
         </div>
+        {% endif %}
      {% endfor %}
    </div>
    {% empty %}
@@ -80,6 +84,7 @@
     <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
     <div class="row">
       {% for student in building.list %}
+        {% if not student in request.user.student.blocked_kids.all %}
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
           <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
@@ -88,6 +93,7 @@
             <p><em>* a number of other floormates say this info is incorrect</em></p>
           {% endif %}
         </div>
+        {% endif %}
      {% endfor %}
    </div>
    {% empty %}
@@ -103,11 +109,13 @@
   <div class="row">
     <div class="col-md-12">
       {% for student in location_hidden %}
+        {% if not student in request.user.student.blocked_kids.all %}
         <div class="col-sm-3 text-center">
           <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
           <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
           <h5>{{ student.graduating_year }}</h5>
         </div>
+        {% endif %}
       {% endfor %}
     </div>
   </div>

@@ -80,6 +80,10 @@ class StudentUpdateForm(forms.Form):
     room = SelectRoomField(queryset=Room.objects.all(), required=False)
 
     privacy = forms.TypedChoiceField(choices=Student.PRIVACY_CHOICES)
+    # exclude self from request in form instantiation
+    blocked_kids = forms.ModelMultipleChoiceField(queryset=Student.objects.all(),
+                                                  required=False)
+
     major = forms.ModelMultipleChoiceField(queryset=Major.objects.all(), required=False)
     graduating_year = forms.IntegerField()
 

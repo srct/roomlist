@@ -22,18 +22,10 @@
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12 text-center">
-      <h1><strong>SRCT</strong>ROOMLIST</a></strong> Student Update</h1>
+      <h1><strong>SRCT</strong>ROOMLIST</a></strong> {{ request.user.student.get_full_name_or_uname }}'s Settings</h1>
     </div>
   </div>
 </div>
-
-<div class="row">
-  <div class="col-md-12 text-center">
-    <h2><strong>Welcome, {{ request.user.student.get_first_name_or_uname }}!</strong></h2>
-  </div>
-</div>
-
-<br />
 
 {% load socialaccount %}
 
@@ -143,7 +135,7 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h1 class="panel-title text-center"><strong>Student Settings</strong></h1>
+        <h1 class="panel-title text-center"><strong>Profile Settings</strong></h1>
       </div>
 
       <div class="panel-body">
@@ -254,6 +246,18 @@
                 {{ my_form.privacy }}
             </div>
           </div>
+          <hr />
+            <p class="help-block">
+              You will not be able to see these students, and they will not be able to see you.
+            </p>
+          <div class="form-group">
+            <label for="{{ my_form.blocked_kids.id_for_label }}" class="col-md-2">
+              Blocked Students
+            </label>
+            <div class="col-md-10">
+              {{ my_form.blocked_kids }}
+            </div>
+          </div>
           {% endif %}
           <hr />
           <input type="submit" value="Save" class="btn btn-primary"/>
@@ -275,6 +279,8 @@
 <script>
 $(".chosen-select").chosen({max_selected_options: 2,
                            placeholder_text_multiple: '(select up to two)'});
+$(".blocked-select").chosen({width: "100%",
+                             placeholder_text_multiple: "(search by name)"});
 </script>
 {% include 'room_selection_script.html' %}
 {% endblock javascript %}
