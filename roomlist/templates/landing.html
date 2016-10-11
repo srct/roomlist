@@ -77,7 +77,7 @@ Back
 {% endif %}
 {% endcache %}
 
-
+{% load accounts_extras %}
 {% cache 120 landing_majors request.user.username %}
 {% if not me.major.all %}
   <h3><em><a href="{% url 'update_student' request.user.username %}">Set your major</a>, and we'll show you some of the other students in your program.</em></h3>
@@ -90,6 +90,7 @@ Back
       <div class="col-md-3 text-center">
         <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
         <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
+        <h5>{{ student.graduating_year|bc }}</h5>
       </div>
       {% if forloop.counter|divisibleby:4 %}
         </div>

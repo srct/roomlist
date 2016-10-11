@@ -14,11 +14,12 @@
 </div>
 
 {% load gravatar %}
+{% load accounts_extras %}
 
 {% regroup major_students by graduating_year as students %}
 
 {% for graduating_year in students %}
-<legend>{{ graduating_year.grouper }}</legend>
+<legend>{{ graduating_year.grouper|bc }}</legend>
   <div class="row">
     <div class="col-md-12">
       <div class="row">

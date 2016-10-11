@@ -54,9 +54,10 @@ SRCT Roomlist &bull; Search Students
             <h4>{% include 'double_major.html' %}</h4>
           {% endwith %}
         </td>
+        {% load accounts_extras %}
         <td>
           {% if result.object.graduating_year %}
-            <h4>{{ result.object.graduating_year }}</h4>
+            <h4>{{ result.object.graduating_year|bc }}</h4>
           {% else %}
             &nbsp;&mdash;
           {% endif %}
