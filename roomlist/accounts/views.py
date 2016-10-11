@@ -269,7 +269,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
             form_blocked_pks = set(form.data.getlist('blocked_kids'))
             current_blocked = me.blocked_kids.all()
             # most people will not being blocking other students
-            if form_blocked_pks:
+            if form_blocked_pks or current_blocked:
                 form_blocked = [Student.objects.get(pk=pk) for pk in form_blocked_pks]
                 for current_block in current_blocked:
                     if current_block not in form_blocked:
