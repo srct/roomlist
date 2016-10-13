@@ -17,7 +17,7 @@ from cas.views import login as cas_login
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from .models import Student, Major, Confirmation
-from .forms import StudentUpdateForm
+from .forms import StudentUpdateForm, FarewellFeedbackForm
 from .student_messages import return_messages
 from housing.views import shadowbanning
 
@@ -300,6 +300,31 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         return reverse('detail_student',
                        kwargs={'slug': self.request.user.username})
 
+
+class DeleteStudent(FormView):
+    form_class = FarewellFeedbackForm
+    template_name = 'delete_student.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteStudent, self).get_context_data(**kwargs)
+
+        me = Student.objects.get(user=self.request.user)
+
+        context['student'] = me
+
+        return context
+
+    def form_valid(self, form):
+        user = self.request.user
+        student = self.request.user.student
+
+        student.delete()
+        user.delete()
+
+        return super(DeleteStudent, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('homepage')
 
 # majors pages
 class ListMajors(ListView):
