@@ -105,3 +105,10 @@ class StudentUpdateForm(forms.Form):
         valid = super(StudentUpdateForm, self).is_valid()
         # print(valid)
         return valid
+
+
+class FarewellFeedbackForm(forms.Form):
+
+    feedback = forms.CharField(label="Thoughts",
+                               widget=forms.Textarea(attrs={'class': 'form-control'}),
+                               required=False)
