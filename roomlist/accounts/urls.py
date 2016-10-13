@@ -3,8 +3,9 @@ from __future__ import absolute_import, print_function
 # core django imports
 from django.conf.urls import patterns, include, url
 # imports from your apps
-from .views import (DetailStudent, UpdateStudent, ListMajors,
-                    DetailMajor, CreateConfirmation, DeleteConfirmation)
+from .views import (DetailStudent, UpdateStudent, DeleteStudent,
+                    ListMajors, DetailMajor,
+                    CreateConfirmation, DeleteConfirmation)
 from .adapter import RemoveSocialConfirmationView
 
 
@@ -27,6 +28,10 @@ urlpatterns = patterns('',
     url(r'^student/(?P<slug>[\w-]+)/settings/$',
         UpdateStudent.as_view(), name='update_student'),
 
+    # delete student account
+    url(r'^student/(?P<slug>[\w-]+)/delete/$',
+        DeleteStudent.as_view(), name='delete_student'),
+
     # custom allauth page to disconnect a social media account
     url(r'^student/(?P<slug>[\w-]+)/settings/social/remove/$',
         RemoveSocialConfirmationView.as_view(),
@@ -36,7 +41,7 @@ urlpatterns = patterns('',
     url(r'^student/(?P<student_slug>[\w-]+)/flag/$',
         CreateConfirmation.as_view(), name='createConfirmation'),
 
-    # delete
+    # delete confirmation
     url(r'^student/(?P<student_slug>[\w-]+)/flag/(?P<slug>[\w-]+)/$',
         DeleteConfirmation.as_view(), name='deleteConfirmation'),
 )
