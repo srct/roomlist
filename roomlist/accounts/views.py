@@ -157,7 +157,8 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         url_uname = current_url.split('/')[3]
 
         if not(url_uname == self.request.user.username):
-            return HttpResponseForbidden()
+            return HttpResponseRedirect(reverse('update_student',
+                                                kwargs={'slug': self.request.user.username}))
         else:
             return super(UpdateStudent, self).get(request, *args, **kwargs)
 
@@ -304,6 +305,17 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
 class DeleteStudent(FormView):
     form_class = FarewellFeedbackForm
     template_name = 'delete_student.html'
+
+    def get(self, request, *args, **kwargs):
+
+        current_url = self.request.get_full_path()
+        url_uname = current_url.split('/')[3]
+
+        if not(url_uname == self.request.user.username):
+            return HttpResponseRedirect(reverse('delete_student',
+                                                kwargs={'slug': self.request.user.username}))
+        else:
+            return super(DeleteStudent, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(DeleteStudent, self).get_context_data(**kwargs)
