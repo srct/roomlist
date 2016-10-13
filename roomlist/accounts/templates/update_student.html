@@ -266,7 +266,9 @@
         {% endspaceless %}
       </div>
     </div>
-
+    <p class="pull-right">
+      <small><a href="{% url 'delete_student' request.user.username %}">Delete Account</a></small>
+    </p>
   </div>
 </div>
 
