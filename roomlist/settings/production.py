@@ -48,13 +48,20 @@ CACHES = {
 # https://docs.djangoproject.com/en/1.7/howto/error-reporting/
 # https://docs.python.org/2/library/logging.config.html#configuration-dictionary-schema
 
+# use the *real*, non development email backend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# the email address that error messages come from; sent to admins
+SERVER_EMAIL = ''
 ADMINS = (('Roomlist Devs', 'roomlist@lists.srct.gmu.edu'),
           ('SRCT Execs', 'srct@gmu.edu'),)
-SERVER_EMAIL = ''
+
+# logging into the mail server
 EMAIL_HOST = 'localhost'
-EMAIL_POST = 25
+EMAIL_PORT = 25
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = secret.EMAIL_HOST_PASSWORD
+# includes implicit TLS
 EMAIL_USE_SSL = False
 
 LOGGING = {
