@@ -1,0 +1,15 @@
+Roomlist developers:
+
+
+{{ student_name }} has removed their account from Roomlist, and offers
+this feedback.
+
+---
+{{ feedback }}
+--
+
+They joined our service on {{ signup_date }}. They are {{ leaving }}
+departing Mason.
+
+
+Hopefully we can use this information when continuing to improve our service.
