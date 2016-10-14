@@ -11,6 +11,10 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 from django.forms.widgets import HiddenInput
+from django.conf import settings
+from django.template.loader import get_template
+from django.core.mail import EmailMultiAlternatives, get_connection
+from django.template import Context
 # third party imports
 from braces.views import LoginRequiredMixin, FormValidMessageMixin
 from cas.views import login as cas_login
@@ -70,6 +74,23 @@ def pk_or_none(me, obj):
     else:
         return obj.pk
 
+
+def create_email(text_path, html_path, subject, to, context):
+    text_email = get_template(text_path)
+    html_email = get_template(html_path)
+
+    email_context = Context(context)
+
+    from_email, cc = ('noreply@srct.gmu.edu',
+                      '')
+
+    text_content = text_email.render(email_context)
+    html_content = html_email.render(email_context)
+
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to], [cc])
+    # mime multipart requires attaching text and html in this order
+    msg.attach_alternative(html_content, 'text/html')
+    return msg
 
 # details about the student
 class DetailStudent(LoginRequiredMixin, DetailView):
@@ -330,6 +351,67 @@ class DeleteStudent(FormView):
         user = self.request.user
         student = self.request.user.student
 
+        # we're using this api because opening smtp connections is taxing in
+        # that it takes time-- we want to send both emails at once without
+        # having to log in and out and back in and out again
+        connection = get_connection()
+
+        # send email to the student
+        text_path = 'email/farewell.txt'
+        html_path = 'email/farewell.html'
+
+        if form.cleaned_data['leaving']:
+            context = {
+                'student_name': student.get_first_name_or_uname,
+                'special_message': "We're glad you gave our message a try."
+            }
+        else:
+            context = {
+                'student_name': student.get_first_name_or_uname,
+                'special_message': "We wish you luck in your time after Mason!"
+            }
+
+        subject = "You successfully deleted your account on Roomlist"
+        to = user.email
+
+        student_email = create_email(text_path, html_path, subject, to, context)
+
+        # send feedback to the admins if there is feedback to send
+        if form.cleaned_data['feedback']:
+            text_path = 'email/feedback.txt'
+            html_path = 'email/feedback.html'
+
+            date_text = student.created.strftime('%A, %B %d, %Y')
+
+            if form.cleaned_data['leaving']:
+                leaving = ""
+            else:
+                leaving = "not"
+
+            context = {
+                'student_name':  student.get_first_name_or_uname,
+                'signup_date': date_text,
+                'leaving': leaving,
+                'feedback': form.cleaned_data['feedback']
+            }
+
+            subject = "Feedback from Roomlist account deletion"
+            to = 'roomlist@lists.srct.gmu.edu'
+
+            feedback_email = create_email(text_path, html_path, subject, to, context)
+
+            connection.send_messages([student_email, feedback_email])
+        else:
+            connection.send_messages([student_email])
+
+        # yes, we do have to manually close the connection
+        connection.close()
+
+        # delete both the student object and the student object
+        confirmations = Confirmation.objects.filter(confirmer=student)
+        if confirmations:
+            for confirmation in confirmations:
+                confirmation.delete()
         student.delete()
         user.delete()
 
