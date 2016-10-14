@@ -203,3 +203,6 @@ CACHES = {
 PIWIK_DOMAIN_PATH = 'piwik.example.com'
 # set piwik server site id (piwik can track multiple websites)
 PIWIK_SITE_ID = 1
+
+# email for the development environment
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
