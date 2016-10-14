@@ -2,10 +2,13 @@
 from __future__ import absolute_import, print_function
 # core django imports
 from django.shortcuts import render
-from django.views.generic import (View, DetailView, TemplateView)
+from django.views.generic import View, DetailView, TemplateView, RedirectView
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
+from django.core.urlresolvers import reverse
 # third party imports
 from braces.views import LoginRequiredMixin
-from accounts.models import Student
+from accounts.models import Student, Major
 # imports from your apps
 from housing.views import shadowbanning
 
@@ -50,3 +53,43 @@ class LandingPageNoAuth(DetailView):
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
+
+
+# redirecting urls
+class RedirectSettings(RedirectView):
+
+    permanent = True
+
+    # we're not including loginrequired, because that's already part of where we're
+    # sending the student to-- this is just about changing the url
+    def get_redirect_url(self, *args, **kwargs):
+        slug = self.request.user.username
+        return reverse('update_student',
+                       kwargs={'slug': slug})
+
+
+class RedirectSlug(RedirectView):
+
+    permanent = True
+
+    # we're not including loginrequired, because that's already part of where we're
+    # sending the student to-- this is just about changing the url
+    def get_redirect_url(self, *args, **kwargs):
+        current_url = self.request.get_full_path()
+        # [u'', u'gmason']
+        slug = current_url.split('/')[1]
+        print(slug)
+
+        try:
+            print('trying student')
+            student = Student.objects.get(user__username=slug)
+            return reverse('detail_student',
+                           kwargs={'slug': slug})
+        except ObjectDoesNotExist:
+            print('trying major')
+            try:
+                major = Major.objects.get(slug=slug)
+                return reverse('detail_major',
+                               kwargs={'slug': slug})
+            except ObjectDoesNotExist:
+                raise Http404
