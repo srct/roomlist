@@ -109,6 +109,8 @@ class StudentUpdateForm(forms.Form):
 
 class FarewellFeedbackForm(forms.Form):
 
+    leaving = BooleanRadioField(label="Are you graduating or leaving Mason?")
     feedback = forms.CharField(label="Thoughts",
+                               max_length=1000,
                                widget=forms.Textarea(attrs={'class': 'form-control'}),
                                required=False)
