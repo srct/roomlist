@@ -41,26 +41,46 @@
         <hr />
         <ul class="text-center">
           {% for error in form.non_field_errors %}
-            {{ error }}</li>
+            <li>{{ error }}</li>
           {% endfor %}
         </ul>
         <hr />
         {% endif %}
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
           <fieldset>
-            {% for field in form %}
+            {% if form.leaving.errors %}
+              {% for error in form.leaving.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
             <div class="form-group">
-              <label for="{{ field.id_for_label }}" class="col-md-2">
-                <strong>{{ field.label }}</strong>
+              <label for="{{ form.leaving.id_for_label }}" class="col-md-5">
+                <strong>{{ form.leaving.label }}</strong> *
               </label>
-              <div class="col-md-10">
-                {{ field }}
+              <div class="col-md-7">
+                {% for option in form.leaving %}
+                  <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
+                {% endfor %}
               </div>
             </div>
-            {% endfor %}
+            <hr/>
+            {% if form.feedback.errors %}
+              {% for error in form.feedback.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
+            <div class="form-group">
+              <label for="{{ form.feedback.id_for_label }}" class="col-md-2">
+                <strong>{{ form.feedback.label }}</strong>
+              </label>
+              <div class="col-md-10">
+                {{ form.feedback }}
+              </div>
+            </div>
           </fieldset>
       </div>
     </div>
+    <p class="text-muted"><small>* required</small></p>
   </div>
 </div>
 
