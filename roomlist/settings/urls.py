@@ -9,7 +9,7 @@ from django.contrib import admin
 from haystack.views import SearchView
 from django.views.generic import RedirectView
 # imports from your apps
-from .views import HomePageView
+from .views import HomePageView, RedirectSettings, RedirectSlug
 
 admin.autodiscover()
 admin.site.login = login_required(admin.site.login)
@@ -32,9 +32,6 @@ urlpatterns = patterns('',
     # search
     url(r'^search/', login_required(SearchView(), login_url='login'), name='search'),
 
-    # redirects
-    url(r'^majors/', RedirectView.as_view(pattern_name='list_majors')),
-
     # login and logout
     url(r'^login/', 'accounts.views.custom_cas_login', name='login'),
     url(r'^logout/', 'cas.views.logout', name='logout'),
@@ -45,4 +42,10 @@ urlpatterns = patterns('',
     # alternate interfaces
     url(r'^api/', include('api.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
+    # redirects
+    url(r'^majors/', RedirectView.as_view(pattern_name='list_majors')),
+    url(r'^settings/', RedirectSettings.as_view()),
+    # note that this is the very last, 'cause it tries to match basically anything else
+    url(r'^(?P<slug>[\w-]+)/', RedirectSlug.as_view()),
 )
