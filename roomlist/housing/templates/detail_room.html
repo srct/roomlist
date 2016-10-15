@@ -13,7 +13,7 @@
     </div>
     <div class="col-md-10 col-md-offset-1">
       <ol id="breadcrumbs" class="breadcrumb">
-        <li><a href="/">Home</a></li>
+        <li><a href="{% url 'homepage' %}">Home</a></li>
         <li><a href="{% url 'list_buildings' %}">Buildings</a></li>
         <li><a href="{{ room.floor.building.get_absolute_url }}">{{ room.floor.building.name }}</a></li>
         <li><a href="{{ room.floor.get_absolute_url }}">{{ room.floor.number|ordinal }} Floor</a></li>

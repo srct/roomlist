@@ -26,7 +26,7 @@
     </div>
     <div class="col-md-10 col-md-offset-1">
       <ol id="breadcrumb" class="breadcrumb">
-        <li><a href="/">Home</a></li>
+        <li><a href="{% url 'homepage' %}">Home</a></li>
         <li><a href="{% url 'list_buildings' %}">Buildings</a></li>
         <li class="active">{{ building.name }}</li>
       </ol>
