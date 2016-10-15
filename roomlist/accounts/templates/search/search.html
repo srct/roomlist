@@ -41,29 +41,31 @@ SRCT Roomlist &bull; Search Students
     {% endif %}
 
     {% for result in page.object_list %}
-      {% if not result.object.user.student in request.user.student.blocked_kids.all %}
+      {% with result.object as student %}
+      {% if not student in request.user.student.blocked_kids.all %}
       <tr>
         <td>
-          <h4>{{ result.object.user.username }}</h4>
+          <h4>{{ student.user.username }}</h4>
         </td>
         <td>
-          <a href="{{ result.object.get_absolute_url }}"><h4><strong>{{ result.object.get_full_name_or_uname }}</strong></h4></a>
+          <a href="{{ student.get_absolute_url }}">
+           <h4><strong>{{ student.get_full_name_or_uname }}</strong></h4>
+          </a>
         </td>
         <td>
-          {% with result.object as student %}
             <h4>{% include 'double_major.html' %}</h4>
-          {% endwith %}
         </td>
         {% load accounts_extras %}
         <td>
-          {% if result.object.graduating_year %}
-            <h4>{{ result.object.graduating_year|bc }}</h4>
+          {% if student.graduating_year %}
+            <h4>{{ student.graduating_year|bc }}</h4>
           {% else %}
             &nbsp;&mdash;
           {% endif %}
         </td>
       </tr>
       {% endif %}
+      {% endwith %}
     {% empty %}
       <h3 class="text-center">No results found.</h3>
     {% endfor %}
