@@ -9,6 +9,7 @@ from django.contrib import admin
 from haystack.views import SearchView
 from django.views.generic import RedirectView
 # imports from your apps
+from accounts.forms import AccountSearchForm
 from .views import HomePageView, RedirectSettings, RedirectSlug
 
 admin.autodiscover()
@@ -30,7 +31,8 @@ urlpatterns = patterns('',
     url(r'^welcome/', include('welcome.urls')),
 
     # search
-    url(r'^search/', login_required(SearchView(), login_url='login'), name='search'),
+    url(r'^search/', login_required(SearchView(form_class=AccountSearchForm),
+                                    login_url='login'), name='search'),
 
     # login and logout
     url(r'^login/', 'accounts.views.custom_cas_login', name='login'),
