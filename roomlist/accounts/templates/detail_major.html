@@ -38,16 +38,17 @@
       <br />
       <div class="row">
         {% endif %}
-        {% empty %}
-        <div class="col-md-12">
-          <p>No visible students.</p>
-        </div>
         {% endfor %}
       </div>
     </div>
   </div>
+{% empty %}
+<div class="col-md-12 text-center">
+  <p>No visible students.</p>
+</div>
 {% endfor %}
 
+<br />
 <hr />
 {% include 'disclaimer.html' %}
 
