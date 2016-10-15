@@ -1,6 +1,7 @@
 # standard library imports
 from __future__ import absolute_import, print_function
 from distutils.util import strtobool
+from datetime import date
 # core django imports
 from django.shortcuts import redirect
 from django.views.generic import FormView
@@ -11,6 +12,7 @@ from braces.views import LoginRequiredMixin
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from accounts.models import Student, Confirmation, Major
+from accounts.views import create_email
 from housing.models import Room
 from .forms import (WelcomeNameForm, WelcomeMajorForm,
                     WelcomePrivacyForm, WelcomeSocialForm)
@@ -274,6 +276,25 @@ class WelcomeSocial(LoginRequiredMixin, FormView):
         me.completedSocial = True
 
         me.save()
+
+        # send students a welcome email
+        text_path = 'email/welcome.txt'
+        html_path = 'email/welcome.html'
+
+        today = date.today()
+        semester = "%s %s" % (get_semester(today), today.strftime('%Y'))
+
+        context = {
+            'student_name': me.get_first_name_or_uname,
+            'semester': semester
+        }
+
+        subject = "Welcome to Roomlist, %s" % me.get_first_name_or_uname()
+        to = me.user.email
+
+        welcome_email = create_email(text_path, html_path, subject, to, context)
+
+        welcome_email.send()
 
         return super(WelcomeSocial, self).form_valid(form)
 
