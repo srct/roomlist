@@ -1,0 +1,25 @@
+Dear {{ student_name }},
+
+
+Thank you for signing up for Roomlist, and welcome!
+
+We hope you'll find this service beneficial to your time here at Mason.
+
+If you have any questions, don't hesitate to send us an email to
+roomlist@srct.gmu.edu, or stop by one of our student org's weekly meetings.
+We would love to hear your feedback.
+
+Have a great {{ semester }} semester!
+
+:-)
+
+
+---
+
+Mason SRCT
+
+SRCT is a registered student organization at George Mason University. We have
+written and provide this project for the benefit of our school's community, but
+offer no claims to the accuracy of the information provided on our site by other
+student users. We are not affiliated with Mason Housing. The source code for this
+project is available and freely licensed at git.gmu.edu/srct/roomlist.
