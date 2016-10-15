@@ -23,6 +23,7 @@ from ratelimit.decorators import ratelimit
 from .models import Student, Major, Confirmation
 from .forms import StudentUpdateForm, FarewellFeedbackForm
 from .student_messages import return_messages
+from housing.models import Room
 from housing.views import shadowbanning
 
 
@@ -91,6 +92,7 @@ def create_email(text_path, html_path, subject, to, context):
     # mime multipart requires attaching text and html in this order
     msg.attach_alternative(html_content, 'text/html')
     return msg
+
 
 # details about the student
 class DetailStudent(LoginRequiredMixin, DetailView):
