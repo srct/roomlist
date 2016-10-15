@@ -34,10 +34,11 @@
   </div>
 </div>
 
-<legend><strong><a name="Rappahannock" href="#Rappahannock">Rappahannock</a></strong></legend>
+{% for neighbourhood, buildings in buildings_by_neighbourhood.items %}
+<legend><strong><a name="{{ neighbourhood }}" href="#{{ neighbourhood }}">{{ neighbourhood }}</a></strong></legend>
 
 <div class="row">
-  {% for building in rappahannock %}
+  {% for building in buildings %}
   <div class="col-sm-3 text-center">
     <a href="{{ building.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ building.name }}</a>
   </div>
@@ -50,39 +51,7 @@
 </div>
 
 <br />
-
-<legend><strong><a name ="Shenandoah" href="#Shenandoah">Shenandoah</a></strong></legend>
-
-<div class="row">
-  {% for building in shenandoah %}
-  <div class="col-sm-3 text-center">
-    <a href="{{ building.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ building.name }}</a>
-  </div>
-  {% if forloop.counter|divisibleby:4 %}
-</div>
-<br />
-<div class="row">
-  {% endif %}
-  {% endfor %}
-</div>
-
-<br />
-
-<legend><strong><a name="Aquia" href="#Aquia">Aquia</a></strong></legend>
-<div class="row">
-  {% for building in aquia %}
-  <div class="col-sm-3 text-center">
-    <a href="{{ building.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ building.name }}</a>
-  </div>
-  {% if forloop.counter|divisibleby:4 %}
-</div>
-<br />
-<div class="row">
-  {% endif %}
-  {% endfor %}
-</div>
-
-<br />
+{% endfor %}
 
 <legend><a name="Unsupported" href="#Unsupported">Unsupported Buildings</a></legend>
 <div class="row">

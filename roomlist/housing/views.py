@@ -1,5 +1,6 @@
 # standard library imports
 from __future__ import absolute_import, print_function
+from collections import OrderedDict
 # core django imports
 from django.views.generic import DetailView, ListView
 # third party imports
@@ -34,9 +35,20 @@ class ListBuildings(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ListBuildings, self).get_context_data(**kwargs)
-        context['rappahannock'] = Building.objects.filter(neighbourhood='ra').order_by('name')
-        context['shenandoah'] = Building.objects.filter(neighbourhood='sh').order_by('name')
-        context['aquia'] = Building.objects.filter(neighbourhood='aq').order_by('name')
+        neighbourhoods = (('aq', 'Aquia'),
+                          ('ra', 'Rappahannock'),
+                          ('sh', 'Shenandoah'))
+        # we want our neighbourhoods in alphabetical order
+        buildings_by_neighbourhood = OrderedDict()
+        # create an ordered dictionary with neighbourhood name, building in said
+        # neighbourhood pairings
+        for neighbourhood in neighbourhoods:
+            # the tuple matrix was necessary because what we'll render for humans
+            # is not the string for filtering in the database
+            buildings_by_neighbourhood[neighbourhood[1]] = Building.objects.filter(neighbourhood=neighbourhood[0]).order_by('name') 
+        # this whole process is done so we don't have template code in triplicate
+        # for each neighbourhood
+        context['buildings_by_neighbourhood'] = buildings_by_neighbourhood
         return context
 
 
