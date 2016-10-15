@@ -15,7 +15,7 @@ Back
 {% else %}
 {% endif %}
 {{ me.get_first_name_or_uname }}!</h2>
-<legend></legend>
+<hr/>
 
 {% if me.on_campus %}
 
@@ -25,10 +25,10 @@ Back
 
   {% if roomies|length == 1 %}
     <h3>Your Roommate in {{ me.room }}</h3>
-    <legend></legend>
+    <hr/>
   {% else %}
   <h3>Your Roommates in <a href="{{ me.room.get_absolute_url }}">{{ me.room }}</a></h3>
-  <legend></legend>
+  <hr/>
   {% endif %}
     <div class="row">
       {% for student in roomies %}
@@ -52,7 +52,7 @@ Back
 {% load humanize %}
 
 <h3>Your Floormates from <a href="{{ me.room.floor.get_absolute_url }}">{{ me.room.floor.building }} {{ me.room.floor.number|ordinal }}</a></h3>
-    <legend></legend>
+    <hr/>
     <div class="row">
       {% for student in floories %}
       <div class="col-md-3 text-center">
