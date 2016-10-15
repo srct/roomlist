@@ -76,20 +76,23 @@ class RedirectSlug(RedirectView):
     # sending the student to-- this is just about changing the url
     def get_redirect_url(self, *args, **kwargs):
         current_url = self.request.get_full_path()
+        # print(self.request)
         # [u'', u'gmason']
         slug = current_url.split('/')[1]
-        print(slug)
+        # print(slug)
 
         try:
-            print('trying student')
+            # print('trying student')
             student = Student.objects.get(user__username=slug)
             return reverse('detail_student',
                            kwargs={'slug': slug})
         except ObjectDoesNotExist:
-            print('trying major')
+            # print('trying major')
             try:
                 major = Major.objects.get(slug=slug)
                 return reverse('detail_major',
                                kwargs={'slug': slug})
             except ObjectDoesNotExist:
                 raise Http404
+        else:
+            return Http404
