@@ -5,8 +5,10 @@ from django import forms
 from django.utils.safestring import mark_safe
 from django.template.loader import render_to_string
 from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 # third party imports
 from multiselectfield import MultiSelectFormField
+from haystack.forms import SearchForm
 # imports from your apps
 from .models import Student, Major
 from housing.models import Building, Floor, Room
@@ -114,3 +116,11 @@ class FarewellFeedbackForm(forms.Form):
                                max_length=1000,
                                widget=forms.Textarea(attrs={'class': 'form-control'}),
                                required=False)
+
+
+# we are overwriting the search form to include boostrap css classes
+class AccountSearchForm(SearchForm):
+
+    q = forms.CharField(required=False, label=_('Search'),
+                        widget=forms.TextInput(attrs={'type': 'search',
+                                                      'class': 'form-control'}))
