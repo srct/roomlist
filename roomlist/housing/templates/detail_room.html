@@ -11,7 +11,7 @@
       <h1><strong>SRCT</strong>ROOMLIST</h1>
       <p class="lead"><strong>{{ room.floor.building.name }} {{ room.number }}</strong></p>
     </div>
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-10 col-md-offset-1"><h3>
       <ol id="breadcrumbs" class="breadcrumb">
         <li><a href="{% url 'homepage' %}">Home</a></li>
         <li><a href="{% url 'list_buildings' %}">Buildings</a></li>
@@ -19,7 +19,7 @@
         <li><a href="{{ room.floor.get_absolute_url }}">{{ room.floor.number|ordinal }} Floor</a></li>
 	<li class="active">Room {{ room.number }}</li>
       </ol>
-    </div>
+    </h3></div>
   </div>
 </div>
 
