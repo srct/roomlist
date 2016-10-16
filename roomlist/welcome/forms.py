@@ -13,8 +13,8 @@ from housing.models import Room
 
 class WelcomeNameForm(forms.Form):
 
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False)
+    first_name = forms.CharField(required=False, max_length=30)
+    last_name = forms.CharField(required=False, max_length=30)
     gender = MultiSelectFormField(choices=Student.GENDER_CHOICES, required=False)
     show_gender = BooleanRadioField()
 

@@ -72,13 +72,13 @@ class BooleanRadioField(forms.TypedChoiceField):
 
 class StudentUpdateForm(forms.Form):
 
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False)
+    first_name = forms.CharField(required=False, max_length=30)
+    last_name = forms.CharField(required=False, max_length=30)
     gender = MultiSelectFormField(choices=Student.GENDER_CHOICES,
                                   required=False)
-    show_gender = BooleanRadioField()
+    show_gender = BooleanRadioField(required=True)
 
-    on_campus = BooleanRadioField()
+    on_campus = BooleanRadioField(required=True)
     room = SelectRoomField(queryset=Room.objects.all(), required=False)
 
     privacy = forms.TypedChoiceField(choices=Student.PRIVACY_CHOICES)
@@ -87,7 +87,7 @@ class StudentUpdateForm(forms.Form):
                                                   required=False)
 
     major = forms.ModelMultipleChoiceField(queryset=Major.objects.all(), required=False)
-    graduating_year = forms.IntegerField()
+    graduating_year = forms.IntegerField(max_value=9999, min_value=-9999, required=False)
 
     def clean(self):
         cleaned_data = super(StudentUpdateForm, self).clean()
@@ -111,6 +111,7 @@ class StudentUpdateForm(forms.Form):
 
 class FarewellFeedbackForm(forms.Form):
 
+    # required = True by default
     leaving = BooleanRadioField(label="Are you graduating or leaving Mason?")
     feedback = forms.CharField(label="Thoughts",
                                max_length=1000,
