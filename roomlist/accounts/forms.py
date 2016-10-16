@@ -124,4 +124,5 @@ class AccountSearchForm(SearchForm):
 
     q = forms.CharField(required=False, label=_('Search'),
                         widget=forms.TextInput(attrs={'type': 'search',
-                                                      'class': 'form-control'}))
+                                                      'class': 'form-control',
+                                                      'autofocus': 'autofocus'}))
