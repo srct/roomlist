@@ -12,7 +12,7 @@ from braces.views import LoginRequiredMixin
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from accounts.models import Student, Confirmation, Major
-from accounts.views import create_email
+from accounts.views import create_email, no_nums
 from housing.models import Room
 from .forms import (WelcomeNameForm, WelcomeMajorForm,
                     WelcomePrivacyForm, WelcomeSocialForm)
@@ -79,8 +79,8 @@ class WelcomeName(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         me = Student.objects.get(user=self.request.user)
 
-        me.user.first_name = form.data['first_name']
-        me.user.last_name = form.data['last_name']
+        me.user.first_name = no_nums(form.data['first_name'])
+        me.user.last_name = no_nums(form.data['last_name'])
 
         me.gender = form.data.getlist('gender')
         me.show_gender = strtobool(form.data.get('show_gender', 'False'))

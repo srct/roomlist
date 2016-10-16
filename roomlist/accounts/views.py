@@ -4,6 +4,7 @@ import random
 from distutils.util import strtobool
 from operator import attrgetter
 from itertools import chain
+import re
 # core django imports
 from django.http import HttpResponseForbidden, HttpResponseRedirect, Http404
 from django.views.generic import CreateView, ListView, DetailView, FormView, DeleteView
@@ -92,6 +93,11 @@ def create_email(text_path, html_path, subject, to, context):
     # mime multipart requires attaching text and html in this order
     msg.attach_alternative(html_content, 'text/html')
     return msg
+
+
+def no_nums(name):
+    no_numbers = re.sub('[0-9]', '', name)
+    return no_numbers
 
 
 # details about the student
@@ -304,8 +310,8 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         except:
             pass
 
-        me.user.first_name = form.data['first_name']
-        me.user.last_name = form.data['last_name']
+        me.user.first_name = no_nums(form.data['first_name'])
+        me.user.last_name = no_nums(form.data['last_name'])
         me.gender = form.data.getlist('gender')
         me.show_gender = strtobool(form.data.get('show_gender', 'False'))
         me.privacy = form.data['privacy']
