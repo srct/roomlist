@@ -132,6 +132,6 @@ class DetailRoom(LoginRequiredMixin, DetailView):
         students = Student.objects.visible(requesting_student, self.get_object())
 
         context['students'] = shadowbanning(requesting_student, students)
-        context['notOnFloor'] = not(requesting_student in self.get_object())
-        context['notInBuilding'] = not(requesting_student in self.get_object().building)
+        context['notOnFloor'] = not(requesting_student in self.get_object().floor)
+        context['notInBuilding'] = not(requesting_student in self.get_object().floor.building)
         return context
