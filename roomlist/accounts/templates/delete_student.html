@@ -41,7 +41,7 @@
         <hr />
         <ul class="text-center">
           {% for error in form.non_field_errors %}
-            <li class="text-danger">{{ error }}</li>
+            <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
           {% endfor %}
         </ul>
         <hr />

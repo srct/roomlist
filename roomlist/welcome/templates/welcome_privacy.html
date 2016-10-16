@@ -55,17 +55,22 @@
       <div class="panel-body">
         {% if not request.user.student.recent_changes > 2 %}
         {% spaceless %}
-        {% if my_form.non_field_errors %}
         <hr />
+        {% if my_form.non_field_errors %}
         <ul class="text-center">
-          {% for error in form.non_field_errors %}
-            <li>{{ error }}</li>
+          {% for error in my_form.non_field_errors %}
+            <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
           {% endfor %}
         </ul>
         <hr />
         {% endif %}
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
           <fieldset>
+            {% if my_form.on_campus.errors %}
+              {% for error in form.on_campus.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
             <div class="form-group">
               <label for="{{ my_form.on_campus.id_for_label }}" class="col-md-3">
                 Do You Live on Campus?
@@ -80,11 +85,21 @@
                 We'll let everyone know when we add them. Until then, if you live there, you're
                 still welcome to browse around.
               </small></p>
+              {% if my_form.room.errors %}
+                {% for error in form.room.errors %}
+                  <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+                {% endfor %}
+              {% endif %}
               <div class="form-group">
                 <div class="col-md-12">
                   {{ my_form.room }}
                 </div>
               </div>
+              {% if my_form.privacy.errors %}
+                {% for error in form.privacy.errors %}
+                  <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+                {% endfor %}
+              {% endif %}
               <div class="form-group">
                 <label for="{{ my_form.privacy.id_for_label }}" class="col-md-2">
                   Privacy

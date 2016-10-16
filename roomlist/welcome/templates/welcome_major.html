@@ -44,6 +44,15 @@
       </div>
 
       <div class="panel-body">
+        {% if my_form.non_field_errors %}
+        <hr />
+          <ul class="text-center">
+            {% for error in my_form.non_field_errors %}
+              <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
+            {% endfor %}
+          </ul>
+        <hr />
+        {% endif %}
         <form action="" method="post">{% csrf_token %}
           {{ my_form.as_p }}
           <hr/>

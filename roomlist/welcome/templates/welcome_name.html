@@ -40,13 +40,23 @@
       {% if error in my_form.non_field_errors %}
       <ul class="text-center">
         {% for error in my_form.non_field_errors %}
-          <li>{{ error }}</li>
+          <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
         {% endfor %}
       </ul>
       {% endif %}
       <div class="panel-body">
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
           <fieldset>
+          {% if my_form.first_name.errors %}
+            {% for error in my_form.first_name.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          {% if my_form.last_name.errors %}
+            {% for error in my_form.last_name.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
           <div class="form-group">
             <label for="{{ my_form.first_name.id_for_label }}" class="col-md-2">First Name</label>
               <div class="col-md-4">
@@ -72,6 +82,11 @@
               </div>
           </div>
 
+          {% if my_form.gender.errors %}
+            {% for error in my_form.gender.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
           <div class="form-group">
             <label for="{{ my_form.gender.id_for_label }}" class="col-md-3">
               Gender Identity<br />(choose all that apply)
@@ -85,6 +100,11 @@
               {% endfor %}
           </div>
 
+          {% if my_form.show_gender.errors %}
+            {% for error in my_form.show_gender.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
           <div class="form-group">
             <label for "{{ my_form.show_gender.id_for_label }}" class="col-md-3">
               Show Gender on Profile?
