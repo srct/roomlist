@@ -8,6 +8,7 @@ from django.utils import timezone
 from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.core.validators import MaxValueValidator, MinValueValidator
 # third party imports
 from autoslug import AutoSlugField
 from randomslugfield import RandomSlugField
@@ -160,7 +161,7 @@ class Student(TimeStampedModel):
     )
 
     # selectmultiple in forms
-    gender = MultiSelectField(max_length=50, choices=GENDER_CHOICES, blank=True)
+    gender = MultiSelectField(max_length=100, choices=GENDER_CHOICES, blank=True)
     show_gender = models.BooleanField(default=False)
 
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
@@ -174,7 +175,10 @@ class Student(TimeStampedModel):
     times_changed_room = models.PositiveIntegerField(default=0)
 
     current_year = date.today().year
-    graduating_year = models.IntegerField(default=current_year, blank=True)
+    graduating_year = models.IntegerField(default=current_year,
+                                          validators=[MaxValueValidator(9999),
+                                                      MinValueValidator(-9999)],
+                                          null=True, blank=True)
 
     # from when first logged in through peoplefinder, stored for later
     original_major = models.ForeignKey('Major', related_name='original_major',
