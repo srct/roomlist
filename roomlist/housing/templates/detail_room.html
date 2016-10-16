@@ -47,15 +47,19 @@
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    <div class="alert alert-info text-center"><strong><em>
-    {% if notOnFloor %}
-    You don't live on this floor. Depending on individual privacy settings, not all students may be displayed.
-    {% elif notInBuilding %}
-    You don't live in this building. Depending on individual privacy settings, not all students may be displayed.
-    {% else %}
-    Don't see one of your roommates? Tell them about SRCT Roomlist!
-    {% endif %}
-    </em></strong></div>
+    <div class="alert alert-info text-center">
+      <p><strong><em>
+      {% if notOnFloor %}
+      You don't live on this floor.
+      Depending on individual privacy settings, not all students may be displayed.
+      {% elif notInBuilding %}
+      You don't live in this building.
+      Depending on individual privacy settings, not all students may be displayed.
+      {% else %}
+      Don't see one of your roommates? Tell them about SRCT Roomlist!
+      {% endif %}
+      </em></strong></p>
+    </div>
   </div>
 </div>
 
