@@ -17,10 +17,10 @@ SRCT Roomlist &bull; Search Students
 
 <form class="form-horizontal" method="get" action=".">
   <div class="form-group"> 
-    <label for="{{ form.q.id_for_label }}" class="col-lg-1 col-lg-offset-3 col-md-2 col-md-offset-1 col-sm-2 col-xs-2">
+    <label for="{{ form.q.id_for_label }}" class="col-lg-1 col-lg-offset-2 col-md-2 col-md-offset-1 col-sm-2 col-xs-12">
       <strong>Name</strong> or <strong>Username</strong>
     </label>
-    <div class="col-lg-4 col-md-6 col-sm-8 col-xs-9">
+    <div class="col-lg-6 col-md-6 col-sm-9 col-xs-10">
       {{ form.q }}
     </div>
   <button type="submit" class="btn btn-default"><i class="fa fa-search fa-fw fa-lg"></i></button>
@@ -36,10 +36,10 @@ SRCT Roomlist &bull; Search Students
     {% if page.object_list %}
       <table class="table table-hover">
         <thead>
-          <th class="col-xs-2"><h3><small>Username</small></h3></th>
-          <th class="col-xs-5"><h3><small>Name</small></h3></th>
-          <th class="col-xs-4"><h3><small>Major</small></h3></th>
-          <th class="col-xs-1"><h3><small>Year</small></h3></th>
+          <th class="col-sm-2 hidden-xs"><h3><small>Username</small></h3></th>
+          <th class="col-sm-5 col-xs-6"><h3><small>Name</small></h3></th>
+          <th class="col-sm-4 col-xs-6"><h3><small>Major</small></h3></th>
+          <th class="col-sm-1 hidden-xs"><h3><small>Year</small></h3></th>
         </thead>
     {% endif %}
 
@@ -47,7 +47,7 @@ SRCT Roomlist &bull; Search Students
       {% with result.object as student %}
       {% if not student in request.user.student.blocked_kids.all %}
       <tr>
-        <td>
+        <td class="hidden-xs">
           <h4>{{ student.user.username }}</h4>
         </td>
         <td>
@@ -59,7 +59,7 @@ SRCT Roomlist &bull; Search Students
             <h4>{% include 'double_major.html' %}</h4>
         </td>
         {% load accounts_extras %}
-        <td>
+        <td class="hidden-xs">
           {% if student.graduating_year %}
             <h4>{{ student.graduating_year|bc }}</h4>
           {% else %}
@@ -88,13 +88,13 @@ SRCT Roomlist &bull; Search Students
       {% if page.has_previous %}
         <li class="previous">
           <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">
-            <h4>&larr; Previous</h4>
+            <h5>&larr; Previous</h5>
           </a>
         </li>
       {% else %}
         <li class="previous disabled">
           <a>
-            <h4>&larr; Previous</h4>
+            <h5>&larr; Previous</h5>
           </a>
         </li>
       {% endif %}
@@ -102,13 +102,13 @@ SRCT Roomlist &bull; Search Students
       {% if page.has_next %}
         <li class="next">
           <a href="?q={{ query }}&amp;page={{ page.next_page_number }}">
-            <h4>Next &rarr;</h4>
+            <h5>Next &rarr;</h5>
           </a>
         </li>
       {% else %}
         <li class="next disabled">
           <a>
-            <h4>Next &rarr;</h4>
+            <h5>Next &rarr;</h5>
           </a>
         </li>
       {% endif %}
