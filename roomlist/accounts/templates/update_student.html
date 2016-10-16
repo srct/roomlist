@@ -151,7 +151,7 @@
         {% if my_form.non_field_errors %}
         <ul class="text-center">
           {% for error in form.non_field_errors %}
-            <li>{{ error }}</li>
+            <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
           {% endfor %}
         </ul>
         <hr />
@@ -159,6 +159,16 @@
         {% spaceless %}
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
           <fieldset>
+          {% if form.first_name.errors %}
+            {% for error in form.first_name.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          {% if form.last_name.errors %}
+            {% for error in form.last_name.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
           <div class="form-group">
             <label for="{{ my_form.first_name.id_for_label }}" class="col-md-2">First Name</label>
               <div class="col-md-4">
@@ -183,6 +193,11 @@
                 {% endif %}
               </div>
           </div>
+          {% if form.gender.errors %}
+            {% for error in form.gender.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
           <div class="form-group">
             <label for="{{ my_form.gender.id_for_label }}" class="col-md-3">
               Gender Identity<br />(choose all that apply)
@@ -196,6 +211,11 @@
                 </div>
               {% endfor %}
           </div>
+          {% if form.show_gender.errors %}
+            {% for error in form.show_gender.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
           <div class="form-group">
             <label for="{{ my_form.show_gender.id_for_label }}" class="col-md-3">
               Show Gender on Profile?
@@ -204,6 +224,11 @@
                 <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
               {% endfor %}
           </div>
+          {% if form.major.errors %}
+            {% for error in form.major.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
           <div class="form-group">
             <label for="{{ my_form.major.id_for_label }}" class="col-md-2">
               Major(s)
@@ -212,6 +237,11 @@
               {{ my_form.major }}
             </div>
           </div>
+          {% if form.graduating_year.errors %}
+            {% for error in form.graduating_year.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
           <div class="form-group">
             <label for="{{ my_form.graduating_year.id_for_label }}" class="col-md-2">
               Graduating Year
@@ -222,6 +252,11 @@
           </div>
           {% if not request.user.student.recent_changes > 2 %}
           <hr />
+          {% if form.on_campus.errors %}
+            {% for error in form.on_campus.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
           <div class="form-group">
             <label for="{{ my_form.on_campus.id_for_label }}" class="col-md-3">
               Do You Live on Campus?
@@ -234,11 +269,21 @@
             <hr />
             <p class="help-block">The Global Center, the Townhouses, and Beacon Hall are not currently supported.<br />
             We'll let everyone know when we add them.</p>
+            {% if form.room.errors %}
+              {% for error in form.room.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
             <div class="form-group">
               <div class="col-md-12">
                 {{ my_form.room }}
               </div>
             </div>
+            {% if form.privacy.errors %}
+              {% for error in form.privacy.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
             <div class="form-group">
               <label for="{{ my_form.privacy.id_for_label }}" class="col-md-2">
                 Privacy
@@ -250,6 +295,11 @@
             <p class="help-block">
               You will not be able to see these students, and they will not be able to see you.
             </p>
+            {% if form.blocked_kids.errors %}
+              {% for error in form.blocked_kids.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
           <div class="form-group">
             <label for="{{ my_form.blocked_kids.id_for_label }}" class="col-md-2">
               Blocked Students
