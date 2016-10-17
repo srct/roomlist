@@ -30,7 +30,7 @@ a[name] {
   height: 30px;
 }
 
-@media(max-width: 992px) {
+@media (max-width: 992px) {
   #footer {
     text-align: center;
   }
@@ -38,7 +38,7 @@ a[name] {
 
 /* in which we replicate bootstrap's pull-right implementation */
 
-@media(min-width: 992px) {
+@media (min-width: 992px) {
   .footer-right {
     float: right !important;
   }
@@ -71,6 +71,10 @@ a[name] {
 }
 .container-padding {
   padding-top: 30px;
+t}
+
+.minor-padding {
+  padding-bottom: 24px;
 }
 #get-started {
   border-radius: 10px;

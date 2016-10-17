@@ -47,7 +47,7 @@
     <legend><a name="{{ letter.grouper }}" href="#{{ letter.grouper }}">{{ letter.grouper }}</a></legend>
       <div class="row">
       {% for major in letter.list %}
-          <div class="col-md-6 text-center">
+          <div class="col-md-6 minor-padding text-center">
             <a href="{{ major.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">
             {% if major.name|length > 39 %}
               <small>{{ major.name }}</small></a>
@@ -58,7 +58,6 @@
           </div>
         {% if forloop.counter|divisibleby:2 %}
      </div>
-     <br />
      <div class="row">
         {% endif %}
       {% endfor %}
