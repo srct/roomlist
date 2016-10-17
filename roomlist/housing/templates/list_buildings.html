@@ -34,19 +34,28 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col-md-10 col-md-offset-1 text-center">
+    <h3>
+    &middot;
+    {% for neighbourhood in buildings_by_neighbourhood %}
+      <a href="#{{ neighbourhood }}">{{ neighbourhood }}</a> &middot;
+    {% endfor %}
+  </div>
+</div>
+
 {% for neighbourhood, buildings in buildings_by_neighbourhood.items %}
 <legend><strong><a name="{{ neighbourhood }}" href="#{{ neighbourhood }}">{{ neighbourhood }}</a></strong></legend>
 
 <div class="row">
   {% for building in buildings %}
-  <div class="col-sm-3 text-center">
+  <div class="col-md-3 col-sm-6 text-center minor-padding">
     <a href="{{ building.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">
       {{ building.name }}
     </a>
   </div>
   {% if forloop.counter|divisibleby:4 %}
 </div>
-<br />
 <div class="row">
   {% endif %}
   {% endfor %}
