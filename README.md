@@ -133,7 +133,7 @@ Exit the mysql shell by typing `exit`.
 
 Now, to configure your newly created database with the project settings, and set up your project's cryptographic key, **copy the `secret.py.template` in settings/ to `secret.py`**. Follow the comment instructions provided in each file to set your secret key and database info. `secret.py` also contains a few additional passwords for email and for Slack. The Slack API key will not be necessary unless more 50 people sign into your development instance. The email password is unnecessary in development, because the email settings are configured not to send emails via a server, but to print them out to the terminal wherever you're running `manage.py`.
 
-Run `python manage.py makemigrations` to create the tables and rows and columns for your database. This command generates sql code based on your database models. If you don't see output noting the creation of a number of models, add the app name to the end of the command, e.g. `python manage.py makemigrations housing`.
+Run `python manage.py makemigrations` to create the tables and rows and columns for your database. This command generates sql code based on your database models. If you don't see output noting the creation of a number of models, add the app name to the end of the command, e.g. `python manage.py makemigrations housing` and then `python manage.py makemigrations accounts`.
 
 Then run `python manage.py migrate` to execute that sql code and set up your database. Migrations also track how you've changed your models over the life of your database, which allows you to make changes to your tables without screwing up existing information.
 
