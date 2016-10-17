@@ -26,7 +26,7 @@
     <div class="col-md-12">
       <div class="row">
         {% for student in graduating_year.list %}
-          <div class="col-sm-3 text-center">
+          <div class="col-sm-3 col-xs-6 text-center">
             <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
             <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
             {% if student.get_flag_count > 4 %}
