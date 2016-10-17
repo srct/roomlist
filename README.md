@@ -131,7 +131,7 @@ The .\* is to grant access all tables in the database, and 'flush privileges' re
 
 Exit the mysql shell by typing `exit`.
 
-Now, to configure your newly created database with the project settings, and set up your project's cryptographic key, copy the secret.py.template in settings/ to secret.py. Follow the comment instructions provided in each file to set your secret key and database info.
+Now, to configure your newly created database with the project settings, and set up your project's cryptographic key, **copy the `secret.py.template` in settings/ to `secret.py`**. Follow the comment instructions provided in each file to set your secret key and database info. `secret.py` also contains a few additional passwords for email and for Slack. The Slack API key will not be necessary unless more 50 people sign into your development instance. The email password is unnecessary in development, because the email settings are configured not to send emails via a server, but to print them out to the terminal wherever you're running `manage.py`.
 
 Run `python manage.py makemigrations` to create the tables and rows and columns for your database. This command generates sql code based on your database models. If you don't see output noting the creation of a number of models, add the app name to the end of the command, e.g. `python manage.py makemigrations housing`.
 
@@ -145,7 +145,7 @@ Finally, run `python manage.py createsuperuser` to create an admin account, usin
 
 The project includes a json file to load majors into the database. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly.
 
-To add all freshman housing, with the virtual environment enabled, run `python manage.py shell < housing/housing_obj_creator.py`. It will take a couple of minutes, but this script will create every building, floor, and room in your database.
+To add all supported housing, with the virtual environment enabled, run `python manage.py shell < housing/housing_obj_creator.py`. It will take a couple of minutes, but this script will create every building, floor, and room in your database.
 
 ## Starting up the test server
 
