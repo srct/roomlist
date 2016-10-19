@@ -27,8 +27,11 @@
           <a href="/search">Search</a>
         </li>
         <!-- Puts profile picture in navbar next to username-->
-
-        <li><a href="{{ user.student.get_absolute_url }}"><img src="{{ request.user.student.profile_image_url }}" height="30" width="30" alt="{{ student.profile_image_url }}" class="img-circle">{{ user.username }}</a>
+        <li>
+          <a href="{{ user.student.get_absolute_url }}">
+            <img src="{{ request.user.student.profile_image_url }}" height="35" width="35" alt="{{ student.profile_image_url }}" class="img-circle img-responsive hidden-xs navbar-profile">
+            {{ user.username }}
+          </a>
         </li>
         <li class="visible-lg visible-md visible-sm">
           <a href="{% url 'update_student' request.user.username %}"><i class="fa fa-cog fa-fw fa-lg"></i></a>
