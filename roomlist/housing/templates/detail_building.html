@@ -38,12 +38,11 @@
 
 <div class="row">
   {% for floor in floors %}
-  <div class="col-sm-3 text-center">
+  <div class="col-sm-3 minor-padding text-center">
     <a href="{{ floor.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ floor.number|ordinal }} Floor</a>
   </div>
   {% if forloop.counter|divisibleby:4 %}
 </div>
-<br />
 <div class="row">
   {% endif %}
   {% endfor %}

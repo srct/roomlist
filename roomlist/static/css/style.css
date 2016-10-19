@@ -30,7 +30,7 @@ a[name] {
   height: 30px;
 }
 
-@media(max-width: 992px) {
+@media (max-width: 992px) {
   #footer {
     text-align: center;
   }
@@ -38,7 +38,7 @@ a[name] {
 
 /* in which we replicate bootstrap's pull-right implementation */
 
-@media(min-width: 992px) {
+@media (min-width: 992px) {
   .footer-right {
     float: right !important;
   }
@@ -71,6 +71,10 @@ a[name] {
 }
 .container-padding {
   padding-top: 30px;
+t}
+
+.minor-padding {
+  padding-bottom: 24px;
 }
 #get-started {
   border-radius: 10px;
@@ -108,7 +112,6 @@ outline-offset: none;
   margin-top: -5px;
 }
 
-
 .breadcrumb {background: rgba(245, 245, 245, 1); border: 2px solid rgba(245, 245, 245, 1); border-radius: 4px; display: block;}
 .breadcrumb li {font-size: 20px;}
 
@@ -121,9 +124,14 @@ outline-offset: none;
   float: right;
 }
 
-.img-circle {
-  margin-right: 10px;
-  margin-left: -2px;
-  margin-top: -5px;
-  margin-bottom: -5px;
+.navbar-profile {
+  display: block;
+  float: left;
+  margin-top: -2px;
+  padding-right: 8px;
+}
+
+.profile-image {
+  max-width: 175px;
+  max-height: 175px;
 }
