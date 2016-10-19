@@ -126,11 +126,9 @@ Finally, run `python manage.py createsuperuser` to create an admin account, usin
 
 ## Loading in demo data
 
-The project includes a number of json files with demo data to load into the database, for Majors and also for all freshman housing. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly. Follow this with `python manage.py loaddata housing/initial_data.json` and a sizeable number of housing objects should be 'installed'.
+The project includes a json file with demo data to load into the database for majors. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly.
 
-## Starting search
-
-To start off indexing your models for searching, run `python manage.py update_index`.
+To update all of the rooms, halls, and floors, you must execute a command to populate them in order for it to work properly. Run `python manage.py shell < housing/housing_obj_creator.py`. You should see the progress creating the housing objects printed in your terminal.
 
 ## Starting up the test server
 
@@ -215,6 +213,10 @@ Add localhost as the site, click save, and throw a party, because thank goodness
 ### Notes on Cacheing
 
 Roomlist's urls are set to be cached for periods of time set so that ordinary user experience will not be impacted, but a substantial load will be lifted from a deployment server. However, this can be annoying when you're making and want to check small changes rapidly on development. You can edit the respective apps' urls.py files and remove the cacheing configurations, but make sure that you do not include such edits in any pushes!
+
+## Modifying search
+
+If you make changes to the search indexes, you will need to re-indexing your models for searching. Run `python manage.py update_index`.
 
 ## Deployment
 
