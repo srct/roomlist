@@ -111,7 +111,7 @@ Load up the mysql shell by running
 
 ``mysql -u root -p``
 
-and putting in your mysql password.
+and putting in your mysql password (on MacOS, this will default to an empty string, so you can just press return).
 
 Create the database by running
 
