@@ -66,10 +66,12 @@ EMAIL_USE_SSL = False
 
 LOGGING = {
     'version': 1,
+    # the ones the print everything out to the terminal
+    # and the ones that email on SuspiciousOperation occurrences
     'disable_existing_loggers': False,
     'handlers': {
         'file': {
-            'level': 'DEBUG', # will log all errors
+            'level': 'WARNING', # will log all errors
             'class': 'logging.FileHandler',
             # make sure to change this to the proper path, and one that
             # can be written to
@@ -84,11 +86,16 @@ LOGGING = {
             'include_html': True,
         },
     },
-    # logs request errors
     'loggers': {
+        # logs request errors
+        # 5XX responses are raised as ERROR messages
+        # 4XX responses are raised as WARNING messages
         'django.request': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
+            'handlers': ['file', 'mail_admins'],
+            'propagate': True,
+        },
+        'django.template': {
+            'handlers': ['file',],
             'propagate': True,
         },
     # django's default loggers send request and security messages at the ERROR
