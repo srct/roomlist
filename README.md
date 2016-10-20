@@ -48,6 +48,11 @@ This tutorial uses the third party Homebrew package manager for macOS, which all
 packages from your terminal just as easily as you could on a Linux based system. You could use another
 package manager (or not use one at all), but Homebrew is highly reccomended.
 
+In order to use homebrew, you must first install XCode Command Line Tools. For users of OS X Mavericks and all newer
+versions, this can be done by running ``xcode-select --install`` and clicking "Install" on the popup that appears.
+
+On older versions of OS X, you should simply install the entirety of XCode, which can be found online.
+
 To get homebrew, run the following command in a terminal:
 ``/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
@@ -106,7 +111,7 @@ Load up the mysql shell by running
 
 ``mysql -u root -p``
 
-and putting in your mysql password.
+and putting in your mysql password (on MacOS, this will default to an empty string, so you can just press return).
 
 Create the database by running
 
