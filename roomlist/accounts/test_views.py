@@ -119,3 +119,11 @@ class DeleteConfirmationTest(ConfirmationViewTest):
                                       kwargs={'confirmer_slug': 'gmason',
                                               'student_slug': 'tjefferson'}))
         self.assertEqual(response.status_code, 200)
+
+
+class SearchViewTest(RoomlistViewTest):
+
+    def test_search_ok(self):
+        client = self.client_login()
+        response = client.get(reverse('search'))
+        self.assertEqual(response.status_code, 200)
