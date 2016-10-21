@@ -10,7 +10,7 @@ from housing.models import Building, Floor, Room
 from accounts.models import Student
 
 
-class HousingViewTest(TestCase):
+class RoomlistViewTest(TestCase):
     def setUp(self):
         wilson = Building.objects.create(name='Wilson', neighbourhood='sh', campus='ff')
         wilson_third = Floor.objects.create(building=wilson, number=3)
@@ -48,7 +48,7 @@ class ListBuildingsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class DetailBuildingTest(HousingViewTest):
+class DetailBuildingTest(RoomlistViewTest):
 
     def test_detail_building_ok(self):
         client = self.client_login()
@@ -57,7 +57,7 @@ class DetailBuildingTest(HousingViewTest):
         self.assertEqual(response.status_code, 200)
 
 
-class DetailFloorTest(HousingViewTest):
+class DetailFloorTest(RoomlistViewTest):
 
     def test_detail_floor_ok(self):
         client = self.client_login()
@@ -67,7 +67,7 @@ class DetailFloorTest(HousingViewTest):
         self.assertEqual(response.status_code, 200)
 
 
-class DetailRoomTest(HousingViewTest):
+class DetailRoomTest(RoomlistViewTest):
 
     def test_detail_room_ok(self):
         client = self.client_login()
