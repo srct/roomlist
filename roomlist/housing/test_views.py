@@ -13,8 +13,8 @@ from accounts.models import Student
 class RoomlistViewTest(TestCase):
     def setUp(self):
         wilson = Building.objects.create(name='Wilson', neighbourhood='sh', campus='ff')
-        wilson_third = Floor.objects.create(building=wilson, number=3)
-        wilson_313 = Room.objects.create(floor=wilson_third, number=313)
+        wilson_third = Floor.objects.create(building=wilson, number='3')
+        wilson_313 = Room.objects.create(floor=wilson_third, number='313')
 
         wilson.save()
         wilson_third.save()
@@ -27,7 +27,7 @@ class RoomlistViewTest(TestCase):
                                         password='eagle_bank')
         # .create_user() includes .save()
 
-        gmason = Student.objects.create(user=user)
+        gmason = Student.objects.create(user=user, room=wilson_313)
         gmason.save()
 
     def client_login(self):
