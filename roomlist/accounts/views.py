@@ -16,6 +16,7 @@ from django.conf import settings
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives, get_connection
 from django.template import Context
+from django.core.exceptions import ObjectDoesNotExist
 # third party imports
 from braces.views import LoginRequiredMixin, FormValidMessageMixin
 from cas.views import login as cas_login
@@ -468,18 +469,19 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
     def get(self, request, *args, **kwargs):
 
         current_url = self.request.get_full_path()
-        # [u'', u'accounts', u'student', u'gmason', u'flag', u'']
-        url_uname = current_url.split('/')[3]
+        # [u'', u'accounts', u'student', u'gmason', u'flag', u'confirmer']
+        confirmer_uname = current_url.split('/')[3]
+        student_uname = current_url.split('/')[5]
 
-        confirmer = Student.objects.get(user=self.request.user)
-        student = Student.objects.get(slug=url_uname)
+        confirmer = Student.objects.get(user__username=confirmer_uname)
+        student = Student.objects.get(user__username=student_uname)
 
         flags = Confirmation.objects.filter(confirmer=confirmer,
                                             student=student).count()
 
         # you can't flag yourself
         if confirmer == student:
-            return HttpResponseForbidden()
+            raise Http404
 
         # check that the confirmer is on the floor of the student
         if not on_the_same_floor(student, confirmer):
@@ -500,7 +502,7 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
 
         # duplicated code
         current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
+        url_uname = current_url.split('/')[5]
 
         student = Student.objects.get(slug=url_uname)
 
@@ -517,7 +519,7 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
 
         # duplicated code
         current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
+        url_uname = current_url.split('/')[5]
 
         confirmer = Student.objects.get(user=self.request.user)
         student = Student.objects.get(slug=url_uname)
@@ -540,13 +542,28 @@ class DeleteConfirmation(LoginRequiredMixin, DeleteView):
     login_url = 'login'
 
     def get(self, request, *args, **kwargs):
-        requester = Student.objects.get(user=self.request.user)
-        confirmer = self.get_object().confirmer
+        requester = self.request.user.student
+
+        try:
+            confirmer = self.get_object().confirmer
+        except ObjectDoesNotExist:
+            raise Http404
 
         if not(requester == confirmer):
             return HttpResponseForbidden()
         else:
             return super(DeleteConfirmation, self).get(request, *args, **kwargs)
+
+    def get_object(self):
+        current_url = self.request.get_full_path()
+        # [u'', u'accounts', u'student', u'gmason', u'flag', u'confirmer', delete]
+        confirmer_uname = current_url.split('/')[3]
+        student_uname = current_url.split('/')[5]
+
+        confirmer = Student.objects.get(user__username=confirmer_uname)
+        student = Student.objects.get(user__username=student_uname)
+        confirmation = Confirmation.objects.get(confirmer=confirmer, student=student)
+        return confirmation
 
     def get_success_url(self):
         return reverse('detail_student',
