@@ -30,6 +30,13 @@ class HousingViewTest(TestCase):
         gmason = Student.objects.create(user=user)
         gmason.save()
 
+    def client_login(self):
+        client = Client()
+        gmason = User.objects.get(username='gmason')
+        # this is only for testing purposes; we're using CAS for auth
+        client.login(username='gmason', password='eagle_bank')
+        return client
+
 
 class ListBuildingsTest(TestCase):
 
@@ -44,10 +51,7 @@ class ListBuildingsTest(TestCase):
 class DetailBuildingTest(HousingViewTest):
 
     def test_detail_building_ok(self):
-        client = Client()
-        gmason = User.objects.get(username='gmason')
-        # this is only for testing purposes; we're using CAS for auth
-        client.login(username='gmason', password='eagle_bank')
+        client = self.client_login()
         response = client.get(reverse('detail_building',
                                       kwargs = {'building': 'wilson'}))
         self.assertEqual(response.status_code, 200)
@@ -56,9 +60,7 @@ class DetailBuildingTest(HousingViewTest):
 class DetailFloorTest(HousingViewTest):
 
     def test_detail_floor_ok(self):
-        client = Client()
-        gmason = User.objects.get(username='gmason')
-        client.login(username='gmason', password='eagle_bank')
+        client = self.client_login()
         response = client.get(reverse('detail_floor',
                                       kwargs = {'building': 'wilson',
                                                 'floor': '3'}))
@@ -68,9 +70,7 @@ class DetailFloorTest(HousingViewTest):
 class DetailRoomTest(HousingViewTest):
 
     def test_detail_room_ok(self):
-        client = Client()
-        gmason = User.objects.get(username='gmason')
-        client.login(username='gmason', password='eagle_bank')
+        client = self.client_login()
         response = client.get(reverse('detail_room',
                                       kwargs = {'building': 'wilson',
                                                 'floor': '3',
