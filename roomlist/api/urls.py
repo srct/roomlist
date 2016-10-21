@@ -3,6 +3,7 @@ from __future__ import absolute_import, print_function
 # core django imports
 from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
+from django.views.decorators.cache import cache_page
 # imports from your apps
 from .views import BuildingList, BuildingRetrieve, FloorRetrieve, RoomRetrieve,\
                    MajorList, MajorRetrieve, APIRoot
