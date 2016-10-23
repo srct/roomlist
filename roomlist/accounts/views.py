@@ -544,15 +544,21 @@ class DeleteConfirmation(LoginRequiredMixin, DeleteView):
     def get(self, request, *args, **kwargs):
         requester = self.request.user.student
 
-        try:
-            confirmer = self.get_object().confirmer
-        except ObjectDoesNotExist:
-            raise Http404
+        current_url = self.request.get_full_path()
+        confirmer_uname = current_url.split('/')[3]
+        confirmer = Student.objects.get(user__username=confirmer_uname)
 
+        # only the person who created the confirmation may delete it
         if not(requester == confirmer):
             return HttpResponseForbidden()
+        # however, if the confirmation just flat out doesn't exist...
         else:
-            return super(DeleteConfirmation, self).get(request, *args, **kwargs)
+            try:
+                confirmer = self.get_object().confirmer
+            except ObjectDoesNotExist:
+                raise Http404
+            else:
+                return super(DeleteConfirmation, self).get(request, *args, **kwargs)
 
     def get_object(self):
         current_url = self.request.get_full_path()
