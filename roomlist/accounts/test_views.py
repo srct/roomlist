@@ -50,6 +50,20 @@ class UpdateStudentTest(RoomlistViewTest):
                                       kwargs={'slug': 'gmason'}))
         self.assertEqual(response.status_code, 200)
 
+    def test_update_student_redirect(self):
+        tjefferson = User.objects.create_user(username='tjefferson',
+                                              first_name='Thomas',
+                                              last_name='Jefferson',
+                                              email='tjefferson@masonlive.gmu.edu',
+                                              password='louisiana')
+        thomas = Student.objects.create(user=tjefferson)
+
+        client = self.client_login()
+        response = client.get(reverse('update_student',
+                                      kwargs={'slug': 'tjefferson'}))
+        # you may not update other people-- we helpfully send you
+        # to your own uptate page
+        self.assertEqual(response.status_code, 302)
 
 class DeleteStudentTest(RoomlistViewTest):
 
@@ -57,7 +71,23 @@ class DeleteStudentTest(RoomlistViewTest):
         client = self.client_login()
         response = client.get(reverse('delete_student',
                                       kwargs={'slug': 'gmason'}))
+        # you may delete yourself
         self.assertEqual(response.status_code, 200)
+
+    def test_delete_student_redirect(self):
+        tjefferson = User.objects.create_user(username='tjefferson',
+                                              first_name='Thomas',
+                                              last_name='Jefferson',
+                                              email='tjefferson@masonlive.gmu.edu',
+                                              password='louisiana')
+        thomas = Student.objects.create(user=tjefferson)
+
+        client = self.client_login()
+        response = client.get(reverse('delete_student',
+                                      kwargs={'slug': 'tjefferson'}))
+        # you may not delete other people-- we helpfully send you
+        # to your own deletion page
+        self.assertEqual(response.status_code, 302)
 
 
 class RemoveSocialConfirmationTest(RoomlistViewTest):
@@ -83,7 +113,7 @@ class ConfirmationViewTest(RoomlistViewTest):
                                               last_name='Jefferson',
                                               email='tjefferson@masonlive.gmu.edu',
                                               password='louisiana')
-        thomas = Student.objects.create(user=tjefferson, room=wilson_307)
+        self.thomas = Student.objects.create(user=tjefferson, room=wilson_307)
 
 
 class CreateConfirmationTest(ConfirmationViewTest):
@@ -102,23 +132,54 @@ class CreateConfirmationTest(ConfirmationViewTest):
                                               'student_slug': 'gmason'}))
         self.assertEqual(response.status_code, 200)
 
+    def test_create_confirmation_already_flagged(self):
+        george = Student.objects.get(user__username='gmason')
+        confirmation = Confirmation.objects.create(confirmer=george, student=self.thomas)
+        confirmation.save()
+        # just to verify that, yes, the confirmation was created
+        self.assertEqual(self.thomas.get_flag_count(), 1)
+
+        client = self.client_login()
+        response = client.get(reverse('createConfirmation',
+                                      kwargs={'confirmer_slug': 'gmason',
+                                              'student_slug': 'tjefferson'}))
+        self.assertEqual(response.status_code, 403)
+
 
 class DeleteConfirmationTest(ConfirmationViewTest):
 
-    def setUp(self):
-        setUp = super(DeleteConfirmationTest, self).setUp()
-
-        thomas = Student.objects.get(user__username='tjefferson')
+    def test_delete_confirmation_ok(self):
         george = Student.objects.get(user__username='gmason')
-        confirmation = Confirmation.objects.create(confirmer=george, student=thomas)
+        confirmation = Confirmation.objects.create(confirmer=george, student=self.thomas)
         confirmation.save()
 
-    def test_delete_confirmation_ok(self):
         client = self.client_login()
+        # george accesses his own confirmation
         response = client.get(reverse('deleteConfirmation',
                                       kwargs={'confirmer_slug': 'gmason',
                                               'student_slug': 'tjefferson'}))
         self.assertEqual(response.status_code, 200)
+
+    def test_delete_confirmation_dne(self):
+        client = self.client_login()
+        response = client.get(reverse('deleteConfirmation',
+                                      kwargs={'confirmer_slug': 'gmason',
+                                              'student_slug': 'tjefferson'}))
+        # try to go to a delete confirmation that does not exist
+        self.assertEqual(response.status_code, 404)
+
+
+    def test_delete_confirmation_other_student(self):
+        george = Student.objects.get(user__username='gmason')
+        confirmation = Confirmation.objects.create(confirmer=self.thomas, student=george)
+        confirmation.save()
+
+        client = self.client_login()
+        # george tries to access thomas' confirmation
+        response = client.get(reverse('deleteConfirmation',
+                                      kwargs={'confirmer_slug': 'tjefferson',
+                                              'student_slug': 'gmason'}))
+        self.assertEqual(response.status_code, 403)
 
 
 class SearchViewTest(RoomlistViewTest):
