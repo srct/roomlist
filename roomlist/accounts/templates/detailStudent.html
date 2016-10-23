@@ -25,14 +25,14 @@
             <a href="{{ student.room.get_absolute_url }}">{{ student.room }}</a>
             {% if same_floor %}
               {% if has_flagged %}
-                <a href="{% url 'deleteConfirmation' student.slug my_flag.slug %}">
+                <a href="{% url 'deleteConfirmation' request.user.username student.user.username %}">
                   <small><span style="padding-left:15px" class="fa-stack fa-lg">
                     <i class="fa fa-flag fa-stack-1x"></i>
                     <i class="fa fa-ban fa-stack-2x text-danger"></i>
                   </span></small>
                 </a>
               {% else %}
-                <a href="{% url 'createConfirmation' student.slug %}">
+                <a href="{% url 'createConfirmation' request.user.username student.user.username %}">
                   <i style="padding-left:15px" class="fa fa-flag"></i>
                 </a>
               {% endif %}

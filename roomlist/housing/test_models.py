@@ -8,71 +8,67 @@ from accounts.models import Student
 from housing.models import Building, Floor, Room
 
 
-class BuildingTest(TestCase):
+class HousingTest(TestCase):
 
     def setUp(self):
-        global wilson
-        global wilson_third
-        global wilson_313
 
-        wilson = Building.objects.create(name='Wilson', neighbourhood='sh', campus='ff')
-        wilson_third = Floor.objects.create(building=wilson, number=3)
-        wilson_313 = Room.objects.create(floor=wilson_third, number=313)
+        self.wilson = Building.objects.create(name='Wilson', neighbourhood='sh',
+                                              campus='ff')
+        self.wilson_third = Floor.objects.create(building=self.wilson, number=3)
+        self.wilson_313 = Room.objects.create(floor=self.wilson_third, number=313)
 
-        wilson.save()
-        wilson_third.save()
-        wilson_313.save()
+        self.wilson.save()
+        self.wilson_third.save()
+        self.wilson_313.save()
 
-        harrison = Building.objects.create(name='Harrison', neighbourhood='sh', campus='ff')
-        harrison_third = Floor.objects.create(building=harrison, number=3)
-        harrison_313 = Room.objects.create(floor=harrison_third, number=313)
+        self.harrison = Building.objects.create(name='Harrison', neighbourhood='sh',
+                                                campus='ff')
+        self.harrison_third = Floor.objects.create(building=self.harrison, number=3)
+        self.harrison_313 = Room.objects.create(floor=self.harrison_third, number=313)
 
-        global harrison
-        global harrison_third
-        global harrison_313
+        self.harrison.save()
+        self.harrison_third.save()
+        self.harrison_313.save()
 
-        harrison.save()
-        harrison_third.save()
-        harrison_313.save()
+        self.gmason = User.objects.create_user(username='gmason',
+                                               first_name='George',
+                                               last_name='Mason',
+                                               email='gmason@masonlive.gmu.edu',
+                                               password='eagle_bank')
 
-        gmason = User.objects.create_user(username='gmason',
-                                          first_name='George',
-                                          last_name='Mason',
-                                          email='gmason@masonlive.gmu.edu',
-                                          password='eagle_bank')
+        self.george = Student.objects.create(user=self.gmason, room=self.wilson_313)
 
-        global george
+        self.george.save()
 
-        george = Student.objects.create(user=gmason, room=wilson_313)
 
-        george.save()
+class BuildingTest(HousingTest):
 
     def test_building_contains_room(self):
-        self.assertTrue(wilson_313 in wilson)
-        self.assertFalse(harrison_313 in wilson)
+        self.assertTrue(self.wilson_313 in self.wilson)
+        self.assertFalse(self.harrison_313 in self.wilson)
 
     def test_building_contains_floor(self):
-        self.assertTrue(wilson_third in wilson)
-        self.assertFalse(harrison_third in wilson)
+        self.assertTrue(self.wilson_third in self.wilson)
+        self.assertFalse(self.harrison_third in self.wilson)
 
     def test_building_contains_student(self):
-        self.assertTrue(george in wilson)
-        self.assertFalse(george in harrison)
+        self.assertTrue(self.george in self.wilson)
+        self.assertFalse(self.george in self.harrison)
 
 
-class FloorTest(TestCase):
+class FloorTest(HousingTest):
 
     def test_floor_contains_room(self):
-        self.assertTrue(wilson_313 in wilson_third)
-        self.assertFalse(harrison_313 in wilson_third)
+        self.assertTrue(self.wilson_313 in self.wilson_third)
+        self.assertFalse(self.harrison_313 in self.wilson_third)
 
     def test_floor_contains_student(self):
-        self.assertTrue(george in wilson_third)
-        self.assertFalse(george in harrison_third)
+        self.assertTrue(self.george in self.wilson_third)
+        self.assertFalse(self.george in self.harrison_third)
 
 
-class RoomTest(TestCase):
+class RoomTest(HousingTest):
 
     def test_room_contains_student(self):
-        self.assertTrue(george in wilson_313)
-        self.assertFalse(george in harrison_313)
+        self.assertTrue(self.george in self.wilson_313)
+        self.assertFalse(self.george in self.harrison_313)

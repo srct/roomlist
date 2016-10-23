@@ -38,10 +38,10 @@ urlpatterns = patterns('',
         name='remove_social'),
 
     # student confirmation pages
-    url(r'^student/(?P<student_slug>[\w-]+)/flag/$',
+    url(r'^student/(?P<confirmer_slug>[\w-]+)/flag/(?P<student_slug>[\w-]+)/$',
         CreateConfirmation.as_view(), name='createConfirmation'),
 
     # delete confirmation
-    url(r'^student/(?P<student_slug>[\w-]+)/flag/(?P<slug>[\w-]+)/$',
+    url(r'^student/(?P<confirmer_slug>[\w-]+)/flag/(?P<student_slug>[\w-]+)/remove/$',
         DeleteConfirmation.as_view(), name='deleteConfirmation'),
 )
