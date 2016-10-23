@@ -13,33 +13,26 @@ from .views import BuildingList, BuildingRetrieve, FloorRetrieve, RoomRetrieve,\
 # API v1
 # separate out major and building patterns
 building_urls = patterns('',
-    url(r'^$', BuildingList.as_view(), name='api_list_buildings'),
-    url(r'^(?P<building_name>[\w-]+)/$', BuildingRetrieve.as_view(), name='api_detail_building'),
+    url(r'^$', BuildingList.as_view(), cache_page(60*60)(name='api_list_buildings')),
+    url(r'^(?P<building_name>[\w-]+)/$', BuildingRetrieve.as_view(), cache_page(60*60)(name='api_detail_building')),
     # the naming here and for floors is a little obnoxious
-    url(r'^(?P<building__building_name>[\w-]+)/(?P<floor_num>\d+)/$', FloorRetrieve.as_view(), name='api_detail_floor'),
+    url(r'^(?P<building__building_name>[\w-]+)/(?P<floor_num>\d+)/$', FloorRetrieve.as_view(), cache_page(60*60)(name='api_detail_floor')),
     # list all the floors still?
-    url(r'^(?P<floor__building__building_name>[\w-]+)/(?P<floor__floor_num>\d+)/(?P<room_num>\d+)/$', RoomRetrieve.as_view(), name='api_detail_room'),
+    url(r'^(?P<floor__building__building_name>[\w-]+)/(?P<floor__floor_num>\d+)/(?P<room_num>\d+)/$', RoomRetrieve.as_view(), cache_page(60*60)(name='api_detail_room')),
     # list all the rooms still?
 )
 
 major_urls = patterns('',
-    url(r'^$', MajorList.as_view(), name='api_list_majors'),
-    url(r'^(?P<slug>[\w-]+)/$', MajorRetrieve.as_view(), name='api_detail_major'),
+    url(r'^$', MajorList.as_view(), cache_page(60*60)(name='api_list_majors')),
+    url(r'^(?P<slug>[\w-]+)/$', MajorRetrieve.as_view(), cache_page(60*60)(name='api_detail_major')),
 )
 
 # Added API Caching
 urlpatterns = patterns('',
     url(r'^v1/housing/', include(building_urls)),
     url(r'^v1/majors/', include(major_urls)),
-    url(r'^v1/$', APIRoot.as_view(), name='api_root'),
+    url(r'^v1/$', APIRoot.as_view(), cache_page(60*60)(name='api_root')),
     url(r'^$',  RedirectView.as_view(pattern_name='api_root')),
-    url(r'^api/$', cache_page(60*60)(APIRoot)),
-    url(r'^v1/majors/$', cache_page(60*60)(MajorList.as_view()), name='api_list_majors'),
-    url(r'^v1/housing/$', cache_page(60*60)(BuildingList.as_view()), name='api_list_buildings'),
-    url(r'^(?P<building__building_name>[\w-]+)/(?P<floor_num>\d+)/$', cache_page(60*60)(FloorRetrieve.as_view()), name='api_detail_floor'),
-    url(r'^(?P<floor__building__building_name>[\w-]+)/(?P<floor__floor_num>\d+)/(?P<room_num>\d+)/$', cache_page(60*60)(RoomRetrieve.as_view()), name='api_detail_room'),
-    url(r'^(?P<building_name>[\w-]+)/$', cache_page(60*60)(BuildingRetrieve.as_view()), name='api_detail_building'),
-    url(r'^(?P<slug>[\w-]+)/$', cache_page(60*60)(MajorRetrieve.as_view()), name='api_detail_major'),
 )
 
 # Subsequent API versions below
