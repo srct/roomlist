@@ -127,8 +127,8 @@ outline-offset: none;
 .navbar-profile {
   display: block;
   float: left;
-  margin-top: -2px;
-  padding-right: 8px;
+  margin-top: -6px;
+  margin-right: 8px;
 }
 
 .profile-image {
