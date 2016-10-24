@@ -40,9 +40,7 @@ class AccountAdapter(DefaultSocialAccountAdapter):
         # we are approximating that if a user has not completed the welcome walkthough,
         # it is likely the page on which they started-- see the pre_social_login method
         if not request.user.student.completedSocial:
-            return reverse('welcomeSocial', kwargs={
-                'slug': request.user.username,
-            })
+            return reverse('welcomeSocial')
         else:
             return reverse('update_student', kwargs={
                 'slug': request.user.username,
