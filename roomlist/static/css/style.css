@@ -134,4 +134,6 @@ outline-offset: none;
 .profile-image {
   max-width: 175px;
   max-height: 175px;
+  min-width: 175px;
+  min-height: 175px;
 }
