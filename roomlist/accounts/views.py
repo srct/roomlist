@@ -372,7 +372,7 @@ class DeleteStudent(FormView):
         if form.cleaned_data['leaving']:
             context = {
                 'student_name': student.get_first_name_or_uname,
-                'special_message': "We're glad you gave our message a try."
+                'special_message': "We're glad you gave our service a try."
             }
         else:
             context = {
