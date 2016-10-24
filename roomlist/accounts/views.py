@@ -44,7 +44,7 @@ def custom_cas_login(request, *args, **kwargs):
                 return HttpResponseRedirect(reverse('welcomePrivacy'))
             elif not request.user.student.completedMajor:
                 return HttpResponseRedirect(reverse('welcomeMajor'))
-            elif not request.user.completedSocial:
+            elif not request.user.student.completedSocial:
                 return HttpResponseRedirect(reverse('welcomeSocial'))
         else:
             welcome_back = random.choice(return_messages)
