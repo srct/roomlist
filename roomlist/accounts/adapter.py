@@ -59,9 +59,7 @@ class AccountAdapter(DefaultSocialAccountAdapter):
             # as a reminder, here is how django handles messages
             # https://docs.djangoproject.com/en/1.8/ref/contrib/messages/
             messages.add_message(request, messages.ERROR, error_message)
-            social_redirect = HttpResponseRedirect(reverse('welcomeSocial', kwargs={
-                                  'slug': request.user.username,
-                              }))
+            social_redirect = HttpResponseRedirect(reverse('welcomeSocial'))
             raise ImmediateHttpResponse(social_redirect)
         else:
             messages.add_message(request, messages.ERROR, error_message)
