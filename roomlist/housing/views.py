@@ -10,21 +10,6 @@ from .models import Building, Floor, Room
 from accounts.models import Student
 
 
-# this should be written in cache, to be entirely honest
-def shadowbanning(me, other_people):
-    # start with only students who are actually blocking anyone
-    blockers = [student for student in Student.objects.exclude(blocked_kids=None)]
-    # of those students, collect the ones that block *you*
-    blocks_me = [student
-                 for student in blockers
-                 if me in student.blocked_kids.all()]
-    if blocks_me:  # python implicit truth evaluation
-        student_safety = list(set(other_people) - set(blocks_me))
-        return student_safety
-    else:
-        return other_people
-
-
 # a list of neighborhoods and their buildings
 class ListBuildings(ListView):
     model = Building
