@@ -26,7 +26,7 @@
 <div class="student-row">
   <div class="row">
     {% for student in students %}
-      <div class="col-sm-3 col-xs-6 text-center">
+      <div class="col-sm-3 col-xs-6 text-center wordwrap">
         <img class="img-circle img-responsive center center-block profile-image"
              src="{{ student.profile_image_url }}"
              alt="{{ student.get_first_name_or_uname }} profile picture">

@@ -147,3 +147,7 @@ outline-offset: none;
 .student-row > .row > .col-sm-3:nth-child(4n+1) {
   clear: both;
 }}
+
+.wordwrap {
+  word-wrap: break-word;
+}
