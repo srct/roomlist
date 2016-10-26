@@ -23,24 +23,25 @@
 </div>
 
 {% load gravatar %}
-
-<div class="row">
-  {% for student in students %}
-  <div class="col-sm-3 col-xs-6 text-center">
-    <img class="img-circle img-responsive center center-block profile-image" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
-    <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
-    <h5><em>{% include 'double_major.html' %}</em></h5>
-    <h5><a href="{{ student.room.get_absolute_url }}">{{ student.room }}</a></h5>
-    {% if student.get_flag_count %}
-      <p><em>*a number of other floormates say this info is incorrect</em></p>
-    {% endif %}
+<div class="student-row">
+  <div class="row">
+    {% for student in students %}
+      <div class="col-sm-3 col-xs-6 text-center">
+        <img class="img-circle img-responsive center center-block profile-image"
+             src="{{ student.profile_image_url }}"
+             alt="{{ student.get_first_name_or_uname }} profile picture">
+        <h4><strong>
+          <a href="{{ student.get_absolute_url }}">{{ student.get_full_name_or_uname }}</a>
+        </strong></h4>
+        <h5><em>{% include 'double_major.html' %}</em></h5>
+        <h5><a href="{{ student.room.get_absolute_url }}">{{ student.room }}</a></h5>
+        {% if student.get_flag_count %}
+          <p><em>*a number of other floormates say this info is incorrect</em></p>
+        {% endif %}
+        <br />
+      </div>
+    {% endfor %}
   </div>
-  {% if forloop.counter|divisibleby:4 %}
-</div>
-<br />
-<div class="row">
-  {% endif %}
-  {% endfor %}
 </div>
 
 <br />

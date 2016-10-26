@@ -137,3 +137,13 @@ outline-offset: none;
   min-width: 175px;
   min-height: 175px;
 }
+
+@media (max-width: 768px) {
+.student-row > .row > .col-xs-6:nth-child(2n+1) {
+  clear: both;
+}}
+
+@media (min-width: 768px) {
+.student-row > .row > .col-sm-3:nth-child(4n+1) {
+  clear: both;
+}}
