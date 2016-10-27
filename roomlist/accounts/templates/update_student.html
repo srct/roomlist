@@ -112,6 +112,35 @@
           {% endif %}
           </div>
           <div class="col-xs-6">
+          {% if accounts.pinterest %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-pinterest-p fa-2x"></i></h4>
+            <h4>Pinterest</h4>
+          {% else %}
+          <br />
+          <a href="{% provider_login_url 'pinterest' process='connect' %}">
+            <h4><i class="fa fa-pinterest-p fa-2x"></i></h4>
+            <h4>Pinterest</h4>
+          </a>
+          {% endif %}
+          </div>
+        </div>
+        <br />
+        <div class="row text-center">
+          <div class="col-xs-6">
+          {% if accounts.spotify %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-spotify fa-2x"></i></h4>
+            <h4>Spotify</h4>
+          {% else %}
+          <br />
+          <a href="{% provider_login_url 'spotify' process='connect' %}">
+            <h4><i class="fa fa-spotify fa-2x"></i></h4>
+            <h4>Spotify</h4>
+          </a>
+          {% endif %}
+          </div>
+          <div class="col-xs-6">
           {% if accounts.github %}
             <p><i class="fa fa-check-square-o"></i> Verified!</p>
             <h4><i class="fa fa-github fa-2x"></i></h4>
