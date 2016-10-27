@@ -25,7 +25,6 @@ SECRET_KEY = secret.SECRET_KEY
 # These configurations are set by default for a local development environment. Turning
 # off debug mode will display 404 and 500 error pages instead of detailed logs.
 DEBUG = True
-TEMPLATE_DEBUG = True
 # the domains this application will be deployed on, e.g. which
 # domains this app should listen to requests from.
 ALLOWED_HOSTS = ['127.0.0.1']
@@ -58,7 +57,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.core.context_processors.request',
                 'django.template.context_processors.request',
-            ]
+            ],
+            'debug': DEBUG,
         }
     }
 ]
