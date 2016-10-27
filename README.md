@@ -232,7 +232,6 @@ If you've forgotten the name with the number, back on Google's page it's in the 
 
 Add localhost as the site, click save, and throw a party, because thank goodness, you're finally all set.
 
-
 ### Github
 
 Github's auth setup is mercifully comparatively easy. Sign in and go to https://github.com/settings/applications/new. (Note if you're creating a token for an organization, you'll need to instead go to 
@@ -249,9 +248,13 @@ On the Applications page that you'll be redirected to, the 'OAuth Consumer Key' 
 
 Tumblr doesn't seem to have a way to only request specific permissions-- it will ask if it's okay both to access information and to post on your behalf. We're not interested in the latter, but keep in mind it will ask users if that's okay.
 
-### Notes on Cacheing
+### Spotify
 
-Roomlist's urls are set to be cached for periods of time set so that ordinary user experience will not be impacted, but a substantial load will be lifted from a deployment server. However, this can be annoying when you're making and want to check small changes rapidly on development. You can edit the respective apps' urls.py files and remove the cacheing configurations, but make sure that you do not include such edits in any pushes!
+Visit https://developer.spotify.com/my-applications. You'll land on a big splash page with a green login button. A window will pop up, and after you've put in your username and password, it will ask to "Connect Spotify Developer to your Spotify account." Hit "Okay" and accept the Terms of Service.
+
+The next page will be for creating your application. The app name does not have to be universally unique. User 'Verify your Spotify account with Roomlist!' as the app description. The next page will ask for your site's location and the callback url. You **must** include the trailing slash, so http://localhost:8000/accounts/spotify/login/callback/. This page already provides you the Client ID and Client Secret. Copy these to the Client ID and Secret Key when adding an app in the django admin interface, and add your site to the chosen sites.
+
+Thankfully, there isn't any scope handling we need to deal with-- by default, we are limited to 'Read your publicly available information'.
 
 ## Deployment
 
