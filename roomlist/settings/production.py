@@ -6,7 +6,7 @@ from .settings import *
 from . import secret
 
 DEBUG = False
-TiEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1']
 
 PIWIK_DOMAIN_PATH = 'https://piwik.srct.gmu.edu/'
