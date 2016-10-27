@@ -50,83 +50,117 @@
       <div class="panel-body">
         <div class="row text-center">
           {% comment %} is it not possible to redirect the login failure? {% endcomment %}
-          <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="col-md-3 col-sm-6 col-xs-6">
             {% if accounts.facebook %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
-              <h4><i class="fa fa-facebook fa-3x"></i></h4>
+              <h4><i class="fa fa-facebook fa-2x"></i></h4>
               <h4>Facebook</h4>
             {% else %}
               <br />
             <a href="{% provider_login_url 'facebook' process='connect' %}">
-              <h4><i class="fa fa-facebook fa-3x"></i></h4>
+              <h4><i class="fa fa-facebook fa-2x"></i></h4>
               <h4>Facebook</h4>
             </a>
             {% endif %}
+            <br />
           </div>
-          <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="col-md-3 col-sm-6 col-xs-6">
             {% if accounts.google %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
-              <h4><i class="fa fa-google fa-3x"></i></h4>
+              <h4><i class="fa fa-google fa-2x"></i></h4>
               <h4>Google</h4>
             {% else %}
               <br />
             <a href="{% provider_login_url 'google' process='connect' %}">
-              <h4><i class="fa fa-google fa-3x"></i></h4>
+              <h4><i class="fa fa-google fa-2x"></i></h4>
               <h4>Google</h4>
             </a>
             {% endif %}
+            <br />
           </div>
-          <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="col-md-3 col-sm-6 col-xs-6">
             {% if accounts.twitter %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
-              <h4><i class="fa fa-twitter fa-3x"></i></h4>
+              <h4><i class="fa fa-twitter fa-2x"></i></h4>
               <h4>Twitter</h4>
             {% else %}
             <a href="{% provider_login_url 'twitter' process='connect' %}">
               <br />
-              <h4><i class="fa fa-twitter fa-3x"></i></h4>
+              <h4><i class="fa fa-twitter fa-2x"></i></h4>
               <h4>Twitter</h4>
             </a>
             {% endif %}
+            <br />
           </div>
-          <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="col-md-3 col-sm-6 col-xs-6">
             {% if accounts.instagram %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
-              <h4><i class="fa fa-instagram fa-3x"></i></h4>
+              <h4><i class="fa fa-instagram fa-2x"></i></h4>
               <h4>Instagram</h4>
             {% else %}
               <br />
             <a href="{% provider_login_url 'instagram' process='connect' %}">
-              <h4><i class="fa fa-instagram fa-3x"></i></h4>
+              <h4><i class="fa fa-instagram fa-2x"></i></h4>
               <h4>Instagram</h4>
             </a>
             {% endif %}
+            <br />
           </div>
-          <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="col-md-3 col-sm-6 col-xs-6">
             {% if accounts.tumblr %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
-              <h4><i class="fa fa-tumblr fa-3x"></i></h4>
+              <h4><i class="fa fa-tumblr fa-2x"></i></h4>
               <h4>Tumblr</h4>
             {% else %}
               <br />
             <a href="{% provider_login_url 'tumblr' process='connect' %}">
-              <h4><i class="fa fa-tumblr fa-3x"></i></h4>
+              <h4><i class="fa fa-tumblr fa-2x"></i></h4>
               <h4>Tumblr</h4>
             </a>
             {% endif %}
+            <br />
           </div>
-          <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="col-md-3 col-sm-6 col-xs-6">
+            {% if accounts.pinterest %}
+              <p><i class="fa fa-check-square-o"></i> Verified!</p>
+              <h4><i class="fa fa-pinterest-p fa-2x"></i></h4>
+              <h4>Pinterest</h4>
+            {% else %}
+              <br />
+            <a href="{% provider_login_url 'pinterest' process='connect' %}">
+              <h4><i class="fa fa-pinterest-p fa-2x"></i></h4>
+              <h4>Pinterest</h4>
+            </a>
+            {% endif %}
+            <br />
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-6">
+            {% if accounts.spotify %}
+              <p><i class="fa fa-check-square-o"></i> Verified!</p>
+              <h4><i class="fa fa-spotify fa-2x"></i></h4>
+              <h4>Spotify</h4>
+            {% else %}
+              <br />
+            <a href="{% provider_login_url 'spotify' process='connect' %}">
+              <h4><i class="fa fa-spotify fa-2x"></i></h4>
+              <h4>Spotify</h4>
+            </a>
+            {% endif %}
+            <br />
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-6">
             {% if accounts.github %}
               <p><i class="fa fa-check-square-o"></i> Verified!</p>
-              <h4><i class="fa fa-github fa-3x"></i></h4>
+              <h4><i class="fa fa-github fa-2x"></i></h4>
               <h4>Github</h4>
             {% else %}
               <br />
             <a href="{% provider_login_url 'github' process='connect' %}">
-              <h4><i class="fa fa-github fa-3x"></i></h4>
+              <h4><i class="fa fa-github fa-2x"></i></h4>
               <h4>Github</h4>
             </a>
             {% endif %}
+            <br />
           </div>
         </div>
         <hr/>
