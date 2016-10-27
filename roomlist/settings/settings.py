@@ -37,28 +37,31 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-# where template files are located
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-    # may specify to avoid requiring paths
-    os.path.join(BASE_DIR, 'housing/templates'),
-    os.path.join(BASE_DIR, 'accounts/templates'),
-)
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request',
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # where template files are located
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            # may specify to avoid requiring paths
+            os.path.join(BASE_DIR, 'housing/templates'),
+            os.path.join(BASE_DIR, 'accounts/templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.core.context_processors.debug',
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.media',
+                'django.core.context_processors.static',
+                'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.request',
+                'django.template.context_processors.request',
+            ]
+        }
+    }
+]
 
 # Application definition
 INSTALLED_APPS = (
