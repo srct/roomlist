@@ -65,9 +65,6 @@ class WelcomeName(LoginRequiredMixin, FormView):
                                         'gender': me.gender,
                                         'show_gender': me.show_gender, })
 
-        form.fields['first_name'].widget.attrs['class'] = 'form-control'
-        form.fields['last_name'].widget.attrs['class'] = 'form-control'
-
         context['my_form'] = form
         return context
 
@@ -200,7 +197,7 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
         form = WelcomeMajorForm(initial={'major': me.major.all(),
                                          'graduating_year': me.graduating_year, })
 
-        form.fields['major'].widget.attrs['class'] = 'chosen-select'
+        form.fields['major'].widget.attrs['class'] = 'form-control chosen-select'
 
         context['my_form'] = form
         context['student'] = me
