@@ -3,6 +3,8 @@ from __future__ import absolute_import, print_function
 from collections import OrderedDict
 # core django imports
 from django.views.generic import DetailView, ListView
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 # third party imports
 from braces.views import LoginRequiredMixin
 # imports from your apps
@@ -63,7 +65,10 @@ class DetailBuilding(DetailView):
         url_parts = self.request.get_full_path().split('/')
         # [u'', u'housing', u'building',]
         building_name = url_parts[2].replace('-', ' ').title()
-        building = Building.objects.get(name=building_name)
+        try:
+            building = Building.objects.get(name=building_name)
+        except ObjectDoesNotExist:
+            raise Http404
         return building
 
     def get_context_data(self, **kwargs):
@@ -85,9 +90,12 @@ class DetailFloor(LoginRequiredMixin, DetailView):
         # [u'', u'housing', u'building', u'floor', ]
         building_name = url_parts[2].replace('-', ' ').title()
         floor_number = url_parts[3]
-        building = Building.objects.get(name=building_name)
-        floor = Floor.objects.get(number=floor_number,
-                                  building=building)
+        try:
+            building = Building.objects.get(name=building_name)
+            floor = Floor.objects.get(number=floor_number,
+                                      building=building)
+        except ObjectDoesNotExist:
+            raise Http404
         return floor
 
     def get_context_data(self, **kwargs):
@@ -117,11 +125,14 @@ class DetailRoom(LoginRequiredMixin, DetailView):
         building_name = url_parts[2].replace('-', ' ').title()
         floor_number = url_parts[3]
         room_number = url_parts[4].upper()
-        building = Building.objects.get(name=building_name)
-        floor = Floor.objects.get(number=floor_number,
-                                  building=building)
-        room = Room.objects.get(floor=floor,
-                                number=room_number)
+        try:
+            building = Building.objects.get(name=building_name)
+            floor = Floor.objects.get(number=floor_number,
+                                      building=building)
+            room = Room.objects.get(floor=floor,
+                                    number=room_number)
+        except ObjectDoesNotExist:
+            raise Http404
         return room
 
     def get_context_data(self, **kwargs):
