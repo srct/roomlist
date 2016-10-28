@@ -148,6 +148,11 @@ outline-offset: none;
   clear: both;
 }}
 
+@media (min-width: 992px) {
+.major-row > .row > .col-md-6:nth-child(2n+1) {
+  clear: both;
+}}
+
 .wordwrap {
   word-wrap: break-word;
 }
