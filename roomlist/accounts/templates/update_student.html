@@ -15,6 +15,7 @@
 
 {% include 'room_change_warning.html' %}
 
+{% comment %} moves the messages to below the room change warning {% endcomment %}
 {% include 'messages.html' %}
 
 {% load accounts_extras %}
@@ -176,8 +177,8 @@
             {% endfor %}
           {% endif %}
           <div class="form-group">
-            <label for="{{ my_form.first_name.id_for_label }}" class="col-md-2">First Name</label>
-              <div class="col-md-4">
+            <div class="col-sm-6">
+              <label for="{{ my_form.first_name.id_for_label }}">First Name</label>
                 {% if not my_form.first_name.errors %}
                   {{ my_form.first_name }}
                 {% else %}
@@ -187,8 +188,8 @@
                   </div>
                 {% endif %}
               </div>
-            <label for="{{ my_form.last_name.id_for_label }}" class="col-md-2">Last Name</label>
-              <div class="col-md-4">
+            <div class="col-sm-6">
+              <label for="{{ my_form.last_name.id_for_label }}">Last Name</label>
                 {% if not my_form.last_name.errors %}
                   {{ my_form.last_name }}
                 {% else %}
@@ -197,7 +198,7 @@
                     <p>{{ form.last_name.errors }}</p>
                   </div>
                 {% endif %}
-              </div>
+            </div>
           </div>
           {% if form.gender.errors %}
             {% for error in form.gender.errors %}
@@ -205,12 +206,12 @@
             {% endfor %}
           {% endif %}
           <div class="form-group">
-            <label for="{{ my_form.gender.id_for_label }}" class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <label for="{{ my_form.gender.id_for_label }}" class="col-xs-12">
               Gender Identity
               <p class="help-block">(choose all that apply)</p>
             </label>
               {% for checkbox in my_form.gender %}
-                <div class="checkbox col-lg-2 col-md-3 col-sm-3 col-sm-offset-1 col-xs-5 col-xs-offset-1">
+                <div class="checkbox col-md-3 col-sm-3 col-sm-offset-1 col-xs-5 col-xs-offset-1">
                   <label for="{{ checkbox.id_for_label }}">
                     {{ checkbox.choice_label|gender_icon }}
                     {{ checkbox.tag }}
@@ -224,38 +225,41 @@
             {% endfor %}
           {% endif %}
           <div class="form-group">
-            <label for="{{ my_form.show_gender.id_for_label }}" class="col-md-3 col-sm-4 col-xs-5">
+            <div class="col-md-4">
+            <label for="{{ my_form.show_gender.id_for_label }}">
               Show Gender on Profile?
-            </label>
+            </label><br />
               {% for option in my_form.show_gender %}
                 <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
               {% endfor %}
+            </div>
           </div>
+          <hr />
           {% if form.major.errors %}
             {% for error in form.major.errors %}
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
-          <div class="form-group">
-            <label for="{{ my_form.major.id_for_label }}" class="col-md-2">
-              Major(s)
-            </label>
-            <div class="col-md-4">
-              {{ my_form.major }}
-            </div>
-          </div>
           {% if form.graduating_year.errors %}
             {% for error in form.graduating_year.errors %}
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
-            <label for="{{ my_form.graduating_year.id_for_label }}" class="col-md-2 col-sm-12 col-xs-12">
-              Graduating Year
-            </label>
-              <div class="col-md-2 col-sm-3 col-xs-3">
+            <div class="col-lg-9">
+            <label for="{{ my_form.major.id_for_label }}">
+              Major(s)
+            </label><br />
+              {{ my_form.major }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+              <label for="{{ my_form.graduating_year.id_for_label }}">
+                Graduating Year
+              </label>
                 {{ my_form.graduating_year }}
-              </div>
+            </div>
           </div>
           {% if not request.user.student.recent_changes > 2 %}
           <hr />
@@ -265,16 +269,19 @@
             {% endfor %}
           {% endif %}
           <div class="form-group">
-            <label for="{{ my_form.on_campus.id_for_label }}" class="col-md-3 col-sm-4 col-xs-5">
+            <div class="col-md-4">
+            <label for="{{ my_form.on_campus.id_for_label }}">
               Do You Live on Campus?
-            </label>
+            </label><br/>
               {% for option in my_form.on_campus %}
                 <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
               {% endfor %}
+            </div>
           </div>
           <div id="lives-on-campus">
             <hr />
-            <p class="help-block">The Global Center, the Townhouses, and Beacon Hall are not currently supported.<br />
+            <p class="help-block">
+            The Global Center, the Townhouses, and Beacon Hall are not currently supported.<br />
             We'll let everyone know when we add them.</p>
             {% if form.room.errors %}
               {% for error in form.room.errors %}
@@ -282,9 +289,7 @@
               {% endfor %}
             {% endif %}
             <div class="form-group">
-              <div class="col-md-12">
-                {{ my_form.room }}
-              </div>
+              {{ my_form.room }}
             </div>
             <p class="help-block">
               Your privacy settings affect the visibility of both your room and your social media accounts.
@@ -295,10 +300,12 @@
               {% endfor %}
             {% endif %}
             <div class="form-group">
-              <label for="{{ my_form.privacy.id_for_label }}" class="col-md-2">
+              <div class="col-md-3 col-sm-6">
+              <label for="{{ my_form.privacy.id_for_label }}">
                 Privacy
-              </label>
+              </label><br/>
                 {{ my_form.privacy }}
+              </div>
             </div>
           </div>
           <hr />
@@ -311,10 +318,10 @@
               {% endfor %}
             {% endif %}
           <div class="form-group">
-            <label for="{{ my_form.blocked_kids.id_for_label }}" class="col-md-2">
+            <div class="col-xs-12">
+            <label for="{{ my_form.blocked_kids.id_for_label }}">
               Blocked Students
             </label>
-            <div class="col-md-10">
               {{ my_form.blocked_kids }}
             </div>
           </div>
@@ -340,7 +347,8 @@
 <script type="text/javascript" src="/static/js/chosen.min.js"></script>
 <script>
 $(".chosen-select").chosen({max_selected_options: 2,
-                           placeholder_text_multiple: '(select up to two)'});
+                            width: "100%",
+                            placeholder_text_multiple: '(select up to two)'});
 $(".blocked-select").chosen({width: "100%",
                              placeholder_text_multiple: "(search by name)"});
 </script>
