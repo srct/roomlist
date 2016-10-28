@@ -49,5 +49,5 @@ urlpatterns = patterns('',
     url(r'^majors/', RedirectView.as_view(pattern_name='list_majors')),
     url(r'^settings/', RedirectSettings.as_view()),
     # note that this is the very last, 'cause it tries to match basically anything else
-    url(r'^(?P<slug>[\w-]+)/', RedirectSlug.as_view()),
+    url(r'^(?P<slug>[\w-]+)/$', RedirectSlug.as_view()),
 )
