@@ -157,7 +157,7 @@
         <hr />
         {% if my_form.non_field_errors %}
         <ul class="text-center">
-          {% for error in form.non_field_errors %}
+          {% for error in my_form.non_field_errors %}
             <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
           {% endfor %}
         </ul>
@@ -235,13 +235,8 @@
             </div>
           </div>
           <hr />
-          {% if form.major.errors %}
-            {% for error in form.major.errors %}
-              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
-            {% endfor %}
-          {% endif %}
-          {% if form.graduating_year.errors %}
-            {% for error in form.graduating_year.errors %}
+          {% if my_form.major.errors %}
+            {% for error in my_form.major.errors %}
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
@@ -253,6 +248,11 @@
               {{ my_form.major }}
             </div>
           </div>
+          {% if form.graduating_year.errors %}
+            {% for error in form.graduating_year.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
           <div class="form-group">
             <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
               <label for="{{ my_form.graduating_year.id_for_label }}">
