@@ -53,10 +53,37 @@
           </ul>
         <hr />
         {% endif %}
-        <form action="" method="post">{% csrf_token %}
-          {{ my_form.as_p }}
+        <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
+          <fieldset>
+          {% if my_form.major.errors %}
+            {% for error in my_form.major.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <div class="col-lg-9">
+            <label for="{{ my_form.major.id_for_label }}">
+              Major(s)
+            </label><br />
+              {{ my_form.major }}
+            </div>
+          </div>
+          {% if my_form.graduating_year.errors %}
+            {% for error in my_form.graduating_year.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+              <label for="{{ my_form.graduating_year.id_for_label }}">
+                Graduating Year
+              </label>
+                {{ my_form.graduating_year }}
+            </div>
+          </div>
           <hr/>
           <input type="submit" value="Save" class="btn btn-primary"/>
+          </fieldset>
         </form>
       </div>
     </div>
@@ -79,6 +106,7 @@
 <script type="text/javascript" src="/static/js/chosen.min.js"></script>
 <script>
 $(".chosen-select").chosen({max_selected_options: 2,
-                           placeholder_text_multiple: '(select up to two)'});
+                            width: "100%",
+                            placeholder_text_multiple: '(select up to two)'});
 </script>
 {% endblock javascript %}
