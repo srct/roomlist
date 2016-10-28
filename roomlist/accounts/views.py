@@ -113,7 +113,10 @@ class DetailStudent(LoginRequiredMixin, DetailView):
 
         current_url = self.request.get_full_path()
         url_uname = current_url.split('/')[3]
-        detailed_student = Student.objects.get(user__username=url_uname)
+        try:
+            detailed_student = Student.objects.get(user__username=url_uname)
+        except ObjectDoesNotExist:
+            raise Http404
 
         if (detailed_student in self.request.user.student.blocked_kids.all()):
             raise Http404
@@ -185,6 +188,10 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
 
         current_url = self.request.get_full_path()
         url_uname = current_url.split('/')[3]
+        try:
+            student = Student.objects.get(user__username=url_uname)
+        except ObjectDoesNotExist:
+            raise Http404
 
         if not(url_uname == self.request.user.username):
             return HttpResponseRedirect(reverse('update_student',
@@ -341,6 +348,10 @@ class DeleteStudent(FormView):
 
         current_url = self.request.get_full_path()
         url_uname = current_url.split('/')[3]
+        try:
+            student = Student.objects.get(user__username=url_uname)
+        except ObjectDoesNotExist:
+            raise Http404
 
         if not(url_uname == self.request.user.username):
             return HttpResponseRedirect(reverse('delete_student',
@@ -473,12 +484,13 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
         # [u'', u'accounts', u'student', u'gmason', u'flag', u'confirmer']
         confirmer_uname = current_url.split('/')[3]
         student_uname = current_url.split('/')[5]
-
-        confirmer = Student.objects.get(user__username=confirmer_uname)
-        student = Student.objects.get(user__username=student_uname)
-
-        flags = Confirmation.objects.filter(confirmer=confirmer,
-                                            student=student).count()
+        try:
+            confirmer = Student.objects.get(user__username=confirmer_uname)
+            student = Student.objects.get(user__username=student_uname)
+            flags = Confirmation.objects.filter(confirmer=confirmer,
+                                                student=student).count()
+        except ObjectDoesNotExist:
+            raise Http404
 
         # you can't flag yourself
         if confirmer == student:
@@ -547,7 +559,8 @@ class DeleteConfirmation(LoginRequiredMixin, DeleteView):
 
         current_url = self.request.get_full_path()
         confirmer_uname = current_url.split('/')[3]
-        confirmer = Student.objects.get(user__username=confirmer_uname)
+
+        # not catching exceptions here; that's handled in get_object
 
         # only the person who created the confirmation may delete it
         if not(requester == confirmer):
@@ -567,9 +580,12 @@ class DeleteConfirmation(LoginRequiredMixin, DeleteView):
         confirmer_uname = current_url.split('/')[3]
         student_uname = current_url.split('/')[5]
 
-        confirmer = Student.objects.get(user__username=confirmer_uname)
-        student = Student.objects.get(user__username=student_uname)
-        confirmation = Confirmation.objects.get(confirmer=confirmer, student=student)
+        try:
+            confirmer = Student.objects.get(user__username=confirmer_uname)
+            student = Student.objects.get(user__username=student_uname)
+            confirmation = Confirmation.objects.get(confirmer=confirmer, student=student)
+        except ObjectDoesNotExist:
+            raise Http404
         return confirmation
 
     def get_success_url(self):
