@@ -218,14 +218,9 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         else:
             form.fields['room'].widget.user = self.request.user
 
-        # bootstrap
-        form.fields['first_name'].widget.attrs['class'] = 'form-control'
-        form.fields['last_name'].widget.attrs['class'] = 'form-control'
-        form.fields['graduating_year'].widget.attrs['class'] = 'form-control'
-
         # chosen
-        form.fields['major'].widget.attrs['class'] = 'chosen-select'
-        form.fields['blocked_kids'].widget.attrs['class'] = 'blocked-select'
+        form.fields['major'].widget.attrs['class'] = 'form-control chosen-select'
+        form.fields['blocked_kids'].widget.attrs['class'] = 'form-control blocked-select'
 
         context['my_form'] = form
 
