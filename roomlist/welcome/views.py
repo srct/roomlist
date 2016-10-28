@@ -161,6 +161,11 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
         me.on_campus = on_campus
         me.room = form_room
 
+        if not(me.on_campus):
+            me.privacy = 'students'
+        else:
+            me.privacy = form.data['privacy']
+
         me.completedPrivacy = True
 
         me.save()

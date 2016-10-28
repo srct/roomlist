@@ -272,6 +272,13 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         me.on_campus = on_campus
         me.room = form_room
 
+        # if you don't live on campus you can't limit yourself to a nonexistent
+        # floor or room
+        if not(me.on_campus):
+            me.privacy = 'students'
+        else:
+            me.privacy = form.data['privacy']
+
         try:
             # in case someone disabled the js, limit processing to only the first
             # two majors passed by the user
@@ -315,7 +322,6 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         me.user.last_name = no_nums(form.data['last_name'])
         me.gender = form.data.getlist('gender')
         me.show_gender = strtobool(form.data.get('show_gender', 'False'))
-        me.privacy = form.data['privacy']
         me.graduating_year = form.data['graduating_year']
         me.user.save()
         me.save()
