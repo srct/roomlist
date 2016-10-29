@@ -71,7 +71,7 @@ a[name] {
 }
 .container-padding {
   padding-top: 30px;
-t}
+}
 
 .minor-padding {
   padding-bottom: 24px;
@@ -141,6 +141,9 @@ outline-offset: none;
 @media (max-width: 768px) {
 .student-row > .row > .col-xs-6:nth-child(2n+1) {
   clear: both;
+}
+.btn-mobile {
+  white-space: normal;
 }}
 
 @media (min-width: 768px) {
