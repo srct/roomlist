@@ -42,14 +42,14 @@
 </div>
 
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1">
+  <div class="col-lg-10 col-lg-offset-1 col-md-12 col-md-offset-0 col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0">
     {% for letter in majors_by_letter %}
     <legend><a name="{{ letter.grouper }}" href="#{{ letter.grouper }}">{{ letter.grouper }}</a></legend>
       <div class="major-row">
         <div class="row">
         {% for major in letter.list %}
           <div class="col-md-6 minor-padding text-center">
-            <a href="{{ major.get_absolute_url }}" class="btn btn-primary btn-block btn-lg">
+            <a href="{{ major.get_absolute_url }}" class="btn btn-primary btn-block btn-lg btn-mobile">
             {% if major.name|length > 39 %}
               <small>{{ major.name }}</small>
             {% else %}
