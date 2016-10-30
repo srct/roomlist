@@ -232,7 +232,6 @@ If you've forgotten the name with the number, back on Google's page it's in the 
 
 Add localhost as the site, click save, and throw a party, because thank goodness, you're finally all set.
 
-
 ### Github
 
 Github's auth setup is mercifully comparatively easy. Sign in and go to https://github.com/settings/applications/new. (Note if you're creating a token for an organization, you'll need to instead go to 
@@ -249,9 +248,29 @@ On the Applications page that you'll be redirected to, the 'OAuth Consumer Key' 
 
 Tumblr doesn't seem to have a way to only request specific permissions-- it will ask if it's okay both to access information and to post on your behalf. We're not interested in the latter, but keep in mind it will ask users if that's okay.
 
-### Notes on Cacheing
+### Pinterest
 
-Roomlist's urls are set to be cached for periods of time set so that ordinary user experience will not be impacted, but a substantial load will be lifted from a deployment server. However, this can be annoying when you're making and want to check small changes rapidly on development. You can edit the respective apps' urls.py files and remove the cacheing configurations, but make sure that you do not include such edits in any pushes!
+Stop on over at https://developers.pinterest.com/apps/. If this is the first time you're playing with their API, you'll be asked to accept their terms of service. This then pops a modal to name your app and write a description. Note that while you may name your app anything (it does not have to be universally unique) it cannot be changed later. For the description, hit the standard: 'Verify your Pinterest account with Roomlist!'.
+
+Pinterest has a fascinating approval process. When you get redirected to your app's page, you'll see 'You're almost ready! You still need at least 1 collaborator to authorize your app before you can submit.' That's right, just like an elementary school field trip to a pool, app approval is a buddy process. You and your buddy must follow each other. Thus, for deployment you must have a friend, but this step is unnecessary for development.
+
+Pinterest has the unique requirement additionally of requiring that redirect URIs use https. We don't have certs for dev, so just go ahead and drop in an 's' to https://localhost:8000/accounts/pinterest/login/callback/. If you're going to change the picture that shows up when users connect your account, you'll need to hover over the large image at the top next to your app's name. There's no button otherwise.
+
+Now, you're not going to be able to test this in development. You can get close by adding the `ACCOUNT_DEFAULT_HTTP_PROTOCOL` to https in `settings.py` like it is in `production.py`, and you'll be able to see most of the process. But for the final redirect, your browser will tell you something like 'This site can’t provide a secure connection: localhost sent an invalid response. ERR_SSL_PROTOCOL_ERROR', and Django will print you out 'You're accessing the development server over HTTPS, but it only supports HTTP.'. This is lame, but trust that if you get to that point it's working.
+
+Add in your site information, and click on the button to reveal the 'App Secret'. Copy that and the 'App ID' into 'Client id' and 'Secret Key' in the Django admin interface when adding a new Pinterst app. Move over your chosen sites, and strap in, because it's still a while to go.
+
+You have to submit your app for approval as detailed here in their documentation https://developers.pinterest.com/docs/api/overview/. As they state, be as descriptive as possible when putting in your request.
+
+Phew. You're finished. Get a stiff drink.
+
+### Spotify
+
+Visit https://developer.spotify.com/my-applications. You'll land on a big splash page with a green login button. A window will pop up, and after you've put in your username and password, it will ask to "Connect Spotify Developer to your Spotify account." Hit "Okay" and accept the Terms of Service.
+
+The next page will be for creating your application. The app name does not have to be universally unique. User 'Verify your Spotify account with Roomlist!' as the app description. The next page will ask for your site's location and the callback url. You **must** include the trailing slash, so http://localhost:8000/accounts/spotify/login/callback/. This page already provides you the Client ID and Client Secret. Copy these to the Client ID and Secret Key when adding an app in the django admin interface, and add your site to the chosen sites.
+
+Thankfully, there isn't any scope handling we need to deal with-- by default, we are limited to 'Read your publicly available information'.
 
 ## Deployment
 

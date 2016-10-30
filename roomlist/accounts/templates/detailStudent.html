@@ -171,6 +171,31 @@
         </tr>
         {% endif %}
 
+        {% if accounts.pinterest and shares %}
+        <tr>
+          <td>
+            <h4><i class="fa fa-pinterest-p fa-lg"></i></h4>
+          </td>
+          <td>
+            <!-- note that for Pinterest the user id and username is not the same -->
+            <h4><a href="https://www.pinterest.com/{{ accounts.pinterest.0.extra_data.id }}"
+                   target="_blank">{{ accounts.pinterest.0.extra_data.username }}</a></h4>
+          </td>
+        </tr>
+        {% endif %}
+
+        {% if accounts.spotify and shares %}
+        <tr>
+          <td>
+            <h4><i class="fa fa-spotify fa-lg"></i></h4>
+          </td>
+          <td>
+            <h4><a href="{{ accounts.spotify.0.extra_data.external_urls.spotify }}"
+                 target="_blank">{{ accounts.spotify.0.extra_data.id }}</a></h4>
+          </td>
+        </tr>
+        {% endif %}
+
         {% if accounts.github and shares %}
         <tr>
           <td>
