@@ -178,8 +178,8 @@
           </td>
           <td>
             <!-- note that for Pinterest the user id and username is not the same -->
-            <h4><a href="https://www.pinterest.com/{{ accounts.pinterest.0.extra_data.id }}"
-                   target="_blank">{{ accounts.pinterest.0.extra_data.username }}</a></h4>
+            <h4><a href="{{ accounts.pinterest.0.extra_data.url }}"
+                   target="_blank">Pinterest Account</a></h4>
           </td>
         </tr>
         {% endif %}
