@@ -16,17 +16,15 @@
 {% load gravatar %}
 {% load accounts_extras %}
 
-{% regroup major_students by graduating_year as students %}
-
-{% for graduating_year in students %}
+{% for graduating_year, students in students_by_year.items %}
 <legend>
-  <a name="{{ graduating_year.grouper }}" href="#{{ graduating_year.grouper }}">
-  {{ graduating_year.grouper|bc }}</a>
+  <a name="{{ graduating_year }}" href="#{{ graduating_year }}">
+  {{ graduating_year|bc }}</a>
 </legend>
 
 <div class="student-row">
   <div class="row">
-    {% for student in graduating_year.list %}
+    {% for student in students %}
       <div class="col-sm-3 col-xs-6 text-center wordwrap">
         <img class="img-circle img-responsive center center-block profile-image"
              src="{{ student.profile_image_url }}"

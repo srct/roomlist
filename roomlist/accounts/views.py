@@ -2,8 +2,8 @@
 from __future__ import absolute_import, print_function
 import random
 from distutils.util import strtobool
-from operator import attrgetter
-from itertools import chain
+from collections import OrderedDict
+from itertools import groupby
 import re
 # core django imports
 from django.http import HttpResponseForbidden, HttpResponseRedirect, Http404
@@ -460,10 +460,17 @@ class DetailMajor(LoginRequiredMixin, DetailView):
         context = super(DetailMajor, self).get_context_data(**kwargs)
         me = Student.objects.get(user=self.request.user)
 
-        # all students in the major
-        major_students = Student.objects.filter(major__in=[self.get_object()]).order_by('-graduating_year')
+        # all students in the major-- needs to be ordered for groupby
+        major_students = Student.objects.filter(major__in=[self.get_object()]).order_by('graduating_year')
 
-        context['major_students'] = shadowbanning(me, major_students)
+        students_by_year = OrderedDict()  # we're ordering from senior on down
+
+        for year, students in groupby(major_students, lambda student: student.graduating_year):
+            student_list = list(students)  # students without the casting is an iterator
+            visible_students = shadowbanning(me, student_list)  # remove blocked students
+            students_by_year[year] = visible_students  # remembers insertion order
+
+        context['students_by_year'] = students_by_year
 
         return context
 
