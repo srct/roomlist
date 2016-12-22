@@ -33,6 +33,7 @@ STATIC_ROOT = '/srv/roomlist/static'
 # can haz ssl certs
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
+# use redis cache when not in local development
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
@@ -71,7 +72,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'file': {
-            'level': 'WARNING', # will log all errors
+            'level': 'WARNING',
             'class': 'logging.FileHandler',
             # make sure to change this to the proper path, and one that
             # can be written to

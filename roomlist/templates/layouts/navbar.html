@@ -39,6 +39,9 @@
         <li class="visible-xs">
           <a href="{% url 'update_student' request.user.username %}">Settings</a>
         </li>
+        {% if user.is_staff %}
+        <li><a href="{% url 'admin:index' %}">Admin</a></li>
+        {% endif %}
         <li><a href="{% url 'logout' %}">Logout</a>
         </li>
         {% else %}

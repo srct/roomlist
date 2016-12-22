@@ -27,7 +27,7 @@ SECRET_KEY = secret.SECRET_KEY
 DEBUG = True
 # the domains this application will be deployed on, e.g. which
 # domains this app should listen to requests from.
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.humanize',
+    'cas',
     # apps
     'api',
     'housing',
@@ -81,7 +82,6 @@ INSTALLED_APPS = (
     # packages
     'crispy_forms',
     'django_gravatar',
-    'analytical',
     'randomslugfield',
     'haystack',
     'multiselectfield',
@@ -109,7 +109,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'cas.middleware.CASMiddleware',
     'django.contrib.admindocs.middleware.XViewMiddleware',
-
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
