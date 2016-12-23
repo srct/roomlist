@@ -41,14 +41,20 @@ def pfinfo(uname):
     else:
         pfjson = metadata.json()
         try:
-            if len(pfjson['results']) == 1:
-                name_str = pfjson['results'][0]['name']
-                name = pfparse(name_str)
-                major = pfjson['results'][0]['major']
-                # could conceivably throw a key error
-                final_tuple = (name, major)
+            if len(pfjson['results']) == 1:  # ordinary case
+                if pfjson['method'] == 'peoplefinder':
+                    name_str = pfjson['results'][0]['name']
+                    name = pfparse(name_str)
+                    major = pfjson['results'][0]['major']
+                    # could conceivably throw a key error
+                    final_tuple = (name, major)
+                elif pfjson['method'] == 'ldap':
+                    name = [pfjson['results'][0]['givenname'],  # includes middle initial
+                            pfjson['results'][0]['surname']]
+                    major = ''  # ldap does not have major information
+                    final_tuple = (name, major)
                 return final_tuple
-            else:
+            else:  # handles student employees
                 name_str = pfjson['results'][1]['name']
                 name = pfparse(name_str)
                 major = pfjson['results'][1]['major']
