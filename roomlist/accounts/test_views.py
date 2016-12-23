@@ -1,5 +1,5 @@
 # standard library imports
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, print_function, unicode_literals
 # core django imports
 from django.test import TestCase
 from django.test import Client
@@ -9,8 +9,47 @@ from django.contrib.auth.models import User
 from .models import Student, Major, Confirmation
 from housing.models import Room, Floor
 from housing.test_views import RoomlistViewTest
+from .cas_callbacks import pfinfo
 
 
+# peoplefinder lookup tests
+# these specific examples will eventually have to change
+class PeoplefinderTest(TestCase):
+
+    # presently enrolled student who has been added to peoplefinder
+    def test_pf_peoplefinder_method(self):
+        username = 'dhaynes'
+        pf_data = pfinfo(username)
+        print(pf_data)
+        self.assertEqual(pf_data[0], ['David', 'Haynes'])
+        self.assertEqual(pf_data[1], 'CYSE')
+
+    # student no longer in peoplefinder, or who hasn't yet been added
+    def test_pf_ldap_method(self):
+        username = 'lfaraone'
+        pf_data = pfinfo(username)
+        print(pf_data)
+        self.assertEqual(pf_data[0], ['Luke W', 'Faraone'])
+        self.assertEqual(pf_data[1], '')
+
+    # student employees will have their staff info return before their student info
+    def test_pf_employee_method(self):
+        username = 'nander13'
+        pf_data = pfinfo(username)
+        print(pf_data)
+        self.assertEqual(pf_data[0], ['Nicholas', 'Anderson'])
+        self.assertEqual(pf_data[1], 'Undeclared')
+
+    # a name not found for either (should never happen, but gracefully handle anyway)
+    def test_pf_dne(self):
+        username = 'bobama'
+        pf_data = pfinfo(username)
+        print(pf_data)
+        self.assertEqual(pf_data[0], ['', ''])
+        self.assertEqual(pf_data[1], '')
+
+
+# view tests
 class ListMajorsTest(RoomlistViewTest):
 
     def test_list_majors_ok(self):
