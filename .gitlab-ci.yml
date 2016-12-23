@@ -19,6 +19,7 @@ test_Roomlist:
     - pip install coverage
     - cp roomlist/settings/secret.py.template roomlist/settings/secret.py
     - export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
+    - sed -i roomlist/settings/secret.py -e 's/SECRET_KEY.*/SECRET_KEY = \"${SECRET_KEY}\"/'
     - sed -i roomlist/settings/secret.py -e 's/DB_PASSWORD.*/DB_PASSWORD = \"root\"/'
     - cd roomlist
     - python manage.py makemigrations accounts
