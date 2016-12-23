@@ -1,4 +1,4 @@
-# ROOMLIST
+# ROOMLIST [![build status](https://git.gmu.edu/srct/roomlist/badges/master/build.svg)](https://git.gmu.edu/srct/roomlist/pipelines) [![coverage report](https://git.gmu.edu/srct/roomlist/badges/master/coverage.svg)](https://git.gmu.edu/srct/roomlist/commits/master)
 
 Roomlist is a secure, privacy-oriented service for Mason students to find their on-campus neighbors.
 
