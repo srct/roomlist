@@ -21,6 +21,7 @@ test_Roomlist:
     - export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
     - sed -i roomlist/settings/secret.py -e 's/SECRET_KEY.*/SECRET_KEY = \"${SECRET_KEY}\"/'
     - sed -i roomlist/settings/secret.py -e 's/DB_PASSWORD.*/DB_PASSWORD = \"root\"/'
+    - sed -i roomlist/settings/settings.py -e "s/'HOST':\ 'localhost'/'HOST': 'mysql'/g"
     - cd roomlist
     - python manage.py makemigrations accounts
     - python manage.py makemigrations housing
