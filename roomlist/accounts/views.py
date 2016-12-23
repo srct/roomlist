@@ -566,8 +566,8 @@ class DeleteConfirmation(LoginRequiredMixin, DeleteView):
 
         current_url = self.request.get_full_path()
         confirmer_uname = current_url.split('/')[3]
-
         # not catching exceptions here; that's handled in get_object
+        confirmer = Student.objects.get(user__username=confirmer_uname)
 
         # only the person who created the confirmation may delete it
         if not(requester == confirmer):
