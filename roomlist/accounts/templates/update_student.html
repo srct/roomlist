@@ -1,0 +1,385 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} SRCT Roomlist | Student | {{ request.user.student.get_full_name_or_uname }} | Update {% endblock %}
+
+{% block css %}
+<link href="/static/css/chosen.min.css" rel="stylesheet" media="screen">
+{% endblock css %}
+
+{% block message_queue %}
+{% endblock %}
+
+{% block content %}
+{% load cache %}
+{% cache 4 student_update request.user.username %}
+
+{% include 'room_change_warning.html' %}
+
+{% comment %} moves the messages to below the room change warning {% endcomment %}
+{% include 'messages.html' %}
+
+{% load accounts_extras %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1><strong>SRCT</strong>ROOMLIST</a></strong> {{ request.user.student.get_full_name_or_uname }}'s Settings</h1>
+    </div>
+  </div>
+</div>
+
+{% load socialaccount %}
+
+{% get_social_accounts request.user as accounts %}
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title text-center"><strong>Social Media Settings</strong></h1>
+      </div>
+      <div class="panel-body">
+        <p class="text-center">Verify your social media accounts to link them to other students.</p>
+        <div class="row text-center">
+          <div class="col-xs-6">
+          {% if accounts.facebook %}
+          <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-facebook fa-2x"></i></h4>
+            <h4>Facebook</h4>
+          {% else %}
+          <br />
+          <a href="{% provider_login_url 'facebook' process='connect' %}">
+            <h4><i class="fa fa-facebook fa-2x"></i></h4>
+            <h4>Facebook</h4>
+          </a>
+          {% endif %}
+          </div>
+          <div class="col-xs-6">
+          {% if accounts.google %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-google fa-2x"></i></h4>
+            <h4>Google</h4>
+          {% else %}
+          <br />
+          <a href="{% provider_login_url 'google' process='connect' %}">
+            <h4><i class="fa fa-google fa-2x"></i></h4>
+            <h4>Google</h4>
+          </a>
+          {% endif %}
+          </div>
+        </div>
+        <br />
+        <div class="row text-center">
+          <div class="col-xs-6">
+          {% if accounts.twitter %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-twitter fa-2x"></i></h4>
+            <h4>Twitter</h4>
+          {% else %}
+          <br />
+          <a href="{% provider_login_url 'twitter' process='connect' %}">
+            <h4><i class="fa fa-twitter fa-2x"></i></h4>
+            <h4>Twitter</h4>
+          </a>
+          {% endif %}
+          </div>
+          <div class="col-xs-6">
+          {% if accounts.instagram %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-instagram fa-2x"></i></h4>
+            <h4>Instagram</h4>
+          {% else %}
+          <br />
+          <a href="{% provider_login_url 'instagram' process='connect' %}">
+            <h4><i class="fa fa-instagram fa-2x"></i></h4>
+            <h4>Instagram</h4>
+          </a>
+          {% endif %}
+          </div>
+        </div>
+        <br />
+        <div class="row text-center">
+          <div class="col-xs-6">
+          {% if accounts.tumblr %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-tumblr fa-2x"></i></h4>
+            <h4>Tumblr</h4>
+          {% else %}
+          <br />
+          <a href="{% provider_login_url 'tumblr' process='connect' %}">
+            <h4><i class="fa fa-tumblr fa-2x"></i></h4>
+            <h4>Tumblr</h4>
+          </a>
+          {% endif %}
+          </div>
+          <div class="col-xs-6">
+          {% if accounts.pinterest %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-pinterest-p fa-2x"></i></h4>
+            <h4>Pinterest</h4>
+          {% else %}
+          <br />
+          <a href="{% provider_login_url 'pinterest' process='connect' %}">
+            <h4><i class="fa fa-pinterest-p fa-2x"></i></h4>
+            <h4>Pinterest</h4>
+          </a>
+          {% endif %}
+          </div>
+        </div>
+        <br />
+        <div class="row text-center">
+          <div class="col-xs-6">
+          {% if accounts.spotify %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-spotify fa-2x"></i></h4>
+            <h4>Spotify</h4>
+          {% else %}
+          <br />
+          <a href="{% provider_login_url 'spotify' process='connect' %}">
+            <h4><i class="fa fa-spotify fa-2x"></i></h4>
+            <h4>Spotify</h4>
+          </a>
+          {% endif %}
+          </div>
+          <div class="col-xs-6">
+          {% if accounts.github %}
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <h4><i class="fa fa-github fa-2x"></i></h4>
+            <h4>Github</h4>
+          {% else %}
+          <br />
+          <a href="{% provider_login_url 'github' process='connect' %}">
+            <h4><i class="fa fa-github fa-2x"></i></h4>
+            <h4>Github</h4>
+          </a>
+          {% endif %}
+          </div>
+        </div>
+        <br />
+        {% if accounts %}
+          <div class="row text-center">
+            <a href="{% url 'remove_social' request.user.username %}">
+              <button class="btn btn-xs btn-danger">Disconnect Accounts</button>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title text-center"><strong>Profile Settings</strong></h1>
+      </div>
+
+      <div class="panel-body">
+        <p>
+          If you have a <a href="https://en.gravatar.com/">Gravatar profile</a> associated
+          with your <a href="https://masonlive.gmu.edu/">Masonlive email</a> address, your
+          profile picture on Roomlist will use Gravatar.
+        </p>
+        <p>
+          If you connect your Facebook account, we will use your Facebook profile picture.
+        </p>
+        <hr />
+        {% if my_form.non_field_errors %}
+        <ul class="text-center">
+          {% for error in my_form.non_field_errors %}
+            <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
+          {% endfor %}
+        </ul>
+        <hr />
+        {% endif %}
+        {% spaceless %}
+        <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
+          <fieldset>
+          {% if form.first_name.errors %}
+            {% for error in form.first_name.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          {% if form.last_name.errors %}
+            {% for error in form.last_name.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <div class="col-sm-6">
+              <label for="{{ my_form.first_name.id_for_label }}">First Name</label>
+                {% if not my_form.first_name.errors %}
+                  {{ my_form.first_name }}
+                {% else %}
+                  <div class="has-error">
+                    {{ my_form.first_name }}
+                    <p>{{ form.first_name.errors }}</p>
+                  </div>
+                {% endif %}
+              </div>
+            <div class="col-sm-6">
+              <label for="{{ my_form.last_name.id_for_label }}">Last Name</label>
+                {% if not my_form.last_name.errors %}
+                  {{ my_form.last_name }}
+                {% else %}
+                  <div class="has-error">
+                    {{ my_form.last_name }}
+                    <p>{{ form.last_name.errors }}</p>
+                  </div>
+                {% endif %}
+            </div>
+          </div>
+          {% if form.gender.errors %}
+            {% for error in form.gender.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <label for="{{ my_form.gender.id_for_label }}" class="col-xs-12">
+              Gender Identity
+              <p class="help-block">(choose all that apply)</p>
+            </label>
+              {% for checkbox in my_form.gender %}
+                <div class="checkbox col-md-3 col-sm-3 col-sm-offset-1 col-xs-5 col-xs-offset-1">
+                  <label for="{{ checkbox.id_for_label }}">
+                    {{ checkbox.choice_label|gender_icon }}
+                    {{ checkbox.tag }}
+                  </label>
+                </div>
+              {% endfor %}
+          </div>
+          {% if form.show_gender.errors %}
+            {% for error in form.show_gender.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <div class="col-md-4">
+            <label for="{{ my_form.show_gender.id_for_label }}">
+              Show Gender on Profile?
+            </label><br />
+              {% for option in my_form.show_gender %}
+                <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
+              {% endfor %}
+            </div>
+          </div>
+          <hr />
+          {% if my_form.major.errors %}
+            {% for error in my_form.major.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <div class="col-lg-9">
+            <label for="{{ my_form.major.id_for_label }}">
+              Major(s)
+            </label><br />
+              {{ my_form.major }}
+            </div>
+          </div>
+          {% if form.graduating_year.errors %}
+            {% for error in form.graduating_year.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+              <label for="{{ my_form.graduating_year.id_for_label }}">
+                Graduating Year
+              </label>
+                {{ my_form.graduating_year }}
+            </div>
+          </div>
+          {% if not request.user.student.recent_changes > 2 %}
+          <hr />
+          {% if form.on_campus.errors %}
+            {% for error in form.on_campus.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <div class="col-md-4">
+            <label for="{{ my_form.on_campus.id_for_label }}">
+              Do You Live on Campus?
+            </label><br/>
+              {% for option in my_form.on_campus %}
+                <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
+              {% endfor %}
+            </div>
+          </div>
+          <div id="lives-on-campus">
+            <hr />
+            <p class="help-block">
+            The Global Center, the Townhouses, and Beacon Hall are not currently supported.<br />
+            We'll let everyone know when we add them.</p>
+            {% if form.room.errors %}
+              {% for error in form.room.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
+            <div class="form-group">
+              {{ my_form.room }}
+            </div>
+            <p class="help-block">
+              Your privacy settings affect the visibility of both your room and your social media accounts.
+            </p>
+            {% if form.privacy.errors %}
+              {% for error in form.privacy.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
+            <div class="form-group">
+              <div class="col-md-3 col-sm-6">
+              <label for="{{ my_form.privacy.id_for_label }}">
+                Privacy
+              </label><br/>
+                {{ my_form.privacy }}
+              </div>
+            </div>
+          </div>
+          <hr />
+            <p class="help-block">
+              You will not be able to see these students, and they will not be able to see you.
+            </p>
+            {% if form.blocked_kids.errors %}
+              {% for error in form.blocked_kids.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
+          <div class="form-group">
+            <div class="col-xs-12">
+            <label for="{{ my_form.blocked_kids.id_for_label }}">
+              Blocked Students
+            </label>
+              {{ my_form.blocked_kids }}
+            </div>
+          </div>
+          {% endif %}
+          <hr />
+          <input type="submit" value="Save" class="btn btn-primary"/>
+        </fieldset>
+        </form>
+        {% endspaceless %}
+      </div>
+    </div>
+    <p class="pull-right">
+      <small><a href="{% url 'delete_student' request.user.username %}">Delete Account</a></small>
+    </p>
+  </div>
+</div>
+
+{% endcache %}
+{% endblock content %}
+
+{% block javascript %}
+<script type="text/javascript" src="/static/js/chained.min.js"></script>
+<script type="text/javascript" src="/static/js/chosen.min.js"></script>
+<script>
+$(".chosen-select").chosen({max_selected_options: 2,
+                            width: "100%",
+                            placeholder_text_multiple: '(select up to two)'});
+$(".blocked-select").chosen({width: "100%",
+                             placeholder_text_multiple: "(search by name)"});
+</script>
+{% include 'room_selection_script.html' %}
+{% endblock javascript %}

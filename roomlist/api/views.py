@@ -1,86 +1,100 @@
 # standard library imports
 from __future__ import absolute_import, print_function
 # core django imports
-from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 # third party imports
-import json
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.views import APIView
+from rest_framework.reverse import reverse
+from rest_framework.response import Response
 # imports from your apps
-from housing.models import Building, Room
+from housing.models import Building, Floor, Room
+from accounts.models import Major
+from .serializers import (BuildingSerializer, BuildingFloorListSerializer,
+                          FloorSerializer, RoomSerializer,
+                          MajorSerializer, MajorURLSerializer)
 
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the Roomlist index.")
+# pagination class for optional inheritance
+class HousingPagination(PageNumberPagination):
+    page_size = 50
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 
-def buildings_list(request):
-    building_list = Building.objects.order_by('name')[:5]
-    jsons = '{"buildings":['
-    for p in building_list:
-        jsons += '"'+p.__str__()+'":"'+p.address.__str__()+'",'
-    jsons = jsons[:-1]+']}'
-    return HttpResponse(jsons)
+class MultipleFieldLookupMixin(object):
+
+    # http://www.django-rest-framework.org/api-guide/generic-views/#get_objectself
+    def get_object(self):
+        queryset = self.get_queryset()
+        filter = {}
+        for field in self.multiple_lookup_fields:
+            filter[field] = self.kwargs[field]
+        obj = get_object_or_404(queryset, **filter)
+        return obj
 
 
-def building(request, buildingName):
-    room_list = Room.objects.filter(building__name=''+buildingName).order_by('number')
-    jsons = 'Building does not exist'
-    if room_list:
-        jsons = '{"name":"'+buildingName+'","rooms":['
-        for p in room_list:
-            jsons += '"'+p.number.__str__()+'":['
-            jsons += '"floor":'+p.floor.__str__()+',"bedA":"'+p.bedA.__str__()+'"'
-            if p.bedB.__str__() is not '':
-                jsons += ',"bedB":"'+p.bedB.__str__()+'"'
-            if p.bedC.__str__() is not '':
-                jsons += ',"bedC":"'+p.bedC.__str__()+'"'
-            if p.bedD.__str__() is not '':
-                jsons += ',"bedD":"'+p.bedD.__str__()+'"'
-            jsons += '],'
-        jsons = jsons[:-1] + ']}'
-    return HttpResponse(jsons)
+# the actual api views
+
+# housing apis
+class BuildingList(ListAPIView):
+    queryset = Building.objects.all()
+    serializer_class = BuildingSerializer
 
 
-def room(request, building, room_number):
-    room_obj = Room.objects.filter(building__name=''+building, number=room_number)
-
-    jsons = "This room does not exist or has not been created"
-    if room_obj:
-        jsons = '{"building":"'+building+'","number":'+room_number+','
-        for p in room_obj:
-            jsons += '"floor":'+p.floor.__str__()+',"residents":["bedA":"'+p.bedA.__str__()+'"'
-            if p.bedB.__str__() is not '':
-                jsons += ',"bedB":"'+p.bedB.__str__()+'"'
-            if p.bedC.__str__() is not '':
-                jsons += ',"bedC":"'+p.bedC.__str__()+'"'
-            if p.bedD.__str__() is not '':
-                jsons += ',"bedD":"'+p.bedD.__str__()+'"'
-            jsons += ']'
-        jsons += ']}'
-    return HttpResponse(jsons)
+class BuildingRetrieve(RetrieveAPIView):
+    model = Building
+    queryset = Building.objects.all()
+    serializer_class = BuildingFloorListSerializer
+    lookup_field = 'building_name'
 
 
-###################JASON trying to JSON in python, so confuzed:
-#    if room_obj:
-#        jsons = {'building':building, 'number':room_number, 'residents': []}
-#        for p in room_obj:
-#            jsons.residents[0] =  'bedA':p.bedA.__str__()
-#            if p.bedB.__str__() is not '':
-#                jsons.residents[1] = 'bedB':p.bedB.__str__()
-#            if p.bedC.__str__() is not '':
-#                jsons.residents[2] = 'bedC':p.bedC.__str__()
-#            if p.bedD.__str__() is not '':
-#                jsons.residents[3] = 'bedD':p.bedD.__str__()
-#    return HttpResponse(json.dumps(jsons))
+# class FloorList(ListAPIView):
+#     queryset = Floor.objects.all()
+#     serializer_class = FloorSerializer
+#     pagination_class = HousingPagination
 
 
-def neighbourhood(request, nhood):
-    building_list = Building.objects.filter(neighbourhood=''+nhood).order_by('name')
-    jsons = 'That neighbourhood has no buildings or does not exist'
-    code = 404
-    if building_list:
-        code = 200
-        jsons = '{"neighbourhood":"'+nhood+'","buildings":['
-        for p in building_list:
-            jsons += '"'+p.__str__()+'",'
-        jsons = jsons[:-1]+']}'
-    return HttpResponse(jsons, status=code)
+class FloorRetrieve(MultipleFieldLookupMixin, RetrieveAPIView):
+    model = Floor
+    queryset = Floor.objects.all()
+    serializer_class = FloorSerializer
+    multiple_lookup_fields = ('building__building_name', 'floor_num')
+
+
+class RoomRetrieve(MultipleFieldLookupMixin, RetrieveAPIView):
+    model = Room
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+    multiple_lookup_fields = ('room_num', 'floor__floor_num',
+                              'floor__building__building_name')
+
+
+# class RoomList(ListAPIView):  # kek
+#     queryset = Room.objects.all()
+#     serializer_class = RoomSerializer
+#     pagination_class = HousingPagination
+
+
+# major apis
+class MajorList(ListAPIView):
+    queryset = Major.objects.all()
+    serializer_class = MajorURLSerializer
+
+
+class MajorRetrieve(RetrieveAPIView):
+    model = Major
+    queryset = Major.objects.all()
+    serializer_class = MajorSerializer
+    lookup_field = 'slug'
+
+
+# root urls-- custom version of drf's root DefaultRouter, because we're doing
+# atypical things with url handling and aren't using out-of-the-box routers
+class APIRoot(APIView):
+    def get(self, request):
+        return Response({
+            'housing': reverse('api_list_buildings', request=request),
+            'majors': reverse('api_list_majors', request=request),
+        })

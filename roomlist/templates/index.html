@@ -1,10 +1,21 @@
 {% extends 'layouts/base.html' %}
 {% block title %} SRCT Roomlist &bull; Homepage {% endblock title %}
 
+{% block og_metadata %}
+<meta property="og:title" content="SRCT Roomlist"/>
+<meta property="og:description" content="Welcome to SRCT Roomlist! Log in with your Mason username and password to find your on-campus neighbors."/>
+{% endblock %}
+
+{% block tw_metadata %}
+<meta name="twitter:title" content="SRCT Roomlist" />
+<meta name="twitter:description" content="Welcome to SRCT Roomlist! Log in with your Mason username and password to find your on-campus neighbors." />
+
+{% endblock tw_metadata %}
+
 {% block content %}
 
 {% load cache %}
-{% cache 900 homepage %}
+{% cache 3600 homepage %}
 
 <div class="container container-padding">
   <div class="row">

@@ -1,6 +1,7 @@
 {% load humanize %}
-<label>Neighborhood</label>
-<select id="neighborhood" name="neighborhood">
+<div class="col-md-3 col-sm-6">
+<label>Neighborhood</label><br/>
+<select id="neighborhood" name="neighborhood" class="form-control">
   {% for neighborhood in neighborhoods %}
     {% if user.student.get_building.neighbourhood == neighborhood.0 %}
       <option value="{{ neighborhood.0  }}" selected="selected">{{ neighborhood.1 }}</option>
@@ -9,8 +10,10 @@
     {% endif %}
   {% endfor %}
 </select>
-<label>Building</label>
-<select id="building" name="building">
+</div>
+<div class="col-md-3 col-sm-6">
+<label>Building</label><br/>
+<select id="building" name="building" class="form-control">
   <option value="">---</option>
   {% for building in buildings %}
     {% if user.student.get_building == building %}
@@ -20,25 +23,27 @@
     {% endif %}
   {% endfor %}
 </select>
-<label>Floor</label>
-<select id="floor" name="floor">
+</div>
+<div class="col-md-3 col-sm-6">
+<label>Floor</label><br/>
+<select id="floor" name="floor" class="form-control">
   <option value="">---</option>
+  {% load cache %}
+  {% cache 3600 floor_list %}
   {% for floor in floors %}
-    {% if user.student.get_floor.pk == floor.pk %}
-      <option value="{{ floor.pk }}" class="{{ floor.building.name }}" selected="selected">{{ floor.number|ordinal }}</option>
-    {% else %}
-      <option value="{{ floor.pk }}" class="{{ floor.building.name }}">{{ floor.number|ordinal }}</option>
-    {% endif %}
+    <option value="{{ floor.pk }}" class="{{ floor.building.name }}">{{ floor.number|ordinal }}</option>
   {% endfor %}
+  {% endcache %}
 </select>
-<label>Room</label>
-<select id="room" name="room" class="roompicker">
+</div>
+<div class="col-md-3 col-sm-6">
+<label>Room</label><br/>
+<select id="room" name="room" class="roompicker form-control">
   <option value="">---</option>
+  {% cache 3600 room_list %}
   {% for room in rooms %}
-    {% if user.student.room.pk == room.pk %}
-      <option value="{{ room.pk }}" class="{{ room.floor.pk }}" selected="selected">{{ room.number }}</option>
-    {% else %}
-      <option value="{{ room.pk }}" class="{{ room.floor.pk }}">{{ room.number }}</option>
-    {% endif %}
+    <option value="{{ room.pk }}" class="{{ room.floor.pk }}">{{ room.number }}</option>
   {% endfor %}
+  {% endcache %}
 </select>
+</div>

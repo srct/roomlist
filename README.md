@@ -16,11 +16,11 @@ Please visit the [SRCT Wiki](http://wiki.srct.gmu.edu/) for more information on 
 
 ## Setting everything up for development
 
-These instructions are for Ubuntu and Debian, or related Linux distributions. (If you'd like to help write the instructions for Mac OSX, please do!)
-
-### Prerequisities
+### Prerequisities and Package Installation
 
 First, install python, pip, and git on your system. Python is the programming language used for Django, the web framework used by Roomlist. 'Pip' is the python package manager. Git is the version control system used for SRCT projects.
+
+**Debian/Ubuntu**
 
 Open a terminal and run the following commands.
 
@@ -32,16 +32,6 @@ This retrieves links to the most up-to-date and secure versions of your packages
 
 you install python and git.
 
-Now, we're going to clone down a copy of the Roomlist codebase from git.gmu.edu, the SRCT code respository.
-
-Configure your ssh keys by following the directions at git.gmu.edu/help/ssh/README.
-
-Now, on your computer, navigate to the directory in which you want to download the project (perhaps one called development/ or something similar), and run
-
-`git clone git@git.gmu.edu:srct/roomlist.git`
-
-### Package Installation
-
 Next, install these packages from the standard repositories
 
 `$ sudo apt-get install libldap2-dev mysql-server mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev libjpeg-dev redis-server`
@@ -49,6 +39,40 @@ Next, install these packages from the standard repositories
 If prompted to install additional required packages, install those as well.
 
 When prompted to set your mysql password, it's advisable to set it as the same as your normal superuser password.
+
+Now you're ready to set up the Roomlist repository on your machine.
+
+**macOS (Formerly OS X)**
+
+This tutorial uses the third party Homebrew package manager for macOS, which allows you to install
+packages from your terminal just as easily as you could on a Linux based system. You could use another
+package manager (or not use one at all), but Homebrew is highly reccomended.
+
+In order to use homebrew, you must first install XCode Command Line Tools. For users of OS X Mavericks and all newer
+versions, this can be done by running ``xcode-select --install`` and clicking "Install" on the popup that appears.
+
+On older versions of OS X, you should simply install the entirety of XCode, which can be found online.
+
+To get homebrew, run the following command in a terminal:
+``/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+
+**Note**: You do NOT need to use `sudo` when running any Homebrew commands, and it likely won't work if you do.
+
+Now you want to Python, pip, git, and MySQL (macOS actually ships with some of these, but we want to have the latest versions). We'll also install Redis, though this package is only relevant when testing the production environment. To do so, run the following command in your terminal:
+
+`brew install python git mysql redis`
+
+Now you're ready to set up the Roomlist repository on your machine.
+
+#### Git Setup
+
+Now, we're going to clone down a copy of the Roomlist codebase from git.gmu.edu, the SRCT code respository.
+
+Configure your ssh keys by following the directions at git.gmu.edu/help/ssh/README.
+
+Now, on your computer, navigate to the directory in which you want to download the project (perhaps one called development/ or something similar), and run
+
+`git clone git@git.gmu.edu:srct/roomlist.git`
 
 ### The Virtual Environment
 
@@ -87,7 +111,7 @@ Load up the mysql shell by running
 
 ``mysql -u root -p``
 
-and putting in your mysql password.
+and putting in your mysql password (on MacOS, this will default to an empty string, so you can just press return).
 
 Create the database by running
 
@@ -103,7 +127,7 @@ Though you can use an existing user to access this database, here's how to creat
 For local development, password strength is less important, but use a strong passphrase for deployment. You can choose a different username.
 
 ``GRANT ALL ON roomlist.* TO 'roommate'@'localhost';``
-This allows your database user to create all the tables it needs on the bookshare database. (Each model in each app's models.py is a separate table, and each attribute a column, and each instance a row.)
+This allows your database user to create all the tables it needs on the roomlist database. (Each model in each app's models.py is a separate table, and each attribute a column, and each instance a row.)
 
 ``GRANT ALL ON test_roomlist.* TO 'roommate'@'localhost';`` ``FLUSH PRIVILEGES;``
 When running test cases, django creates a test database so your 'real' database doesn't get screwed up. This database is called 'test_' + whatever your normal database is named. Note that for permissions it doesn't matter that this database hasn't yet been created.
@@ -112,23 +136,21 @@ The .\* is to grant access all tables in the database, and 'flush privileges' re
 
 Exit the mysql shell by typing `exit`.
 
-Now, to configure your newly created database with the project settings, and set up your project's cryptographic key, copy the secret.py.template in settings/ to secret.py. Follow the comment instructions provided in each file to set your secret key and database info.
+Now, to configure your newly created database with the project settings, and set up your project's cryptographic key, **copy the `secret.py.template` in settings/ to `secret.py`**. Follow the comment instructions provided in each file to set your secret key and database info. `secret.py` also contains a few additional passwords for email and for Slack. The Slack API key will not be necessary unless more 50 people sign into your development instance. The email password is unnecessary in development, because the email settings are configured not to send emails via a server, but to print them out to the terminal wherever you're running `manage.py`.
 
-Also copy config.py.template to config.py. You won't need to make any changes here off the bat. See more information about this file under the 'Deployment' section.
-
-Run `python manage.py makemigrations` to create the tables and rows and columns for your database. This command generates sql code based on your database models. If you don't see output noting the creation of a number of models, add the app name to the end of the command, e.g. `python manage.py makemigrations housing`.
+Run `python manage.py makemigrations` to create the tables and rows and columns for your database. This command generates sql code based on your database models. If you don't see output noting the creation of a number of models, add the app name to the end of the command, e.g. `python manage.py makemigrations housing` and then `python manage.py makemigrations accounts`.
 
 Then run `python manage.py migrate` to execute that sql code and set up your database. Migrations also track how you've changed your models over the life of your database, which allows you to make changes to your tables without screwing up existing information.
 
-Finally, run `python manage.py createsuperuser` to create an admin account, using the same username and email as you'll access through CAS. This means your 'full' email address, for instance gmason@masonlive.gmu.edu. Your password will be handled through CAS, so you can just use 'password' here.
+Finally, run `python manage.py createsuperuser` to create an admin account, using the same username and email as you'll access through CAS. This means your 'full' email address, for instance *gmason@masonlive.gmu.edu*. Your password will be handled through CAS, so you can just use 'password' here.
 
 (If you accidentally skip this step, you can run `python manage.py shell` and edit your user from there. Selectyour user, and set .is_staff and .is_superuser to True, then save.)
 
-## Loading in demo data
+## Loading in initial data
 
-The project includes a json file with demo data to load into the database for majors. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly.
+The project includes a json file to load majors into the database. Run `python manage.py loaddata accounts/major_fixtures.json`. You'll see output saying 'Installed 79 objects from 1 fixture(s) if all goes smoothly.
 
-To update all of the rooms, halls, and floors, you must execute a command to populate them in order for it to work properly. Run `python manage.py shell < housing/housing_obj_creator.py`. You should see the progress creating the housing objects printed in your terminal.
+To add all supported housing, with the virtual environment enabled, run `python manage.py shell < housing/housing_obj_creator.py`. It will take a couple of minutes, but this script will create every building, floor, and room in your database.
 
 ## Starting up the test server
 
@@ -210,9 +232,45 @@ If you've forgotten the name with the number, back on Google's page it's in the 
 
 Add localhost as the site, click save, and throw a party, because thank goodness, you're finally all set.
 
-### Notes on Cacheing
+### Github
 
-Roomlist's urls are set to be cached for periods of time set so that ordinary user experience will not be impacted, but a substantial load will be lifted from a deployment server. However, this can be annoying when you're making and want to check small changes rapidly on development. You can edit the respective apps' urls.py files and remove the cacheing configurations, but make sure that you do not include such edits in any pushes!
+Github's auth setup is mercifully comparatively easy. Sign in and go to https://github.com/settings/applications/new. (Note if you're creating a token for an organization, you'll need to instead go to 
+https://github.com/organizations/srct/settings/applications/new/. App names do not need to be universally unique. Set http://localhost:8000 as your Homepage URL. Your description will be shown to your users; write something like 'Verify your Github account with Roomlist!'. For the authorization callback, use http://localhost:8000/accounts/github/login/callback/. Note your Client ID and Client Secret in the refreshed page, and add a new social application. Copy everything over directly from your just configured Github OAuth Application page, and add localhost as your chosen site.
+
+### Tumblr
+
+Head to https://www.tumblr.com/settings/apps. The page is predominantly about Tumblr's mobile apps, but there's a faint gray line of text at the bottom. 'Wanna make an app? Cool. Register to use the Tumblr API, then have at it.' You'll need to verify your email address with Tumblr before continuing.
+
+Click the '+ Register application' button, and then you'll have another page ahead of you to fill of OAuth information.
+A couple of notes: the Application Name is not universal. Use the application description you've been using throughout, 'Verify your Tumblr account with Roomlist!'. The administrative contact email will be your Tumblr default account email. Set the callback url as http://localhost:8000/accounts/tumblr/login/callback/. Your application page icons cannot have transparent background. All right, you're ready to register!
+
+On the Applications page that you'll be redirected to, the 'OAuth Consumer Key' is the Client ID you'll need when you add a new Social Application. Click 'Show Secret Key' to get the Client Secret. Use the name you gave your app, add localhost for your site, and you're off to the races.
+
+Tumblr doesn't seem to have a way to only request specific permissions-- it will ask if it's okay both to access information and to post on your behalf. We're not interested in the latter, but keep in mind it will ask users if that's okay.
+
+### Pinterest
+
+Stop on over at https://developers.pinterest.com/apps/. If this is the first time you're playing with their API, you'll be asked to accept their terms of service. This then pops a modal to name your app and write a description. Note that while you may name your app anything (it does not have to be universally unique) it cannot be changed later. For the description, hit the standard: 'Verify your Pinterest account with Roomlist!'.
+
+Pinterest has a fascinating approval process. When you get redirected to your app's page, you'll see 'You're almost ready! You still need at least 1 collaborator to authorize your app before you can submit.' That's right, just like an elementary school field trip to a pool, app approval is a buddy process. You and your buddy must follow each other. Thus, for deployment you must have a friend, but this step is unnecessary for development.
+
+Pinterest has the unique requirement additionally of requiring that redirect URIs use https. We don't have certs for dev, so just go ahead and drop in an 's' to https://localhost:8000/accounts/pinterest/login/callback/. If you're going to change the picture that shows up when users connect your account, you'll need to hover over the large image at the top next to your app's name. There's no button otherwise.
+
+Now, you're not going to be able to test this in development. You can get close by adding the `ACCOUNT_DEFAULT_HTTP_PROTOCOL` to https in `settings.py` like it is in `production.py`, and you'll be able to see most of the process. But for the final redirect, your browser will tell you something like 'This site can’t provide a secure connection: localhost sent an invalid response. ERR_SSL_PROTOCOL_ERROR', and Django will print you out 'You're accessing the development server over HTTPS, but it only supports HTTP.'. This is lame, but trust that if you get to that point it's working.
+
+Add in your site information, and click on the button to reveal the 'App Secret'. Copy that and the 'App ID' into 'Client id' and 'Secret Key' in the Django admin interface when adding a new Pinterst app. Move over your chosen sites, and strap in, because it's still a while to go.
+
+You have to submit your app for approval as detailed here in their documentation https://developers.pinterest.com/docs/api/overview/. As they state, be as descriptive as possible when putting in your request.
+
+Phew. You're finished. Get a stiff drink.
+
+### Spotify
+
+Visit https://developer.spotify.com/my-applications. You'll land on a big splash page with a green login button. A window will pop up, and after you've put in your username and password, it will ask to "Connect Spotify Developer to your Spotify account." Hit "Okay" and accept the Terms of Service.
+
+The next page will be for creating your application. The app name does not have to be universally unique. User 'Verify your Spotify account with Roomlist!' as the app description. The next page will ask for your site's location and the callback url. You **must** include the trailing slash, so http://localhost:8000/accounts/spotify/login/callback/. This page already provides you the Client ID and Client Secret. Copy these to the Client ID and Secret Key when adding an app in the django admin interface, and add your site to the chosen sites.
+
+Thankfully, there isn't any scope handling we need to deal with-- by default, we are limited to 'Read your publicly available information'.
 
 ## Modifying search
 
@@ -220,7 +278,7 @@ If you make changes to the search indexes, you will need to re-indexing your mod
 
 ## Deployment
 
-A number of deployment-related settings have been moved from settings.py to config.py in settings/ for ease of use. Make sure to never have DEBUG mode on when running your project in deployment.
+Configure and use `production.py` instead of `settings.py` in the production environment, to turn on caching, turn off debug mode, set up email, support https, and a whole lot more. To use this settings file, pass an additional argmument when running the project. `python manage.py runserver --settings=settings.production`
 
 ### Docker
 

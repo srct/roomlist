@@ -1,0 +1,35 @@
+image: ubuntu:14.04
+
+services:
+  - mysql:latest
+
+types:
+  - test
+
+variables:
+  MYSQL_DATABASE: roomlist
+  MYSQL_ROOT_PASSWORD: root
+
+test_Roomlist:
+  type: test
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y python-dev python-pip libldap2-dev mysql-server mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev libjpeg-dev git
+    - pip install -r requirements.txt
+    - pip install coverage
+    - cp roomlist/settings/secret.py.template roomlist/settings/secret.py
+    - export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
+    - sed -i go/settings/secret.py -e 's/DB_PASSWORD.*/DB_PASSWORD = \"root\"/'
+    - cd roomlist
+    - python manage.py makemigrations accounts
+    - python manage.py makemigrations housing
+    - python manage.py makemigrations
+    - python manage.py migrate
+    - python manage.py loaddata accounts/major_fixtures.json
+    - python manage.py shell < housing/housing_obj_creator.py
+    - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python ./manage.py shell
+  script:
+    - cd ..
+    - coverage run --source=roomlist ./roomlist/manage.py test
+    - coverage html
+    - grep pc_cov htmlcov/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'

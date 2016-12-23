@@ -3,98 +3,124 @@
 
 {% block content %}
 
-{% include 'messages.html' %}
+{% load gravatar %}
+{% load humanize %}
 
 {% load cache %}
 {% cache 15 landing request.user.username %}
 
-{% load gravatar %}
-<h2>Welcome Back {{ me.get_first_name_or_uname }}!</h2>
-<legend></legend>
+<h2>Welcome
+{% if not me.is_noob %}
+Back,
+{% endif %}
+{{ me.get_first_name_or_uname }}!</h2>
+<hr/>
 
-{% if not me.room %}
-  <h3><em><a href="{% url 'updateStudent' request.user.username %}">Select your room</a>, and we'll show you the other students on your floor.</em></h3>
+{% if me.on_campus %}
+
+{% if not me.room and me.on_campus %}
+<h3><em>
+  <a href="{% url 'update_student' request.user.username %}">Select your room</a>,
+  and we'll show you the other students on your floor.
+</em></h3>
 {% else %}
 
   {% if roomies|length == 1 %}
     <h3>Your Roommate in {{ me.room }}</h3>
-    <legend></legend>
+    <hr/>
   {% else %}
-  <h3>Your Roommates in <a href="{{ me.room.get_absolute_url }}">{{ me.room }}</a></h3>
-  <legend></legend>
+    <h3>Your Roommates in <a href="{{ me.room.get_absolute_url }}">{{ me.room }}</a></h3>
+    <hr/>
   {% endif %}
-    <div class="row">
-      {% for student in roomies %}
-        <div class="col-md-3 text-center">
-          <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture"></img>
-          <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
-          <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
-        </div>
-      {% if forloop.counter|divisibleby:4 %}
+
+<div class="student-row">
+  <div class="row">
+    {% for student in roomies %}
+      <div class="col-sm-3 col-xs-6 text-center wordwrap">
+        <img class="img-circle img-responsive center center-block profile-image"
+             src="{{ student.profile_image_url }}"
+             alt="{{ student.get_first_name_or_uname }} profile picture"></img>
+        <h4><strong>
+          <a href="{{ student.get_absolute_url }}">{{ student.get_full_name_or_uname }}</a>
+        </strong></h4>
+        <h5><em>{% include 'double_major.html' %}</em></h5>
       </div>
-      <br />
-      <div class="row">
-      {% endif %}
-      {% empty %}
-        <div class="col-md-12">
-          <h4>There are no other students registered in your room right now.</h4>
-        </div>
-      {% endfor %}
-    </div>
+    {% empty %}
+      <div class="col-md-12">
+        <h4>There are no other students registered in your room right now.</h4>
+      </div>
+    {% endfor %}
+  </div>
+</div>
 
-{% load humanize %}
+<h3>Your Floormates from
+  <a href="{{ me.room.floor.get_absolute_url }}">
+  {{ me.room.floor.building }} {{ me.room.floor.number|ordinal }}</a>
+</h3>
+<hr/>
 
-<h3>Your Floormates from <a href="{{ me.room.floor.get_absolute_url }}">{{ me.room.floor.building }} {{ me.room.floor.number|ordinal }}</a></h3>
-    <legend></legend>
-    <div class="row">
-      {% for student in floories %}
-      <div class="col-md-3 text-center">
-        <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
-        <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
-        <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major }}</em></a></h5>
+<div class="student-row">
+  <div class="row">
+    {% for student in floories %}
+      <div class="col-md-3 col-xs-6 text-center wordwrap">
+        <img class="img-circle img-responsive center center-block profile-image"
+             src="{{ student.profile_image_url }}"
+             alt="{{ student.get_first_name_or_uname }} profile picture">
+        <h4><strong>
+          <a href="{{ student.get_absolute_url }}">{{ student.get_full_name_or_uname }}
+        </strong></h4>
+        <h5><em>{% include 'double_major.html' %}</em></h5>
         <h5><a href="{{ student.room.get_absolute_url }}">{{ student.room }}</h5></a>
       </div>
-      {% if forloop.counter|divisibleby:4 %}
-        </div>
-        <br />
-        <div class="row">
-      {% endif %}
-      {% empty %}
-        <div class="col-md-12">
-          <h4>There are no other students registered on your floor right now.</h4>
-        </div>
-      {% endfor %}
-    </div>
+    {% empty %}
+      <div class="col-md-12">
+        <h4>There are no other students registered on your floor right now.</h4>
+      </div>
+    {% endfor %}
+  </div>
+</div>
 
-{% endif %}
+{% endif %}  {% comment %} else not me.room and me.oncampus {% endcomment %}
+{% endif %}  {% comment %} else me.oncampus {% endcomment %}
 {% endcache %}
 
+{% load accounts_extras %}
+
 {% cache 120 landing_majors request.user.username %}
-{% if not me.major %}
-  <h3><em><a href="{% url 'updateStudent' request.user.username %}">Set your major</a>, and we'll show you some of the other students in your program.</em></h3>
+{% if not me.major.all %}
+  <h3><em>
+    <a href="{% url 'update_student' request.user.username %}">Set your major</a>,
+    and we'll show you some of the other students in your program.
+  </em></h3>
 {% else %}
-
-    <h3>Other Students in <a href="{{ me.major.get_absolute_url }}">{{ me.major.name }}</a></h3>
-    <legend></legend>
-    <div class="row">
-      {% for student in majormates %}
-      <div class="col-md-3 text-center">
-        <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
-        <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
+  {% for major, students in majormates.items %}
+    <h3>Other Students in <a href="{{ major.get_absolute_url }}">{{ major.name }}</a></h3>
+    <hr />
+    <div class="student-row">
+      <div class="row">
+        {% for student in students %}
+        <div class="col-sm-3 col-xs-6 text-center wordwrap">
+          <img class="img-circle img-responsive center center-block profile-image"
+               src="{{ student.profile_image_url }}"
+               alt="{{ student.get_first_name_or_uname }} profile picture">
+          <h4><strong>
+            <a href="{{ student.get_absolute_url }}">{{ student.get_full_name_or_uname }}</a>
+          </strong></h4>
+          <h5>{{ student.graduating_year|bc }}</h5>
+        </div>
+        {% empty %}
+          <div class="col-md-12">
+            <h4>There are no other students registered in your major right now.</h4>
+          </div>
+        {% endfor %}
       </div>
-      {% if forloop.counter|divisibleby:4 %}
-        </div>
-        <br />
-        <div class="row">
-      {% endif %}
-      {% empty %}
-        <div class="col-md-12">
-          <h4>There are no other students registered in your major right now.</h4>
-        </div>
-      {% endfor %}
     </div>
-
+  {% endfor %}
 {% endif %}
+
+<br />
+<hr />
+{% include 'disclaimer.html' %}
 
 {% endcache %}
 {% endblock %}

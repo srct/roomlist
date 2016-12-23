@@ -1,0 +1,19 @@
+Dear {{ student_name }},
+
+
+We have removed your account from Roomlist.
+
+{{ special_message }}
+
+:-)
+
+
+---
+
+Mason SRCT
+
+SRCT is a registered student organization at George Mason University. We have
+written and provide this project for the benefit of our school's community, but
+offer no claims to the accuracy of the information provided on our site by other
+student users. We are not affiliated with Mason Housing. The source code for this
+project is available and freely licensed at git.gmu.edu/srct/roomlist.

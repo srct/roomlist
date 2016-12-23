@@ -1,0 +1,130 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} SRCT RoomList | Student | {{ student.get_full_name_or_uname }} | Delete {% endblock %}
+
+{% block message_queue %}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1><strong>SRCT</strong>ROOMLIST</h1>
+      <p class="lead">Delete <strong>{{ student.get_full_name_or_uname }}</strong></p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <p>
+      We're sorry to see you go, but we'd love if could take a couple of moments to give
+      us a little information about why you've decided to leave our service.
+    </p>
+    <p>
+      We'll use your response to guide development to make Roomlist better for everyone.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title text-center"><strong>Departing Feedback</strong></h1>
+      </div>
+
+      <div class="panel-body">
+        {% if form.non_field_errors %}
+        <hr />
+        <ul class="text-center">
+          {% for error in form.non_field_errors %}
+            <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
+          {% endfor %}
+        </ul>
+        <hr />
+        {% endif %}
+        <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
+          <fieldset>
+            {% if form.leaving.errors %}
+              {% for error in form.leaving.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
+            <div class="form-group">
+              <label for="{{ form.leaving.id_for_label }}" class="col-md-5">
+                <strong>{{ form.leaving.label }}</strong> *
+              </label>
+              <div class="col-md-7">
+                {% for option in form.leaving %}
+                  <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
+                {% endfor %}
+              </div>
+            </div>
+            <hr/>
+            {% if form.feedback.errors %}
+              {% for error in form.feedback.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
+            <div class="form-group">
+              <label for="{{ form.feedback.id_for_label }}" class="col-md-2">
+                <strong>{{ form.feedback.label }}</strong>
+              </label>
+              <div class="col-md-10">
+                {{ form.feedback }}
+              </div>
+            </div>
+          </fieldset>
+      </div>
+    </div>
+    <p class="text-muted"><small>* required</small></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 text-center">
+    <a href="{{ student.get_absolute_url }}" style="margin:10px">
+      <button type="button" class="btn btn-default">Cancel</button>
+    </a>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+      Delete Me
+    </button>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><strong>Are You Sure?</strong></h4>
+      </div>
+
+      <div class="modal-body">
+        <p>
+          We'll send you a confirmation email to {{ student.user.email }}.
+        </p>
+        <p>
+          Thanks for trying SRCT Roomlist! Check out some of our other
+          <a href="https://srct.gmu.edu/projects">projects</a>
+          on our student org's
+          <a href="https://srct.gmu.edu/">website</a>.
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <input type="submit" value="Yes" class="btn btn-primary"/>
+      </div>
+
+    </div>
+  </div>
+</div> 
+
+        </form> <!-- keeping the indentation from above -->
+{% endblock content %}

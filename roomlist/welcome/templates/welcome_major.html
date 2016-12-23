@@ -1,0 +1,112 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} SRCT RoomList | Welcome | Step 3 of 4 {% endblock %}
+
+{% block css %}
+<link href="/static/css/chosen.min.css" rel="stylesheet" media="screen">
+{% endblock css %}
+
+{% block message_queue %}
+{% endblock %}
+
+{% block content %}
+
+<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;">
+    <span class="sr-only">75% complete</span>
+  </div>
+</div>
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1>Welcome to <strong>SRCT</strong>ROOMLIST! <small>Step 3 of 4</small></h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <p>
+      Now let's verify your major and add your graduating year,
+      {{ request.user.student.get_first_name_or_uname }}. This information can help
+      students form study groups.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title text-center"><strong>Major</strong></h1>
+      </div>
+
+      <div class="panel-body">
+        {% if my_form.non_field_errors %}
+        <hr />
+          <ul class="text-center">
+            {% for error in my_form.non_field_errors %}
+              <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
+            {% endfor %}
+          </ul>
+        <hr />
+        {% endif %}
+        <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
+          <fieldset>
+          {% if my_form.major.errors %}
+            {% for error in my_form.major.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <div class="col-lg-9">
+            <label for="{{ my_form.major.id_for_label }}">
+              Major(s)
+            </label><br />
+              {{ my_form.major }}
+            </div>
+          </div>
+          {% if my_form.graduating_year.errors %}
+            {% for error in my_form.graduating_year.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+              <label for="{{ my_form.graduating_year.id_for_label }}">
+                Graduating Year
+              </label>
+                {{ my_form.graduating_year }}
+            </div>
+          </div>
+          <hr/>
+          <input type="submit" value="Save" class="btn btn-primary"/>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 text-center">
+    <div class="alert alert-danger" role="alert">
+      <p><i class="fa fa-exclamation-circle fa-fw fa-lg"></i> <strong>Changing your major here serves only to make it easier for others to find you on this site.</strong></p>
+      <p>Talk with your academic advisor and file all necessary paperwork to officially change your major with the registrar.</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="/static/js/chosen.min.js"></script>
+<script>
+$(".chosen-select").chosen({max_selected_options: 2,
+                            width: "100%",
+                            placeholder_text_multiple: '(select up to two)'});
+</script>
+{% endblock javascript %}

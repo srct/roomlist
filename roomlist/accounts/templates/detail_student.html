@@ -1,0 +1,220 @@
+{% extends 'layouts/base.html' %}
+{% block title %} SRCT Roomlist | {{ student.user.first_name }} {{ student.user.last_name }} {% endblock title %}
+{% block content %}
+{% load socialaccount %}
+{% load gravatar %}
+{% load cache %}
+{% cache 4 student_page request.user.username %}
+
+{% get_social_accounts student.user as accounts %}
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-2 col-md-offset-1 text-center">
+      <img class="img-circle img-responsive center center-block profile-image" src="{{ student.profile_image_url }}" alt="{{ student.get_full_name_or_uname }} profile picture">
+    </div>
+
+    <div class="col-md-6 text-center">
+      <h1><strong>{{ student.get_full_name_or_uname }}</strong></h1>
+      {% if shares %}
+        <p class="lead"><strong>
+          {% if not student.on_campus %}
+            {{ student.get_first_name_or_uname }} doesn't live on campus.
+          {% elif student.room == None %}
+            {{ student.get_first_name_or_uname }} hasn't set their room yet.
+          {% else %}
+            <a href="{{ student.room.get_absolute_url }}">{{ student.room }}</a>
+            {% if same_floor %}
+              {% if has_flagged %}
+                <a href="{% url 'deleteConfirmation' request.user.username student.user.username %}">
+                  <small><span style="padding-left:15px" class="fa-stack fa-lg">
+                    <i class="fa fa-flag fa-stack-1x"></i>
+                    <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                  </span></small>
+                </a>
+              {% else %}
+                <a href="{% url 'createConfirmation' request.user.username student.user.username %}">
+                  <i style="padding-left:15px" class="fa fa-flag"></i>
+                </a>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        </strong></p>
+        {% if student.get_flag_count > 4 %}
+          <p><em>* a number of other floormates say this room info is incorrect</em></p>
+        {% endif %}
+      {% endif %}
+      {% if student.on_campus %}
+        <p>
+          <em>shares room with</em>:
+          <span class="label label-default"><strong>{{ student.privacy }}</strong></span>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% load accounts_extras %}
+
+<div class="row">
+  <div class="col-md-5 col-md-offset-1">
+    <table class="table table-hover text-center">
+      <tbody>
+        <tr>
+          {% if student.major.all|length == 2 %}
+            <td><h4><strong>Majors</strong>:
+          {% else %}
+            <td><h4><strong>Major</strong>:
+          {% endif %}
+
+          {% include 'double_major.html' %}
+          </h4></td>
+        </tr>
+
+        <tr>
+          <td><h4><strong>Class of</strong>:
+            {% if student.graduating_year == None %}
+                &nbsp;&mdash;
+            {% else %}
+               {{ student.graduating_year|bc }}
+            {% endif %}
+          </h4></td>
+        </tr>
+
+        <tr>
+          <td><h4><strong>Email</strong>: <a href="mailto:{{ student.user.email }}">{{ student.user.email }}</a></h4></a></td>
+        </tr>
+        {% if student.show_gender %}
+          <tr>
+            <td><h4><strong>Gender</strong>:
+              {% for gender in student.gender %}
+                {% if gender == 'female' %}
+                  <i class="fa fa-venus"></i>
+                {% elif gender == 'male' %}
+                  <i class="fa fa-mars"></i>
+                {% elif gender == 'intersex' %}
+                  <i class="fa fa-transgender"></i>
+                {% elif gender == 'trans' %}
+                  <i class="fa fa-transgender-alt"></i>
+                {% elif gender == 'genderless' %}
+                  <i class="fa fa-genderless"></i>
+                {% elif gender == 'other' %}
+                  <i class="fa fa-mars-stroke-v"></i>
+                {% endif %}
+              {% endfor %}
+            </h4></td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-md-5">
+    <table class="table table-hover text-center">
+      <tbody>
+        <tr>
+          <td class="col-md-4">
+            <h4><i class="fa fa-facebook fa-lg"></i></h4>
+          </td>
+          <td class="col-md-8">
+            {% if accounts.facebook and shares %}
+              <h4><a href="https://facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">
+                  Facebook account</a></h4>
+            {% else %} <h4>&mdash;</h4> {% endif %}
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <h4><i class="fa fa-twitter fa-lg"></i></h4>
+          </td>
+          <td>
+            {% if accounts.twitter and shares %}
+              <h4><a href="https://twitter.com/{{ accounts.twitter.0.extra_data.screen_name }}" target="_blank">
+                  @{{ accounts.twitter.0.extra_data.screen_name }}</a></h4>
+            {% else %} <h4>&mdash;</h4> {% endif %}
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <h4><i class="fa fa-google fa-lg"></i></h4>
+          </td>
+          <td>
+            {% if accounts.google and shares %}
+            <h4><a href="https://plus.google.com/{{ accounts.google.0.uid }}" target="_blank">
+              Google+ account</a></h4>
+            {% else %} <h4>&mdash;</h4> {% endif %}
+          </td>
+        </tr>
+
+       {% if accounts.instagram and shares %}
+        <tr>
+          <td>
+            <h4><i class="fa fa-instagram fa-lg"></i></h4>
+          </td>
+          <td>
+            <h4><a href="https://instagram.com/{{ accounts.instagram.0.extra_data.username }}"
+                   target="_blank">@{{ accounts.instagram.0.extra_data.username }}</a></h4>
+          </td>
+        </tr>
+        {% endif %}
+
+        {% if accounts.tumblr and shares %}
+        <tr>
+          <td>
+            <h4><i class="fa fa-tumblr fa-lg"></i></h4>
+          </td>
+          <td>
+            <h4><a href="https://{{ accounts.tumblr.0.extra_data.name }}.tumblr.com"
+                 target="_blank">@{{ accounts.tumblr.0.extra_data.name }}</a></h4>
+          </td>
+        </tr>
+        {% endif %}
+
+        {% if accounts.pinterest and shares %}
+        <tr>
+          <td>
+            <h4><i class="fa fa-pinterest-p fa-lg"></i></h4>
+          </td>
+          <td>
+            <!-- note that for Pinterest the user id and username is not the same -->
+            <h4><a href="{{ accounts.pinterest.0.extra_data.url }}"
+                   target="_blank">Pinterest account</a></h4>
+          </td>
+        </tr>
+        {% endif %}
+
+        {% if accounts.spotify and shares %}
+        <tr>
+          <td>
+            <h4><i class="fa fa-spotify fa-lg"></i></h4>
+          </td>
+          <td>
+            <h4><a href="{{ accounts.spotify.0.extra_data.external_urls.spotify }}"
+                 target="_blank">{{ accounts.spotify.0.extra_data.id }}</a></h4>
+          </td>
+        </tr>
+        {% endif %}
+
+        {% if accounts.github and shares %}
+        <tr>
+          <td>
+            <h4><i class="fa fa-github fa-lg"></i></h4>
+          </td>
+          <td>
+            <h4><a href="https://github.com/{{ accounts.github.0.extra_data.login }}"
+                   target="_blank">{{ accounts.github.0.extra_data.login }}</a></h4>
+          </td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<br />
+<hr />
+{% include 'disclaimer.html' %}
+
+{% endcache %}
+{% endblock content %}

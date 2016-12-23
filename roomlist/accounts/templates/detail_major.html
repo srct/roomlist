@@ -14,103 +14,40 @@
 </div>
 
 {% load gravatar %}
+{% load accounts_extras %}
 
-{% comment %} Sigh... three sections of largely duplicated code. {% endcomment %}
+{% for graduating_year, students in students_by_year.items %}
+<legend>
+  <a name="{{ graduating_year }}" href="#{{ graduating_year }}">
+  {{ graduating_year|bc }}</a>
+</legend>
 
-<legend><strong><a href="{% url 'list_buildings' %}#Aquia">Aquia</a></strong></legend>
-
-<div class="row">
-  <div class="col-md-12">
-    {% regroup aq_location_visible by get_building as aq_students_by_building %}
-    {% for building in aq_students_by_building %}
-    <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
-    <div class="row">
-      {% for student in building.list %}
-        <div class="col-sm-3 text-center">
-          <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
-          <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
-          {% if student.get_flag_count > 4 %}
-            <p><em>* a number of other floormates say this info is incorrect</em></p>
-          {% endif %}
-        </div>
-     {% endfor %}
-   </div>
-   {% empty %}
-   No visible students in the database. :'-(
-   {% endfor %}
-  </div>
-</div>
-
-<br />
-
-<legend><strong><a href="{% url 'list_buildings' %}#Rappahannock">Rappahannock</a></strong></legend>
-
-<div class="row">
-  <div class="col-md-12">
-    {% regroup ra_location_visible by get_building as ra_students_by_building %}
-    {% for building in ra_students_by_building %}
-    <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
-    <div class="row">
-      {% for student in building.list %}
-        <div class="col-sm-3 text-center">
-          <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
-          <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
-          {% if student.get_flag_count > 4 %}
-            <p><em>* a number of other floormates say this info is incorrect</em></p>
-          {% endif %}
-        </div>
-     {% endfor %}
-   </div>
-   {% empty %}
-   No visible students in the database. :'-(
-   {% endfor %}
-  </div>
-</div>
-
-<br />
-
-<legend><strong><a href="{% url 'list_buildings' %}#Shenandoah">Shenandoah</a></strong></legend>
-
-<div class="row">
-  <div class="col-md-12">
-    {% regroup sh_location_visible by get_building as sh_students_by_building %}
-    {% for building in sh_students_by_building %}
-    <legend><a name="{{ building.grouper }}" href="{{ building.grouper.get_absolute_url }}">{{ building.grouper }}</a></legend>
-    <div class="row">
-      {% for student in building.list %}
-        <div class="col-sm-3 text-center">
-          <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
-          <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
-          {% if student.get_flag_count > 4 %}
-            <p><em>* a number of other floormates say this info is incorrect</em></p>
-          {% endif %}
-        </div>
-     {% endfor %}
-   </div>
-   {% empty %}
-   No visible students in the database. :'-(
-   {% endfor %}
-  </div>
-</div>
-
-<br />
-
-{% if location_hidden %}
-  <legend class="text-center">Location not visible because of student <a href="{% url 'updateStudent' request.user.username %}">privacy settings</a></legend>
+<div class="student-row">
   <div class="row">
-    <div class="col-md-12">
-      {% for student in location_hidden %}
-        <div class="col-sm-3 text-center">
-          <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
-          <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
-        </div>
-      {% endfor %}
-    </div>
+    {% for student in students %}
+      <div class="col-sm-3 col-xs-6 text-center wordwrap">
+        <img class="img-circle img-responsive center center-block profile-image"
+             src="{{ student.profile_image_url }}"
+             alt="{{ student.get_first_name_or_uname }} profile picture">
+        <h4><strong>
+          <a href="{{ student.get_absolute_url }}">{{ student.get_full_name_or_uname }}</a>
+        </strong></h4>
+        {% if student.get_flag_count > 4 %}
+          <p><em>* a number of other floormates say this info is incorrect</em></p>
+        {% endif %}
+        <br />
+      </div>
+    {% endfor %}
   </div>
-{% endif %}
+</div>
+{% empty %}
+<div class="col-md-12 text-center">
+  <p>No visible students.</p>
+</div>
+{% endfor %}
 
 <br />
-<legend></legend>
+<hr />
 {% include 'disclaimer.html' %}
 
 {% endcache %}

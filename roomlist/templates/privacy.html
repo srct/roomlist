@@ -4,9 +4,19 @@
 SRCT Roomlist &bull; Privacy Policy
 {% endblock %}
 
+{% block og_metadata %}
+<meta property="og:title" content="SRCT Roomlist Privacy Policy"/>
+<meta property="og:description" content="Roomlist is available only to individuals with full Mason credentials. Control who sees your information on your settings page."/>
+{% endblock %}
+
+{% block tw_metadata %}
+<meta name="twitter:title" content="SRCT Roomlist Privacy Policy" />
+<meta name="twitter:description" content="Roomlist is available only to individuals with full Mason credentials. Control who sees your information on your settings page."/>
+{% endblock tw_metadata %}
+
 {% block content %}
 {% load cache %}
-{% cache 900 privacy %}
+{% cache 3600 privacy %}
 
 <div class="page-header" id="banner">
   <div class="row">

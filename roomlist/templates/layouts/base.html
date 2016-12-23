@@ -1,19 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Find your on campus neighbors"> {% load staticfiles %}
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- The above 3 meta tags *must* come first in the head;
+       any other head content must come *after* these tags -->
+  <link rel="icon" href="/static/img/favicon.ico">
+  <title>{% block title %} {% endblock %}</title>
+  <meta name="description" content="Find your on campus neighbors"> {% load staticfiles %}
+  <meta name="theme-color" content="#006633">
   <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
   <link href="/static/css/style.css" rel="stylesheet" media="screen">
   <link href="/static/css/font-awesome.min.css" rel="stylesheet">
-  <link rel="icon" href="/static/img/favicon.ico">
-  <title> {% block title %} {% endblock %}</title>
+  {% block css %}
+  {% endblock css %}
+  <!-- Facebook -->
+  {% block og_metadata %}
+  <meta property="og:title" content="SRCT Roomlist"/>
+  <meta property="og:description" content="Log in with your Mason username and password to find your on-campus neighbors."/>
+  {% endblock og_metadata %}
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="https://srct.gmu.edu/static/media/SRCT_square_sm.png"/>
+  <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
+  <meta property="og:site_name" content="SRCT Roomlist"/>
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@MasonSRCT" />
+  {% block tw_metadata %}
+  <meta name="twitter:title" content="SRCT Roomlist" />
+  <meta name="twitter:description" content="Log in with your Mason username and password to find your on-campus neighbors." /> <!-- Maximum 200 characters. -->
+  {% endblock tw_metadata %}
+  <!-- Twitterbot now automatically crawls for the url: no url tag. -->
+  <meta name="twitter:image" content="https://srct.gmu.edu/static/media/SRCT_square_sm.png" />
+  <meta name="twitter:img:alt" content="SRCT's square logo" />
 </head>
 
 <body>
-  {% load piwik %}
   <div id="wrap" style="display: flex;">
     {% include 'layouts/navbar.html' %}
     <div id="contentcontain" class="container">
@@ -30,7 +53,5 @@
   <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
   {% block javascript %}
   {% endblock javascript %}
-  {% piwik %}
 </body>
-
 </html>

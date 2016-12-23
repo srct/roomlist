@@ -7,27 +7,41 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/"><img src="/static/img/SRCT_square.svg" height="25" width="25" alt="SRCT"> ROOMLIST</a>
+      <a class="navbar-brand" href="{% url 'homepage' %}"><img src="/static/img/SRCT_square.svg" height="25" width="25" alt="SRCT"> ROOMLIST</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        {% if user.is_authenticated %}
+        {% if not user.is_authenticated %}
+        <li><a href="{% url 'about' %}">About</a>
+        {% endif %}
         <li><a href="{% url 'list_buildings' %}">Buildings</a></li>
         <li><a href="{% url 'list_majors' %}">Majors</a></li>
-        {% else %}
-        <li><a href="{% url 'about' %}">About</a>
         </li>
-        {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-        <li>
+        <li class="visible-lg visible-md visible-sm">
           <a href="/search"><i class="fa fa-search fa-fw fa-lg"></i></a>
-        <li><a href="/accounts/student/{{ user.username }}">{{ user.username }}</a>
         </li>
+        <li class="visible-xs">
+          <a href="/search">Search</a>
+        </li>
+        <!-- Puts profile picture in navbar next to username-->
         <li>
-          <a href="{% url 'updateStudent' request.user.username %}"><i class="fa fa-cog fa-fw fa-lg"></i></a>
+          <a href="{{ user.student.get_absolute_url }}">
+            <img src="{{ request.user.student.profile_image_url }}" height="35" width="35" alt="{{ student.profile_image_url }}" class="img-circle img-responsive hidden-xs navbar-profile">
+            {{ user.username }}
+          </a>
         </li>
+        <li class="visible-lg visible-md visible-sm">
+          <a href="{% url 'update_student' request.user.username %}"><i class="fa fa-cog fa-fw fa-lg"></i></a>
+        </li>
+        <li class="visible-xs">
+          <a href="{% url 'update_student' request.user.username %}">Settings</a>
+        </li>
+        {% if user.is_staff %}
+        <li><a href="{% url 'admin:index' %}">Admin</a></li>
+        {% endif %}
         <li><a href="{% url 'logout' %}">Logout</a>
         </li>
         {% else %}

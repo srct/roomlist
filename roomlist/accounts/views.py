@@ -1,68 +1,36 @@
 # standard library imports
 from __future__ import absolute_import, print_function
 import random
+from distutils.util import strtobool
+from collections import OrderedDict
+from itertools import groupby
+import re
 # core django imports
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseForbidden, HttpResponseRedirect
-from django.views.generic import (CreateView, ListView, DetailView, UpdateView,
-                                  FormView, DeleteView)
+from django.http import HttpResponseForbidden, HttpResponseRedirect, Http404
+from django.views.generic import CreateView, ListView, DetailView, FormView, DeleteView
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 from django.forms.widgets import HiddenInput
+from django.conf import settings
+from django.template.loader import get_template
+from django.core.mail import EmailMultiAlternatives, get_connection
+from django.template import Context
+from django.core.exceptions import ObjectDoesNotExist
 # third party imports
 from braces.views import LoginRequiredMixin, FormValidMessageMixin
 from cas.views import login as cas_login
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from .models import Student, Major, Confirmation
-from housing.models import Building, Floor, Room
-from .forms import (StudentUpdateForm, WelcomeNameForm, WelcomePrivacyForm,
-                    WelcomeSocialForm)
-
-
-settings_redirect = """You've already finished the welcome walkthrough.
-                       Your user settings can now be changed here on this page."""
-
-#########
-
-bug_reporting = """Welcome back to SRCT Roomlist. This project is the
-                   <a href="https://srct.gmu.edu/projects/">collaborative work
-                   of students like you</a>. If you see anything amiss, or have ideas for
-                   features or a better user experience, please send an email to
-                   roomlist@lists.srct.gmu.edu, tweet
-                   <a href="https://twitter.com/MasonSRCT/">@MasonSRCT</a>, or, for the
-                   more technically experienced, review our
-                   <a href="https://git.gmu.edu/srct/roomlist/issues">issues page</a>."""
-
-privacy_reminder = """Welcome back to SRCT Roomlist. A friendly reminder you can change
-                      your privacy settings at any time on your settings page by
-                      clicking the cog in the upper right of your screen."""
-
-disclaimer = """Welcome back to SRCT Roomlist. Just to be perfectly clear, this project
-                is provided as a service by the
-                <a href="https://gmu.collegiatelink.net/organization/srct">registered
-                student organization</a>
-                <a href="https://srct.gmu.edu/">Student-Run Computing and Technology</a>.
-                We are not a part of <a href="http://housing.gmu.edu/">Mason Housing</a>:
-                all information is voluntarily provided by participating students."""
-
-whatsopen_plug = """Welcome back to SRCT Roomlist. Wondering what's open at this hour?
-                    Check out another one of our
-                    <a href="https://srct.gmu.edu/projects/">student-built and hosted</a>
-                    projects: <a href="https://whatsopen.gmu.edu/">whatsopen.gmu.edu</a>."""
-
-open_source = """Welcome back to SRCT Roomlist. For the curious at heart,
-                 <a href="http://www.gnu.org/philosophy/free-sw.en.html">you can always
-                 review</a> this project's
-                 <a href="https://git.gmu.edu/srct/roomlist/tree/master">source code</a>.
-                 Come <a href="https://srct.gmu.edu/">to a meeting</a> and learn how to
-                 contribute!"""
-
-return_messages = [bug_reporting, privacy_reminder, disclaimer, whatsopen_plug, open_source]
+from .forms import StudentUpdateForm, FarewellFeedbackForm
+from .student_messages import return_messages
+from housing.models import Room
+from housing.views import shadowbanning
 
 
 def custom_cas_login(request, *args, **kwargs):
+    """If a student has not completed the welcome walkthrough, go there on login."""
     response = cas_login(request, *args, **kwargs)
     # returns HttpResponseRedirect
 
@@ -71,17 +39,13 @@ def custom_cas_login(request, *args, **kwargs):
         if not request.user.student.totally_done():
 
             if not request.user.student.completedName:
-                return HttpResponseRedirect(reverse('welcomeName',
-                                            kwargs={'slug':request.user.username}))
+                return HttpResponseRedirect(reverse('welcomeName'))
             elif not request.user.student.completedPrivacy:
-                return HttpResponseRedirect(reverse('welcomePrivacy',
-                                            kwargs={'slug':request.user.username}))
+                return HttpResponseRedirect(reverse('welcomePrivacy'))
             elif not request.user.student.completedMajor:
-                return HttpResponseRedirect(reverse('welcomeMajor',
-                                            kwargs={'slug':request.user.username}))
-            elif not request.user.completedSocial:
-                return HttpResponseRedirect(reverse('welcomeSocial',
-                                            kwargs={'slug':request.user.username}))
+                return HttpResponseRedirect(reverse('welcomeMajor'))
+            elif not request.user.student.completedSocial:
+                return HttpResponseRedirect(reverse('welcomeSocial'))
         else:
             welcome_back = random.choice(return_messages)
             messages.add_message(request, messages.INFO, mark_safe(welcome_back))
@@ -89,6 +53,7 @@ def custom_cas_login(request, *args, **kwargs):
     return response
 
 
+# only two students on the same floor can confirm one another (crowdsourced verification)
 def on_the_same_floor(student, confirmer):
     if student == confirmer:
         # Student is confirmer
@@ -113,13 +78,50 @@ def pk_or_none(me, obj):
         return obj.pk
 
 
+def create_email(text_path, html_path, subject, to, context):
+    text_email = get_template(text_path)
+    html_email = get_template(html_path)
+
+    email_context = Context(context)
+
+    from_email, cc = ('noreply@srct.gmu.edu',
+                      '')
+
+    text_content = text_email.render(email_context)
+    html_content = html_email.render(email_context)
+
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to], [cc])
+    # mime multipart requires attaching text and html in this order
+    msg.attach_alternative(html_content, 'text/html')
+    return msg
+
+
+def no_nums(name):
+    no_numbers = re.sub('[0-9]', '', name)
+    return no_numbers
+
+
 # details about the student
 class DetailStudent(LoginRequiredMixin, DetailView):
     model = Student
     context_object_name = 'student'
-    template_name = 'detailStudent.html'
+    template_name = 'detail_student.html'
 
     login_url = 'login'
+
+    def get(self, request, *args, **kwargs):
+
+        current_url = self.request.get_full_path()
+        url_uname = current_url.split('/')[3]
+        try:
+            detailed_student = Student.objects.get(user__username=url_uname)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        if (detailed_student in self.request.user.student.blocked_kids.all()):
+            raise Http404
+        else:
+            return super(DetailStudent, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(DetailStudent, self).get_context_data(**kwargs)
@@ -139,6 +141,7 @@ class DetailStudent(LoginRequiredMixin, DetailView):
                 print("Students are not supposed to be able to make more than one flag per student.")
                 print(e)
 
+        # recognizably too complex
         def onFloor():
             floor_status = False
             if requesting_student.get_floor() == self.get_object().get_floor():
@@ -173,40 +176,9 @@ class DetailStudent(LoginRequiredMixin, DetailView):
         return context
 
 
-class DetailCurrentStudent(LoginRequiredMixin, DetailView):
-    model = Student
-    context_object_name = 'student'
-    template_name = 'detailStudent.html'
-
-    login_url = 'login'
-
-    def get_object(self):
-        return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
-
-
-# changeable student settings
-class DetailStudentSettings(LoginRequiredMixin, DetailView):
-    model = Student
-    context_object_name = 'student'
-    template_name = 'studentSettings.html'
-
-    login_url = 'login'
-
-
-class DetailCurrentStudentSettings(LoginRequiredMixin, DetailView):
-    model = Student
-    context_object_name = 'student'
-    template_name = 'studentSettings.html'
-
-    login_url = 'login'
-
-    def get_object(self):
-        return get_object_or_404(Student, pk=self.request.session['_auth_user_id'])
-
-
 # update a student, but FormView to allow name update on same page
 class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
-    template_name = 'updateStudent.html'
+    template_name = 'update_student.html'
     form_class = StudentUpdateForm
     login_url = 'login'
 
@@ -216,9 +188,14 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
 
         current_url = self.request.get_full_path()
         url_uname = current_url.split('/')[3]
+        try:
+            student = Student.objects.get(user__username=url_uname)
+        except ObjectDoesNotExist:
+            raise Http404
 
         if not(url_uname == self.request.user.username):
-            return HttpResponseForbidden()
+            return HttpResponseRedirect(reverse('update_student',
+                                                kwargs={'slug': self.request.user.username}))
         else:
             return super(UpdateStudent, self).get(request, *args, **kwargs)
 
@@ -226,6 +203,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         context = super(UpdateStudent, self).get_context_data(**kwargs)
 
         me = Student.objects.get(user=self.request.user)
+        majors = [pk_or_none(me, major) for major in me.major.all()]
 
         form = StudentUpdateForm(initial={'first_name': me.user.first_name,
                                           'last_name': me.user.last_name,
@@ -233,13 +211,23 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
                                           'show_gender': me.show_gender,
                                           'room': pk_or_none(me, me.room),
                                           'privacy': me.privacy,
-                                          'major': pk_or_none(me, me.major),
-                                          'graduating_year' : me.graduating_year,})
+                                          'blocked_kids': me.blocked_kids.all(),
+                                          'major': majors,
+                                          'graduating_year': me.graduating_year,
+                                          'on_campus': me.on_campus, })
+
+        form.fields['blocked_kids'].queryset = Student.objects.exclude(user=self.request.user)
 
         if me.recent_changes() > 2:
             form.fields['room'].widget = HiddenInput()
+            form.fields['privacy'].widget = HiddenInput()
+            form.fields['on_campus'].widget = HiddenInput()
         else:
             form.fields['room'].widget.user = self.request.user
+
+        # chosen
+        form.fields['major'].widget.attrs['class'] = 'form-control chosen-select'
+        form.fields['blocked_kids'].widget.attrs['class'] = 'form-control blocked-select'
 
         context['my_form'] = form
 
@@ -248,42 +236,95 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
     def post(self, request, *args, **kwargs):
-        #for key, value in request.POST.iteritems():
-            #print(key, value)
+        # for key, value in request.POST.iteritems():
+        #     print(key, value)
         return super(UpdateStudent, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
         me = Student.objects.get(user=self.request.user)
 
-        #print("In form valid method!")
+        # print("In form valid method!")
 
-        #for key, value in form.data.iteritems():
-            #print(key, value)
+        # for key, value in form.data.iteritems():
+        #     print(key, value)
 
         current_room = me.room
-        try:
-            form_room = Room.objects.get(pk=form.data['room'])
-        except:
+
+        # if you somehow got around the hidden widget, you're still outta luck
+        if me.recent_changes() > 2:
+            form_room = current_room
+        else:
+            try:
+                form_room = Room.objects.get(pk=form.data['room'])
+            except:
+                form_room = None
+
+        # casts to an integer, 0 or 1
+        on_campus = strtobool(form.data.get('on_campus', 'True'))
+
+        # no room if you move off campus
+        if not on_campus:
             form_room = None
 
+        # note this is after the 'on campus' check
         if current_room != form_room:
             me.times_changed_room += 1
             Confirmation.objects.filter(student=me).delete()
 
+        me.on_campus = on_campus
         me.room = form_room
 
+        # if you don't live on campus you can't limit yourself to a nonexistent
+        # floor or room
+        if not(me.on_campus):
+            me.privacy = 'students'
+        else:
+            me.privacy = form.data['privacy']
+
         try:
-            me.major = Major.objects.get(pk=form.data['major'])
+            # in case someone disabled the js, limit processing to only the first
+            # two majors passed by the user
+            # we also eliminate the potential a student manipulates the form to
+            # pass in two majors of the same type by casting to a set
+            form_major_pks = set(form.data.getlist('major')[:2])
+            # retrieve the major objects from the list of pk strings
+            form_majors = [Major.objects.get(pk=pk) for pk in form_major_pks]
+            # print(form_majors)
+            # iterate over a student's current majors
+            for current_major in me.major.all():
+                # remove m2m relationship if not in majors from form
+                if current_major not in form_majors:
+                    me.major.remove(current_major)
+            # iterate over the majors in the form
+            for form_major in form_majors:
+                # add new m2m relationship to student
+                if form_major not in me.major.all():
+                    me.major.add(form_major)
         except:
-            me.major = None
+            # don't change majors
+            pass
 
-        me.user.first_name = form.data['first_name']
-        me.user.last_name = form.data['last_name']
+        # replicate the same thing for the other m2m field
+        try:
+            form_blocked_pks = set(form.data.getlist('blocked_kids'))
+            current_blocked = me.blocked_kids.all()
+            # most people will not being blocking other students
+            if form_blocked_pks or current_blocked:
+                form_blocked = [Student.objects.get(pk=pk) for pk in form_blocked_pks]
+                for current_block in current_blocked:
+                    if current_block not in form_blocked:
+                        me.blocked_kids.remove(current_block)
+                for form_block in form_blocked:
+                    if form_block not in current_blocked:
+                        me.blocked_kids.add(form_block)
+        except:
+            pass
+
+        me.user.first_name = no_nums(form.data['first_name'])
+        me.user.last_name = no_nums(form.data['last_name'])
         me.gender = form.data.getlist('gender')
-        me.show_gender = form.data.get('show_gender', False)
-        me.privacy = form.data['privacy']
+        me.show_gender = strtobool(form.data.get('show_gender', 'False'))
         me.graduating_year = form.data['graduating_year']
-
         me.user.save()
         me.save()
 
@@ -296,220 +337,116 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
             messages.add_message(self.request, messages.WARNING, 'To safeguard everyone\'s privacy, you have just one remaining room change for the semester before you\'ll need to send us an email at roomlist@lists.srct.gmu.edu.')
 
         return reverse('detail_student',
-                       kwargs={'slug':self.request.user.username})
+                       kwargs={'slug': self.request.user.username})
 
 
-# welcome pages
-class WelcomeName(LoginRequiredMixin, FormView):
-    template_name = 'welcome_name.html'
-    form_class = WelcomeNameForm
-    login_url = 'login'
+class DeleteStudent(FormView):
+    form_class = FarewellFeedbackForm
+    template_name = 'delete_student.html'
 
     def get(self, request, *args, **kwargs):
 
         current_url = self.request.get_full_path()
         url_uname = current_url.split('/')[3]
-
-        if not(url_uname == self.request.user.username):
-            return HttpResponseForbidden()
-        elif self.request.user.student.totally_done():
-            messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
-        else:
-            return super(WelcomeName, self).get(request, *args, **kwargs)
-
-
-
-    def get_context_data(self, **kwargs):
-        context = super(WelcomeName, self).get_context_data(**kwargs)
-
-        me = Student.objects.get(user=self.request.user)
-
-        form = WelcomeNameForm(initial={'first_name': me.user.first_name,
-                                        'last_name': me.user.last_name,
-                                        'gender': me.gender,
-                                        'show_gender': me.show_gender, })
-        context['my_form'] = form
-        return context
-
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomeName, self).post(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        me = Student.objects.get(user=self.request.user)
-
-        me.user.first_name = form.data['first_name']
-        me.user.last_name = form.data['last_name']
-
-        me.gender = form.data.getlist('gender')
-        me.show_gender = form.data.get('show_gender', False)
-
-        me.completedName = True
-
-        me.user.save()
-        me.save()
-
-        return super(WelcomeName, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse('welcomePrivacy',
-                       kwargs={'slug':self.request.user.username})
-
-
-class WelcomePrivacy(LoginRequiredMixin, UpdateView):
-    model = Student
-    form_class = WelcomePrivacyForm
-    context_object_name = 'student'
-    template_name = 'welcome_privacy.html'
-
-    login_url = 'login'
-
-    def get(self, request, *args, **kwargs):
-
-        current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
-
-        if not(url_uname == self.request.user.username):
-            return HttpResponseForbidden()
-        elif self.request.user.student.totally_done():
-            messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
-        else:
-            return super(WelcomePrivacy, self).get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(WelcomePrivacy, self).get_context_data(**kwargs)
-
-        me = Student.objects.get(user=self.request.user)
-
-        form = WelcomePrivacyForm()
-
-        form.fields['room'].widget.user = self.request.user
-
-        context['my_form'] = form
-
-        return context
-
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomePrivacy, self).post(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        me = self.get_object()
-
-        current_room = me.room
-
         try:
-            form_room = Room.objects.get(pk=form.data['room'])
-        except:
-            form_room = None
-
-        if current_room != form_room:
-            form.instance.times_changed_room += 1
-            Confirmation.objects.filter(student=me).delete()
-
-        form.instance.completedPrivacy = True
-
-        return super(WelcomePrivacy, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse('welcomeMajor',
-                       kwargs={'slug':self.request.user.username})
-
-
-class WelcomeMajor(LoginRequiredMixin, UpdateView):
-    model = Student
-    fields = ['major', 'graduating_year', ]
-    context_object_name = 'student'
-    template_name = 'welcome_major.html'
-
-    login_url = 'login'
-
-    def get(self, request, *args, **kwargs):
-
-        current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
+            student = Student.objects.get(user__username=url_uname)
+        except ObjectDoesNotExist:
+            raise Http404
 
         if not(url_uname == self.request.user.username):
-            return HttpResponseForbidden()
-        elif self.request.user.student.totally_done():
-            messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
+            return HttpResponseRedirect(reverse('delete_student',
+                                                kwargs={'slug': self.request.user.username}))
         else:
-            return super(WelcomeMajor, self).get(request, *args, **kwargs)
+            return super(DeleteStudent, self).get(request, *args, **kwargs)
 
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomeMajor, self).post(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(DeleteStudent, self).get_context_data(**kwargs)
+
+        me = Student.objects.get(user=self.request.user)
+
+        context['student'] = me
+
+        return context
 
     def form_valid(self, form):
+        user = self.request.user
+        student = self.request.user.student
 
-        form.instance.completedMajor = True
+        # we're using this api because opening smtp connections is taxing in
+        # that it takes time-- we want to send both emails at once without
+        # having to log in and out and back in and out again
+        connection = get_connection()
 
-        return super(WelcomeMajor, self).form_valid(form)
+        # send email to the student
+        text_path = 'email/farewell.txt'
+        html_path = 'email/farewell.html'
 
-    def get_success_url(self):
-        return reverse('welcomeSocial',
-                       kwargs={'slug':self.request.user.username})
-
-
-class WelcomeSocial(LoginRequiredMixin, UpdateView):
-    model = Student
-    form_class = WelcomeSocialForm
-    context_object_name = 'student'
-    template_name = 'welcome_social.html'
-    login_url = 'login'
-
-    def get(self, request, *args, **kwargs):
-
-        current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
-
-        if not(url_uname == self.request.user.username):
-            return HttpResponseForbidden()
-        elif self.request.user.student.totally_done():
-            messages.add_message(request, messages.INFO, settings_redirect)
-            return reverse('updateStudent',
-                           kwargs={'slug':self.request.user.username})
+        if form.cleaned_data['leaving']:
+            context = {
+                'student_name': student.get_first_name_or_uname,
+                'special_message': "We're glad you gave our service a try."
+            }
         else:
-            return super(WelcomeSocial, self).get(request, *args, **kwargs)
+            context = {
+                'student_name': student.get_first_name_or_uname,
+                'special_message': "We wish you luck in your time after Mason!"
+            }
 
-    @ratelimit(key='user', rate='5/m', method='POST', block=True)
-    @ratelimit(key='user', rate='10/d', method='POST', block=True)
-    def post(self, request, *args, **kwargs):
-        return super(WelcomeSocial, self).post(request, *args, **kwargs)
+        subject = "You successfully deleted your account on Roomlist"
+        to = user.email
 
-    def form_valid(self, form):
+        student_email = create_email(text_path, html_path, subject, to, context)
 
-        form.instance.completedSocial = True
+        # send feedback to the admins if there is feedback to send
+        if form.cleaned_data['feedback']:
+            text_path = 'email/feedback.txt'
+            html_path = 'email/feedback.html'
 
-        return super(WelcomeSocial, self).form_valid(form)
+            date_text = student.created.strftime('%A, %B %d, %Y')
+
+            if form.cleaned_data['leaving']:
+                leaving = ""
+            else:
+                leaving = "not"
+
+            context = {
+                'student_name':  student.get_first_name_or_uname,
+                'signup_date': date_text,
+                'leaving': leaving,
+                'feedback': form.cleaned_data['feedback']
+            }
+
+            subject = "Feedback from Roomlist account deletion"
+            to = 'roomlist@lists.srct.gmu.edu'
+
+            feedback_email = create_email(text_path, html_path, subject, to, context)
+
+            connection.send_messages([student_email, feedback_email])
+        else:
+            connection.send_messages([student_email])
+
+        # yes, we do have to manually close the connection
+        connection.close()
+
+        # delete both the student object and the student object
+        confirmations = Confirmation.objects.filter(confirmer=student)
+        if confirmations:
+            for confirmation in confirmations:
+                confirmation.delete()
+        student.delete()
+        user.delete()
+
+        return super(DeleteStudent, self).form_valid(form)
 
     def get_success_url(self):
-
-        if self.request.user.student.totally_done():
-            messages.add_message(self.request, messages.SUCCESS,
-                                 "You successfully finished the welcome walkthrough!")
-
-        return reverse('detail_student',
-                       kwargs={'slug':self.request.user.username})
-
+        return reverse('homepage')
 
 # majors pages
-class ListMajors(LoginRequiredMixin, ListView):
+class ListMajors(ListView):
     model = Major
     queryset = Major.objects.all().order_by('name')
     context_object_name = 'majors'
     template_name = 'list_majors.html'
-
-    login_url = 'login'
 
 
 class DetailMajor(LoginRequiredMixin, DetailView):
@@ -523,70 +460,25 @@ class DetailMajor(LoginRequiredMixin, DetailView):
         context = super(DetailMajor, self).get_context_data(**kwargs)
         me = Student.objects.get(user=self.request.user)
 
-        students = Student.objects.filter(major=self.get_object()).order_by('room__floor__building__name', 'user__last_name', 'user__first_name')
+        # all students in the major-- needs to be ordered for groupby
+        major_students = Student.objects.filter(major__in=[self.get_object()]).order_by('graduating_year')
 
-        def onFloor(me, student):
-            floor_status = False
-            if me.get_floor() == student.get_floor():
-                floor_status = True
-            return floor_status
+        students_by_year = OrderedDict()  # we're ordering from senior on down
 
-        def inBuilding(me, student):
-            floor_status = False
-            if me.get_building() == student.get_building():
-                floor_status = True
-            return floor_status
+        for year, students in groupby(major_students, lambda student: student.graduating_year):
+            student_list = list(students)  # students without the casting is an iterator
+            visible_students = shadowbanning(me, student_list)  # remove blocked students
+            students_by_year[year] = visible_students  # remembers insertion order
 
-        aq_location_visible = []
-        ra_location_visible = []
-        sh_location_visible = []
-        location_hidden = []
-
-        aq_students = students.filter(room__floor__building__neighbourhood='aq')
-
-        for student in aq_students:
-            if student.privacy == u'students':
-                aq_location_visible.append(student)
-            elif (student.privacy == u'building') and inBuilding(me, student):
-                aq_location_visible.append(student)
-            elif (student.privacy == u'floor') and onFloor(me, student):
-                aq_location_visible.append(student)
-            else:
-                location_hidden.append(student)
-
-        ra_students = students.filter(room__floor__building__neighbourhood='ra')
-
-        for student in ra_students:
-            if student.privacy == u'students':
-                ra_location_visible.append(student)
-            elif (student.privacy == u'building') and inBuilding(me, student):
-                ra_location_visible.append(student)
-            elif (student.privacy == u'floor') and onFloor(me, student):
-                ra_location_visible.append(student)
-            else:
-                location_hidden.append(student)
-
-        sh_students = students.filter(room__floor__building__neighbourhood='sh')
-
-        for student in sh_students:
-            if student.privacy == u'students':
-                sh_location_visible.append(student)
-            elif (student.privacy == u'building') and inBuilding(me, student):
-                sh_location_visible.append(student)
-            elif (student.privacy == u'floor') and onFloor(me, student):
-                sh_location_visible.append(student)
-            else:
-                location_hidden.append(student)
-
-        context['aq_location_visible'] = aq_location_visible
-        context['ra_location_visible'] = ra_location_visible
-        context['sh_location_visible'] = sh_location_visible
-        context['location_hidden'] = location_hidden
+        context['students_by_year'] = students_by_year
 
         return context
 
 
 class CreateConfirmation(LoginRequiredMixin, CreateView):
+    """Students on the same floor may flag one another.
+
+    This is our attempt at crowdsourced verification."""
     model = Confirmation
     fields = []
     template_name = 'create_confirmation.html'
@@ -596,18 +488,20 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
     def get(self, request, *args, **kwargs):
 
         current_url = self.request.get_full_path()
-        # [u'', u'accounts', u'student', u'gmason', u'flag', u'']
-        url_uname = current_url.split('/')[3]
-
-        confirmer = Student.objects.get(user=self.request.user)
-        student = Student.objects.get(slug=url_uname)
-
-        flags = Confirmation.objects.filter(confirmer=confirmer,
-                                            student=student).count()
+        # [u'', u'accounts', u'student', u'gmason', u'flag', u'confirmer']
+        confirmer_uname = current_url.split('/')[3]
+        student_uname = current_url.split('/')[5]
+        try:
+            confirmer = Student.objects.get(user__username=confirmer_uname)
+            student = Student.objects.get(user__username=student_uname)
+            flags = Confirmation.objects.filter(confirmer=confirmer,
+                                                student=student).count()
+        except ObjectDoesNotExist:
+            raise Http404
 
         # you can't flag yourself
         if confirmer == student:
-            return HttpResponseForbidden()
+            raise Http404
 
         # check that the confirmer is on the floor of the student
         if not on_the_same_floor(student, confirmer):
@@ -617,15 +511,18 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
         if flags >= 1:
             return HttpResponseForbidden()
 
-        return super(CreateConfirmation, self).get(request, *args, **kwargs)
+        # you can't see the page if the person has banned you
+        if confirmer in student.blocked_kids.all():
+            raise Http404
 
+        return super(CreateConfirmation, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(CreateConfirmation, self).get_context_data(**kwargs)
 
         # duplicated code
         current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
+        url_uname = current_url.split('/')[5]
 
         student = Student.objects.get(slug=url_uname)
 
@@ -642,7 +539,7 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
 
         # duplicated code
         current_url = self.request.get_full_path()
-        url_uname = current_url.split('/')[3]
+        url_uname = current_url.split('/')[5]
 
         confirmer = Student.objects.get(user=self.request.user)
         student = Student.objects.get(slug=url_uname)
@@ -655,7 +552,7 @@ class CreateConfirmation(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         # redirect to the flagged student page when saving
         return reverse('detail_student',
-                       kwargs={'slug':self.object.student.slug})
+                       kwargs={'slug': self.object.student.slug})
 
 
 class DeleteConfirmation(LoginRequiredMixin, DeleteView):
@@ -665,14 +562,39 @@ class DeleteConfirmation(LoginRequiredMixin, DeleteView):
     login_url = 'login'
 
     def get(self, request, *args, **kwargs):
-        requester = Student.objects.get(user=self.request.user)
-        confirmer = self.get_object().confirmer
+        requester = self.request.user.student
 
+        current_url = self.request.get_full_path()
+        confirmer_uname = current_url.split('/')[3]
+
+        # not catching exceptions here; that's handled in get_object
+
+        # only the person who created the confirmation may delete it
         if not(requester == confirmer):
             return HttpResponseForbidden()
+        # however, if the confirmation just flat out doesn't exist...
         else:
-            return super(DeleteConfirmation, self).get(request, *args, **kwargs)
+            try:
+                confirmer = self.get_object().confirmer
+            except ObjectDoesNotExist:
+                raise Http404
+            else:
+                return super(DeleteConfirmation, self).get(request, *args, **kwargs)
+
+    def get_object(self):
+        current_url = self.request.get_full_path()
+        # [u'', u'accounts', u'student', u'gmason', u'flag', u'confirmer', delete]
+        confirmer_uname = current_url.split('/')[3]
+        student_uname = current_url.split('/')[5]
+
+        try:
+            confirmer = Student.objects.get(user__username=confirmer_uname)
+            student = Student.objects.get(user__username=student_uname)
+            confirmation = Confirmation.objects.get(confirmer=confirmer, student=student)
+        except ObjectDoesNotExist:
+            raise Http404
+        return confirmation
 
     def get_success_url(self):
         return reverse('detail_student',
-                       kwargs={'slug':self.object.student.slug})
+                       kwargs={'slug': self.object.student.slug})

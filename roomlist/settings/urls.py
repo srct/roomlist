@@ -5,9 +5,12 @@ from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.contrib import admin
-# imports from your apps
-from .views import HomePageView
+# third party imports
 from haystack.views import SearchView
+from django.views.generic import RedirectView
+# imports from your apps
+from accounts.forms import AccountSearchForm
+from .views import HomePageView, RedirectSettings, RedirectSlug
 
 admin.autodiscover()
 admin.site.login = login_required(admin.site.login)
@@ -25,9 +28,11 @@ urlpatterns = patterns('',
     # app-level urls
     url(r'^housing/', include('housing.urls')),
     url(r'^accounts/', include('accounts.urls')),
+    url(r'^welcome/', include('welcome.urls')),
 
     # search
-    url(r'^search/', login_required(SearchView(), login_url='login'), name='search'),
+    url(r'^search/', login_required(SearchView(form_class=AccountSearchForm),
+                                    login_url='login'), name='search'),
 
     # login and logout
     url(r'^login/', 'accounts.views.custom_cas_login', name='login'),
@@ -39,4 +44,10 @@ urlpatterns = patterns('',
     # alternate interfaces
     url(r'^api/', include('api.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
+    # redirects
+    url(r'^majors/', RedirectView.as_view(pattern_name='list_majors')),
+    url(r'^settings/', RedirectSettings.as_view()),
+    # note that this is the very last, 'cause it tries to match basically anything else
+    url(r'^(?P<slug>[\w-]+)/$', RedirectSlug.as_view()),
 )

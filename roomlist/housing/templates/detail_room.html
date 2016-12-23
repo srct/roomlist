@@ -11,56 +11,61 @@
       <h1><strong>SRCT</strong>ROOMLIST</h1>
       <p class="lead"><strong>{{ room.floor.building.name }} {{ room.number }}</strong></p>
     </div>
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-10 col-md-offset-1"><h3>
       <ol id="breadcrumbs" class="breadcrumb">
-        <li><a href="/">Home</a></li>
+        <li><a href="{% url 'homepage' %}">Home</a></li>
         <li><a href="{% url 'list_buildings' %}">Buildings</a></li>
         <li><a href="{{ room.floor.building.get_absolute_url }}">{{ room.floor.building.name }}</a></li>
         <li><a href="{{ room.floor.get_absolute_url }}">{{ room.floor.number|ordinal }} Floor</a></li>
 	<li class="active">Room {{ room.number }}</li>
       </ol>
-    </div>
+    </h3></div>
   </div>
 </div>
 
 {% load gravatar %}
-
-<div class="row">
-  {% for student in students %}
-  <div class="col-sm-3 text-center">
-    <img class="img-circle img-responsive center center-block" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
-    <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
-    <h5><a href="{{ student.major.get_absolute_url }}"><em>{{ student.major.name }}</em></a></h5>
-    {% if student.get_flag_count > 4 %}
-      <p><em>* a number of other floormates say this info is incorrect</em></p>
-    {% endif %}
+<div class="student-row">
+  <div class="row">
+    {% for student in students %}
+      <div class="col-sm-3 col-xs-6 text-center wordwrap">
+        <img class="img-circle img-responsive center center-block profile-image"
+             src="{{ student.profile_image_url }}"
+             alt="{{ student.get_first_name_or_uname }} profile picture">
+        <h4><strong>
+          <a href="{{ student.get_absolute_url }}">{{ student.get_full_name_or_uname }}</a>
+        </strong></h4>
+        <h5><em>{% include 'double_major.html' %}</em></h5>
+        {% if student.get_flag_count > 4 %}
+          <p><em>* a number of other floormates say this info is incorrect</em></p>
+        {% endif %}
+        <br />
+      </div>
+    {% endfor %}
   </div>
-  {% if forloop.counter|divisibleby:4 %}
-</div>
-<br />
-<div class="row">
-  {% endif %}
-  {% endfor %}
 </div>
 
 <br />
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    <div class="alert alert-info text-center"><strong><em>
-    {% if notOnFloor %}
-    You don't live on this floor. Depending on individual privacy settings, not all students may be displayed.
-    {% elif notInBuilding %}
-    You don't live in this building. Depending on individual privacy settings, not all students may be displayed.
-    {% else %}
-    Don't see one of your roommates? Tell them about SRCT Roomlist!
-    {% endif %}
-    </em></strong></div>
+    <div class="alert alert-info text-center">
+      <p><strong><em>
+      {% if notOnFloor %}
+      You don't live on this floor.
+      Depending on individual privacy settings, not all students may be displayed.
+      {% elif notInBuilding %}
+      You don't live in this building.
+      Depending on individual privacy settings, not all students may be displayed.
+      {% else %}
+      Don't see one of your roommates? Tell them about SRCT Roomlist!
+      {% endif %}
+      </em></strong></p>
+    </div>
   </div>
 </div>
 
 <br />
-<legend></legend>
+<hr />
 {% include 'disclaimer.html' %}
 
 {% endcache %}

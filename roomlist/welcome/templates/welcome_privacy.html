@@ -1,0 +1,143 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} SRCT RoomList | Welcome | Step 2 of 4 {% endblock %}
+
+{% block message_queue %}
+{% endblock %}
+
+{% block content %}
+
+<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+    <span class="sr-only">50% complete</span>
+  </div>
+</div>
+
+{% include 'room_change_warning.html' %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1>Welcome to <strong>SRCT</strong>ROOMLIST! <small>Step 2 of 4</small></h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <p>
+      Excellent, {{ request.user.student.get_first_name_or_uname }}! If you live on
+      campus, you have three privacy options to control your room and social media
+      visibility.
+      <ul>
+        <li><strong>Floor</strong>: Only the other students living on your floor.</li>
+        <li><strong>Building</strong>: Everyone living in your building.</li>
+        <li><strong>All Students</strong>: Anyone with a current Mason username and password.</li>
+      </ul>
+      If you live off campus and decide to include any social media accounts, please
+      note they will be visible to anyone signed in.
+    </p>
+    <p>
+      To protect everyone's privacy, you'll only be able to change your room a couple
+      times a year, so make sure to set it correctly.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title text-center"><strong>Room & Privacy</strong></h1>
+      </div>
+
+      <div class="panel-body">
+        {% if not request.user.student.recent_changes > 2 %}
+        {% spaceless %}
+        {% if my_form.non_field_errors %}
+        <ul class="text-center">
+          {% for error in my_form.non_field_errors %}
+            <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
+          {% endfor %}
+        </ul>
+        <hr />
+        {% endif %}
+        <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
+          <fieldset>
+            {% if my_form.on_campus.errors %}
+              {% for error in form.on_campus.errors %}
+                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              {% endfor %}
+            {% endif %}
+            <div class="form-group">
+              <div class="col-md-4">
+              <label for="{{ my_form.on_campus.id_for_label }}">
+                Do You Live on Campus?
+              </label><br/>
+                {% for option in my_form.on_campus %}
+                  <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
+                {% endfor %}
+              </div>
+            </div>
+            <div id="lives-on-campus">
+              <hr />
+              <p class="help-block">
+                The Global Center, the Townhouses, and Beacon Hall are not currently supported.
+                We'll let everyone know when we add them. Until then, if you live there, you're
+                still welcome to browse around.
+              </p>
+              {% if my_form.room.errors %}
+                {% for error in form.room.errors %}
+                  <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+                {% endfor %}
+              {% endif %}
+              <div class="form-group">
+                {{ my_form.room }}
+              </div>
+              {% if my_form.privacy.errors %}
+                {% for error in form.privacy.errors %}
+                  <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+                {% endfor %}
+              {% endif %}
+              <div class="form-group">
+                <div class="col-md-3 col-sm-6">
+                <label for="{{ my_form.privacy.id_for_label }}">
+                  Privacy
+                </label><br/>
+                  {{ my_form.privacy }}
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <hr/>
+          <input type="submit" value="Save" class="btn btn-primary"/>
+        </form>
+        {% endspaceless %}
+        {% else %}
+        <a href="{% url 'welcomeMajor' %}">
+          <button type="button" class="btn btn-primary">Continue</button>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 text-center">
+    <div class="alert alert-danger" role="alert">
+      <p><i class="fa fa-exclamation-circle fa-fw fa-lg"></i> <strong>Changing your room here changes it only on this particular site.</strong></p>
+      <p>To actually switch your room, you'll need to go through a lengthy process with the Housing Office.</p>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+{% block javascript %}
+<script type="text/javascript" src="/static/js/chained.min.js"></script>
+{% include 'room_selection_script.html' %}
+{% endblock javascript %}

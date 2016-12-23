@@ -29,6 +29,21 @@ a[name] {
 #footer {
   height: 30px;
 }
+
+@media (max-width: 992px) {
+  #footer {
+    text-align: center;
+  }
+}
+
+/* in which we replicate bootstrap's pull-right implementation */
+
+@media (min-width: 992px) {
+  .footer-right {
+    float: right !important;
+  }
+}
+
 .jumboindex {
   background: url(/static/img/North_Section_of_Presidents_Park_Dorms.jpg) no-repeat;
   background-size: cover;
@@ -56,6 +71,10 @@ a[name] {
 }
 .container-padding {
   padding-top: 30px;
+}
+
+.minor-padding {
+  padding-bottom: 24px;
 }
 #get-started {
   border-radius: 10px;
@@ -103,4 +122,40 @@ outline-offset: none;
 
 .img-right {
   float: right;
+}
+
+.navbar-profile {
+  display: block;
+  float: left;
+  margin-top: -6px;
+  margin-right: 8px;
+}
+
+.profile-image {
+  max-width: 175px;
+  max-height: 175px;
+  min-width: 175px;
+  min-height: 175px;
+}
+
+@media (max-width: 768px) {
+.student-row > .row > .col-xs-6:nth-child(2n+1) {
+  clear: both;
+}
+.btn-mobile {
+  white-space: normal;
+}}
+
+@media (min-width: 768px) {
+.student-row > .row > .col-sm-3:nth-child(4n+1) {
+  clear: both;
+}}
+
+@media (min-width: 992px) {
+.major-row > .row > .col-md-6:nth-child(2n+1) {
+  clear: both;
+}}
+
+.wordwrap {
+  word-wrap: break-word;
 }

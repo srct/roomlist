@@ -5,14 +5,24 @@ from django.contrib import admin
 # imports from your apps
 from .models import Student, Major, Confirmation
 
+
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ("get_name", "room", "privacy", "major", "created")
+    list_display = ("get_name", "room", "privacy", "get_first_major", "created")
 
     def get_name(self, student):
         return student.get_full_name_or_uname()
+
     get_name.short_description = 'Name'
     get_name.admin_order_field = 'user__username'  # ordering by callables is hard
 
+    # We cannot use a manytomanyfield as a field in the list, so we're getting the first
+    # major. If we need to see a student's second major, we can just click the student.
+    # This covers nearly all students, who will have only one major.
+    def get_first_major(self, student):
+        return student.major.first()
+
+    get_first_major.short_description = 'Major'
+    # we're not going to give the option to sort by major for now
 
 class MajorAdmin(admin.ModelAdmin):
     list_display = ("name", "get_major_num", )

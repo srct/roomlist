@@ -1,10 +1,9 @@
 # standard library imports
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, print_function, unicode_literals
 # core django imports
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
-from django.contrib import messages
 # third party imports
 import requests
 # imports from your apps
@@ -38,18 +37,24 @@ def pfinfo(uname):
     except requests.exceptions.RequestException as e:
         print("Cannot resolve to peoplefinder api:", e)
         print("Returning empty user info tuple.")
-        return ([u'', u''], u'')
+        return (['', ''], '')
     else:
         pfjson = metadata.json()
         try:
-            if len(pfjson['results']) == 1:
-                name_str = pfjson['results'][0]['name']
-                name = pfparse(name_str)
-                major = pfjson['results'][0]['major']
-                # could conceivably throw a key error
-                final_tuple = (name, major)
+            if len(pfjson['results']) == 1:  # ordinary case
+                if pfjson['method'] == 'peoplefinder':
+                    name_str = pfjson['results'][0]['name']
+                    name = pfparse(name_str)
+                    major = pfjson['results'][0]['major']
+                    # could conceivably throw a key error
+                    final_tuple = (name, major)
+                elif pfjson['method'] == 'ldap':
+                    name = [pfjson['results'][0]['givenname'],  # includes middle initial
+                            pfjson['results'][0]['surname']]
+                    major = ''  # ldap does not have major information
+                    final_tuple = (name, major)
                 return final_tuple
-            else:
+            else:  # handles student employees
                 name_str = pfjson['results'][1]['name']
                 name = pfparse(name_str)
                 major = pfjson['results'][1]['major']
@@ -59,19 +64,19 @@ def pfinfo(uname):
         # if the name is not in peoplefinder, return empty first and last name
         except IndexError:
             print("Name not found in peoplefinder.")
-            name = [u'', u'']
-            major = u''
+            name = ['', '']
+            major = ''
             final_tuple = (name, major)
             return final_tuple
         # if there's no major, just return that as an empty string
         except KeyError:
             print("Major not found in peoplefinder.")
-            final_tuple = (name, u'')
+            final_tuple = (name, '')
             return final_tuple
         except Exception as e:
             print("Unknown peoplefinder error:", e)
             print("Returning empty user info tuple.")
-            return ([u'', u''], u'')
+            return (['', ''], '')
 
 
 def create_user(tree):
