@@ -20,7 +20,6 @@ class PeoplefinderTest(TestCase):
     def test_pf_peoplefinder_method(self):
         username = 'dhaynes'
         pf_data = pfinfo(username)
-        print(pf_data)
         self.assertEqual(pf_data[0], ['David', 'Haynes'])
         self.assertEqual(pf_data[1], 'CYSE')
 
@@ -28,7 +27,6 @@ class PeoplefinderTest(TestCase):
     def test_pf_ldap_method(self):
         username = 'lfaraone'
         pf_data = pfinfo(username)
-        print(pf_data)
         self.assertEqual(pf_data[0], ['Luke W', 'Faraone'])
         self.assertEqual(pf_data[1], '')
 
@@ -36,7 +34,6 @@ class PeoplefinderTest(TestCase):
     def test_pf_employee_method(self):
         username = 'nander13'
         pf_data = pfinfo(username)
-        print(pf_data)
         self.assertEqual(pf_data[0], ['Nicholas', 'Anderson'])
         self.assertEqual(pf_data[1], 'Undeclared')
 
@@ -44,7 +41,6 @@ class PeoplefinderTest(TestCase):
     def test_pf_dne(self):
         username = 'bobama'
         pf_data = pfinfo(username)
-        print(pf_data)
         self.assertEqual(pf_data[0], ['', ''])
         self.assertEqual(pf_data[1], '')
 
