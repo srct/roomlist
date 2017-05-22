@@ -8,6 +8,7 @@ from braces.views import LoginRequiredMixin
 # imports from your apps
 from .models import Building, Floor, Room
 from accounts.models import Student
+from core.utils import shadowbanning
 
 
 # a list of neighborhoods and their buildings
