@@ -1,7 +1,7 @@
 # standard library imports
 from __future__ import absolute_import, print_function
 # core django imports
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url, include
 # imports from your apps
 from .views import (DetailStudent, UpdateStudent, DeleteStudent,
                     ListMajors, DetailMajor,
@@ -9,7 +9,7 @@ from .views import (DetailStudent, UpdateStudent, DeleteStudent,
 from .adapter import RemoveSocialConfirmationView
 
 
-urlpatterns = patterns('',
+urlpatterns = [
 
     # social media confirmation
     url(r'', include('allauth.urls')),
@@ -44,4 +44,4 @@ urlpatterns = patterns('',
     # delete confirmation
     url(r'^student/(?P<confirmer_slug>[\w-]+)/flag/(?P<student_slug>[\w-]+)/remove/$',
         DeleteConfirmation.as_view(), name='deleteConfirmation'),
-)
+]
