@@ -25,10 +25,9 @@ SECRET_KEY = secret.SECRET_KEY
 # These configurations are set by default for a local development environment. Turning
 # off debug mode will display 404 and 500 error pages instead of detailed logs.
 DEBUG = True
-TEMPLATE_DEBUG = True
 # the domains this application will be deployed on, e.g. which
 # domains this app should listen to requests from.
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -37,28 +36,35 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-# where template files are located
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-    # may specify to avoid requiring paths
-    os.path.join(BASE_DIR, 'housing/templates'),
-    os.path.join(BASE_DIR, 'accounts/templates'),
-)
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request',
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # where template files are located
+            os.path.join(BASE_DIR, 'templates'),
+            # may specify to avoid requiring paths
+            os.path.join(BASE_DIR, 'housing/templates'),
+            os.path.join(BASE_DIR, 'accounts/templates'),
+        ],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+            ],
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ],
+            'debug': DEBUG,
+        }
+    }
+]
 
 # Application definition
 INSTALLED_APPS = (
@@ -77,12 +83,13 @@ INSTALLED_APPS = (
     'welcome',
     'core',
     # packages
+    'analytical',
+    'cas',
     'crispy_forms',
     'django_gravatar',
-    'analytical',
-    'randomslugfield',
     'haystack',
     'multiselectfield',
+    'randomslugfield',
     'rest_framework',
     # social media authentication
     'allauth',
