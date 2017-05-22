@@ -1,3 +1,21 @@
+# standard library imports
+from __future__ import absolute_import, print_function
+import random
+import re
+# core django imports
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.utils.safestring import mark_safe
+from django.template.loader import get_template
+from django.template import Context
+from django.core.mail import EmailMultiAlternatives
+from django.core.urlresolvers import reverse
+# third party imports
+from cas.views import login as cas_login
+# imports from your apps
+from accounts.models import Student
+
+
 def custom_cas_login(request, *args, **kwargs):
     """If a student has not completed the welcome walkthrough, go there on login."""
     response = cas_login(request, *args, **kwargs)
@@ -68,7 +86,6 @@ def create_email(text_path, html_path, subject, to, context):
 def no_nums(name):
     no_numbers = re.sub('[0-9]', '', name)
     return no_numbers
-
 
 
 def get_semester(date):
