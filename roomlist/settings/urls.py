@@ -35,7 +35,7 @@ urlpatterns = patterns('',
                                     login_url='login'), name='search'),
 
     # login and logout
-    url(r'^login/', 'accounts.views.custom_cas_login', name='login'),
+    url(r'^login/', 'core.utils.custom_cas_login', name='login'),
     url(r'^logout/', 'cas.views.logout', name='logout'),
 
     # url(r'^login/$', 'django.contrib.auth.views.login', name='login'),

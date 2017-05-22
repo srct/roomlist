@@ -12,7 +12,7 @@ from braces.views import LoginRequiredMixin
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from accounts.models import Student, Confirmation, Major
-from accounts.views import create_email, no_nums
+from core.utils import create_email, no_nums, get_semester
 from housing.models import Room
 from .forms import (WelcomeNameForm, WelcomeMajorForm,
                     WelcomePrivacyForm, WelcomeSocialForm)
