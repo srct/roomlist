@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 # third party imports
+from allauth.account.adapter import get_adapter as get_account_adapter
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.socialaccount.views import ConnectionsView
 from allauth.exceptions import ImmediateHttpResponse
@@ -90,7 +91,13 @@ class RemoveSocialConfirmationView(LoginRequiredMixin, ConnectionsView):
             return super(RemoveSocialConfirmationView, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
-        return super(RemoveSocialConfirmationView, self).form_valid(form)
+        # copied directly, except using SUCCESS rather than INFO
+        get_account_adapter().add_message(self.request,
+                                          messages.SUCCESS,
+                                          'socialaccount/messages/'
+                                          'account_disconnected.txt')
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse('update_student',
