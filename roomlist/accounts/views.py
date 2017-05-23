@@ -33,7 +33,7 @@ from core.utils import shadowbanning, on_the_same_floor, pk_or_none
 class DetailStudent(LoginRequiredMixin, DetailView):
     model = Student
     context_object_name = 'student'
-    template_name = 'detailStudent.html'
+    template_name = 'detail_student.html'
 
     login_url = 'login'
 
