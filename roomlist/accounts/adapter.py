@@ -78,7 +78,7 @@ class RemoveSocialConfirmationView(LoginRequiredMixin, ConnectionsView):
     We have written our own template to handle this feature that is much prettier than
     the one provided by allauth."""
 
-    template_name = "remove_social.html"
+    template_name = "social/remove_social.html"
     login_url = 'login'
 
     def get(self, request, *args, **kwargs):
