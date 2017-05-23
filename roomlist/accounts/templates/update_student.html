@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} SRCT Roomlist | Student | {{ request.user.student.get_full_name_or_uname }} | Update {% endblock %}
+{% block title %} SRCT Roomlist &bull; My Settings {% endblock %}
 
 {% block css %}
 <link href="/static/css/chosen.min.css" rel="stylesheet" media="screen">
@@ -22,14 +22,12 @@
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12 text-center">
-      <h1><strong>SRCT</strong>ROOMLIST</a></strong> {{ request.user.student.get_full_name_or_uname }}'s Settings</h1>
+      <h1><strong>My Settings</strong></h1>
     </div>
   </div>
 </div>
 
 <div class="row">
-
-{% include 'social/social_media_settings.html' %}
 
   <div class="col-md-8">
 
@@ -217,10 +215,13 @@
         {% endspaceless %}
       </div>
     </div>
-    <p class="pull-right">
+    <p>
       <small><a href="{% url 'delete_student' request.user.username %}">Delete Account</a></small>
     </p>
   </div>
+
+{% include 'social/social_media_settings.html' %}
+
 </div>
 
 {% endcache %}
