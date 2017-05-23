@@ -7,7 +7,6 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 from django.template.loader import get_template
-from django.template import Context
 from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 # third party imports
@@ -70,13 +69,11 @@ def create_email(text_path, html_path, subject, to, context):
     text_email = get_template(text_path)
     html_email = get_template(html_path)
 
-    email_context = Context(context)
-
     from_email, cc = ('noreply@srct.gmu.edu',
                       '')
 
-    text_content = text_email.render(email_context)
-    html_content = html_email.render(email_context)
+    text_content = text_email.render(context)
+    html_content = html_email.render(context)
 
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to], [cc])
     # mime multipart requires attaching text and html in this order

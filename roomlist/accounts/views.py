@@ -25,7 +25,7 @@ from ratelimit.decorators import ratelimit
 from .models import Student, Major, Confirmation
 from .forms import StudentUpdateForm, FarewellFeedbackForm
 from housing.models import Room
-from core.utils import shadowbanning, on_the_same_floor, pk_or_none
+from core.utils import shadowbanning, on_the_same_floor, pk_or_none, create_email
 
 
 # details about the student
