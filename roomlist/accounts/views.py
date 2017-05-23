@@ -24,7 +24,6 @@ from ratelimit.decorators import ratelimit
 # imports from your apps
 from .models import Student, Major, Confirmation
 from .forms import StudentUpdateForm, FarewellFeedbackForm
-from .student_messages import return_messages
 from housing.models import Room
 from core.utils import shadowbanning, on_the_same_floor, pk_or_none
 

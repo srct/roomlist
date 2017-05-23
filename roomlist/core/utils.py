@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse
 from cas.views import login as cas_login
 # imports from your apps
 from accounts.models import Student
+from .student_messages import return_messages
 
 
 def custom_cas_login(request, *args, **kwargs):
