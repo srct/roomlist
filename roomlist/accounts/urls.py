@@ -33,7 +33,7 @@ urlpatterns = [
         DeleteStudent.as_view(), name='delete_student'),
 
     # custom allauth page to disconnect a social media account
-    url(r'^student/(?P<slug>[\w-]+)/settings/social/remove/$',
+    url(r'^student/(?P<slug>[\w-]+)/settings/social/(?P<application>[\w-]+)/remove/$',
         RemoveSocialConfirmationView.as_view(),
         name='remove_social'),
 
