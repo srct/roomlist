@@ -296,6 +296,12 @@ class Student(TimeStampedModel):
         else:
             return self.user.get_full_name()
 
+    def is_staff(self):
+        staff = False
+        if self.lead == 'Resident Advisor' or self.lead == 'Resident Director':
+            staff = True
+        return staff
+
     # how recently has the student joined roomlist? changes some messages displayed
     def is_noob(self):
         now = timezone.now()
