@@ -160,6 +160,18 @@ class Student(TimeStampedModel):
         (OTHER, 'other'),
     )
 
+    RESIDENT = 'Resident'
+    RA = 'Resident Advisor'
+    RD = 'Resident Director'
+
+    LEAD_CHOICES = (
+        (RESIDENT, 'Resident'),
+        (RA, 'Resident Advisor'),
+        (RD, 'Resident Director'),
+    )
+
+    lead = models.CharField(max_length=100, choices=LEAD_CHOICES, default=RESIDENT)
+
     # selectmultiple in forms
     gender = MultiSelectField(max_length=100, choices=GENDER_CHOICES, blank=True)
     show_gender = models.BooleanField(default=False)
