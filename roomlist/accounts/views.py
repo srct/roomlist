@@ -145,6 +145,10 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         else:
             form.fields['room'].widget.user = self.request.user
 
+        # RAs and RDs cannot move off campus
+        if me.is_staff():
+            form.fields['on_campus'].disabled = True
+
         # bootstrap
         form.fields['first_name'].widget.attrs['class'] = 'form-control'
         form.fields['last_name'].widget.attrs['class'] = 'form-control'
@@ -198,6 +202,10 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
 
         me.on_campus = on_campus
         me.room = form_room
+
+        # if you are an RA or an RD, you live on campus
+        if me.is_staff():
+            me.on_campus = True
 
         try:
             # in case someone disabled the js, limit processing to only the first

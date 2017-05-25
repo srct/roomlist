@@ -155,6 +155,10 @@
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
+          {% if request.user.student.is_staff %}
+          <p class="help-block">Contact us if you are no longer a Resident Advisor or Director at
+          <a href="mailto:roomlist@lists.srct.gmu.edu">roomlist@lists.srct.gmu.edu</a>.</p>
+          {% endif %}
           <div class="form-group">
             <label for="{{ my_form.on_campus.id_for_label }}" class="col-md-3 col-sm-4 col-xs-5">
               Do You Live on Campus?
