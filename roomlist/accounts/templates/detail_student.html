@@ -16,10 +16,16 @@ SRCT Roomlist &bull; {{ student.user.first_name }} {{ student.user.last_name }}
     </div>
 
     <div class="col-md-6 text-center">
-      <h1><strong>{{ student.get_full_name_or_uname }}</strong></h1>
+      <h1>
+        <strong>{{ student.get_full_name_or_uname }}</strong>
+        {% if student.is_staff %}
+          <br />
+          <small><span class="text-info">{{ student.lead }}</span></small>
+        {% endif %}
+      </h1>
       {% if shares %}
         <p class="lead"><strong>
-          {% if not student.on_campus %}
+          {% if not student.on_campus and not student.is_staff %}
             {{ student.get_first_name_or_uname }} doesn't live on campus.
           {% elif student.room == None %}
             {{ student.get_first_name_or_uname }} hasn't set their room yet.
