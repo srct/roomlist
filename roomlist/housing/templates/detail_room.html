@@ -26,6 +26,9 @@
   <div class="col-sm-3 col-xs-6 text-center">
     <img class="img-circle img-responsive center center-block profile-image" src="{{ student.profile_image_url }}" alt="{{ student.get_first_name_or_uname }} profile picture">
     <h4><a href="{{ student.get_absolute_url }}"><strong>{{ student.get_full_name_or_uname }}</strong></a></h4>
+    {% if student.is_staff %}
+    <h4 class="text-info">{{ student.lead }}</h4>
+    {% endif %}
     <h5><em>{% include 'double_major.html' %}</em></h5>
     {% if student.get_flag_count > 4 %}
       <p><em>* a number of other floormates say this info is incorrect</em></p>
