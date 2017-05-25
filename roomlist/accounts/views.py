@@ -50,7 +50,7 @@ class DetailStudent(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailStudent, self).get_context_data(**kwargs)
 
-        requesting_student = Student.objects.get(user=self.request.user)
+        requesting_student = self.request.user.student
 
         same_floor = on_the_same_floor(self.get_object(), requesting_student)
 
@@ -122,7 +122,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(UpdateStudent, self).get_context_data(**kwargs)
 
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
         majors = [pk_or_none(me, major) for major in me.major.all()]
 
         form = StudentUpdateForm(initial={'first_name': me.user.first_name,
@@ -166,7 +166,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         return super(UpdateStudent, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         # print("In form valid method!")
 
@@ -277,7 +277,7 @@ class DeleteStudent(FormView):
     def get_context_data(self, **kwargs):
         context = super(DeleteStudent, self).get_context_data(**kwargs)
 
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         context['student'] = me
 
@@ -373,7 +373,7 @@ class DetailMajor(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailMajor, self).get_context_data(**kwargs)
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         # all students in the major
         major_students = Student.objects.filter(major__in=[self.get_object()]).order_by('-graduating_year')
