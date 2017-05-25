@@ -7,17 +7,13 @@
 
 <div class="page-header" id="banner">
   <div class="row">
-    <div class="col-lg-12 text-center">
-      <h1><strong>SRCT</strong>ROOMLIST</h1>
-      <p class="lead"><strong>{{ room.floor.building.name }} {{ room.number }}</strong></p>
-    </div>
-    <div class="col-md-10 col-md-offset-1"><h3>
+    <div class="col-md-12"><h3>
       <ol id="breadcrumbs" class="breadcrumb">
         <li><a href="{% url 'homepage' %}">Home</a></li>
         <li><a href="{% url 'list_buildings' %}">Buildings</a></li>
         <li><a href="{{ room.floor.building.get_absolute_url }}">{{ room.floor.building.name }}</a></li>
         <li><a href="{{ room.floor.get_absolute_url }}">{{ room.floor.number|ordinal }} Floor</a></li>
-	<li class="active">Room {{ room.number }}</li>
+	<li class="active"><strong>Room {{ room.number }}</strong></li>
       </ol>
     </h3></div>
   </div>
@@ -34,6 +30,9 @@
         <h4><strong>
           <a href="{{ student.get_absolute_url }}">{{ student.get_full_name_or_uname }}</a>
         </strong></h4>
+        {% if student.is_staff %}
+        <h4 class="text-info">{{ student.lead }}</h4>
+        {% endif %}
         <h5><em>{% include 'double_major.html' %}</em></h5>
         {% if student.get_flag_count > 4 %}
           <p><em>* a number of other floormates say this info is incorrect</em></p>

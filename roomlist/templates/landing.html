@@ -32,7 +32,6 @@ Back,
     <h3>Your Roommates in <a href="{{ me.room.get_absolute_url }}">{{ me.room }}</a></h3>
     <hr/>
   {% endif %}
-
 <div class="student-row">
   <div class="row">
     {% for student in roomies %}
@@ -43,6 +42,9 @@ Back,
         <h4><strong>
           <a href="{{ student.get_absolute_url }}">{{ student.get_full_name_or_uname }}</a>
         </strong></h4>
+        {% if student.is_staff %}
+        <h4 class="text-info">{{ student.lead }}</h4>
+        {% endif %}
         <h5><em>{% include 'double_major.html' %}</em></h5>
       </div>
     {% empty %}
@@ -69,6 +71,9 @@ Back,
         <h4><strong>
           <a href="{{ student.get_absolute_url }}">{{ student.get_full_name_or_uname }}
         </strong></h4>
+        {% if student.is_staff %}
+        <h4 class="text-info">{{ student.lead }}</h4>
+        {% endif %}
         <h5><em>{% include 'double_major.html' %}</em></h5>
         <h5><a href="{{ student.room.get_absolute_url }}">{{ student.room }}</h5></a>
       </div>

@@ -12,7 +12,7 @@ from braces.views import LoginRequiredMixin
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from accounts.models import Student, Confirmation, Major
-from accounts.views import create_email, no_nums
+from core.utils import create_email, no_nums, get_semester
 from housing.models import Room
 from .forms import (WelcomeNameForm, WelcomeMajorForm,
                     WelcomePrivacyForm, WelcomeSocialForm)
@@ -20,21 +20,6 @@ from .forms import (WelcomeNameForm, WelcomeMajorForm,
 
 settings_redirect = """You've already finished the welcome walkthrough.
                        Your user settings can now be changed here on this page."""
-
-
-def get_semester(date):
-    # months are between 1 and 12, inclusive
-    semesters = {
-        'Spring': (1, 2, 3, 4, 5),
-        'Summer': (6, 7),
-        'Fall': (8, 9, 10, 11, 12)
-    }
-
-    for semester, months in semesters.iteritems():
-        if date.month in months:
-            semester_string = semester
-
-    return semester_string
 
 
 class WelcomeName(LoginRequiredMixin, FormView):

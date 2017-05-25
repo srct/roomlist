@@ -39,8 +39,8 @@ STATICFILES_DIRS = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # where template files are located
         'DIRS': [
+            # where template files are located
             os.path.join(BASE_DIR, 'templates'),
             # may specify to avoid requiring paths
             os.path.join(BASE_DIR, 'housing/templates'),
@@ -50,12 +50,12 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
-                'django.core.context_processors.debug',
-                'django.core.context_processors.i18n',
-                'django.core.context_processors.media',
-                'django.core.context_processors.static',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                'django.core.context_processors.request',
                 'django.template.context_processors.request',
             ],
             'debug': DEBUG,
@@ -73,18 +73,20 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.humanize',
-    'cas',
     # apps
     'api',
     'housing',
     'accounts',
     'welcome',
+    'core',
     # packages
+    'analytical',
+    'cas',
     'crispy_forms',
     'django_gravatar',
-    'randomslugfield',
     'haystack',
     'multiselectfield',
+    'randomslugfield',
     'rest_framework',
     # social media authentication
     'allauth',

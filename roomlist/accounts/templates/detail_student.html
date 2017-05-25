@@ -1,5 +1,7 @@
 {% extends 'layouts/base.html' %}
-{% block title %} SRCT Roomlist | {{ student.user.first_name }} {{ student.user.last_name }} {% endblock title %}
+{% block title %}
+SRCT Roomlist &bull; {{ student.user.first_name }} {{ student.user.last_name }}
+{% endblock title %}
 {% block content %}
 {% load socialaccount %}
 {% load gravatar %}
@@ -14,10 +16,16 @@
     </div>
 
     <div class="col-md-6 text-center">
-      <h1><strong>{{ student.get_full_name_or_uname }}</strong></h1>
+      <h1>
+        <strong>{{ student.get_full_name_or_uname }}</strong>
+        {% if student.is_staff %}
+          <br />
+          <small><span class="text-info">{{ student.lead }}</span></small>
+        {% endif %}
+      </h1>
       {% if shares %}
         <p class="lead"><strong>
-          {% if not student.on_campus %}
+          {% if not student.on_campus and not student.is_staff %}
             {{ student.get_first_name_or_uname }} doesn't live on campus.
           {% elif student.room == None %}
             {{ student.get_first_name_or_uname }} hasn't set their room yet.
@@ -117,56 +125,61 @@
           </td>
           <td class="col-md-8">
             {% if accounts.facebook and shares %}
-              <h4><a href="https://facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">
-                  Facebook account</a></h4>
+            <h4>
+              <a href="https://facebook.com/{{ accounts.facebook.0.uid }}" target="_blank">
+               Facebook account</a>
+            </h4>
             {% else %} <h4>&mdash;</h4> {% endif %}
           </td>
         </tr>
-
         <tr>
           <td>
             <h4><i class="fa fa-twitter fa-lg"></i></h4>
           </td>
           <td>
             {% if accounts.twitter and shares %}
-              <h4><a href="https://twitter.com/{{ accounts.twitter.0.extra_data.screen_name }}" target="_blank">
-                  @{{ accounts.twitter.0.extra_data.screen_name }}</a></h4>
+            <h4>
+              <a href="https://twitter.com/{{ accounts.twitter.0.extra_data.screen_name }}" target="_blank">
+               @{{ accounts.twitter.0.extra_data.screen_name }}</a></h4>
             {% else %} <h4>&mdash;</h4> {% endif %}
           </td>
         </tr>
-
         <tr>
           <td>
             <h4><i class="fa fa-google fa-lg"></i></h4>
           </td>
           <td>
             {% if accounts.google and shares %}
-            <h4><a href="https://plus.google.com/{{ accounts.google.0.uid }}" target="_blank">
-              Google+ account</a></h4>
+            <h4>
+              <a href="https://plus.google.com/{{ accounts.google.0.uid }}" target="_blank">
+               Google+ account</a>
+            </h4>
             {% else %} <h4>&mdash;</h4> {% endif %}
           </td>
         </tr>
-
        {% if accounts.instagram and shares %}
         <tr>
           <td>
             <h4><i class="fa fa-instagram fa-lg"></i></h4>
           </td>
           <td>
-            <h4><a href="https://instagram.com/{{ accounts.instagram.0.extra_data.username }}"
-                   target="_blank">@{{ accounts.instagram.0.extra_data.username }}</a></h4>
+            <h4>
+              <a href="https://instagram.com/{{ accounts.instagram.0.extra_data.username }}"
+               target="_blank">@{{ accounts.instagram.0.extra_data.username }}</a>
+            </h4>
           </td>
         </tr>
         {% endif %}
-
         {% if accounts.tumblr and shares %}
         <tr>
           <td>
             <h4><i class="fa fa-tumblr fa-lg"></i></h4>
           </td>
           <td>
-            <h4><a href="https://{{ accounts.tumblr.0.extra_data.name }}.tumblr.com"
-                 target="_blank">@{{ accounts.tumblr.0.extra_data.name }}</a></h4>
+            <h4>
+              <a href="https://{{ accounts.tumblr.0.extra_data.name }}.tumblr.com"
+               target="_blank">@{{ accounts.tumblr.0.extra_data.name }}</a>
+            </h4>
           </td>
         </tr>
         {% endif %}

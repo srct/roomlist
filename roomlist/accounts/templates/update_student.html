@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} SRCT Roomlist | Student | {{ request.user.student.get_full_name_or_uname }} | Update {% endblock %}
+{% block title %} SRCT Roomlist &bull; My Settings {% endblock %}
 
 {% block css %}
 <link href="/static/css/chosen.min.css" rel="stylesheet" media="screen">
@@ -23,165 +23,25 @@
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12 text-center">
-      <h1><strong>SRCT</strong>ROOMLIST</a></strong> {{ request.user.student.get_full_name_or_uname }}'s Settings</h1>
+      <h1><strong>My Settings</strong></h1>
     </div>
   </div>
 </div>
 
-{% load socialaccount %}
-
-{% get_social_accounts request.user as accounts %}
-
 <div class="row">
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h1 class="panel-title text-center"><strong>Social Media Settings</strong></h1>
-      </div>
-      <div class="panel-body">
-        <p class="text-center">Verify your social media accounts to link them to other students.</p>
-        <div class="row text-center">
-          <div class="col-xs-6">
-          {% if accounts.facebook %}
-          <p><i class="fa fa-check-square-o"></i> Verified!</p>
-            <h4><i class="fa fa-facebook fa-2x"></i></h4>
-            <h4>Facebook</h4>
-          {% else %}
-          <br />
-          <a href="{% provider_login_url 'facebook' process='connect' %}">
-            <h4><i class="fa fa-facebook fa-2x"></i></h4>
-            <h4>Facebook</h4>
-          </a>
-          {% endif %}
-          </div>
-          <div class="col-xs-6">
-          {% if accounts.google %}
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
-            <h4><i class="fa fa-google fa-2x"></i></h4>
-            <h4>Google</h4>
-          {% else %}
-          <br />
-          <a href="{% provider_login_url 'google' process='connect' %}">
-            <h4><i class="fa fa-google fa-2x"></i></h4>
-            <h4>Google</h4>
-          </a>
-          {% endif %}
-          </div>
-        </div>
-        <br />
-        <div class="row text-center">
-          <div class="col-xs-6">
-          {% if accounts.twitter %}
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
-            <h4><i class="fa fa-twitter fa-2x"></i></h4>
-            <h4>Twitter</h4>
-          {% else %}
-          <br />
-          <a href="{% provider_login_url 'twitter' process='connect' %}">
-            <h4><i class="fa fa-twitter fa-2x"></i></h4>
-            <h4>Twitter</h4>
-          </a>
-          {% endif %}
-          </div>
-          <div class="col-xs-6">
-          {% if accounts.instagram %}
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
-            <h4><i class="fa fa-instagram fa-2x"></i></h4>
-            <h4>Instagram</h4>
-          {% else %}
-          <br />
-          <a href="{% provider_login_url 'instagram' process='connect' %}">
-            <h4><i class="fa fa-instagram fa-2x"></i></h4>
-            <h4>Instagram</h4>
-          </a>
-          {% endif %}
-          </div>
-        </div>
-        <br />
-        <div class="row text-center">
-          <div class="col-xs-6">
-          {% if accounts.tumblr %}
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
-            <h4><i class="fa fa-tumblr fa-2x"></i></h4>
-            <h4>Tumblr</h4>
-          {% else %}
-          <br />
-          <a href="{% provider_login_url 'tumblr' process='connect' %}">
-            <h4><i class="fa fa-tumblr fa-2x"></i></h4>
-            <h4>Tumblr</h4>
-          </a>
-          {% endif %}
-          </div>
-          <div class="col-xs-6">
-          {% if accounts.pinterest %}
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
-            <h4><i class="fa fa-pinterest-p fa-2x"></i></h4>
-            <h4>Pinterest</h4>
-          {% else %}
-          <br />
-          <a href="{% provider_login_url 'pinterest' process='connect' %}">
-            <h4><i class="fa fa-pinterest-p fa-2x"></i></h4>
-            <h4>Pinterest</h4>
-          </a>
-          {% endif %}
-          </div>
-        </div>
-        <br />
-        <div class="row text-center">
-          <div class="col-xs-6">
-          {% if accounts.spotify %}
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
-            <h4><i class="fa fa-spotify fa-2x"></i></h4>
-            <h4>Spotify</h4>
-          {% else %}
-          <br />
-          <a href="{% provider_login_url 'spotify' process='connect' %}">
-            <h4><i class="fa fa-spotify fa-2x"></i></h4>
-            <h4>Spotify</h4>
-          </a>
-          {% endif %}
-          </div>
-          <div class="col-xs-6">
-          {% if accounts.github %}
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
-            <h4><i class="fa fa-github fa-2x"></i></h4>
-            <h4>Github</h4>
-          {% else %}
-          <br />
-          <a href="{% provider_login_url 'github' process='connect' %}">
-            <h4><i class="fa fa-github fa-2x"></i></h4>
-            <h4>Github</h4>
-          </a>
-          {% endif %}
-          </div>
-        </div>
-        <br />
-        {% if accounts %}
-          <div class="row text-center">
-            <a href="{% url 'remove_social' request.user.username %}">
-              <button class="btn btn-xs btn-danger">Disconnect Accounts</button>
-            </a>
-          </div>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-
   <div class="col-md-8">
 
     <div class="panel panel-default">
       <div class="panel-heading">
         <h1 class="panel-title text-center"><strong>Profile Settings</strong></h1>
       </div>
-
       <div class="panel-body">
-        <p>
-          If you have a <a href="https://en.gravatar.com/">Gravatar profile</a> associated
-          with your <a href="https://masonlive.gmu.edu/">Masonlive email</a> address, your
-          profile picture on Roomlist will use Gravatar.
-        </p>
-        <p>
-          If you connect your Facebook account, we will use your Facebook profile picture.
+        <p class="small">
+          <i class="fa fa-fw fa-info-circle"></i>
+          Unfortunately we do not support uploading images for your profile picture.
+          Connect your Facebook account, or add your
+          <a href="http://masonlive.gmu.edu/">@masonlive.gmu.edu</a>
+          email address to <a href="https://en.gravatar.com/">Gravatar</a>.
         </p>
         <hr />
         {% if my_form.non_field_errors %}
@@ -297,6 +157,10 @@
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
+          {% if request.user.student.is_staff %}
+          <p class="help-block">Contact us if you are no longer a Resident Advisor or Director at
+          <a href="mailto:roomlist@lists.srct.gmu.edu">roomlist@lists.srct.gmu.edu</a>.</p>
+          {% endif %}
           <div class="form-group">
             <div class="col-md-4">
             <label for="{{ my_form.on_campus.id_for_label }}">
@@ -362,10 +226,13 @@
         {% endspaceless %}
       </div>
     </div>
-    <p class="pull-right">
+    <p>
       <small><a href="{% url 'delete_student' request.user.username %}">Delete Account</a></small>
     </p>
   </div>
+
+{% include 'social/social_media_settings.html' %}
+
 </div>
 
 {% endcache %}

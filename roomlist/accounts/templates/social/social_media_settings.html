@@ -1,0 +1,107 @@
+{% load socialaccount %}
+
+{% get_social_accounts request.user as accounts %}
+
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h1 class="panel-title text-center"><strong>Social Media Settings</strong></h1>
+    </div>
+    <div class="panel-body">
+      <p class="text-center">Verify your social media accounts to link them to other students.</p>
+      <div class="row text-center">
+        <div class="col-xs-6">
+        {% if accounts.facebook %}
+          <a href="{% url 'remove_social' request.user.username 'facebook' %}">
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          </a>
+          <h4><i class="fa fa-facebook fa-2x"></i></h4>
+          <h4>Facebook</h4>
+        {% else %}
+        <a href="{% provider_login_url 'facebook' process='connect' %}">
+          <h4><i class="fa fa-facebook fa-2x"></i></h4>
+          <h4>Facebook</h4>
+        </a>
+        {% endif %}
+        </div>
+        <div class="col-xs-6">
+        {% if accounts.google %}
+          <a href="{% url 'remove_social' request.user.username 'google' %}">
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          </a>
+          <h4><i class="fa fa-google fa-2x"></i></h4>
+          <h4>Google</h4>
+        {% else %}
+        <a href="{% provider_login_url 'google' process='connect' %}">
+          <h4><i class="fa fa-google fa-2x"></i></h4>
+          <h4>Google</h4>
+        </a>
+        {% endif %}
+        </div>
+      </div>
+      <br />
+      <div class="row text-center">
+        <div class="col-xs-6">
+        {% if accounts.twitter %}
+          <a href="{% url 'remove_social' request.user.username 'twitter' %}">
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          </a>
+          <h4><i class="fa fa-twitter fa-2x"></i></h4>
+          <h4>Twitter</h4>
+        {% else %}
+        <a href="{% provider_login_url 'twitter' process='connect' %}">
+          <h4><i class="fa fa-twitter fa-2x"></i></h4>
+          <h4>Twitter</h4>
+        </a>
+        {% endif %}
+        </div>
+        <div class="col-xs-6">
+        {% if accounts.instagram %}
+          <a href="{% url 'remove_social' request.user.username 'instagram' %}">
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          </a>
+          <h4><i class="fa fa-instagram fa-2x"></i></h4>
+          <h4>Instagram</h4>
+        {% else %}
+        <a href="{% provider_login_url 'instagram' process='connect' %}">
+          <h4><i class="fa fa-instagram fa-2x"></i></h4>
+          <h4>Instagram</h4>
+        </a>
+        {% endif %}
+        </div>
+      </div>
+      <br />
+      <div class="row text-center">
+        <div class="col-xs-6">
+        {% if accounts.tumblr %}
+          <a href="{% url 'remove_social' request.user.username 'tumblr' %}">
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          </a>
+          <h4><i class="fa fa-tumblr fa-2x"></i></h4>
+          <h4>Tumblr</h4>
+        {% else %}
+        <a href="{% provider_login_url 'tumblr' process='connect' %}">
+          <h4><i class="fa fa-tumblr fa-2x"></i></h4>
+          <h4>Tumblr</h4>
+        </a>
+        {% endif %}
+        </div>
+        <div class="col-xs-6">
+        {% if accounts.github %}
+          <a href="{% url 'remove_social' request.user.username 'github' %}">
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          </a>
+          <h4><i class="fa fa-github fa-2x"></i></h4>
+          <h4>Github</h4>
+        {% else %}
+        <a href="{% provider_login_url 'github' process='connect' %}">
+          <h4><i class="fa fa-github fa-2x"></i></h4>
+          <h4>Github</h4>
+        </a>
+        {% endif %}
+        </div>
+      </div>
+      <br />
+    </div>
+  </div>
+</div>

@@ -10,21 +10,7 @@ from braces.views import LoginRequiredMixin
 # imports from your apps
 from .models import Building, Floor, Room
 from accounts.models import Student
-
-
-# this should be written in cache, to be entirely honest
-def shadowbanning(me, other_people):
-    # start with only students who are actually blocking anyone
-    blockers = [student for student in Student.objects.exclude(blocked_kids=None)]
-    # of those students, collect the ones that block *you*
-    blocks_me = [student
-                 for student in blockers
-                 if me in student.blocked_kids.all()]
-    if blocks_me:  # python implicit truth evaluation
-        student_safety = list(set(other_people) - set(blocks_me))
-        return student_safety
-    else:
-        return other_people
+from core.utils import shadowbanning
 
 
 # a list of neighborhoods and their buildings
@@ -101,9 +87,16 @@ class DetailFloor(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailFloor, self).get_context_data(**kwargs)
 
-        requesting_student = Student.objects.get(user=self.request.user)
+        requesting_student = self.request.user.student
 
         students = Student.objects.visible(requesting_student, self.get_object())
+
+        # list RAs first
+        staff = [student
+                 for student in students
+                 if student.is_staff()]
+        for s in staff:
+            students.insert(0, students.pop(students.index(s)))
 
         context['students'] = shadowbanning(requesting_student, students)
         # boolean values; helps cut down on if/else block complexity on the template
@@ -138,7 +131,7 @@ class DetailRoom(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailRoom, self).get_context_data(**kwargs)
 
-        requesting_student = Student.objects.get(user=self.request.user)
+        requesting_student = self.request.user.student
 
         students = Student.objects.visible(requesting_student, self.get_object())
 

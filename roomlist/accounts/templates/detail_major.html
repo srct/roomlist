@@ -1,5 +1,7 @@
 {% extends 'layouts/base.html' %}
-{% block title %} SRCT Roomlist | Majors | {{ major.name }} {% endblock title %}
+{% block title %}
+SRCT Roomlist &bull; Majors &bull; {{ major.name }}
+{% endblock title %}
 {% block content %}
 {% load cache %}
 {% cache 15 major_students request.user.username major %}
@@ -7,8 +9,7 @@
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12 text-center">
-      <h1><strong>SRCT</strong>ROOMLIST</h1>
-      <p class="lead"><strong>{{ major.name }}</strong></p>
+      <h1><strong>{{ major.name }}</strong></h1>
     </div>
   </div>
 </div>

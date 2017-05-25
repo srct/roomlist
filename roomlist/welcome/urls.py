@@ -1,14 +1,14 @@
 # standard library imports
 from __future__ import absolute_import, print_function
 # core django imports
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.views.generic import RedirectView
 from django.core.urlresolvers import reverse_lazy
 # imports from your apps
 from .views import WelcomeName, WelcomePrivacy, WelcomeMajor, WelcomeSocial
 
 
-urlpatterns = patterns('',
+urlpatterns = [
 
     # first welcome page
     # let's verify your name and optionally select a gender
@@ -34,4 +34,4 @@ urlpatterns = patterns('',
     url(r'^4/$',
         WelcomeSocial.as_view(), name='welcomeSocial'),
 
-)
+]

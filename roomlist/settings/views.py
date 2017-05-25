@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 from braces.views import LoginRequiredMixin
 from accounts.models import Student, Major
 # imports from your apps
-from housing.views import shadowbanning
+from core.utils import shadowbanning
 
 
 class HomePageView(View):

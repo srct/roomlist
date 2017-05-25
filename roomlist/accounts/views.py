@@ -24,81 +24,8 @@ from ratelimit.decorators import ratelimit
 # imports from your apps
 from .models import Student, Major, Confirmation
 from .forms import StudentUpdateForm, FarewellFeedbackForm
-from .student_messages import return_messages
 from housing.models import Room
-from housing.views import shadowbanning
-
-
-def custom_cas_login(request, *args, **kwargs):
-    """If a student has not completed the welcome walkthrough, go there on login."""
-    response = cas_login(request, *args, **kwargs)
-    # returns HttpResponseRedirect
-
-    if request.user.is_authenticated():
-
-        if not request.user.student.totally_done():
-
-            if not request.user.student.completedName:
-                return HttpResponseRedirect(reverse('welcomeName'))
-            elif not request.user.student.completedPrivacy:
-                return HttpResponseRedirect(reverse('welcomePrivacy'))
-            elif not request.user.student.completedMajor:
-                return HttpResponseRedirect(reverse('welcomeMajor'))
-            elif not request.user.student.completedSocial:
-                return HttpResponseRedirect(reverse('welcomeSocial'))
-        else:
-            welcome_back = random.choice(return_messages)
-            messages.add_message(request, messages.INFO, mark_safe(welcome_back))
-
-    return response
-
-
-# only two students on the same floor can confirm one another (crowdsourced verification)
-def on_the_same_floor(student, confirmer):
-    if student == confirmer:
-        # Student is confirmer
-        return False
-    student_floor = student.get_floor()
-    confirmer_floor = confirmer.get_floor()
-    # room hasn't been set yet
-    if (student_floor is None) or (confirmer_floor is None):
-        # one Student is None
-        return False
-    elif not(student_floor == confirmer_floor):
-        # not the same floor
-        return False
-    else:
-        return True
-
-
-def pk_or_none(me, obj):
-    if obj is None:
-        return None
-    else:
-        return obj.pk
-
-
-def create_email(text_path, html_path, subject, to, context):
-    text_email = get_template(text_path)
-    html_email = get_template(html_path)
-
-    email_context = Context(context)
-
-    from_email, cc = ('noreply@srct.gmu.edu',
-                      '')
-
-    text_content = text_email.render(email_context)
-    html_content = html_email.render(email_context)
-
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to], [cc])
-    # mime multipart requires attaching text and html in this order
-    msg.attach_alternative(html_content, 'text/html')
-    return msg
-
-
-def no_nums(name):
-    no_numbers = re.sub('[0-9]', '', name)
-    return no_numbers
+from core.utils import shadowbanning, on_the_same_floor, pk_or_none, create_email, no_nums
 
 
 # details about the student
@@ -126,7 +53,7 @@ class DetailStudent(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailStudent, self).get_context_data(**kwargs)
 
-        requesting_student = Student.objects.get(user=self.request.user)
+        requesting_student = self.request.user.student
 
         same_floor = on_the_same_floor(self.get_object(), requesting_student)
 
@@ -202,7 +129,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(UpdateStudent, self).get_context_data(**kwargs)
 
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
         majors = [pk_or_none(me, major) for major in me.major.all()]
 
         form = StudentUpdateForm(initial={'first_name': me.user.first_name,
@@ -225,6 +152,15 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         else:
             form.fields['room'].widget.user = self.request.user
 
+        # RAs and RDs cannot move off campus
+        if me.is_staff():
+            form.fields['on_campus'].disabled = True
+
+        # bootstrap
+        form.fields['first_name'].widget.attrs['class'] = 'form-control'
+        form.fields['last_name'].widget.attrs['class'] = 'form-control'
+        form.fields['graduating_year'].widget.attrs['class'] = 'form-control'
+
         # chosen
         form.fields['major'].widget.attrs['class'] = 'form-control chosen-select'
         form.fields['blocked_kids'].widget.attrs['class'] = 'form-control blocked-select'
@@ -241,7 +177,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         return super(UpdateStudent, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         # print("In form valid method!")
 
@@ -280,6 +216,10 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
             me.privacy = 'students'
         else:
             me.privacy = form.data['privacy']
+
+        # if you are an RA or an RD, you live on campus
+        if me.is_staff():
+            me.on_campus = True
 
         try:
             # in case someone disabled the js, limit processing to only the first
@@ -362,7 +302,7 @@ class DeleteStudent(FormView):
     def get_context_data(self, **kwargs):
         context = super(DeleteStudent, self).get_context_data(**kwargs)
 
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         context['student'] = me
 
@@ -458,7 +398,7 @@ class DetailMajor(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailMajor, self).get_context_data(**kwargs)
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         # all students in the major-- needs to be ordered for groupby
         major_students = Student.objects.filter(major__in=[self.get_object()]).order_by('graduating_year')

@@ -1,0 +1,41 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} SRCT RoomList | Remove Social Accounts {% endblock %}
+
+{% block message_queue %}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1><i class="fa fa-fw fa-2x fa-times"></i> <i class="fa fa-fw fa-2x fa-{{ application }}"></i></h1>
+      <p class="lead">Remove My {{ branding }} Account</p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <form class="form-horizontal text-center" method="post" action="">{% csrf_token %}
+      <input type="submit" value="Remove" class="btn btn-danger"/>
+      <input type="cancel" value="Never Mind" class="btn btn-default" onclick="history.back()"/>
+    </form>
+  </div>
+</div>
+
+<hr/ >
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 text-center">
+    <div class="alert alert-danger" role="alert">
+       <p><i class="fa fa-exclamation-circle fa-fw fa-lg"></i> While this form will
+       immediately delete your account from our database, it may still exist for
+       a time on the related social media account's database. Check that social media
+       profile's authorized apps page for more information.</p>
+   </div>
+  </div>
+</div>
+
+{% endblock %}

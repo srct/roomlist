@@ -130,7 +130,8 @@ class RemoveSocialConfirmationTest(RoomlistViewTest):
     def test_remove_social_redirect(self):
         client = self.client_login()
         response = client.get(reverse('remove_social',
-                                      kwargs={'slug': 'gmason'}))
+                                      kwargs={'slug': 'gmason',
+                                              'application': 'facebook'}))
         # student does not have any social media acounts set
         self.assertEqual(response.status_code, 302)
 

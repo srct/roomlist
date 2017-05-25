@@ -160,6 +160,18 @@ class Student(TimeStampedModel):
         (OTHER, 'other'),
     )
 
+    RESIDENT = 'Resident'
+    RA = 'Resident Advisor'
+    RD = 'Resident Director'
+
+    LEAD_CHOICES = (
+        (RESIDENT, 'Resident'),
+        (RA, 'Resident Advisor'),
+        (RD, 'Resident Director'),
+    )
+
+    lead = models.CharField(max_length=100, choices=LEAD_CHOICES, default=RESIDENT)
+
     # selectmultiple in forms
     gender = MultiSelectField(max_length=100, choices=GENDER_CHOICES, blank=True)
     show_gender = models.BooleanField(default=False)
@@ -283,6 +295,12 @@ class Student(TimeStampedModel):
             return self.user.username
         else:
             return self.user.get_full_name()
+
+    def is_staff(self):
+        staff = False
+        if self.lead == 'Resident Advisor' or self.lead == 'Resident Director':
+            staff = True
+        return staff
 
     # how recently has the student joined roomlist? changes some messages displayed
     def is_noob(self):

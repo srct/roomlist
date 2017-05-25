@@ -1,14 +1,16 @@
 # standard library imports
 from __future__ import absolute_import, print_function
 # core django imports
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url, include
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.contrib import admin
 # third party imports
 from haystack.views import SearchView
 from django.views.generic import RedirectView
+from cas.views import logout as cas_logout
 # imports from your apps
+from core.utils import custom_cas_login
 from accounts.forms import AccountSearchForm
 from .views import HomePageView, RedirectSettings, RedirectSlug
 
@@ -18,7 +20,7 @@ admin.site.login = login_required(admin.site.login)
 handle404 = TemplateView.as_view(template_name="404.html")
 handle500 = TemplateView.as_view(template_name="500.html")
 
-urlpatterns = patterns('',
+urlpatterns = [
 
     # project-level urls
     url(r'^$', HomePageView.as_view(), name='homepage'),
@@ -35,8 +37,8 @@ urlpatterns = patterns('',
                                     login_url='login'), name='search'),
 
     # login and logout
-    url(r'^login/', 'accounts.views.custom_cas_login', name='login'),
-    url(r'^logout/', 'cas.views.logout', name='logout'),
+    url(r'^login/', custom_cas_login, name='login'),
+    url(r'^logout/', cas_logout, name='logout'),
 
     # url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
     # url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
@@ -50,4 +52,4 @@ urlpatterns = patterns('',
     url(r'^settings/', RedirectSettings.as_view()),
     # note that this is the very last, 'cause it tries to match basically anything else
     url(r'^(?P<slug>[\w-]+)/$', RedirectSlug.as_view()),
-)
+]
