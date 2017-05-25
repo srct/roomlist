@@ -79,9 +79,16 @@ class DetailFloor(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailFloor, self).get_context_data(**kwargs)
 
-        requesting_student = Student.objects.get(user=self.request.user)
+        requesting_student = self.request.user.student
 
         students = Student.objects.visible(requesting_student, self.get_object())
+
+        # list RAs first
+        staff = [student
+                 for student in students
+                 if student.is_staff()]
+        for s in staff:
+            students.insert(0, students.pop(students.index(s)))
 
         context['students'] = shadowbanning(requesting_student, students)
         # boolean values; helps cut down on if/else block complexity on the template
@@ -113,7 +120,7 @@ class DetailRoom(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailRoom, self).get_context_data(**kwargs)
 
-        requesting_student = Student.objects.get(user=self.request.user)
+        requesting_student = self.request.user.student
 
         students = Student.objects.visible(requesting_student, self.get_object())
 
