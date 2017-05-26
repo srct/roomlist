@@ -73,6 +73,20 @@
       <br />
       <div class="row text-center">
         <div class="col-xs-6">
+        {% if accounts.pinterest %}
+          <a href="{% url 'remove_social' request.user.username 'pinterest' %}">
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          </a>
+          <h4><i class="fa fa-pinterest-p fa-2x"></i></h4>
+          <h4>Pinterest</h4>
+        {% else %}
+        <a href="{% provider_login_url 'pinterest' process='connect' %}">
+          <h4><i class="fa fa-pinterest-p fa-2x"></i></h4>
+          <h4>Pinterest</h4>
+        </a>
+        {% endif %}
+        </div>
+        <div class="col-xs-6">
         {% if accounts.tumblr %}
           <a href="{% url 'remove_social' request.user.username 'tumblr' %}">
             <p><i class="fa fa-check-square-o"></i> Verified!</p>
@@ -83,6 +97,23 @@
         <a href="{% provider_login_url 'tumblr' process='connect' %}">
           <h4><i class="fa fa-tumblr fa-2x"></i></h4>
           <h4>Tumblr</h4>
+        </a>
+        {% endif %}
+        </div>
+      </div>
+      <br />
+      <div class="row text-center">
+        <div class="col-xs-6">
+        {% if accounts.spotify %}
+          <a href="{% url 'remove_social' request.user.username 'spotify' %}">
+            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+          </a>
+          <h4><i class="fa fa-spotify fa-2x"></i></h4>
+          <h4>Spotify</h4>
+        {% else %}
+        <a href="{% provider_login_url 'spotify' process='connect' %}">
+          <h4><i class="fa fa-spotify fa-2x"></i></h4>
+          <h4>Spotify</h4>
         </a>
         {% endif %}
         </div>
@@ -101,7 +132,6 @@
         {% endif %}
         </div>
       </div>
-      <br />
     </div>
   </div>
 </div>
