@@ -40,18 +40,15 @@ class WelcomeName(LoginRequiredMixin, FormView):
         else:
             return super(WelcomeName, self).get(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super(WelcomeName, self).get_context_data(**kwargs)
-
+    def get_initial(self):
         me = self.request.user.student
 
-        form = WelcomeNameForm(initial={'first_name': me.user.first_name,
-                                        'last_name': me.user.last_name,
-                                        'gender': me.gender,
-                                        'show_gender': me.show_gender, })
+        initial = {'first_name': me.user.first_name,
+                   'last_name': me.user.last_name,
+                   'gender': me.gender,
+                   'show_gender': me.show_gender, }
 
-        context['my_form'] = form
-        return context
+        return initial
 
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
@@ -94,17 +91,27 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
         else:
             return super(WelcomePrivacy, self).get(request, *args, **kwargs)
 
+    def get_initial(self):
+        me = self.request.user.student
+
+        initial={'on_campus': me.on_campus,
+                 'privacy': me.privacy, }
+
+        return initial
+
+    def get_form(self):
+        form = super(WelcomePrivacy, self).get_form(WelcomePrivacyForm)
+
+        me = self.request.user.student
+
+        form.fields['room'].widget.user = self.request.user
+
+        return form
+
     def get_context_data(self, **kwargs):
         context = super(WelcomePrivacy, self).get_context_data(**kwargs)
 
         me = self.request.user.student
-
-        form = WelcomePrivacyForm(initial={'on_campus': me.on_campus,
-                                           'privacy': me.privacy, })
-
-        form.fields['room'].widget.user = self.request.user
-
-        context['my_form'] = form
 
         context['student'] = me
 
@@ -174,17 +181,19 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
         else:
             return super(WelcomeMajor, self).get(request, *args, **kwargs)
 
+    def get_initial(self):
+        me = self.request.user.student
+
+        initial={'major': me.major.all(),
+                 'graduating_year': me.graduating_year, }
+
+        return initial
+
     def get_context_data(self, **kwargs):
         context = super(WelcomeMajor, self).get_context_data(**kwargs)
 
         me = self.request.user.student
 
-        form = WelcomeMajorForm(initial={'major': me.major.all(),
-                                         'graduating_year': me.graduating_year, })
-
-        form.fields['major'].widget.attrs['class'] = 'form-control chosen-select'
-
-        context['my_form'] = form
         context['student'] = me
 
         return context
