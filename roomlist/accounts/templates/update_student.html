@@ -44,9 +44,9 @@
           email address to <a href="https://en.gravatar.com/">Gravatar</a>.
         </p>
         <hr />
-        {% if my_form.non_field_errors %}
+        {% if form.non_field_errors %}
         <ul class="text-center">
-          {% for error in my_form.non_field_errors %}
+          {% for error in form.non_field_errors %}
             <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
           {% endfor %}
         </ul>
@@ -67,23 +67,23 @@
           {% endif %}
           <div class="form-group">
             <div class="col-sm-6">
-              <label for="{{ my_form.first_name.id_for_label }}">First Name</label>
-                {% if not my_form.first_name.errors %}
-                  {{ my_form.first_name }}
+              <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                {% if not form.first_name.errors %}
+                  {{ form.first_name }}
                 {% else %}
                   <div class="has-error">
-                    {{ my_form.first_name }}
+                    {{ form.first_name }}
                     <p>{{ form.first_name.errors }}</p>
                   </div>
                 {% endif %}
               </div>
             <div class="col-sm-6">
-              <label for="{{ my_form.last_name.id_for_label }}">Last Name</label>
-                {% if not my_form.last_name.errors %}
-                  {{ my_form.last_name }}
+              <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                {% if not form.last_name.errors %}
+                  {{ form.last_name }}
                 {% else %}
                   <div class="has-error">
-                    {{ my_form.last_name }}
+                    {{ form.last_name }}
                     <p>{{ form.last_name.errors }}</p>
                   </div>
                 {% endif %}
@@ -95,11 +95,11 @@
             {% endfor %}
           {% endif %}
           <div class="form-group">
-            <label for="{{ my_form.gender.id_for_label }}" class="col-xs-12">
+            <label for="{{ form.gender.id_for_label }}" class="col-xs-12">
               Gender Identity
               <p class="help-block">(choose all that apply)</p>
             </label>
-              {% for checkbox in my_form.gender %}
+              {% for checkbox in form.gender %}
                 <div class="checkbox col-md-3 col-sm-3 col-sm-offset-1 col-xs-5 col-xs-offset-1">
                   <label for="{{ checkbox.id_for_label }}">
                     {{ checkbox.choice_label|gender_icon }}
@@ -115,26 +115,26 @@
           {% endif %}
           <div class="form-group">
             <div class="col-md-4">
-            <label for="{{ my_form.show_gender.id_for_label }}">
+            <label for="{{ form.show_gender.id_for_label }}">
               Show Gender on Profile?
             </label><br />
-              {% for option in my_form.show_gender %}
+              {% for option in form.show_gender %}
                 <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
               {% endfor %}
             </div>
           </div>
           <hr />
-          {% if my_form.major.errors %}
-            {% for error in my_form.major.errors %}
+          {% if form.major.errors %}
+            {% for error in form.major.errors %}
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
             <div class="col-lg-9">
-            <label for="{{ my_form.major.id_for_label }}">
+            <label for="{{ form.major.id_for_label }}">
               Major(s)
             </label><br />
-              {{ my_form.major }}
+              {{ form.major }}
             </div>
           </div>
           {% if form.graduating_year.errors %}
@@ -144,10 +144,10 @@
           {% endif %}
           <div class="form-group">
             <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
-              <label for="{{ my_form.graduating_year.id_for_label }}">
+              <label for="{{ form.graduating_year.id_for_label }}">
                 Graduating Year
               </label>
-                {{ my_form.graduating_year }}
+                {{ form.graduating_year }}
             </div>
           </div>
           {% if not request.user.student.recent_changes > 2 %}
@@ -163,10 +163,10 @@
           {% endif %}
           <div class="form-group">
             <div class="col-md-4">
-            <label for="{{ my_form.on_campus.id_for_label }}">
+            <label for="{{ form.on_campus.id_for_label }}">
               Do You Live on Campus?
             </label><br/>
-              {% for option in my_form.on_campus %}
+              {% for option in form.on_campus %}
                 <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
               {% endfor %}
             </div>
@@ -182,43 +182,44 @@
               {% endfor %}
             {% endif %}
             <div class="form-group">
-              {{ my_form.room }}
-            </div>
-            <p class="help-block">
-              Your privacy settings affect the visibility of both your room and your social media accounts.
-            </p>
-            {% if form.privacy.errors %}
-              {% for error in form.privacy.errors %}
-                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
-              {% endfor %}
-            {% endif %}
-            <div class="form-group">
-              <div class="col-md-3 col-sm-6">
-              <label for="{{ my_form.privacy.id_for_label }}">
-                Privacy
-              </label><br/>
-                {{ my_form.privacy }}
-              </div>
-            </div>
-          </div>
-          <hr />
-            <p class="help-block">
-              You will not be able to see these students, and they will not be able to see you.
-            </p>
-            {% if form.blocked_kids.errors %}
-              {% for error in form.blocked_kids.errors %}
-                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
-              {% endfor %}
-            {% endif %}
-          <div class="form-group">
-            <div class="col-xs-12">
-            <label for="{{ my_form.blocked_kids.id_for_label }}">
-              Blocked Students
-            </label>
-              {{ my_form.blocked_kids }}
+              {{ form.room }}
             </div>
           </div>
           {% endif %}
+          <hr />
+          <p class="help-block">
+            Your privacy settings affect the visibility of both your room and your social media accounts.
+          </p>
+          {% if form.privacy.errors %}
+            {% for error in form.privacy.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <div class="col-md-3 col-sm-6">
+            <label for="{{ form.privacy.id_for_label }}">
+              Privacy
+            </label><br/>
+              {{ form.privacy }}
+            </div>
+          </div>
+          <hr />
+          <p class="help-block">
+            You will not be able to see these students, and they will not be able to see you.
+          </p>
+          {% if form.blocked_kids.errors %}
+            {% for error in form.blocked_kids.errors %}
+              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+            {% endfor %}
+          {% endif %}
+          <div class="form-group">
+            <div class="col-xs-12">
+            <label for="{{ form.blocked_kids.id_for_label }}">
+              Blocked Students
+            </label>
+              {{ form.blocked_kids }}
+            </div>
+          </div>
           <hr />
           <input type="submit" value="Save" class="btn btn-primary"/>
         </fieldset>
