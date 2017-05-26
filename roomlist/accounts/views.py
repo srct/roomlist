@@ -126,48 +126,45 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         else:
             return super(UpdateStudent, self).get(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super(UpdateStudent, self).get_context_data(**kwargs)
+    def get_initial(self):
+        initial = super(UpdateStudent, self).get_initial()
 
         me = self.request.user.student
         majors = [pk_or_none(me, major) for major in me.major.all()]
 
-        form = StudentUpdateForm(initial={'first_name': me.user.first_name,
-                                          'last_name': me.user.last_name,
-                                          'gender': me.gender,
-                                          'show_gender': me.show_gender,
-                                          'room': pk_or_none(me, me.room),
-                                          'privacy': me.privacy,
-                                          'blocked_kids': me.blocked_kids.all(),
-                                          'major': majors,
-                                          'graduating_year': me.graduating_year,
-                                          'on_campus': me.on_campus, })
+        initial = {'first_name': me.user.first_name,
+                   'last_name': me.user.last_name,
+                   'gender': me.gender,
+                   'show_gender': me.show_gender,
+                   'room': pk_or_none(me, me.room),
+                   'privacy': me.privacy,
+                   'blocked_kids': me.blocked_kids.all(),
+                   'major': majors,
+                   'graduating_year': me.graduating_year,
+                   'on_campus': me.on_campus, }
+
+        return initial
+
+    def get_form(self):
+        form = super(UpdateStudent, self).get_form(StudentUpdateForm)
+
+        me = self.request.user.student
 
         form.fields['blocked_kids'].queryset = Student.objects.exclude(user=self.request.user)
+        form.fields['room'].widget.user = self.request.user
 
         if me.recent_changes() > 2:
+            form.fields['room'].required = False
             form.fields['room'].widget = HiddenInput()
-            form.fields['privacy'].widget = HiddenInput()
+            form.fields['on_campus'].required = False
             form.fields['on_campus'].widget = HiddenInput()
-        else:
-            form.fields['room'].widget.user = self.request.user
 
         # RAs and RDs cannot move off campus
         if me.is_staff():
+            form.fields['on_campus'].required = False
             form.fields['on_campus'].disabled = True
 
-        # bootstrap
-        form.fields['first_name'].widget.attrs['class'] = 'form-control'
-        form.fields['last_name'].widget.attrs['class'] = 'form-control'
-        form.fields['graduating_year'].widget.attrs['class'] = 'form-control'
-
-        # chosen
-        form.fields['major'].widget.attrs['class'] = 'form-control chosen-select'
-        form.fields['blocked_kids'].widget.attrs['class'] = 'form-control blocked-select'
-
-        context['my_form'] = form
-
-        return context
+        return form
 
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
