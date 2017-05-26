@@ -13,6 +13,7 @@ from ratelimit.decorators import ratelimit
 # imports from your apps
 from accounts.models import Confirmation, Major
 from core.utils import create_email, no_nums, get_semester
+from core.views import StudentContextMixin
 from housing.models import Room
 from .forms import (WelcomeNameForm, WelcomeMajorForm,
                     WelcomePrivacyForm, WelcomeSocialForm)
@@ -75,7 +76,7 @@ class WelcomeName(LoginRequiredMixin, FormView):
         return reverse('welcomePrivacy')
 
 
-class WelcomePrivacy(LoginRequiredMixin, FormView):
+class WelcomePrivacy(LoginRequiredMixin, StudentContextMixin, FormView):
     """Student adds off-or-on campus status, and if on-campus, housing and privacy."""
 
     form_class = WelcomePrivacyForm
@@ -107,15 +108,6 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
         form.fields['room'].widget.user = self.request.user
 
         return form
-
-    def get_context_data(self, **kwargs):
-        context = super(WelcomePrivacy, self).get_context_data(**kwargs)
-
-        me = self.request.user.student
-
-        context['student'] = me
-
-        return context
 
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
@@ -165,7 +157,7 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
         return reverse('welcomeMajor')
 
 
-class WelcomeMajor(LoginRequiredMixin, FormView):
+class WelcomeMajor(LoginRequiredMixin, StudentContextMixin, FormView):
     """Student adds major and graduation year."""
 
     template_name = 'welcome_major.html'
@@ -188,15 +180,6 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
                  'graduating_year': me.graduating_year, }
 
         return initial
-
-    def get_context_data(self, **kwargs):
-        context = super(WelcomeMajor, self).get_context_data(**kwargs)
-
-        me = self.request.user.student
-
-        context['student'] = me
-
-        return context
 
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
@@ -236,7 +219,7 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
         return reverse('welcomeSocial')
 
 
-class WelcomeSocial(LoginRequiredMixin, FormView):
+class WelcomeSocial(LoginRequiredMixin, StudentContextMixin, FormView):
     """Student connects social media accounts. Redirects to settings page when done."""
 
     form_class = WelcomeSocialForm
@@ -251,15 +234,6 @@ class WelcomeSocial(LoginRequiredMixin, FormView):
                             kwargs={'slug': self.request.user.username}))
         else:
             return super(WelcomeSocial, self).get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(WelcomeSocial, self).get_context_data(**kwargs)
-
-        me = self.request.user.student
-
-        context['student'] = me
-
-        return context
 
     @ratelimit(key='user', rate='5/m', method='POST', block=True)
     @ratelimit(key='user', rate='10/d', method='POST', block=True)
