@@ -25,7 +25,8 @@ from ratelimit.decorators import ratelimit
 from .models import Student, Major, Confirmation
 from .forms import StudentUpdateForm, FarewellFeedbackForm
 from housing.models import Room
-from core.utils import shadowbanning, on_the_same_floor, pk_or_none, create_email, no_nums
+from core.utils import (shadowbanning, on_the_same_floor, pk_or_none, create_email,
+                        no_nums)
 
 
 # details about the student
@@ -64,8 +65,8 @@ class DetailStudent(LoginRequiredMixin, DetailView):
             try:
                 my_flag = Confirmation.objects.get(confirmer=requesting_student,
                                                    student=self.get_object())
+            # students are not supposed to be able to make more than one flag per student
             except Exception as e:
-                print("Students are not supposed to be able to make more than one flag per student.")
                 print(e)
 
         # recognizably too complex
@@ -271,7 +272,10 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
 
         if self.request.user.student.recent_changes() == 2:
 
-            messages.add_message(self.request, messages.WARNING, 'To safeguard everyone\'s privacy, you have just one remaining room change for the semester before you\'ll need to send us an email at roomlist@lists.srct.gmu.edu.')
+            msg = """To safeguard everyone\'s privacy, you have just one remaining room
+                     change for the semester before you\'ll need to send us an email at
+                     roomlist@lists.srct.gmu.edu."""
+            messages.add_message(self.request, messages.WARNING, msg)
 
         return reverse('detail_student',
                        kwargs={'slug': self.request.user.username})
