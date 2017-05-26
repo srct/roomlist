@@ -80,6 +80,7 @@ class StudentUpdateForm(forms.Form):
                                   required=False)
     show_gender = BooleanRadioField(required=True)
 
+    # this is not required if a student is an RA or an RD
     on_campus = BooleanRadioField(required=True)
     room = SelectRoomField(queryset=Room.objects.all(), required=False)
 
@@ -88,8 +89,10 @@ class StudentUpdateForm(forms.Form):
     # exclude self from request in form instantiation
     blocked_kids = forms.ModelMultipleChoiceField(queryset=Student.objects.all(),
                                                   required=False)
+    blocked_kids.widget.attrs['class'] = 'form-control chosen-select'
 
     major = forms.ModelMultipleChoiceField(queryset=Major.objects.all(), required=False)
+    major.widget.attrs['class'] = 'form-control chosen-select'
     graduating_year = forms.IntegerField(max_value=9999, min_value=-9999, required=False)
     graduating_year.widget.attrs['class'] = 'form-control'
 
