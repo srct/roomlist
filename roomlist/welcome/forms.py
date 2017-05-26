@@ -54,6 +54,7 @@ class WelcomeMajorForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(WelcomeMajorForm, self).__init__(*args, **kwargs)
+        self.fields['major'].widget.attrs['class'] = 'form-control chosen-select'
         self.fields['graduating_year'].widget.attrs['class'] = 'form-control'
 
     class Meta:
