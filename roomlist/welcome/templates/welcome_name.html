@@ -37,9 +37,9 @@
       <div class="panel-heading">
         <h1 class="panel-title text-center"><strong>Name & Gender</strong></h1>
       </div>
-      {% if error in my_form.non_field_errors %}
+      {% if error in form.non_field_errors %}
       <ul class="text-center">
-        {% for error in my_form.non_field_errors %}
+        {% for error in form.non_field_errors %}
           <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
         {% endfor %}
       </ul>
@@ -47,52 +47,52 @@
       <div class="panel-body">
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
           <fieldset>
-          {% if my_form.first_name.errors %}
-            {% for error in my_form.first_name.errors %}
+          {% if form.first_name.errors %}
+            {% for error in form.first_name.errors %}
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
-          {% if my_form.last_name.errors %}
-            {% for error in my_form.last_name.errors %}
+          {% if form.last_name.errors %}
+            {% for error in form.last_name.errors %}
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
             <div class="col-md-6">
-              <label for="{{ my_form.first_name.id_for_label }}">First Name</label>
-                {% if not my_form.first_name.errors %}
-                  {{ my_form.first_name }}
+              <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                {% if not form.first_name.errors %}
+                  {{ form.first_name }}
                 {% else %}
                   <div class="has-error">
-                    {{ my_form.first_name }}
+                    {{ form.first_name }}
                     <p>{{ form.first_name.errors }}</p>
                   </div>
                 {% endif %}
               </div>
             <div class="col-md-6">
-              <label for="{{ my_form.last_name.id_for_label }}">Last Name</label>
-                {% if not my_form.last_name.errors %}
-                  {{ my_form.last_name }}
+              <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                {% if not form.last_name.errors %}
+                  {{ form.last_name }}
                 {% else %}
                   <div class="has-error">
-                    {{ my_form.last_name }}
+                    {{ form.last_name }}
                     <p>{{ form.last_name.errors }}</p>
                   </div>
                 {% endif %}
               </div>
           </div>
 
-          {% if my_form.gender.errors %}
-            {% for error in my_form.gender.errors %}
+          {% if form.gender.errors %}
+            {% for error in form.gender.errors %}
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
-            <label for="{{ my_form.gender.id_for_label }}" class="col-xs-12">
+            <label for="{{ form.gender.id_for_label }}" class="col-xs-12">
               Gender Identity
               <p class="help-block">(choose all that apply)</p>
             </label>
-              {% for checkbox in my_form.gender %}
+              {% for checkbox in form.gender %}
                 <div class="checkbox col-md-3 col-sm-3 col-sm-offset-1 col-xs-5 col-xs-offset-1">
                   <label for="{{ checkbox.id_for_label }}">
                     {{ checkbox.choice_label|gender_icon }}
@@ -101,17 +101,17 @@
               {% endfor %}
           </div>
 
-          {% if my_form.show_gender.errors %}
-            {% for error in my_form.show_gender.errors %}
+          {% if form.show_gender.errors %}
+            {% for error in form.show_gender.errors %}
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
             <div class="col-md-6">
-            <label for "{{ my_form.show_gender.id_for_label }}">
+            <label for "{{ form.show_gender.id_for_label }}">
               Show Gender on Profile?
             </label><br />
-              {% for radio in my_form.show_gender %}
+              {% for radio in form.show_gender %}
                 <label class="radio-inline">{{ radio.choice_label }}{{ radio.tag }}</label>
               {% endfor %}
             </div>

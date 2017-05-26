@@ -44,10 +44,10 @@
       </div>
 
       <div class="panel-body">
-        {% if my_form.non_field_errors %}
+        {% if form.non_field_errors %}
         <hr />
           <ul class="text-center">
-            {% for error in my_form.non_field_errors %}
+            {% for error in form.non_field_errors %}
               <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
             {% endfor %}
           </ul>
@@ -55,30 +55,30 @@
         {% endif %}
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
           <fieldset>
-          {% if my_form.major.errors %}
-            {% for error in my_form.major.errors %}
+          {% if form.major.errors %}
+            {% for error in form.major.errors %}
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
             <div class="col-lg-9">
-            <label for="{{ my_form.major.id_for_label }}">
+            <label for="{{ form.major.id_for_label }}">
               Major(s)
             </label><br />
-              {{ my_form.major }}
+              {{ form.major }}
             </div>
           </div>
-          {% if my_form.graduating_year.errors %}
-            {% for error in my_form.graduating_year.errors %}
+          {% if form.graduating_year.errors %}
+            {% for error in form.graduating_year.errors %}
               <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
             <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
-              <label for="{{ my_form.graduating_year.id_for_label }}">
+              <label for="{{ form.graduating_year.id_for_label }}">
                 Graduating Year
               </label>
-                {{ my_form.graduating_year }}
+                {{ form.graduating_year }}
             </div>
           </div>
           <hr/>

@@ -55,9 +55,9 @@
       <div class="panel-body">
         {% if not request.user.student.recent_changes > 2 %}
         {% spaceless %}
-        {% if my_form.non_field_errors %}
+        {% if form.non_field_errors %}
         <ul class="text-center">
-          {% for error in my_form.non_field_errors %}
+          {% for error in form.non_field_errors %}
             <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
           {% endfor %}
         </ul>
@@ -65,17 +65,17 @@
         {% endif %}
         <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
           <fieldset>
-            {% if my_form.on_campus.errors %}
+            {% if form.on_campus.errors %}
               {% for error in form.on_campus.errors %}
                 <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
               {% endfor %}
             {% endif %}
             <div class="form-group">
               <div class="col-md-4">
-              <label for="{{ my_form.on_campus.id_for_label }}">
+              <label for="{{ form.on_campus.id_for_label }}">
                 Do You Live on Campus?
               </label><br/>
-                {% for option in my_form.on_campus %}
+                {% for option in form.on_campus %}
                   <label class="radio-inline">{{ option.choice_label }}{{ option.tag }}</label>
                 {% endfor %}
               </div>
@@ -87,25 +87,25 @@
                 We'll let everyone know when we add them. Until then, if you live there, you're
                 still welcome to browse around.
               </p>
-              {% if my_form.room.errors %}
+              {% if form.room.errors %}
                 {% for error in form.room.errors %}
                   <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
                 {% endfor %}
               {% endif %}
               <div class="form-group">
-                {{ my_form.room }}
+                {{ form.room }}
               </div>
-              {% if my_form.privacy.errors %}
+              {% if form.privacy.errors %}
                 {% for error in form.privacy.errors %}
                   <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
                 {% endfor %}
               {% endif %}
               <div class="form-group">
                 <div class="col-md-3 col-sm-6">
-                <label for="{{ my_form.privacy.id_for_label }}">
+                <label for="{{ form.privacy.id_for_label }}">
                   Privacy
                 </label><br/>
-                  {{ my_form.privacy }}
+                  {{ form.privacy }}
                 </div>
               </div>
             </div>
