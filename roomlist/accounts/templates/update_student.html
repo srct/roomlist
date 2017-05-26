@@ -226,9 +226,11 @@
         {% endspaceless %}
       </div>
     </div>
+    {% if not request.user.student.is_staff %}
     <p>
       <small><a href="{% url 'delete_student' request.user.username %}">Delete Account</a></small>
     </p>
+    {% endif %}
   </div>
 
 {% include 'social/social_media_settings.html' %}

@@ -293,7 +293,15 @@ class DeleteStudent(FormView):
         except ObjectDoesNotExist:
             raise Http404
 
-        if not(url_uname == self.request.user.username):
+        if student.is_staff():
+            staff_msg = """To delete your account, contact us if you are no longer a
+                           Resident Advisor or Director at
+                           <a href="mailto:roomlist@lists.srct.gmu.edu">
+                           roomlist@lists.srct.gmu.edu</a>."""
+            messages.add_message(self.request, messages.ERROR, mark_safe(staff_msg))
+            return HttpResponseRedirect(reverse('update_student',
+                                                kwargs={'slug': self.request.user.username}))
+        elif not(url_uname == self.request.user.username):
             return HttpResponseRedirect(reverse('delete_student',
                                                 kwargs={'slug': self.request.user.username}))
         else:
