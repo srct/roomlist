@@ -43,7 +43,7 @@ class WelcomeName(LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(WelcomeName, self).get_context_data(**kwargs)
 
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         form = WelcomeNameForm(initial={'first_name': me.user.first_name,
                                         'last_name': me.user.last_name,
@@ -59,7 +59,7 @@ class WelcomeName(LoginRequiredMixin, FormView):
         return super(WelcomeName, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         me.user.first_name = no_nums(form.data['first_name'])
         me.user.last_name = no_nums(form.data['last_name'])
@@ -97,7 +97,7 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(WelcomePrivacy, self).get_context_data(**kwargs)
 
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         form = WelcomePrivacyForm(initial={'on_campus': me.on_campus,
                                            'privacy': me.privacy, })
@@ -116,7 +116,7 @@ class WelcomePrivacy(LoginRequiredMixin, FormView):
         return super(WelcomePrivacy, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         current_room = me.room
 
@@ -177,7 +177,7 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(WelcomeMajor, self).get_context_data(**kwargs)
 
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         form = WelcomeMajorForm(initial={'major': me.major.all(),
                                          'graduating_year': me.graduating_year, })
@@ -196,7 +196,7 @@ class WelcomeMajor(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
 
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         try:
             # see UpdateStudent in accounts/ for a detailed explanation
@@ -246,7 +246,7 @@ class WelcomeSocial(LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(WelcomeSocial, self).get_context_data(**kwargs)
 
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         context['student'] = me
 
@@ -258,7 +258,7 @@ class WelcomeSocial(LoginRequiredMixin, FormView):
         return super(WelcomeSocial, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        me = Student.objects.get(user=self.request.user)
+        me = self.request.user.student
 
         me.completedSocial = True
 
