@@ -3,6 +3,7 @@ from __future__ import absolute_import, print_function
 # core django imports
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext as _
 # third party imports
 from multiselectfield import MultiSelectFormField
 # imports from your apps
@@ -29,7 +30,8 @@ class WelcomePrivacyForm(forms.ModelForm):
         if self.instance.recent_changes() > 2:
             self.fields['room'].widget = forms.widgets.HiddenInput()
         else:
-            self.fields['room'] = SelectRoomField(queryset=Room.objects.all(), required=False)
+            self.fields['room'] = SelectRoomField(queryset=Room.objects.all(),
+                                                  required=False)
 
     on_campus = BooleanRadioField()
 

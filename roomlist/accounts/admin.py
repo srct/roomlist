@@ -24,6 +24,7 @@ class StudentAdmin(admin.ModelAdmin):
     get_first_major.short_description = 'Major'
     # we're not going to give the option to sort by major for now
 
+
 class MajorAdmin(admin.ModelAdmin):
     list_display = ("name", "get_major_num", )
 

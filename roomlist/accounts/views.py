@@ -1,10 +1,8 @@
 # standard library imports
 from __future__ import absolute_import, print_function
-import random
 from distutils.util import strtobool
 from collections import OrderedDict
 from itertools import groupby
-import re
 # core django imports
 from django.http import HttpResponseForbidden, HttpResponseRedirect, Http404
 from django.views.generic import CreateView, ListView, DetailView, FormView, DeleteView
@@ -12,14 +10,10 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 from django.forms.widgets import HiddenInput
-from django.conf import settings
-from django.template.loader import get_template
-from django.core.mail import EmailMultiAlternatives, get_connection
-from django.template import Context
+from django.core.mail import get_connection
 from django.core.exceptions import ObjectDoesNotExist
 # third party imports
 from braces.views import LoginRequiredMixin, FormValidMessageMixin
-from cas.views import login as cas_login
 from ratelimit.decorators import ratelimit
 # imports from your apps
 from .models import Student, Major, Confirmation
@@ -389,6 +383,7 @@ class DeleteStudent(FormView):
 
     def get_success_url(self):
         return reverse('homepage')
+
 
 # majors pages
 class ListMajors(ListView):

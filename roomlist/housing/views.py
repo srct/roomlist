@@ -33,7 +33,7 @@ class ListBuildings(ListView):
         for neighbourhood in neighbourhoods:
             # the tuple matrix was necessary because what we'll render for humans
             # is not the string for filtering in the database
-            buildings_by_neighbourhood[neighbourhood[1]] = Building.objects.filter(neighbourhood=neighbourhood[0]).order_by('name') 
+            buildings_by_neighbourhood[neighbourhood[1]] = Building.objects.filter(neighbourhood=neighbourhood[0]).order_by('name')
         # this whole process is done so we don't have template code in triplicate
         # for each neighbourhood
         context['buildings_by_neighbourhood'] = buildings_by_neighbourhood

@@ -67,9 +67,8 @@ class AccountAdapter(DefaultSocialAccountAdapter):
             raise ImmediateHttpResponse(social_redirect)
         else:
             messages.add_message(request, messages.ERROR, error_message)
-            update_redirect =  HttpResponseRedirect(reverse('update_student', kwargs={
-                                  'slug': request.user.username,
-                               }))
+            update_redirect = HttpResponseRedirect(reverse('update_student',
+                                                           kwargs={'slug': request.user.username, }))
             raise ImmediateHttpResponse(update_redirect)
 
 
@@ -133,7 +132,7 @@ class RemoveSocialConfirmationView(LoginRequiredMixin, FormView):
             social_account_removed.send(sender=SocialAccount,
                                         request=request,
                                         socialaccount=social_account)
-            message = "%s has been successfully disconnected." % branding 
+            message = "%s has been successfully disconnected." % branding
             messages.add_message(self.request,
                                  messages.SUCCESS,
                                  message)
@@ -149,4 +148,4 @@ class RemoveSocialConfirmationView(LoginRequiredMixin, FormView):
 
     def get_success_url(self):
         return reverse('update_student',
-                        kwargs={'slug': self.request.user.username})
+                       kwargs={'slug': self.request.user.username})
