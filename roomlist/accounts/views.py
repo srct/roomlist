@@ -21,6 +21,7 @@ from .forms import StudentUpdateForm, FarewellFeedbackForm
 from housing.models import Room
 from core.utils import (shadowbanning, on_the_same_floor, pk_or_none, create_email,
                         no_nums)
+from core.views import StudentContextMixin
 
 
 # details about the student
@@ -275,7 +276,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
                        kwargs={'slug': self.request.user.username})
 
 
-class DeleteStudent(FormView):
+class DeleteStudent(LoginRequiredMixin, StudentContextMixin, FormView):
     form_class = FarewellFeedbackForm
     template_name = 'delete_student.html'
 
@@ -301,15 +302,6 @@ class DeleteStudent(FormView):
                                                 kwargs={'slug': self.request.user.username}))
         else:
             return super(DeleteStudent, self).get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(DeleteStudent, self).get_context_data(**kwargs)
-
-        me = self.request.user.student
-
-        context['student'] = me
-
-        return context
 
     def form_valid(self, form):
         user = self.request.user
