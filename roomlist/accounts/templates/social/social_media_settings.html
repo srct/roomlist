@@ -12,132 +12,124 @@
       <div class="row text-center">
         <div class="col-xs-6">
           <h4><i class="fa fa-facebook fa-2x"></i></h4>
-          <h4>Facebook</h4>
+          <h4>
           {% if accounts.facebook %}
-          <strong>
           <a href="{% url 'remove_social' request.user.username 'facebook' %}">
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <strong>Facebook <i class="fa fa-check-square-o"></i></strong>
           </a>
-          </strong>
           {% else %}
           <a href="{% provider_login_url 'facebook' process='connect' %}">
-            <p><i class="fa fa-square-o"></i> Verify</p>
+            Facebook <i class="fa fa-square-o"></i>
           </a>
           {% endif %}
+          </h4>
         </div>
         <div class="col-xs-6">
           <h4><i class="fa fa-google fa-2x"></i></h4>
-          <h4>Google</h4>
+          <h4>
           {% if accounts.google %}
-          <strong>
           <a href="{% url 'remove_social' request.user.username 'google' %}">
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <strong>Google <i class="fa fa-check-square-o"></i></strong>
           </a>
-          </strong>
           {% else %}
           <a href="{% provider_login_url 'google' process='connect' %}">
-            <p><i class="fa fa-square-o"></i> Verify</p>
+            Google <i class="fa fa-square-o"></i>
           </a>
           {% endif %}
+          </h4>
         </div>
       </div>
       <br />
       <div class="row text-center">
         <div class="col-xs-6">
           <h4><i class="fa fa-twitter fa-2x"></i></h4>
-          <h4>Twitter</h4>
+          <h4>
           {% if accounts.twitter %}
-          <strong>
           <a href="{% url 'remove_social' request.user.username 'twitter' %}">
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <strong>Twitter <i class="fa fa-check-square-o"></i></strong>
           </a>
-          </strong>
           {% else %}
           <a href="{% provider_login_url 'twitter' process='connect' %}">
-            <p><i class="fa fa-square-o"></i> Verify</p>
+            Twitter <i class="fa fa-square-o"></i>
           </a>
           {% endif %}
+          </h4>
         </div>
         <div class="col-xs-6">
           <h4><i class="fa fa-instagram fa-2x"></i></h4>
-          <h4>Instagram</h4>
+          <h4>
           {% if accounts.instagram %}
-          <strong>
           <a href="{% url 'remove_social' request.user.username 'instagram' %}">
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <strong>Instagram <i class="fa fa-check-square-o"></i></strong>
           </a>
           {% else %}
-          </strong>
           <a href="{% provider_login_url 'instagram' process='connect' %}">
-            <p><i class="fa fa-square-o"></i> Verify</p>
+            Instagram <i class="fa fa-square-o"></i>
           </a>
           {% endif %}
+          </h4>
         </div>
       </div>
       <br />
       <div class="row text-center">
         <div class="col-xs-6">
           <h4><i class="fa fa-pinterest-p fa-2x"></i></h4>
-          <h4>Pinterest</h4>
+          <h4>
           {% if accounts.pinterest %}
-          <strong>
           <a href="{% url 'remove_social' request.user.username 'pinterest' %}">
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <strong>Pinterest <i class="fa fa-check-square-o"></i></strong>
           </a>
-          </strong>
           {% else %}
           <a href="{% provider_login_url 'pinterest' process='connect' %}">
-            <p><i class="fa fa-square-o"></i> Verify</p>
+            Pinterest <i class="fa fa-square-o"></i>
           </a>
           {% endif %}
+          </h4>
         </div>
         <div class="col-xs-6">
           <h4><i class="fa fa-tumblr fa-2x"></i></h4>
-          <h4>Tumblr</h4>
+          <h4>
           {% if accounts.tumblr %}
-          <strong>
           <a href="{% url 'remove_social' request.user.username 'tumblr' %}">
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <strong>Tumblr <i class="fa fa-check-square-o"></i></strong>
           </a>
-          </strong>
           {% else %}
           <a href="{% provider_login_url 'tumblr' process='connect' %}">
-            <p><i class="fa fa-square-o"></i> Verify</p>
+            Tumblr <i class="fa fa-square-o"></i>
           </a>
           {% endif %}
+          </h4>
         </div>
       </div>
       <br />
       <div class="row text-center">
         <div class="col-xs-6">
           <h4><i class="fa fa-spotify fa-2x"></i></h4>
-          <h4>Spotify</h4>
+          <h4>
           {% if accounts.spotify %}
-          <strong>
           <a href="{% url 'remove_social' request.user.username 'spotify' %}">
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <strong>Spotify <i class="fa fa-check-square-o"></i></strong>
           </a>
-          </strong>
           {% else %}
           <a href="{% provider_login_url 'spotify' process='connect' %}">
-            <p><i class="fa fa-square-o"></i> Verify</p>
+            Spotify <i class="fa fa-square-o"></i>
           </a>
           {% endif %}
+          </h4>
         </div>
         <div class="col-xs-6">
           <h4><i class="fa fa-github fa-2x"></i></h4>
-          <h4>Github</h4>
+          <h4>
           {% if accounts.github %}
-          <strong>
           <a href="{% url 'remove_social' request.user.username 'github' %}">
-            <p><i class="fa fa-check-square-o"></i> Verified!</p>
+            <strong>Github <i class="fa fa-check-square-o"></i></strong>
           </a>
-          </strong>
           {% else %}
           <a href="{% provider_login_url 'github' process='connect' %}">
-            <p><i class="fa fa-square-o"></i> Verify</p>
+            Github <i class="fa fa-square-o"></i>
           </a>
           {% endif %}
+          </h4>
         </div>
       </div>
     </div>
