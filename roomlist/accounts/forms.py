@@ -89,7 +89,7 @@ class StudentUpdateForm(forms.Form):
     # exclude self from request in form instantiation
     blocked_kids = forms.ModelMultipleChoiceField(queryset=Student.objects.all(),
                                                   required=False)
-    blocked_kids.widget.attrs['class'] = 'form-control chosen-select'
+    blocked_kids.widget.attrs['class'] = 'form-control blocked-select'
 
     major = forms.ModelMultipleChoiceField(queryset=Major.objects.all(), required=False)
     major.widget.attrs['class'] = 'form-control chosen-select'
