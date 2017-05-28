@@ -1,6 +1,7 @@
 {% extends 'layouts/base.html' %}
-
-{% block title %} SRCT RoomList | Welcome | Step 3 of 4 {% endblock %}
+{% block title %}
+SRCT Roomlist &bull; Welcome &bull; Step 3 of 4
+{% endblock %}
 
 {% block css %}
 <link href="/static/css/chosen.min.css" rel="stylesheet" media="screen">
@@ -12,7 +13,8 @@
 {% block content %}
 
 <div class="progress">
-  <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;">
+  <div class="progress-bar" role="progressbar"
+       aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;">
     <span class="sr-only">75% complete</span>
   </div>
 </div>
@@ -48,16 +50,21 @@
         <hr />
           <ul class="text-center">
             {% for error in form.non_field_errors %}
-              <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
+              <li class="text-danger">
+                <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+              </li>
             {% endfor %}
           </ul>
         <hr />
         {% endif %}
-        <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
+        <form class="form-horizontal" autocomplete="off" action="" method="post">
+          {% csrf_token %}
           <fieldset>
           {% if form.major.errors %}
             {% for error in form.major.errors %}
-              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              <p class="text-danger">
+                <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+              </p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
@@ -70,7 +77,9 @@
           </div>
           {% if form.graduating_year.errors %}
             {% for error in form.graduating_year.errors %}
-              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              <p class="text-danger">
+                <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+              </p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
@@ -94,8 +103,11 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2 text-center">
     <div class="alert alert-danger" role="alert">
-      <p><i class="fa fa-exclamation-circle fa-fw fa-lg"></i> <strong>Changing your major here serves only to make it easier for others to find you on this site.</strong></p>
-      <p>Talk with your academic advisor and file all necessary paperwork to officially change your major with the registrar.</p>
+      <p><i class="fa fa-exclamation-circle fa-fw fa-lg"></i>
+         <strong>Changing your major here serves only to make it easier for others
+         to find you on this site.</strong></p>
+      <p>Talk with your academic advisor and file all necessary paperwork to officially
+         change your major with the registrar.</p>
     </div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 {% extends 'layouts/base.html' %}
-
-{% block title %} SRCT RoomList &bull; Delete My Account {% endblock %}
+{% block title %}
+SRCT Roomlist &bull; Delete My Account
+{% endblock %}
 
 {% block message_queue %}
 {% endblock %}
@@ -40,16 +41,21 @@
         <hr />
         <ul class="text-center">
           {% for error in form.non_field_errors %}
-            <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
+            <li class="text-danger">
+              <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+            </li>
           {% endfor %}
         </ul>
         <hr />
         {% endif %}
-        <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
+        <form class="form-horizontal" autocomplete="off" action="" method="post">
+        {% csrf_token %}
           <fieldset>
             {% if form.leaving.errors %}
               {% for error in form.leaving.errors %}
-                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+                <p class="text-danger">
+                  <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+                </p>
               {% endfor %}
             {% endif %}
             <div class="form-group">
@@ -65,7 +71,9 @@
             <hr/>
             {% if form.feedback.errors %}
               {% for error in form.feedback.errors %}
-                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+                <p class="text-danger">
+                  <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+                </p>
               {% endfor %}
             {% endif %}
             <div class="form-group">
@@ -88,13 +96,15 @@
     <a href="{{ student.get_absolute_url }}" style="margin:10px">
       <button type="button" class="btn btn-default">Cancel</button>
     </a>
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+    <button type="button" class="btn btn-danger"
+            data-toggle="modal" data-target="#deleteModal">
       Delete Me
     </button>
   </div>
 </div>
 
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="deleteModal" tabindex="-1"
+     role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 

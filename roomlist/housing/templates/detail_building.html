@@ -1,14 +1,20 @@
 {% extends 'layouts/base.html' %}
-{% block title %} SRCT Roomlist &bull; {{ building.name }} {% endblock %}
+{% block title %}
+SRCT Roomlist &bull; {{ building.name }}
+{% endblock %}
 
 {% block og_metadata %}
 <meta property="og:title" content="SRCT Roomlist - {{ building.name }}"/>
-<meta property="og:description" content="Do you live in {{ building.name }}? Log in with your Mason username and password to find your neighbors."/>
+<meta property="og:description"
+      content="Do you live in {{ building.name }}?
+               Log in with your Mason username and password to find your neighbors."/>
 {% endblock %}
 
 {% block tw_metadata %}
 <meta name="twitter:title" content="SRCT Roomlist - {{ building.name }}" />
-<meta name="twitter:description" content="Do you live in {{ building.name }}? Log in with your Mason username and password to find your neighbors." />
+<meta name="twitter:description"
+      content="Do you live in {{ building.name }}?
+               Log in with your Mason username and password to find your neighbors." />
 {% endblock tw_metadata %}
 
 {% block content %}
@@ -35,7 +41,8 @@
 <div class="row">
   {% for floor in floors %}
   <div class="col-sm-3 minor-padding text-center">
-    <a href="{{ floor.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">{{ floor.number|ordinal }} Floor</a>
+    <a href="{{ floor.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">
+     {{ floor.number|ordinal }} Floor</a>
   </div>
   {% if forloop.counter|divisibleby:4 %}
 </div>

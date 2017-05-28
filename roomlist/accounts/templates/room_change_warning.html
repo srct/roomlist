@@ -3,10 +3,14 @@
   <div class="col-md-12">
     {% if request.user.student.recent_changes <= 2 %}
       <div class="alert alert-warning text-center" role="alert">
-        <strong>To safeguard everyone's privacy, the number of times you can change your room in a semester is limited.</strong>
+        <strong>To safeguard everyone's privacy, the number of times you can change
+        your room in a semester is limited.</strong>
     {% else %}
       <div class="alert alert-danger text-center" role="alert">
-        <strong>To safeguard everyone's privacy, the number of times you can change your room in a semester is limited. Email <a href="mailto:roomlist@lists.srct.gmu.edu?Subject=I%20Don%27t%20Know%20Where%20I%20Live%3A%20Halp%20Pls">roomlist@lists.srct.gmu.edu</a> to have your room changed.</strong>
+        <strong>To safeguard everyone's privacy, the number of times you can change
+        your room in a semester is limited. Email
+        <a href="mailto:roomlist@lists.srct.gmu.edu?Subject=I%20Don%27t%20Know%20Where%20I%20Live%3A%20Halp%20Pls">
+        roomlist@lists.srct.gmu.edu</a> to have your room changed.</strong>
     {% endif %}
     </div>
   </div>

@@ -17,9 +17,13 @@
   <option value="">---</option>
   {% for building in buildings %}
     {% if user.student.get_building == building %}
-      <option value="{{ building.name }}" class="{{ building.neighbourhood }}" selected="selected">{{ building.name }}</option>
+      <option value="{{ building.name }}" class="{{ building.neighbourhood }}" selected="selected">
+        {{ building.name }}
+      </option>
     {% else %}
-      <option value="{{ building.name }}" class="{{ building.neighbourhood }}">{{ building.name }}</option>
+      <option value="{{ building.name }}" class="{{ building.neighbourhood }}">
+        {{ building.name }}
+      </option>
     {% endif %}
   {% endfor %}
 </select>
@@ -31,7 +35,9 @@
   {% load cache %}
   {% cache 3600 floor_list %}
   {% for floor in floors %}
-    <option value="{{ floor.pk }}" class="{{ floor.building.name }}">{{ floor.number|ordinal }}</option>
+    <option value="{{ floor.pk }}" class="{{ floor.building.name }}">
+      {{ floor.number|ordinal }}
+    </option>
   {% endfor %}
   {% endcache %}
 </select>

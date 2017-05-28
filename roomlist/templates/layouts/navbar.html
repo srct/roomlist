@@ -1,13 +1,18 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <button type="button" class="navbar-toggle collapsed"
+              data-toggle="collapse" data-target="#navbar"
+              aria-expanded="false" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{% url 'homepage' %}"><img src="/static/img/SRCT_square.svg" height="25" width="25" alt="SRCT"> ROOMLIST</a>
+      <a class="navbar-brand" href="{% url 'homepage' %}">
+        <img src="/static/img/SRCT_square.svg" height="25" width="25" alt="SRCT">
+        ROOMLIST
+      </a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -29,12 +34,15 @@
         <!-- Puts profile picture in navbar next to username-->
         <li>
           <a href="{{ user.student.get_absolute_url }}">
-            <img src="{{ request.user.student.profile_image_url }}" height="35" width="35" alt="{{ student.profile_image_url }}" class="img-circle img-responsive hidden-xs navbar-profile">
+            <img src="{{ request.user.student.profile_image_url }}"
+                 height="35" width="35" alt="{{ student.profile_image_url }}"
+                 class="img-circle img-responsive hidden-xs navbar-profile">
             {{ user.username }}
           </a>
         </li>
         <li class="visible-lg visible-md visible-sm">
-          <a href="{% url 'update_student' request.user.username %}"><i class="fa fa-cog fa-fw fa-lg"></i></a>
+          <a href="{% url 'update_student' request.user.username %}">
+            <i class="fa fa-cog fa-fw fa-lg"></i></a>
         </li>
         <li class="visible-xs">
           <a href="{% url 'update_student' request.user.username %}">Settings</a>

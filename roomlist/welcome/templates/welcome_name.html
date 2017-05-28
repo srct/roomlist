@@ -1,7 +1,11 @@
 {% extends 'layouts/base.html' %}
+{% block title %}
+SRCT Roomlist &bull; Welcome &bull; Step 1 of 4
+{% endblock %}
 
-{% block title %} SRCT RoomList | Welcome | Step 1 of 4 {% endblock %}
-
+{% comment %}
+Do not display messages.
+{% endcomment %}
 {% block message_queue %}
 {% endblock %}
 
@@ -10,7 +14,8 @@
 {% load accounts_extras %}
 
 <div class="progress">
-  <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+  <div class="progress-bar" role="progressbar"
+       aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
     <span class="sr-only">25% complete</span>
   </div>
 </div>
@@ -40,21 +45,28 @@
       {% if error in form.non_field_errors %}
       <ul class="text-center">
         {% for error in form.non_field_errors %}
-          <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
+          <li class="text-danger">
+            <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+          </li>
         {% endfor %}
       </ul>
       {% endif %}
       <div class="panel-body">
-        <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
+        <form class="form-horizontal" autocomplete="off" action="" method="post">
+          {% csrf_token %}
           <fieldset>
           {% if form.first_name.errors %}
             {% for error in form.first_name.errors %}
-              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              <p class="text-danger">
+                <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+              </p>
             {% endfor %}
           {% endif %}
           {% if form.last_name.errors %}
             {% for error in form.last_name.errors %}
-              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              <p class="text-danger">
+                <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+              </p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
@@ -84,7 +96,9 @@
 
           {% if form.gender.errors %}
             {% for error in form.gender.errors %}
-              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              <p class="text-danger">
+                <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+              </p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
@@ -103,7 +117,9 @@
 
           {% if form.show_gender.errors %}
             {% for error in form.show_gender.errors %}
-              <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+              <p class="text-danger">
+                <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+              </p>
             {% endfor %}
           {% endif %}
           <div class="form-group">
@@ -130,8 +146,11 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2 text-center">
     <div class="alert alert-danger" role="alert">
-      <p><i class="fa fa-exclamation-circle fa-fw fa-lg"></i> <strong>Changing your name here serves only to make it easier for others to find you on this particular site.</strong></p>
-      <p>Talk with the Registrar's Office to handle the paperwork necessary to change your name officially with the university.</p>
+      <p><i class="fa fa-exclamation-circle fa-fw fa-lg"></i>
+         <strong>Changing your name here serves only to make it easier for others
+                 to find you on this particular site.</strong></p>
+      <p>Talk with the Registrar's Office to handle the paperwork necessary to
+         change your name officially with the university.</p>
     </div>
   </div>
 </div>

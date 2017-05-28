@@ -1,6 +1,7 @@
 {% extends 'layouts/base.html' %}
-
-{% block title %} SRCT RoomList | Welcome | Step 2 of 4 {% endblock %}
+{% block title %}
+SRCT Roomlist &bull; Welcome &bull; Step 2 of 4
+{% endblock %}
 
 {% block message_queue %}
 {% endblock %}
@@ -8,7 +9,8 @@
 {% block content %}
 
 <div class="progress">
-  <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+  <div class="progress-bar" role="progressbar"
+       aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
     <span class="sr-only">50% complete</span>
   </div>
 </div>
@@ -58,16 +60,21 @@
         {% if form.non_field_errors %}
         <ul class="text-center">
           {% for error in form.non_field_errors %}
-            <li class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</li>
+            <li class="text-danger">
+              <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+            </li>
           {% endfor %}
         </ul>
         <hr />
         {% endif %}
-        <form class="form-horizontal" autocomplete="off" action="" method="post">{% csrf_token %}
+        <form class="form-horizontal" autocomplete="off" action="" method="post">
+          {% csrf_token %}
           <fieldset>
             {% if form.on_campus.errors %}
               {% for error in form.on_campus.errors %}
-                <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+                <p class="text-danger">
+                  <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+                </p>
               {% endfor %}
             {% endif %}
             <div class="form-group">
@@ -89,7 +96,9 @@
               </p>
               {% if form.room.errors %}
                 {% for error in form.room.errors %}
-                  <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+                  <p class="text-danger">
+                    <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+                  </p>
                 {% endfor %}
               {% endif %}
               <div class="form-group">
@@ -97,7 +106,9 @@
               </div>
               {% if form.privacy.errors %}
                 {% for error in form.privacy.errors %}
-                  <p class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}</p>
+                  <p class="text-danger">
+                    <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+                  </p>
                 {% endfor %}
               {% endif %}
               <div class="form-group">
@@ -128,8 +139,10 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2 text-center">
     <div class="alert alert-danger" role="alert">
-      <p><i class="fa fa-exclamation-circle fa-fw fa-lg"></i> <strong>Changing your room here changes it only on this particular site.</strong></p>
-      <p>To actually switch your room, you'll need to go through a lengthy process with the Housing Office.</p>
+      <p><i class="fa fa-exclamation-circle fa-fw fa-lg"></i>
+         <strong>Changing your room here changes it only on this particular site.
+      </strong></p>
+      <p>To actually switch your room, please contact your RA or the Housing Office.</p>
     </div>
   </div>
 </div>

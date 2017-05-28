@@ -1,6 +1,13 @@
 {% extends 'layouts/base.html' %}
 {% load humanize %}
-{% block title %} SRCT Roomlist &bull; {{ floor.building.name }} {{ floor.number|ordinal }}{% endblock title %}
+{% block title %}
+SRCT Roomlist &bull; {{ floor.building.name }} {{ floor.number|ordinal }}
+{% endblock title %}
+
+{% comment %}
+No metadata tags because a link to this page would just show the cas login page
+{% endcomment %}
+
 {% block content %}
 {% load cache %}
 {% cache 15 floor_students request.user.username floor %}

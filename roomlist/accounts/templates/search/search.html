@@ -1,5 +1,4 @@
 {% extends 'layouts/base.html' %}
-
 {% block title %}
 SRCT Roomlist &bull; Search Students
 {% endblock %}
@@ -16,7 +15,8 @@ SRCT Roomlist &bull; Search Students
 
 <form class="form-horizontal" method="get" action=".">
   <div class="form-group"> 
-    <label for="{{ form.q.id_for_label }}" class="col-lg-1 col-lg-offset-2 col-md-2 col-md-offset-1 col-sm-2 col-xs-12">
+    <label for="{{ form.q.id_for_label }}"
+           class="col-lg-1 col-lg-offset-2 col-md-2 col-md-offset-1 col-sm-2 col-xs-12">
       <strong>Name</strong> or <strong>Username</strong>
     </label>
     <div class="col-lg-6 col-md-6 col-sm-9 col-xs-10">
