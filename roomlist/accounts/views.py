@@ -210,43 +210,35 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         if me.is_staff():
             me.on_campus = True
 
-        try:
-            # in case someone disabled the js, limit processing to only the first
-            # two majors passed by the user
-            #
-            # we also eliminate the potential a student manipulates the form to
-            # pass in two majors of the same type by casting to a set
-            form_majors = set(form.cleaned_data.get('major')[:2])
-            # print(form_majors)
-            # iterate over a student's current majors
-            for current_major in me.major.all():
-                # remove m2m relationship if not in majors from form
-                if current_major not in form_majors:
-                    me.major.remove(current_major)
-            # iterate over the majors in the form
-            for form_major in form_majors:
-                # add new m2m relationship to student
-                if form_major not in me.major.all():
-                    me.major.add(form_major)
-        except:
-            # don't change majors
-            # if someone is selecting a major pk that does not exist, don't do anything
-            pass
+        # in case someone disabled the js, limit processing to only the first
+        # two majors passed by the user
+        #
+        # we also eliminate the potential a student manipulates the form to
+        # pass in two majors of the same type by casting to a set
+        form_majors = set(form.cleaned_data.get('major')[:2])
+        # print(form_majors)
+        # iterate over a student's current majors
+        for current_major in me.major.all():
+            # remove m2m relationship if not in majors from form
+            if current_major not in form_majors:
+                me.major.remove(current_major)
+        # iterate over the majors in the form
+        for form_major in form_majors:
+            # add new m2m relationship to student
+            if form_major not in me.major.all():
+                me.major.add(form_major)
 
         # replicate the same thing for the other m2m field
-        try:
-            form_blocked = set(form.cleaned_data.get('blocked_kids'))
-            current_blocked = me.blocked_kids.all()
-            # most people will not being blocking other students
-            if form_blocked or current_blocked:
-                for current_block in current_blocked:
-                    if current_block not in form_blocked:
-                        me.blocked_kids.remove(current_block)
-                for form_block in form_blocked:
-                    if form_block not in current_blocked:
-                        me.blocked_kids.add(form_block)
-        except:
-            pass
+        form_blocked = set(form.cleaned_data.get('blocked_kids'))
+        current_blocked = me.blocked_kids.all()
+        # most people will not being blocking other students
+        if form_blocked or current_blocked:
+            for current_block in current_blocked:
+                if current_block not in form_blocked:
+                    me.blocked_kids.remove(current_block)
+            for form_block in form_blocked:
+                if form_block not in current_blocked:
+                    me.blocked_kids.add(form_block)
 
         # silently remove numbers from names
         me.user.first_name = no_nums(form.cleaned_data.get('first_name'))
