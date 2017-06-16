@@ -183,19 +183,15 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         if me.recent_changes() > 2:
             form_room = current_room
         else:
-            try:
-                form_room = Room.objects.get(pk=form.data['room'])
-            except:
-                form_room = None
-
-        # casts to an integer, 0 or 1
-        on_campus = strtobool(form.data.get('on_campus', 'True'))
+            form_room = form.cleaned_data.get('room')
 
         # no room if you move off campus
+        on_campus = form.cleaned_data.get('on_campus')
         if not on_campus:
             form_room = None
 
         # note this is after the 'on campus' check
+        # remove any flags you've received
         if current_room != form_room:
             me.times_changed_room += 1
             Confirmation.objects.filter(student=me).delete()
@@ -208,7 +204,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         if not(me.on_campus):
             me.privacy = 'students'
         else:
-            me.privacy = form.data['privacy']
+            me.privacy = form.cleaned_data.get('privacy')
 
         # if you are an RA or an RD, you live on campus
         if me.is_staff():
@@ -217,11 +213,10 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         try:
             # in case someone disabled the js, limit processing to only the first
             # two majors passed by the user
+            #
             # we also eliminate the potential a student manipulates the form to
             # pass in two majors of the same type by casting to a set
-            form_major_pks = set(form.data.getlist('major')[:2])
-            # retrieve the major objects from the list of pk strings
-            form_majors = [Major.objects.get(pk=pk) for pk in form_major_pks]
+            form_majors = set(form.cleaned_data.get('major')[:2])
             # print(form_majors)
             # iterate over a student's current majors
             for current_major in me.major.all():
@@ -235,15 +230,15 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
                     me.major.add(form_major)
         except:
             # don't change majors
+            # if someone is selecting a major pk that does not exist, don't do anything
             pass
 
         # replicate the same thing for the other m2m field
         try:
-            form_blocked_pks = set(form.data.getlist('blocked_kids'))
+            form_blocked = set(form.cleaned_data.get('blocked_kids'))
             current_blocked = me.blocked_kids.all()
             # most people will not being blocking other students
-            if form_blocked_pks or current_blocked:
-                form_blocked = [Student.objects.get(pk=pk) for pk in form_blocked_pks]
+            if form_blocked or current_blocked:
                 for current_block in current_blocked:
                     if current_block not in form_blocked:
                         me.blocked_kids.remove(current_block)
@@ -253,11 +248,14 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         except:
             pass
 
-        me.user.first_name = no_nums(form.data['first_name'])
-        me.user.last_name = no_nums(form.data['last_name'])
-        me.gender = form.data.getlist('gender')
-        me.show_gender = strtobool(form.data.get('show_gender', 'False'))
-        me.graduating_year = form.data['graduating_year']
+        # silently remove numbers from names
+        me.user.first_name = no_nums(form.cleaned_data.get('first_name'))
+        me.user.last_name = no_nums(form.cleaned_data.get('last_name'))
+
+        me.gender = form.cleaned_data.get('gender')
+        me.show_gender = form.cleaned_data.get('show_gender')
+        me.graduating_year = form.cleaned_data.get('graduating_year')
+
         me.user.save()
         me.save()
 
