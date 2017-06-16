@@ -82,7 +82,18 @@ def create_email(text_path, html_path, subject, to, context):
 
 
 def no_nums(name):
-    no_numbers = re.sub('[0-9]', '', name)
+    emoji_pattern = re.compile("["
+        u"\U0001F600-\U0001F64F"  # emoticons
+        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+        u"\U0001F680-\U0001F6FF"  # transport & map symbols
+        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+        # exclude additional unicode blocks as necessary
+        # https://en.wikipedia.org/wiki/Unicode_block
+                           "]+", flags=re.UNICODE)
+    no_emojis = emoji_pattern.sub(r'', name)
+
+    no_numbers = re.sub('[0-9]', '', no_emojis)
+
     return no_numbers
 
 
