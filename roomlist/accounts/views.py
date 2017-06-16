@@ -185,8 +185,10 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         else:
             form_room = form.cleaned_data.get('room')
 
+        # casts to an integer, 0 or 1
+        on_campus = strtobool(form.data.get('on_campus', 'True'))
+
         # no room if you move off campus
-        on_campus = form.cleaned_data.get('on_campus')
         if not on_campus:
             form_room = None
 
@@ -245,7 +247,7 @@ class UpdateStudent(LoginRequiredMixin, FormValidMessageMixin, FormView):
         me.user.last_name = no_nums(form.cleaned_data.get('last_name'))
 
         me.gender = form.cleaned_data.get('gender')
-        me.show_gender = form.cleaned_data.get('show_gender')
+        me.show_gender = strtobool(form.data.get('show_gender', 'False'))
         me.graduating_year = form.cleaned_data.get('graduating_year')
 
         me.user.save()
