@@ -7,7 +7,7 @@ from . import secret
 
 DEBUG = False
 TEMPLATE_DEBUG = False
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['roomlist.gmu.edu']
 
 PIWIK_DOMAIN_PATH = 'https://piwik.srct.gmu.edu/'
 PIWIK_SITE_ID = 4
@@ -15,11 +15,11 @@ PIWIK_SITE_ID = 4
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '',
-        'USER': '',
+        'NAME': secret.DB_NAME,
+        'USER': secret.DB_USER,
         'PASSWORD': secret.DB_PASSWORD,
-        'HOST': '',
-        'PORT': '',
+        'HOST': secret.DB_HOST,
+        'PORT': secret.DB_PORT,
     }
 }
 
@@ -70,13 +70,22 @@ LOGGING = {
     # the ones the print everything out to the terminal
     # and the ones that email on SuspiciousOperation occurrences
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s',
+        },
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(message)s'
+        },
+    },
     'handlers': {
         'file': {
             'level': 'WARNING',
             'class': 'logging.FileHandler',
+            'formatter': 'verbose',
             # make sure to change this to the proper path, and one that
             # can be written to
-            'filename': '/path/to/django/debug.log',
+            'filename': '/srv/roomlist/debug.log',
         },
         # 'mail_admins' by default does not include a traceback attachment
         # setting 'include_html' to True will attach an html traceback file to the email
