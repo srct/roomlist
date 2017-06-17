@@ -204,27 +204,27 @@ SRCT Roomlist &bull; My Settings
             <div class="form-group">
               {{ form.room }}
             </div>
-          </div>
-          {% endif %}
-          <hr />
-          <p class="help-block">
-            Your privacy settings affect the visibility of both your room and your social media accounts.
-          </p>
-          {% if form.privacy.errors %}
-            {% for error in form.privacy.errors %}
-              <p class="text-danger">
-                <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
-              </p>
-            {% endfor %}
-          {% endif %}
-          <div class="form-group">
-            <div class="col-md-3 col-sm-6">
-            <label for="{{ form.privacy.id_for_label }}">
-              Privacy
-            </label><br/>
-              {{ form.privacy }}
+            {% endif %}  {% comment %} recent_changes {% endcomment %}
+            <hr />
+            <p class="help-block">
+              Your privacy settings affect the visibility of both your room and your social media accounts.
+            </p>
+            {% if form.privacy.errors %}
+              {% for error in form.privacy.errors %}
+                <p class="text-danger">
+                  <i class="fa fa-exclamation-triangle fa-fw"></i> {{ error }}
+                </p>
+              {% endfor %}
+            {% endif %}
+            <div class="form-group">
+              <div class="col-md-3 col-sm-6">
+              <label for="{{ form.privacy.id_for_label }}">
+                Privacy
+              </label><br/>
+                {{ form.privacy }}
+              </div>
             </div>
-          </div>
+          </div> <!-- lives-on-campus -->
           <hr />
           <p class="help-block">
             You will not be able to see these students, and they will not be able to see you.
