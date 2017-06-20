@@ -1,15 +1,18 @@
 # standard library imports
 from __future__ import absolute_import, print_function
 # core django imports
+from django.contrib import messages
+from django.contrib.auth import logout
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
+from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import View, DetailView, TemplateView, RedirectView
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
-from django.core.urlresolvers import reverse
+from django.utils.safestring import mark_safe
 # third party imports
 from braces.views import LoginRequiredMixin
-from accounts.models import Student, Major
 # imports from your apps
+from accounts.models import Student, Major
 from core.utils import shadowbanning
 
 
@@ -96,3 +99,23 @@ class RedirectSlug(RedirectView):
                 raise Http404
         else:
             return Http404
+
+
+class BlockingMiddleware(object):
+    """Prevent students who have been blocked from accessing any
+       login-protected content.
+
+       This is implemented as middleware to immediately force a user's logout,
+       not just to block them once they've logged out and are logging back in."""
+
+    def process_view(self, request, view_func, view_args, view_kwargs):
+
+        if request.user.is_authenticated():
+            if request.user.student.blocked:
+                msg = """You are not permitted to use Roomlist. Please contact us at
+                         <a href="mailto:roomlist@lists.srct.gmu.edu">
+                         roomlist@lists.srct.gmu.edu</a>
+                         if you believe this to be an error."""
+                messages.add_message(request, messages.ERROR, mark_safe(msg))
+
+                logout(request)
