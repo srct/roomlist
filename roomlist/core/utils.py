@@ -34,8 +34,10 @@ def custom_cas_login(request, *args, **kwargs):
             elif not request.user.completedSocial:
                 return HttpResponseRedirect(reverse('welcomeSocial'))
         else:
-            welcome_back = random.choice(return_messages)
-            messages.add_message(request, messages.INFO, mark_safe(welcome_back))
+            # do not 'welcome back' blocked users
+            if not request.user.student.blocked:
+                welcome_back = random.choice(return_messages)
+                messages.add_message(request, messages.INFO, mark_safe(welcome_back))
 
     return response
 
