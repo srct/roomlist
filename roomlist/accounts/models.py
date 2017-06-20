@@ -179,6 +179,9 @@ class Student(TimeStampedModel):
     privacy = models.CharField(max_length=100, choices=PRIVACY_CHOICES, default=FLOOR)
     blocked_kids = models.ManyToManyField("self", blank=True)
 
+    # to prevent student from accessing any page of the site
+    blocked = models.BooleanField(default=False)
+
     on_campus = models.BooleanField(default=True)
     room = models.ForeignKey(Room, null=True, blank=True)
 
