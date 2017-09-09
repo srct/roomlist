@@ -181,7 +181,7 @@ CAS_RESPONSE_CALLBACKS = (
     'accounts.cas_callbacks.create_user',
 )
 # Peoplefinder API endpoint for user creation in the CAS callback (above)
-PF_URL = "http://api.srct.gmu.edu/pf/v1/"
+PF_URL = "https://api.srct.gmu.edu/peoplefinder/v1/"
 # email address used in CAS callback
 ORGANIZATION_EMAIL_DOMAIN = 'masonlive.gmu.edu'
 
